@@ -31,3 +31,7 @@ import PreferenceProperties.QuasiLinear
 import PreferenceProperties.DensePreferenceRanks
 import PreferenceProperties.RankCutUtility
 import PreferenceProperties.GeneralContinuousRepresentation
+import PreferenceProperties.FiniteCoordinateComparison
+import PreferenceProperties.WeakSeparability
+import PreferenceProperties.CommodityBlocks
+import PreferenceProperties.AdditiveSeparability

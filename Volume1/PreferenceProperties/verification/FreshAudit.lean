@@ -14,6 +14,8 @@ import Mathlib.Analysis.Convex.Quasiconvex
 import Mathlib.Topology.Order.Compact
 import Mathlib.Basic.NNReal.Basic
 import Mathlib.Order.CountableDenseLinearOrder
+import Mathlib.Data.Finset.Piecewise
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 set_option autoImplicit false
 
 /-
@@ -3357,6 +3359,552 @@ theorem proposition_2_9_metric (k : ℕ)
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Finite chains of coordinate substitutions
+
+The substitution argument in Kreps I, Proposition 2.12, p. 41. Weak improvements
+in finitely many coordinates give a weak improvement overall; one strict step
+makes the full chain strict. Equal coordinate scores leave the value unchanged.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [Finite I] [DecidableEq I] {B : I → Type*}
+
+/-- Coordinatewise weak score improvements can be substituted one at a time. -/
+theorem finite_coordinate_mono {F : (∀ i, B i) → ℝ} {w : ∀ i, B i → ℝ}
+    (hc : ∀ i z a b, w i a ≤ w i b →
+      F (Function.update z i a) ≤ F (Function.update z i b))
+    (x y : ∀ i, B i) (hxy : ∀ i, w i (x i) ≤ w i (y i)) : F x ≤ F y := by
+  let : Fintype I := Fintype.ofFinite I
+  have hchain (s : Finset I) : F x ≤ F (s.piecewise y x) := by
+    induction s using Finset.induction_on with
+    | empty => simp
+    | @insert i s hi ih =>
+      rw [Finset.piecewise_insert]
+      apply ih.trans
+      have hz : s.piecewise y x i = x i := s.piecewise_eq_of_notMem y x hi
+      have hstep := hc i (s.piecewise y x) (s.piecewise y x i) (y i)
+        (by rw [hz]; exact hxy i)
+      simpa only [Function.update_eq_self] using hstep
+  simpa only [Finset.piecewise_univ] using hchain Finset.univ
+
+/-- Equal scores allow substitution in both directions. -/
+theorem finite_coordinate_eq {F : (∀ i, B i) → ℝ} {w : ∀ i, B i → ℝ}
+    (hc : ∀ i z a b, w i a ≤ w i b →
+      F (Function.update z i a) ≤ F (Function.update z i b))
+    (x y : ∀ i, B i) (hxy : ∀ i, w i (x i) = w i (y i)) : F x = F y :=
+  le_antisymm (finite_coordinate_mono hc x y (fun i => (hxy i).le))
+    (finite_coordinate_mono hc y x (fun i => (hxy i).ge))
+
+/-- One strict score improvement makes a finite weak-improvement chain strict. -/
+theorem finite_coordinate_strict {F : (∀ i, B i) → ℝ} {w : ∀ i, B i → ℝ}
+    (hc : ∀ i z a b, F (Function.update z i a) ≤ F (Function.update z i b) ↔
+      w i a ≤ w i b) (x y : ∀ i, B i)
+    (hxy : ∀ i, w i (x i) ≤ w i (y i)) (hs : ∃ i, w i (x i) < w i (y i)) :
+    F x < F y := by
+  obtain ⟨i, hi⟩ := hs
+  have hstep : F x < F (Function.update x i (y i)) := by
+    have hn : ¬F (Function.update x i (y i)) ≤ F (Function.update x i (x i)) :=
+      fun h => (not_le_of_gt hi) ((hc i x (y i) (x i)).mp h)
+    simpa only [Function.update_eq_self] using lt_of_not_ge hn
+  apply hstep.trans_le
+  apply finite_coordinate_mono (fun i z a b h => (hc i z a b).mpr h)
+  intro j
+  by_cases hji : j = i
+  · subst j
+    simp
+  · simpa only [Function.update_of_ne hji] using hxy j
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Weak separability and an increasing aggregator
+
+Kreps I, Definition 2.11 and Proposition 2.12, pp. 40-41. A bundle consists of
+finitely many independent commodity blocks and an arbitrary leftover bundle.
+The aggregator is defined only on attained subutility ranges and is strictly
+increasing when some block score increases and none decreases.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} {B : I → Type*} {L : Type*}
+
+/-- The selected disjoint blocks, together with all leftover goods. -/
+abbrev BlockBundle (B : I → Type*) (L : Type*) := (∀ i, B i) × L
+
+/-- Substitute one block while keeping every other good fixed. -/
+def ReplaceBlock [DecidableEq I] (s : BlockBundle B L) (i : I) (a : B i) : BlockBundle B L :=
+  (Function.update s.1 i a, s.2)
+
+/-- **Definition 2.11:** comparisons within each block ignore the surrounding bundle. -/
+def WeaklySeparable [DecidableEq I] (r : BlockBundle B L → BlockBundle B L → Prop) : Prop :=
+  ∀ i a b s t, r (ReplaceBlock s i a) (ReplaceBlock s i b) ↔
+    r (ReplaceBlock t i a) (ReplaceBlock t i b)
+
+/-- Independence of the surrounding goods also preserves strict comparisons. -/
+theorem weaklySeparable_strict [DecidableEq I]
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hs : WeaklySeparable r)
+    (i : I) (a b : B i) (s t : BlockBundle B L) :
+    Strict r (ReplaceBlock s i a) (ReplaceBlock s i b) ↔
+      Strict r (ReplaceBlock t i a) (ReplaceBlock t i b) :=
+  and_congr (hs i a b s t) (not_congr (hs i b a s t))
+
+/-- The book's subutility, evaluated against a fixed reference bundle. -/
+def BaselineSubutility [DecidableEq I] (u : BlockBundle B L → ℝ) (s₀ : BlockBundle B L)
+    (i : I) (a : B i) : ℝ := u (ReplaceBlock s₀ i a)
+
+/-- Weak separability transports each baseline comparison to every surrounding bundle. -/
+theorem baseline_comparison_iff [DecidableEq I] {u : BlockBundle B L → ℝ}
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hu : Represents u r)
+    (hs : WeaklySeparable r) (s₀ : BlockBundle B L) (i : I) (s : BlockBundle B L)
+    (a b : B i) :
+    u (ReplaceBlock s i a) ≤ u (ReplaceBlock s i b) ↔
+      BaselineSubutility u s₀ i a ≤ BaselineSubutility u s₀ i b := by
+  calc
+    u (ReplaceBlock s i a) ≤ u (ReplaceBlock s i b) ↔
+        r (ReplaceBlock s i b) (ReplaceBlock s i a) := (hu _ _).symm
+    _ ↔ r (ReplaceBlock s₀ i b) (ReplaceBlock s₀ i a) := hs i b a s s₀
+    _ ↔ BaselineSubutility u s₀ i a ≤ BaselineSubutility u s₀ i b := hu _ _
+
+/-- Each coordinate carries its score and evidence that the score is attained. -/
+def BlockScores (w : ∀ i, B i → ℝ) (x : ∀ i, B i) : ∀ i, Set.range (w i) :=
+  fun i => ⟨w i (x i), x i, rfl⟩
+
+/-- Block substitution changes exactly the corresponding score coordinate. -/
+theorem blockScores_update [DecidableEq I] (w : ∀ i, B i → ℝ)
+    (x : ∀ i, B i) (i : I) (a : B i) :
+    BlockScores w (Function.update x i a) =
+      Function.update (BlockScores w x) i ⟨w i a, a, rfl⟩ := by
+  funext j
+  apply Subtype.ext
+  by_cases hj : j = i
+  · subst j
+    simp [BlockScores]
+  · simp [BlockScores, Function.update_of_ne hj]
+
+/-- Select an actual block attaining a given subutility value. -/
+noncomputable def ScoreRepresentative (w : ∀ i, B i → ℝ) (i : I)
+    (q : Set.range (w i)) : B i := Classical.choose q.property
+
+/-- The selected block has exactly the specified score. -/
+theorem scoreRepresentative_spec (w : ∀ i, B i → ℝ) (i : I) (q : Set.range (w i)) :
+    w i (ScoreRepresentative w i q) = q.val := Classical.choose_spec q.property
+
+/-- Reconstruct utility from representatives of the attained block scores. -/
+noncomputable def SubutilityAggregator (u : BlockBundle B L → ℝ) (w : ∀ i, B i → ℝ)
+    (p : (∀ i, Set.range (w i)) × L) : ℝ :=
+  u ((fun i => ScoreRepresentative w i (p.1 i)), p.2)
+
+/-- Strict increase in the first coordinates, with the leftover goods held fixed. -/
+def IncreasingAggregator (w : ∀ i, B i → ℝ)
+    (V : ((∀ i, Set.range (w i)) × L) → ℝ) : Prop :=
+  ∀ l, StrictMono (fun q => V (q, l))
+
+/-- The exact factorization of the given utility required by **Proposition 2.12**. -/
+def WeakSeparabilityRepresentation (u : BlockBundle B L → ℝ) : Prop :=
+  ∃ w : ∀ i, B i → ℝ, ∃ V : ((∀ i, Set.range (w i)) × L) → ℝ,
+    IncreasingAggregator w V ∧ ∀ x, u x = V (BlockScores w x.1, x.2)
+
+/-- A strictly increasing aggregator orders changes in one block by its subutility. -/
+theorem aggregator_coordinate_comparison [DecidableEq I] {w : ∀ i, B i → ℝ}
+    {V : ((∀ i, Set.range (w i)) × L) → ℝ} (hV : IncreasingAggregator w V)
+    (x : ∀ i, B i) (l : L) (i : I) (a b : B i) :
+    V (BlockScores w (Function.update x i a), l) ≤
+      V (BlockScores w (Function.update x i b), l) ↔ w i a ≤ w i b := by
+  rw [blockScores_update, blockScores_update]
+  exact ((hV l).comp Function.update_strictMono).le_iff_le
+
+/-- The aggregator form implies independence of the surrounding goods. -/
+theorem weaklySeparable_of_representation [DecidableEq I] {u : BlockBundle B L → ℝ}
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hu : Represents u r)
+    (hf : WeakSeparabilityRepresentation u) : WeaklySeparable r := by
+  obtain ⟨w, V, hV, he⟩ := hf
+  intro i a b s t
+  have hcompare (z : BlockBundle B L) :
+      r (ReplaceBlock z i a) (ReplaceBlock z i b) ↔ w i b ≤ w i a := by
+    rw [hu, he (ReplaceBlock z i b), he (ReplaceBlock z i a)]
+    exact aggregator_coordinate_comparison hV z.1 z.2 i b a
+  exact (hcompare s).trans (hcompare t).symm
+
+/-- Equal subutility coordinates give equal overall utility by the finite substitution chain. -/
+theorem subutilityAggregator_factors [DecidableEq I] [Finite I] {u : BlockBundle B L → ℝ}
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hu : Represents u r)
+    (hs : WeaklySeparable r) (s₀ x : BlockBundle B L) :
+    u x = SubutilityAggregator u (BaselineSubutility u s₀)
+      (BlockScores (BaselineSubutility u s₀) x.1, x.2) := by
+  let w := BaselineSubutility u s₀
+  change u (x.1, x.2) = u ((fun i => ScoreRepresentative w i (BlockScores w x.1 i)), x.2)
+  apply finite_coordinate_eq (F := fun z => u (z, x.2)) (w := w)
+    (fun i z a b h => (baseline_comparison_iff hu hs s₀ i (z, x.2) a b).mpr h)
+  intro i
+  exact (scoreRepresentative_spec w i (BlockScores w x.1 i)).symm
+
+/-- A strict increase of any score makes the finite substitution chain strict. -/
+theorem subutilityAggregator_increasing [DecidableEq I] [Finite I] {u : BlockBundle B L → ℝ}
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hu : Represents u r)
+    (hs : WeaklySeparable r) (s₀ : BlockBundle B L) :
+    IncreasingAggregator (BaselineSubutility u s₀)
+      (SubutilityAggregator u (BaselineSubutility u s₀)) := by
+  let w := BaselineSubutility u s₀
+  intro l q t hqt
+  have hle := le_of_lt hqt
+  have hn := not_le_of_gt hqt
+  change ¬∀ i, t i ≤ q i at hn
+  obtain ⟨i, hi⟩ := not_forall.mp hn
+  change u ((fun j => ScoreRepresentative w j (q j)), l) <
+    u ((fun j => ScoreRepresentative w j (t j)), l)
+  apply finite_coordinate_strict (F := fun z => u (z, l)) (w := w)
+    (fun j z a b => baseline_comparison_iff hu hs s₀ j (z, l) a b)
+  · intro j
+    rw [scoreRepresentative_spec w j (q j), scoreRepresentative_spec w j (t j)]
+    exact hle j
+  · refine ⟨i, ?_⟩
+    rw [scoreRepresentative_spec w i (q i), scoreRepresentative_spec w i (t i)]
+    exact lt_of_not_ge hi
+
+/-- The baseline construction supplies both the exact factorization and strict increase. -/
+theorem weakSeparabilityRepresentation_of_separable [DecidableEq I] [Finite I]
+    {u : BlockBundle B L → ℝ} {r : BlockBundle B L → BlockBundle B L → Prop}
+    (hu : Represents u r) (hs : WeaklySeparable r) (s₀ : BlockBundle B L) :
+    WeakSeparabilityRepresentation u :=
+  ⟨BaselineSubutility u s₀, SubutilityAggregator u (BaselineSubutility u s₀),
+    subutilityAggregator_increasing hu hs s₀, subutilityAggregator_factors hu hs s₀⟩
+
+/-- **Proposition 2.12:** weak separability is equivalent to the given utility's factorization. -/
+theorem proposition_2_12 [DecidableEq I] [Finite I] [Nonempty (BlockBundle B L)]
+    {u : BlockBundle B L → ℝ} {r : BlockBundle B L → BlockBundle B L → Prop}
+    (hu : Represents u r) : WeaklySeparable r ↔ WeakSeparabilityRepresentation u := by
+  constructor
+  · intro hs
+    obtain ⟨s₀⟩ := ‹Nonempty (BlockBundle B L)›
+    exact weakSeparabilityRepresentation_of_separable hu hs s₀
+  · exact weaklySeparable_of_representation hu
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Commodity-index blocks and leftover goods
+
+Kreps I, the notation preceding Definition 2.11, p. 40. Each commodity is
+assigned to a selected block or to the leftover bundle. Every family of disjoint
+commodity subsets admits such an assignment. Grouping is a genuine equivalence
+with the original orthant, and block replacement changes exactly its assigned goods.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {k n : ℕ}
+
+/-- The nonnegative quantities of goods assigned to a selected block. -/
+abbrev AssignedBlock (owner : Fin k → Option (Fin n)) (i : Fin n) :=
+  {j : Fin k // owner j = some i} → ℝ≥0
+
+/-- The goods belonging to none of the selected blocks. -/
+abbrev LeftoverBlock (owner : Fin k → Option (Fin n)) :=
+  {j : Fin k // owner j = none} → ℝ≥0
+
+/-- Read each selected block and the leftover quantities from a full bundle. -/
+def GroupCommodities (owner : Fin k → Option (Fin n)) (x : Fin k → ℝ≥0) :
+    BlockBundle (AssignedBlock owner) (LeftoverBlock owner) :=
+  ((fun _ j => x j.val), fun j => x j.val)
+
+/-- Recover a commodity quantity from its uniquely assigned block. -/
+def UngroupCommodities (owner : Fin k → Option (Fin n))
+    (x : BlockBundle (AssignedBlock owner) (LeftoverBlock owner)) (j : Fin k) : ℝ≥0 :=
+  match h : owner j with
+  | none => x.2 ⟨j, h⟩
+  | some i => x.1 i ⟨j, h⟩
+
+/-- Recover a quantity from a known selected block. -/
+theorem ungroupCommodities_some (owner : Fin k → Option (Fin n))
+    (x : BlockBundle (AssignedBlock owner) (LeftoverBlock owner)) (i : Fin n)
+    (j : Fin k) (hj : owner j = some i) :
+    UngroupCommodities owner x j = x.1 i ⟨j, hj⟩ := by
+  unfold UngroupCommodities
+  split
+  · rename_i hn
+    have hf := hn.symm.trans hj
+    cases hf
+  · rename_i l hl
+    have he : l = i := Option.some.inj (hl.symm.trans hj)
+    subst l
+    rfl
+
+/-- Recover a quantity known to lie in the leftover bundle. -/
+theorem ungroupCommodities_none (owner : Fin k → Option (Fin n))
+    (x : BlockBundle (AssignedBlock owner) (LeftoverBlock owner))
+    (j : Fin k) (hj : owner j = none) :
+    UngroupCommodities owner x j = x.2 ⟨j, hj⟩ := by
+  unfold UngroupCommodities
+  split
+  · rfl
+  · rename_i i hi
+    have hf := hi.symm.trans hj
+    cases hf
+
+/-- Grouping and recovering leave every commodity quantity unchanged. -/
+theorem ungroup_groupCommodities (owner : Fin k → Option (Fin n)) (x : Fin k → ℝ≥0) :
+    UngroupCommodities owner (GroupCommodities owner x) = x := by
+  funext j
+  unfold UngroupCommodities
+  split <;> rfl
+
+/-- Recovering and regrouping preserve all selected blocks and all leftover goods. -/
+theorem group_ungroupCommodities (owner : Fin k → Option (Fin n))
+    (x : BlockBundle (AssignedBlock owner) (LeftoverBlock owner)) :
+    GroupCommodities owner (UngroupCommodities owner x) = x := by
+  apply Prod.ext
+  · funext i j
+    exact ungroupCommodities_some owner x i j.val j.property
+  · funext j
+    exact ungroupCommodities_none owner x j.val j.property
+
+/-- The commodity grouping is a bijective change of coordinates. -/
+def commodityGroupingEquiv (owner : Fin k → Option (Fin n)) :
+    (Fin k → ℝ≥0) ≃ BlockBundle (AssignedBlock owner) (LeftoverBlock owner) where
+  toFun := GroupCommodities owner
+  invFun := UngroupCommodities owner
+  left_inv := ungroup_groupCommodities owner
+  right_inv := group_ungroupCommodities owner
+
+/-- Coordinatewise nonnegative reals are exactly the chapter's nonnegative orthant. -/
+def orthantNNRealEquiv (k : ℕ) : NonnegativeOrthant k ≃ (Fin k → ℝ≥0) where
+  toFun x j := .mk (x.val j) (x.property j)
+  invFun x := ⟨fun j => (x j : ℝ), fun j => (x j).property⟩
+  left_inv x := by apply Subtype.ext; rfl
+  right_inv x := by
+    funext j
+    exact NNReal.coe_injective rfl
+
+/-- Group the original orthant into selected commodity blocks and their complement. -/
+def orthantGrouping (owner : Fin k → Option (Fin n)) :
+    NonnegativeOrthant k ≃ BlockBundle (AssignedBlock owner) (LeftoverBlock owner) :=
+  (orthantNNRealEquiv k).trans (commodityGroupingEquiv owner)
+
+/-- A grouped block coordinate is precisely the original commodity coordinate. -/
+theorem orthantGrouping_block (owner : Fin k → Option (Fin n)) (x : NonnegativeOrthant k)
+    (i : Fin n) (j : {j : Fin k // owner j = some i}) :
+    (((orthantGrouping owner x).1 i j) : ℝ) = x.val j.val := rfl
+
+/-- The same coordinate identity holds for leftover goods. -/
+theorem orthantGrouping_leftover (owner : Fin k → Option (Fin n)) (x : NonnegativeOrthant k)
+    (j : {j : Fin k // owner j = none}) :
+    (((orthantGrouping owner x).2 j) : ℝ) = x.val j.val := rfl
+
+/-- Replacing a block changes its assigned commodity to the specified new quantity. -/
+theorem ungroup_replace_in_block (owner : Fin k → Option (Fin n))
+    (s : BlockBundle (AssignedBlock owner) (LeftoverBlock owner)) (i : Fin n)
+    (a : AssignedBlock owner i) (j : Fin k) (hj : owner j = some i) :
+    UngroupCommodities owner (ReplaceBlock s i a) j = a ⟨j, hj⟩ := by
+  rw [ungroupCommodities_some owner (ReplaceBlock s i a) i j hj]
+  simp [ReplaceBlock]
+
+/-- Replacing a block leaves every unassigned commodity unchanged. -/
+theorem ungroup_replace_outside (owner : Fin k → Option (Fin n))
+    (s : BlockBundle (AssignedBlock owner) (LeftoverBlock owner)) (i : Fin n)
+    (a : AssignedBlock owner i) (j : Fin k) (hj : owner j ≠ some i) :
+    UngroupCommodities owner (ReplaceBlock s i a) j = UngroupCommodities owner s j := by
+  cases h : owner j with
+  | none =>
+    rw [ungroupCommodities_none owner (ReplaceBlock s i a) j h,
+      ungroupCommodities_none owner s j h]
+    rfl
+  | some l =>
+    have hli : l ≠ i := by
+      intro he
+      subst l
+      exact hj h
+    rw [ungroupCommodities_some owner (ReplaceBlock s i a) l j h,
+      ungroupCommodities_some owner s l j h]
+    simp [ReplaceBlock, Function.update_of_ne hli]
+
+/-- Two distinct selected blocks cannot contain the same commodity. -/
+theorem assigned_blocks_disjoint (owner : Fin k → Option (Fin n))
+    (i j : Fin n) (hij : i ≠ j) :
+    Disjoint {a | owner a = some i} {a | owner a = some j} := by
+  apply Set.disjoint_left.mpr
+  intro a hai haj
+  exact hij (Option.some.inj (hai.symm.trans haj))
+
+/-- Leftovers are exactly the complement of the union of selected blocks. -/
+theorem assigned_leftover_iff (owner : Fin k → Option (Fin n)) (j : Fin k) :
+    owner j = none ↔ ∀ i, owner j ≠ some i := by
+  cases h : owner j <;> simp
+
+/-- Every disjoint family of subsets has an assignment, including an explicit leftover class. -/
+theorem exists_commodity_assignment (J : Fin n → Set (Fin k))
+    (hd : ∀ i j, i ≠ j → Disjoint (J i) (J j)) :
+    ∃ owner : Fin k → Option (Fin n),
+      (∀ i j, owner j = some i ↔ j ∈ J i) ∧
+      ∀ j, owner j = none ↔ ∀ i, j ∉ J i := by
+  classical
+  let owner := fun j => if h : ∃ i, j ∈ J i then some (Classical.choose h) else none
+  have hblocks (i : Fin n) (j : Fin k) : owner j = some i ↔ j ∈ J i := by
+    by_cases h : ∃ i, j ∈ J i
+    · have hs := Classical.choose_spec h
+      have he : owner j = some (Classical.choose h) := by simp [owner, h]
+      rw [he, Option.some.injEq]
+      constructor
+      · intro hi
+        exact hi ▸ hs
+      · intro hji
+        by_contra hne
+        exact Set.disjoint_left.mp (hd _ _ hne) hs hji
+    · have hji : j ∉ J i := fun hji => h ⟨i, hji⟩
+      simp [owner, h, hji]
+  refine ⟨owner, hblocks, ?_⟩
+  intro j
+  rw [assigned_leftover_iff]
+  constructor
+  · intro h i hi
+    exact h i ((hblocks i j).mpr hi)
+  · intro h i hi
+    exact h i ((hblocks i j).mp hi)
+
+/-- **Proposition 2.12** transported to the original commodity orthant. -/
+theorem proposition_2_12_orthant (owner : Fin k → Option (Fin n))
+    {u : NonnegativeOrthant k → ℝ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hu : Represents u r) :
+    WeaklySeparable (fun x y => r ((orthantGrouping owner).symm x)
+      ((orthantGrouping owner).symm y)) ↔
+    WeakSeparabilityRepresentation (fun x => u ((orthantGrouping owner).symm x)) :=
+  proposition_2_12 (fun x y => hu ((orthantGrouping owner).symm x)
+    ((orthantGrouping owner).symm y))
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Strong separability and additive utility
+
+Kreps I, Definition 2.13 and the additive-to-strong direction of Proposition 2.14,
+p. 42. Strong separability applies to every union of blocks, and nontriviality
+does not depend on the other goods. The converse existence theorem with three
+nontrivial blocks is a separate pending obligation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} {B : I → Type*}
+
+/-- **Definition 2.13:** comparisons on every union of blocks ignore its complement. -/
+def StronglySeparable [DecidableEq I] (r : (∀ i, B i) → (∀ i, B i) → Prop) : Prop :=
+  ∀ (S : Finset I) a b z t, r (S.piecewise a z) (S.piecewise b z) ↔
+    r (S.piecewise a t) (S.piecewise b t)
+
+/-- A block is nontrivial when some two of its bundles can be strictly ranked. -/
+def NontrivialBlock [DecidableEq I] (r : (∀ i, B i) → (∀ i, B i) → Prop) (i : I) : Prop :=
+  ∃ a b z, Strict r (Function.update z i a) (Function.update z i b)
+
+/-- The substantive three-block hypothesis in **Proposition 2.14**. -/
+def ThreeNontrivialBlocks [DecidableEq I] (r : (∀ i, B i) → (∀ i, B i) → Prop) : Prop :=
+  ∃ i j l, i ≠ j ∧ i ≠ l ∧ j ≠ l ∧
+    NontrivialBlock r i ∧ NontrivialBlock r j ∧ NontrivialBlock r l
+
+/-- Strong separability includes each individual block's weak separability. -/
+theorem stronglySeparable_weakly [DecidableEq I]
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hs : StronglySeparable r) :
+    WeaklySeparable (fun x y : BlockBundle B Unit => r x.1 y.1) := by
+  intro i a b z t
+  simpa [ReplaceBlock, Finset.piecewise_singleton] using
+    hs {i} (Function.update z.1 i a) (Function.update z.1 i b) z.1 t.1
+
+/-- The same pair witnesses block nontriviality under every surrounding bundle. -/
+theorem nontrivialBlock_iff_every_context [DecidableEq I] [Nonempty (∀ i, B i)]
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hs : StronglySeparable r) (i : I) :
+    NontrivialBlock r i ↔
+      ∃ a b, ∀ z, Strict r (Function.update z i a) (Function.update z i b) := by
+  constructor
+  · rintro ⟨a, b, z₀, hz⟩
+    refine ⟨a, b, fun z => ?_⟩
+    exact (weaklySeparable_strict (stronglySeparable_weakly hs) i a b (z₀, ()) (z, ())).mp hz
+  · rintro ⟨a, b, hz⟩
+    obtain ⟨z₀⟩ := ‹Nonempty (∀ i, B i)›
+    exact ⟨a, b, z₀, hz z₀⟩
+
+/-- Three distinct nontrivial blocks require at least three block indices. -/
+theorem threeNontrivialBlocks_card [DecidableEq I] [Fintype I]
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (h : ThreeNontrivialBlocks r) :
+    3 ≤ Fintype.card I := by
+  obtain ⟨i, j, l, hij, hil, hjl, _⟩ := h
+  have hc : ({i, j, l} : Finset I).card = 3 := by simp [hij, hil, hjl]
+  calc
+    3 = ({i, j, l} : Finset I).card := hc.symm
+    _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card I := Finset.card_univ
+
+/-- Additive utility sums the individual block subutilities. -/
+def AdditiveUtility [Fintype I] (w : ∀ i, B i → ℝ) (x : ∀ i, B i) : ℝ :=
+  ∑ i, w i (x i)
+
+/-- A preference admits an additive representation over the specified blocks. -/
+def AdditivelyRepresentable [Fintype I] (r : (∀ i, B i) → (∀ i, B i) → Prop) : Prop :=
+  ∃ w : ∀ i, B i → ℝ, Represents (AdditiveUtility w) r
+
+/-- A union's utility contribution separates from the unchanged complementary blocks. -/
+theorem additiveUtility_piecewise [Fintype I] [DecidableEq I]
+    (w : ∀ i, B i → ℝ) (S : Finset I) (a z : ∀ i, B i) :
+    AdditiveUtility w (S.piecewise a z) =
+      (∑ i ∈ S, w i (a i)) + ∑ i ∈ Sᶜ, w i (z i) := by
+  unfold AdditiveUtility
+  rw [← Finset.sum_add_sum_compl S]
+  congr 1
+  · apply Finset.sum_congr rfl
+    intro i hi
+    rw [Finset.piecewise_eq_of_mem _ _ _ hi]
+  · apply Finset.sum_congr rfl
+    intro i hi
+    rw [Finset.piecewise_eq_of_notMem _ _ _ (Finset.mem_compl.mp hi)]
+
+/-- **Proposition 2.14**, converse: every additive representation is strongly separable. -/
+theorem proposition_2_14_additive [Fintype I] [DecidableEq I]
+    {w : ∀ i, B i → ℝ} {r : (∀ i, B i) → (∀ i, B i) → Prop}
+    (hu : Represents (AdditiveUtility w) r) : StronglySeparable r := by
+  intro S a b z t
+  rw [hu, hu]
+  simp only [additiveUtility_piecewise, add_le_add_iff_right]
+
+/-- Summing continuous subutilities gives a continuous utility on the product domain. -/
+theorem additiveUtility_continuous [Fintype I] [∀ i, TopologicalSpace (B i)]
+    {w : ∀ i, B i → ℝ} (hw : ∀ i, Continuous (w i)) : Continuous (AdditiveUtility w) :=
+  continuous_finsetSum Finset.univ (fun i _ => (hw i).comp (continuous_apply i))
+
+/-- Continuous additive subutilities therefore also give continuous preferences. -/
+theorem continuousPreference_of_additive [Fintype I] [∀ i, TopologicalSpace (B i)]
+    {w : ∀ i, B i → ℝ} {r : (∀ i, B i) → (∀ i, B i) → Prop}
+    (hu : Represents (AdditiveUtility w) r) (hw : ∀ i, Continuous (w i)) :
+    ContinuousPreference r :=
+  proposition_2_9_forward hu (additiveUtility_continuous hw)
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -3680,3 +4228,56 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.continuous_represents_of_continuous_connected
 #print axioms Kreps.PreferenceProperties.proposition_2_9
 #print axioms Kreps.PreferenceProperties.proposition_2_9_metric
+#print axioms Kreps.PreferenceProperties.finite_coordinate_mono
+#print axioms Kreps.PreferenceProperties.finite_coordinate_eq
+#print axioms Kreps.PreferenceProperties.finite_coordinate_strict
+#print axioms Kreps.PreferenceProperties.BlockBundle
+#print axioms Kreps.PreferenceProperties.ReplaceBlock
+#print axioms Kreps.PreferenceProperties.WeaklySeparable
+#print axioms Kreps.PreferenceProperties.weaklySeparable_strict
+#print axioms Kreps.PreferenceProperties.BaselineSubutility
+#print axioms Kreps.PreferenceProperties.baseline_comparison_iff
+#print axioms Kreps.PreferenceProperties.BlockScores
+#print axioms Kreps.PreferenceProperties.blockScores_update
+#print axioms Kreps.PreferenceProperties.ScoreRepresentative
+#print axioms Kreps.PreferenceProperties.scoreRepresentative_spec
+#print axioms Kreps.PreferenceProperties.SubutilityAggregator
+#print axioms Kreps.PreferenceProperties.IncreasingAggregator
+#print axioms Kreps.PreferenceProperties.WeakSeparabilityRepresentation
+#print axioms Kreps.PreferenceProperties.aggregator_coordinate_comparison
+#print axioms Kreps.PreferenceProperties.weaklySeparable_of_representation
+#print axioms Kreps.PreferenceProperties.subutilityAggregator_factors
+#print axioms Kreps.PreferenceProperties.subutilityAggregator_increasing
+#print axioms Kreps.PreferenceProperties.weakSeparabilityRepresentation_of_separable
+#print axioms Kreps.PreferenceProperties.proposition_2_12
+#print axioms Kreps.PreferenceProperties.AssignedBlock
+#print axioms Kreps.PreferenceProperties.LeftoverBlock
+#print axioms Kreps.PreferenceProperties.GroupCommodities
+#print axioms Kreps.PreferenceProperties.UngroupCommodities
+#print axioms Kreps.PreferenceProperties.ungroupCommodities_some
+#print axioms Kreps.PreferenceProperties.ungroupCommodities_none
+#print axioms Kreps.PreferenceProperties.ungroup_groupCommodities
+#print axioms Kreps.PreferenceProperties.group_ungroupCommodities
+#print axioms Kreps.PreferenceProperties.commodityGroupingEquiv
+#print axioms Kreps.PreferenceProperties.orthantNNRealEquiv
+#print axioms Kreps.PreferenceProperties.orthantGrouping
+#print axioms Kreps.PreferenceProperties.orthantGrouping_block
+#print axioms Kreps.PreferenceProperties.orthantGrouping_leftover
+#print axioms Kreps.PreferenceProperties.ungroup_replace_in_block
+#print axioms Kreps.PreferenceProperties.ungroup_replace_outside
+#print axioms Kreps.PreferenceProperties.assigned_blocks_disjoint
+#print axioms Kreps.PreferenceProperties.assigned_leftover_iff
+#print axioms Kreps.PreferenceProperties.exists_commodity_assignment
+#print axioms Kreps.PreferenceProperties.proposition_2_12_orthant
+#print axioms Kreps.PreferenceProperties.StronglySeparable
+#print axioms Kreps.PreferenceProperties.NontrivialBlock
+#print axioms Kreps.PreferenceProperties.ThreeNontrivialBlocks
+#print axioms Kreps.PreferenceProperties.stronglySeparable_weakly
+#print axioms Kreps.PreferenceProperties.nontrivialBlock_iff_every_context
+#print axioms Kreps.PreferenceProperties.threeNontrivialBlocks_card
+#print axioms Kreps.PreferenceProperties.AdditiveUtility
+#print axioms Kreps.PreferenceProperties.AdditivelyRepresentable
+#print axioms Kreps.PreferenceProperties.additiveUtility_piecewise
+#print axioms Kreps.PreferenceProperties.proposition_2_14_additive
+#print axioms Kreps.PreferenceProperties.additiveUtility_continuous
+#print axioms Kreps.PreferenceProperties.continuousPreference_of_additive
