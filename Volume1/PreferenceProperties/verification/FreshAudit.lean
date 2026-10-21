@@ -30,6 +30,11 @@ import Mathlib.MeasureTheory.Measure.OpenPos
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Constructions.Pi
 import Mathlib.MeasureTheory.Measure.Typeclasses.SFinite
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Topology.MetricSpace.Pseudo.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Topology.Order
+import Mathlib.Analysis.Normed.Group.Indicator
 set_option autoImplicit false
 
 /-
@@ -6298,6 +6303,1668 @@ theorem problem_2_15_not_continuous :
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Product utility on the two-good orthant
+
+Elementary mixture inequalities used in the exact counterexamples of Kreps I,
+Problem 2.8. The domain includes its axes; no interior-only assumption is hidden
+in the weak quasi-concavity result.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The product of the two nonnegative commodity quantities. -/
+def TwoGoodProduct (x : NonnegativeOrthant 2) : ℝ := x.val 0 * x.val 1
+
+/-- Along oppositely ordered coordinates the product exceeds its chord. -/
+theorem product_mix_ge_average_of_cross (x₀ x₁ y₀ y₁ a : ℝ)
+    (ha : a ∈ Set.Icc 0 1) (hcross : (x₀ - y₀) * (x₁ - y₁) ≤ 0) :
+    a * (x₀ * x₁) + (1 - a) * (y₀ * y₁) ≤
+      (a * x₀ + (1 - a) * y₀) * (a * x₁ + (1 - a) * y₁) := by
+  have ht : 0 ≤ a * (1 - a) := mul_nonneg ha.1 (sub_nonneg.mpr ha.2)
+  have hneg := mul_nonpos_of_nonneg_of_nonpos ht hcross
+  nlinarith
+
+/-- Nonnegative two-coordinate products are quasi-concave under convex mixing. -/
+theorem product_mix_ge_min (x₀ x₁ y₀ y₁ a : ℝ)
+    (hx₀ : 0 ≤ x₀) (hx₁ : 0 ≤ x₁) (hy₀ : 0 ≤ y₀) (hy₁ : 0 ≤ y₁)
+    (ha : a ∈ Set.Icc 0 1) :
+    min (x₀ * x₁) (y₀ * y₁) ≤
+      (a * x₀ + (1 - a) * y₀) * (a * x₁ + (1 - a) * y₁) := by
+  have hb : 0 ≤ 1 - a := sub_nonneg.mpr ha.2
+  have hmean : min (x₀ * x₁) (y₀ * y₁) ≤
+      a * (x₀ * x₁) + (1 - a) * (y₀ * y₁) := by
+    nlinarith [mul_nonneg ha.1 (sub_nonneg.mpr (min_le_left (x₀ * x₁) (y₀ * y₁))),
+      mul_nonneg hb (sub_nonneg.mpr (min_le_right (x₀ * x₁) (y₀ * y₁)))]
+  by_cases h₀ : x₀ ≤ y₀
+  · by_cases h₁ : x₁ ≤ y₁
+    · apply (min_le_left _ _).trans
+      exact mul_le_mul
+        (show x₀ ≤ a * x₀ + (1 - a) * y₀ by
+          nlinarith [mul_nonneg hb (sub_nonneg.mpr h₀)])
+        (show x₁ ≤ a * x₁ + (1 - a) * y₁ by
+          nlinarith [mul_nonneg hb (sub_nonneg.mpr h₁)]) hx₁
+        (add_nonneg (mul_nonneg ha.1 hx₀) (mul_nonneg hb hy₀))
+    · apply hmean.trans (product_mix_ge_average_of_cross x₀ x₁ y₀ y₁ a ha _)
+      exact mul_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr h₀)
+        (sub_nonneg.mpr (le_of_not_ge h₁))
+  · by_cases h₁ : y₁ ≤ x₁
+    · apply (min_le_right _ _).trans
+      exact mul_le_mul
+        (show y₀ ≤ a * x₀ + (1 - a) * y₀ by
+          nlinarith [mul_nonneg ha.1 (sub_nonneg.mpr (le_of_not_ge h₀))])
+        (show y₁ ≤ a * x₁ + (1 - a) * y₁ by
+          nlinarith [mul_nonneg ha.1 (sub_nonneg.mpr h₁)]) hy₁
+        (add_nonneg (mul_nonneg ha.1 hx₀) (mul_nonneg hb hy₀))
+    · apply hmean.trans (product_mix_ge_average_of_cross x₀ x₁ y₀ y₁ a ha _)
+      exact mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.mpr (le_of_not_ge h₀))
+        (sub_nonpos.mpr (le_of_not_ge h₁))
+
+/-- Product utility is continuous on the entire nonnegative orthant. -/
+theorem twoGoodProduct_continuous : Continuous TwoGoodProduct :=
+  ((continuous_apply 0).comp continuous_subtype_val).mul
+    ((continuous_apply 1).comp continuous_subtype_val)
+
+/-- Quasi-concavity includes zero-product boundary bundles. -/
+theorem twoGoodProduct_quasiConcave :
+    QuasiConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) TwoGoodProduct := by
+  intro x y a ha
+  exact product_mix_ge_min (x.val 0) (x.val 1) (y.val 0) (y.val 1) a
+    (x.property 0) (x.property 1) (y.property 0) (y.property 1) ha
+
+/-- Strictly oppositely ordered coordinates give a strict chord inequality. -/
+theorem product_mix_gt_average_of_cross (x₀ x₁ y₀ y₁ a : ℝ)
+    (ha : a ∈ Set.Ioo 0 1) (hcross : (x₀ - y₀) * (x₁ - y₁) < 0) :
+    a * (x₀ * x₁) + (1 - a) * (y₀ * y₁) <
+      (a * x₀ + (1 - a) * y₀) * (a * x₁ + (1 - a) * y₁) := by
+  have ht : 0 < a * (1 - a) := mul_pos ha.1 (sub_pos.mpr ha.2)
+  have hneg := mul_neg_of_pos_of_neg ht hcross
+  nlinarith
+
+/-- Distinct positive-product bundles improve strictly over the lower-product endpoint. -/
+theorem product_mix_gt_lower (x₀ x₁ y₀ y₁ a : ℝ)
+    (hx₀ : 0 ≤ x₀) (hy₀ : 0 < y₀) (hy₁ : 0 < y₁)
+    (hprod : y₀ * y₁ ≤ x₀ * x₁) (hne : x₀ ≠ y₀ ∨ x₁ ≠ y₁)
+    (ha : a ∈ Set.Ioo 0 1) :
+    y₀ * y₁ < (a * x₀ + (1 - a) * y₀) * (a * x₁ + (1 - a) * y₁) := by
+  have hmean : y₀ * y₁ ≤ a * (x₀ * x₁) + (1 - a) * (y₀ * y₁) := by
+    nlinarith [mul_nonneg ha.1.le (sub_nonneg.mpr hprod)]
+  rcases lt_trichotomy x₀ y₀ with h₀ | h₀ | h₀
+  · have h₁ : y₁ < x₁ := by
+      by_contra h
+      have hle := mul_le_mul_of_nonneg_left (le_of_not_gt h) hx₀
+      have hlt := mul_lt_mul_of_pos_right h₀ hy₁
+      exact not_lt_of_ge hprod (hle.trans_lt hlt)
+    exact hmean.trans_lt (product_mix_gt_average_of_cross x₀ x₁ y₀ y₁ a ha
+      (mul_neg_of_neg_of_pos (sub_neg.mpr h₀) (sub_pos.mpr h₁)))
+  · have hn₁ : x₁ ≠ y₁ := hne.resolve_left (not_ne_iff.mpr h₀)
+    have h₁ : y₁ < x₁ := by
+      rw [h₀] at hprod
+      exact lt_of_le_of_ne ((mul_le_mul_iff_right₀ hy₀).mp hprod) (Ne.symm hn₁)
+    have hm₀ : a * x₀ + (1 - a) * y₀ = y₀ := by rw [h₀]; ring
+    have hm₁ : y₁ < a * x₁ + (1 - a) * y₁ := by
+      nlinarith [mul_pos ha.1 (sub_pos.mpr h₁)]
+    rw [hm₀]
+    exact mul_lt_mul_of_pos_left hm₁ hy₀
+  · by_cases h₁ : x₁ < y₁
+    · exact hmean.trans_lt (product_mix_gt_average_of_cross x₀ x₁ y₀ y₁ a ha
+        (mul_neg_of_pos_of_neg (sub_pos.mpr h₀) (sub_neg.mpr h₁)))
+    · have hm₀ : y₀ < a * x₀ + (1 - a) * y₀ := by
+        nlinarith [mul_pos ha.1 (sub_pos.mpr h₀)]
+      have hm₁ : y₁ ≤ a * x₁ + (1 - a) * y₁ := by
+        nlinarith [mul_nonneg ha.1.le (sub_nonneg.mpr (le_of_not_gt h₁))]
+      exact (mul_lt_mul_of_pos_right hm₀ hy₁).trans_le
+        (mul_le_mul_of_nonneg_left hm₁ (hy₀.trans hm₀).le)
+
+/-- Positive product is equivalent to positive quantities on the nonnegative orthant. -/
+theorem twoGoodProduct_pos_iff (x : NonnegativeOrthant 2) :
+    0 < TwoGoodProduct x ↔ 0 < x.val 0 ∧ 0 < x.val 1 := by
+  constructor
+  · intro h
+    rcases mul_pos_iff.mp h with hp | hn
+    · exact hp
+    · exact False.elim (not_lt_of_ge (x.property 0) hn.1)
+  · rintro ⟨h₀, h₁⟩
+    exact mul_pos h₀ h₁
+
+/-- At positive rank, distinct weakly better bundles yield a strict product improvement. -/
+theorem twoGoodProduct_mix_strict {x y : NonnegativeOrthant 2}
+    (hy : 0 < TwoGoodProduct y) (hxy : TwoGoodProduct y ≤ TwoGoodProduct x) (hne : x ≠ y)
+    {a : ℝ} (ha : a ∈ Set.Ioo 0 1) :
+    TwoGoodProduct y < TwoGoodProduct
+      (Mix (convex_Ici (0 : Fin 2 → ℝ)) x y a ⟨ha.1.le, ha.2.le⟩) := by
+  have hcoords : x.val 0 ≠ y.val 0 ∨ x.val 1 ≠ y.val 1 := by
+    by_contra h
+    push Not at h
+    apply hne
+    apply Subtype.ext
+    funext j
+    fin_cases j
+    · exact h.1
+    · exact h.2
+  have hyp := (twoGoodProduct_pos_iff y).mp hy
+  exact product_mix_gt_lower (x.val 0) (x.val 1) (y.val 0) (y.val 1) a
+    (x.property 0) hyp.1 hyp.2 hxy hcoords ha
+
+/-- An interior mixture with a positive-product endpoint has positive product. -/
+theorem twoGoodProduct_mix_pos {x y : NonnegativeOrthant 2}
+    (hx : 0 < TwoGoodProduct x) {a : ℝ} (ha : a ∈ Set.Ioo 0 1) :
+    0 < TwoGoodProduct (Mix (convex_Ici (0 : Fin 2 → ℝ)) x y a ⟨ha.1.le, ha.2.le⟩) := by
+  have hxp := (twoGoodProduct_pos_iff x).mp hx
+  apply mul_pos
+  · exact add_pos_of_pos_of_nonneg (mul_pos ha.1 hxp.1)
+      (mul_nonneg (sub_pos.mpr ha.2).le (y.property 0))
+  · exact add_pos_of_pos_of_nonneg (mul_pos ha.1 hxp.2)
+      (mul_nonneg (sub_pos.mpr ha.2).le (y.property 1))
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The plateau-product counterexample
+
+Kreps I, Problem 2.8a, first utility. The scalar product is unchanged below four,
+constant at four between four and eight, and reduced by four above eight.
+Its preference is convex and continuous, but fails semi-strict convexity and
+therefore admits no concave numerical representation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The continuous nondecreasing scalar transformation defining the first example. -/
+noncomputable def ProductPlateau (s : ℝ) : ℝ := min s 4 + max (s - 8) 0
+
+/-- The first branch in the book's displayed formula. -/
+theorem productPlateau_below {s : ℝ} (hs : s ≤ 4) : ProductPlateau s = s := by
+  have ht : s - 8 ≤ 0 := by linarith
+  simp [ProductPlateau, min_eq_left hs, max_eq_right ht]
+
+/-- The middle, flat branch includes both endpoints consistently. -/
+theorem productPlateau_middle {s : ℝ} (hs : 4 ≤ s) (ht : s ≤ 8) :
+    ProductPlateau s = 4 := by
+  simp [ProductPlateau, min_eq_right hs, max_eq_right (sub_nonpos.mpr ht)]
+
+/-- The upper branch in the book's displayed formula. -/
+theorem productPlateau_above {s : ℝ} (hs : 8 ≤ s) : ProductPlateau s = s - 4 := by
+  have ht : 4 ≤ s := by linarith
+  rw [ProductPlateau, min_eq_right ht, max_eq_left (sub_nonneg.mpr hs)]
+  ring
+
+/-- Flattening the interval `[4,8]` preserves weak ordering of products. -/
+theorem productPlateau_monotone : Monotone ProductPlateau := by
+  intro a b hab
+  exact add_le_add (min_le_min hab le_rfl) (max_le_max (sub_le_sub_right hab 8) le_rfl)
+
+/-- The two corners do not create a discontinuity. -/
+theorem productPlateau_continuous : Continuous ProductPlateau :=
+  (continuous_id.min continuous_const).add
+    ((continuous_id.sub continuous_const).max continuous_const)
+
+/-- The exact utility `u₁` in Problem 2.8a. -/
+noncomputable def PlateauProductUtility (x : NonnegativeOrthant 2) : ℝ :=
+  ProductPlateau (TwoGoodProduct x)
+
+/-- The first utility is continuous, despite having a flat range of product levels. -/
+theorem plateauProductUtility_continuous : Continuous PlateauProductUtility :=
+  productPlateau_continuous.comp twoGoodProduct_continuous
+
+/-- Weakly increasing transformations preserve the product's quasi-concavity. -/
+theorem plateauProductUtility_quasiConcave :
+    QuasiConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) PlateauProductUtility := by
+  intro x y a ha
+  change min (ProductPlateau (TwoGoodProduct x)) (ProductPlateau (TwoGoodProduct y)) ≤ _
+  rw [← productPlateau_monotone.map_min]
+  exact productPlateau_monotone (twoGoodProduct_quasiConcave x y a ha)
+
+/-- A better endpoint can mix into the plateau of the worse endpoint. -/
+theorem plateauProductUtility_not_semiStrict :
+    ¬ SemiStrictlyQuasiConcaveUtility (convex_Ici (0 : Fin 2 → ℝ))
+      PlateauProductUtility := by
+  intro h
+  let x := PairBundle 3 3 (by norm_num) (by norm_num)
+  let y := PairBundle 2 2 (by norm_num) (by norm_num)
+  have hxy : PlateauProductUtility y < PlateauProductUtility x := by
+    norm_num [x, y, PlateauProductUtility, ProductPlateau, TwoGoodProduct, PairBundle]
+  have hm := h.2 x y hxy (1 / 2) ⟨by norm_num, by norm_num⟩
+  norm_num [x, y, PlateauProductUtility, ProductPlateau, TwoGoodProduct, PairBundle, Mix] at hm
+
+/-- The first example's preference is not semi-strictly convex. -/
+theorem plateauProductPreference_not_semiStrict :
+    ¬ SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref PlateauProductUtility) := by
+  intro h
+  exact plateauProductUtility_not_semiStrict
+    ((proposition_2_8b_semiStrict (fun _ _ => Iff.rfl)).mpr h)
+
+/-- The failure is ordinal: no concave function can represent these preferences. -/
+theorem plateauProductPreference_no_concave_representation :
+    ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref PlateauProductUtility) ∧
+      ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u := by
+  rintro ⟨u, hu, hc⟩
+  exact plateauProductPreference_not_semiStrict
+    ((proposition_2_8b_semiStrict hu).mp (concaveUtility_semiStrict hc))
+
+/-- **Problem 2.8a, first example:** convex and continuous, but not semi-strictly convex. -/
+theorem problem_2_8a_first :
+    Rational (UtilityPref PlateauProductUtility) ∧
+      ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref PlateauProductUtility) ∧
+      ContinuousPreference (UtilityPref PlateauProductUtility) ∧
+      ¬ SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+        (UtilityPref PlateauProductUtility) ∧
+      ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref PlateauProductUtility) ∧
+        ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u :=
+  ⟨proposition_1_3a _,
+    (proposition_2_8b_quasi (fun _ _ => Iff.rfl)).mp plateauProductUtility_quasiConcave,
+    continuousPreference_of_continuous_utility plateauProductUtility_continuous,
+    plateauProductPreference_not_semiStrict, plateauProductPreference_no_concave_representation⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The split product-level counterexample
+
+Kreps I, Problem 2.8a, second utility. The level with product four is split into
+two ranks according to the relative sizes of the two commodities. Preferences
+are semi-strictly convex but discontinuous. The obstruction to every concave
+representation is proved separately in `SplitProductNoConcavity`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- The exact utility `u₂`, with the lower half of the product-four level valued at four. -/
+noncomputable def SplitProductUtility (x : NonnegativeOrthant 2) : ℝ :=
+  if TwoGoodProduct x < 4 then TwoGoodProduct x
+  else if TwoGoodProduct x = 4 then if x.val 1 ≤ x.val 0 then 4 else 5
+  else TwoGoodProduct x + 1
+
+/-- Below the split level, the second utility is the commodity product. -/
+theorem splitProductUtility_below {x : NonnegativeOrthant 2} (hx : TwoGoodProduct x < 4) :
+    SplitProductUtility x = TwoGoodProduct x := by
+  simp [SplitProductUtility, hx]
+
+/-- On the lower half of the split level, utility equals four. -/
+theorem splitProductUtility_at_lower {x : NonnegativeOrthant 2}
+    (hx : TwoGoodProduct x = 4) (hc : x.val 1 ≤ x.val 0) : SplitProductUtility x = 4 := by
+  simp [SplitProductUtility, hx, hc]
+
+/-- On the upper half of the split level, utility equals five. -/
+theorem splitProductUtility_at_upper {x : NonnegativeOrthant 2}
+    (hx : TwoGoodProduct x = 4) (hc : x.val 0 < x.val 1) : SplitProductUtility x = 5 := by
+  simp [SplitProductUtility, hx, not_le_of_gt hc]
+
+/-- Above the split level, utility is the product plus one. -/
+theorem splitProductUtility_above {x : NonnegativeOrthant 2} (hx : 4 < TwoGoodProduct x) :
+    SplitProductUtility x = TwoGoodProduct x + 1 := by
+  simp [SplitProductUtility, not_lt_of_ge hx.le, ne_of_gt hx]
+
+/-- Zero-product bundles all have zero utility. -/
+theorem splitProductUtility_zero {x : NonnegativeOrthant 2} (hx : TwoGoodProduct x = 0) :
+    SplitProductUtility x = 0 := by
+  simp [SplitProductUtility, hx]
+
+/-- The second utility is nonnegative everywhere. -/
+theorem splitProductUtility_nonneg (x : NonnegativeOrthant 2) : 0 ≤ SplitProductUtility x := by
+  have hp : 0 ≤ TwoGoodProduct x := mul_nonneg (x.property 0) (x.property 1)
+  unfold SplitProductUtility
+  split_ifs <;> linarith
+
+/-- Strictly increasing the product strictly improves utility, including across the split level. -/
+theorem splitProductUtility_strict_of_product_lt {x y : NonnegativeOrthant 2}
+    (hxy : TwoGoodProduct x < TwoGoodProduct y) :
+    SplitProductUtility x < SplitProductUtility y := by
+  unfold SplitProductUtility
+  split_ifs <;> linarith
+
+/-- A higher utility rank cannot have a lower commodity product. -/
+theorem splitProductUtility_product_le {x y : NonnegativeOrthant 2}
+    (hxy : SplitProductUtility y ≤ SplitProductUtility x) :
+    TwoGoodProduct y ≤ TwoGoodProduct x := by
+  by_contra h
+  exact not_lt_of_ge hxy (splitProductUtility_strict_of_product_lt (lt_of_not_ge h))
+
+/-- All upper preference contours of the second utility are convex. -/
+theorem splitProductPreference_convex :
+    ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref SplitProductUtility) := by
+  intro x y hxy a ha
+  by_cases h0 : a = 0
+  · subst a
+    rw [mix_zero]
+    exact le_rfl
+  by_cases h1 : a = 1
+  · subst a
+    rw [mix_one]
+    exact hxy
+  by_cases he : x = y
+  · subst x
+    rw [mix_self]
+    exact le_rfl
+  have hai : a ∈ Set.Ioo 0 1 :=
+    ⟨lt_of_le_of_ne ha.1 (Ne.symm h0), lt_of_le_of_ne ha.2 h1⟩
+  by_cases hy : TwoGoodProduct y = 0
+  · change SplitProductUtility y ≤ _
+    rw [splitProductUtility_zero hy]
+    exact splitProductUtility_nonneg _
+  · have hyp : 0 < TwoGoodProduct y :=
+      lt_of_le_of_ne (mul_nonneg (y.property 0) (y.property 1)) (Ne.symm hy)
+    exact (splitProductUtility_strict_of_product_lt
+      (twoGoodProduct_mix_strict hyp (splitProductUtility_product_le hxy) he hai)).le
+
+/-- Strictly ordered endpoints give a strict improvement under every interior mixture. -/
+theorem splitProductPreference_semiStrict :
+    SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref SplitProductUtility) := by
+  refine ⟨splitProductPreference_convex, ?_⟩
+  intro x y hxy a ha
+  have hu : Represents SplitProductUtility (UtilityPref SplitProductUtility) := fun _ _ => Iff.rfl
+  have hstrict := (strict_iff_utility_lt hu x y).mp hxy
+  have hne : x ≠ y := by intro he; subst x; exact lt_irrefl _ hstrict
+  apply (strict_iff_utility_lt hu _ y).mpr
+  apply splitProductUtility_strict_of_product_lt
+  by_cases hy : TwoGoodProduct y = 0
+  · have hx : TwoGoodProduct x ≠ 0 := by
+      intro hx
+      rw [splitProductUtility_zero hx, splitProductUtility_zero hy] at hstrict
+      exact lt_irrefl _ hstrict
+    have hxp : 0 < TwoGoodProduct x :=
+      lt_of_le_of_ne (mul_nonneg (x.property 0) (x.property 1)) (Ne.symm hx)
+    rw [hy]
+    exact twoGoodProduct_mix_pos hxp ha
+  · have hyp : 0 < TwoGoodProduct y :=
+      lt_of_le_of_ne (mul_nonneg (y.property 0) (y.property 1)) (Ne.symm hy)
+    exact twoGoodProduct_mix_strict hyp (splitProductUtility_product_le hstrict.le) hne ha
+
+/-- A sequence above the split level converges to its lower-rank midpoint. -/
+noncomputable def SplitProductApproach (n : ℕ) : NonnegativeOrthant 2 :=
+  PairBundle (2 + (1 / 2 : ℝ) ^ n) 2 (by positivity) (by norm_num)
+
+/-- The bundles approaching `(2,2)` have utility strictly above the rank-five bundle `(1,4)`. -/
+theorem splitProductApproach_rank (n : ℕ) :
+    UtilityPref SplitProductUtility (SplitProductApproach n)
+      (PairBundle 1 4 (by norm_num) (by norm_num)) := by
+  have hp : 0 < (1 / 2 : ℝ) ^ n := pow_pos (by norm_num) n
+  have hprod : 4 < TwoGoodProduct (SplitProductApproach n) := by
+    dsimp [TwoGoodProduct, SplitProductApproach, PairBundle]
+    norm_num
+    linarith
+  change SplitProductUtility _ ≤ SplitProductUtility _
+  rw [splitProductUtility_above hprod]
+  norm_num [SplitProductUtility, TwoGoodProduct, PairBundle, SplitProductApproach]
+  linarith
+
+/-- The sequence converges in the full orthant topology. -/
+theorem splitProductApproach_tendsto :
+    Filter.Tendsto SplitProductApproach Filter.atTop
+      (𝓝 (PairBundle 2 2 (by norm_num) (by norm_num))) := by
+  apply tendsto_subtype_rng.mpr
+  apply tendsto_pi_nhds.mpr
+  intro j
+  fin_cases j
+  · change Filter.Tendsto (fun n : ℕ => 2 + (1 / 2 : ℝ) ^ n) _ (𝓝 (2 : ℝ))
+    simpa only [add_zero] using tendsto_const_nhds.add
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2)
+        (by norm_num : (1 / 2 : ℝ) < 1))
+  · exact tendsto_const_nhds
+
+/-- An upper contour fails to contain the limit of a converging sequence of its members. -/
+theorem splitProductPreference_not_continuous :
+    ¬ ContinuousPreference (UtilityPref SplitProductUtility) := by
+  intro hc
+  have hclosed := ((proposition_1_14c (proposition_1_3a SplitProductUtility)).mp hc
+    (PairBundle 1 4 (by norm_num) (by norm_num))).2
+  have hmem := hclosed.mem_of_tendsto splitProductApproach_tendsto
+    (Filter.Eventually.of_forall splitProductApproach_rank)
+  norm_num [NoWorseThan, UtilityPref, SplitProductUtility, TwoGoodProduct, PairBundle] at hmem
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# No concave representation of the split product preference
+
+Kreps I, Problem 2.8a, second example. A direct Jensen argument avoids assuming
+continuity at the boundary of the consumption domain. Bundles just to the right
+of `(2,2)` outrank `(1,4)`, although `(2,2)` is strictly worse than `(1,4)`.
+Expressing `(2,2)` as a mixture of such bundles and `(1,2)` contradicts concavity.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The ordinal jump at the split level prevents every concave representation. -/
+theorem splitProductPreference_no_concave_representation :
+    ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref SplitProductUtility) ∧
+      ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u := by
+  rintro ⟨u, hu, hconc⟩
+  let p := PairBundle 2 2 (by norm_num) (by norm_num)
+  let b := PairBundle 1 2 (by norm_num) (by norm_num)
+  let q := PairBundle 1 4 (by norm_num) (by norm_num)
+  have hbp : u b < u p := (strict_iff_utility_lt hu p b).mp (by
+    norm_num [Strict, UtilityPref, SplitProductUtility, TwoGoodProduct, PairBundle, p, b])
+  have hpq : u p < u q := (strict_iff_utility_lt hu q p).mp (by
+    norm_num [Strict, UtilityPref, SplitProductUtility, TwoGoodProduct, PairBundle, q, p])
+  have hden : 0 < u q - u b := sub_pos.mpr (hbp.trans hpq)
+  have hratio0 : 0 < (u p - u b) / (u q - u b) := div_pos (sub_pos.mpr hbp) hden
+  have hratio1 : (u p - u b) / (u q - u b) < 1 := by
+    apply (div_lt_one hden).mpr
+    linarith
+  obtain ⟨t, ht, ht1⟩ := exists_between hratio1
+  have ht0 : 0 < t := hratio0.trans ht
+  have hquantity : 2 < (1 + t) / t := (lt_div_iff₀ ht0).mpr (by linarith)
+  let z := PairBundle ((1 + t) / t) 2 (by linarith) (by norm_num)
+  have hprod : 4 < TwoGoodProduct z := by
+    change 4 < ((1 + t) / t) * 2
+    linarith
+  have hqz : UtilityPref SplitProductUtility z q := by
+    change SplitProductUtility q ≤ SplitProductUtility z
+    rw [splitProductUtility_above hprod]
+    norm_num [q, SplitProductUtility, TwoGoodProduct, PairBundle]
+    change 5 ≤ TwoGoodProduct z + 1
+    linarith
+  have huqz : u q ≤ u z := (hu z q).mp hqz
+  have hm : Mix (convex_Ici (0 : Fin 2 → ℝ)) z b t ⟨ht0.le, ht1.le⟩ = p := by
+    apply Subtype.ext
+    funext j
+    fin_cases j
+    · change t * ((1 + t) / t) + (1 - t) * 1 = 2
+      field_simp
+      ring
+    · change t * 2 + (1 - t) * 2 = 2
+      ring
+  have hj := hconc z b t ⟨ht0.le, ht1.le⟩
+  rw [hm] at hj
+  have htineq := (div_lt_iff₀ hden).mp ht
+  have hmul := mul_le_mul_of_nonneg_left huqz ht0.le
+  nlinarith
+
+/-- **Problem 2.8a, second example:** semi-strict convexity without concave representability. -/
+theorem problem_2_8a_second :
+    Rational (UtilityPref SplitProductUtility) ∧
+      ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref SplitProductUtility) ∧
+      SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+        (UtilityPref SplitProductUtility) ∧
+      ¬ ContinuousPreference (UtilityPref SplitProductUtility) ∧
+      ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref SplitProductUtility) ∧
+        ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u :=
+  ⟨proposition_1_3a _, splitProductPreference_convex, splitProductPreference_semiStrict,
+    splitProductPreference_not_continuous, splitProductPreference_no_concave_representation⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Quantifiers over utility representations
+
+Kreps I, Problem 2.1 and Table 2.1, p. 45. The ordinal rows have an `all`
+forward implication and a `some` converse. Existence of a representation is
+explicit when interpreting an `all` statement as an equivalence, preventing
+vacuous conclusions for unrepresentable preferences. Continuity, quasi-linearity,
+and continuous degree-one homogeneity instead admit the indicated `some` forms.
+The strict-convex-to-strict-concave box excluded by the book is not asserted.
+The additive-existence direction remains the separate Proposition 2.14 obligation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {X : Type*} {r : X → X → Prop}
+
+/-- `All` in the representation columns of Table 2.1. -/
+def EveryRepresentation (r : X → X → Prop) (P : (X → ℝ) → Prop) : Prop :=
+  ∀ u, Represents u r → P u
+
+/-- `Some` in the representation columns of Table 2.1. -/
+def SomeRepresentation (r : X → X → Prop) (P : (X → ℝ) → Prop) : Prop :=
+  ∃ u, Represents u r ∧ P u
+
+/-- An ordinal property gives both quantifiers once at least one representation exists. -/
+theorem representation_quantifiers_of_invariance {P : Prop} {Q : (X → ℝ) → Prop}
+    (hex : ∃ u, Represents u r) (hQ : ∀ u, Represents u r → (P ↔ Q u)) :
+    (P ↔ EveryRepresentation r Q) ∧ (P ↔ SomeRepresentation r Q) := by
+  obtain ⟨u₀, hu₀⟩ := hex
+  constructor
+  · exact ⟨fun hp u hu => (hQ u hu).mp hp, fun hall => (hQ u₀ hu₀).mpr (hall u₀ hu₀)⟩
+  · constructor
+    · intro hp
+      exact ⟨u₀, hu₀, (hQ u₀ hu₀).mp hp⟩
+    · rintro ⟨u, hu, hqu⟩
+      exact (hQ u hu).mpr hqu
+
+/-- Table 2.1, monotonicity: `all` forward and `some` backward. -/
+theorem table_monotone [PartialOrder X] (hex : ∃ u, Represents u r) :
+    (MonotonePreference r ↔ EveryRepresentation r Monotone) ∧
+      (MonotonePreference r ↔ SomeRepresentation r Monotone) :=
+  representation_quantifiers_of_invariance hex (fun _ hu => proposition_2_2_monotone hu)
+
+/-- Table 2.1, strict monotonicity: `all` forward and `some` backward. -/
+theorem table_strictlyMonotone [PartialOrder X] (hex : ∃ u, Represents u r) :
+    (StrictlyMonotonePreference r ↔ EveryRepresentation r StrictMono) ∧
+      (StrictlyMonotonePreference r ↔ SomeRepresentation r StrictMono) :=
+  representation_quantifiers_of_invariance hex (fun _ hu => proposition_2_2_strict hu)
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E] {S : Set E}
+
+/-- Table 2.1, convexity and quasi-concavity: `all` forward and `some` backward. -/
+theorem table_quasiConcave (hS : Convex ℝ S) {r : S → S → Prop}
+    (hex : ∃ u, Represents u r) :
+    (ConvexPreference hS r ↔ EveryRepresentation r (QuasiConcaveUtility hS)) ∧
+      (ConvexPreference hS r ↔ SomeRepresentation r (QuasiConcaveUtility hS)) :=
+  representation_quantifiers_of_invariance hex (fun _ hu => (proposition_2_8b_quasi hu).symm)
+
+/-- Table 2.1, semi-strict convexity: `all` forward and `some` backward. -/
+theorem table_semiStrictlyQuasiConcave (hS : Convex ℝ S) {r : S → S → Prop}
+    (hex : ∃ u, Represents u r) :
+    (SemiStrictlyConvexPreference hS r ↔
+      EveryRepresentation r (SemiStrictlyQuasiConcaveUtility hS)) ∧
+      (SemiStrictlyConvexPreference hS r ↔
+        SomeRepresentation r (SemiStrictlyQuasiConcaveUtility hS)) :=
+  representation_quantifiers_of_invariance hex
+    (fun _ hu => (proposition_2_8b_semiStrict hu).symm)
+
+/-- Table 2.1, strict convexity and strict quasi-concavity: `all` and `some`. -/
+theorem table_strictlyQuasiConcave (hS : Convex ℝ S) {r : S → S → Prop}
+    (hex : ∃ u, Represents u r) :
+    (StrictlyConvexPreference hS r ↔ EveryRepresentation r (StrictlyQuasiConcaveUtility hS)) ∧
+      (StrictlyConvexPreference hS r ↔ SomeRepresentation r (StrictlyQuasiConcaveUtility hS)) :=
+  representation_quantifiers_of_invariance hex (fun _ hu => (proposition_2_8b_strict hu).symm)
+
+/-- Table 2.1, a `some` concave representation implies convex preference. -/
+theorem table_concave_converse (hS : Convex ℝ S) {r : S → S → Prop}
+    (h : SomeRepresentation r (ConcaveUtility hS)) : ConvexPreference hS r := by
+  obtain ⟨u, hu, hcu⟩ := h
+  exact proposition_2_8a_concave hu hcu
+
+/-- Table 2.1, a `some` strictly concave representation implies strict convexity. -/
+theorem table_strictlyConcave_converse (hS : Convex ℝ S) {r : S → S → Prop}
+    (h : SomeRepresentation r (StrictlyConcaveUtility hS)) : StrictlyConvexPreference hS r := by
+  obtain ⟨u, hu, hcu⟩ := h
+  exact proposition_2_8a_strict hu hcu
+
+/-- Table 2.1, continuity: `some` in both directions. -/
+theorem table_continuous (k : ℕ)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r) :
+    ContinuousPreference r ↔ SomeRepresentation r Continuous := proposition_2_9 k hr
+
+/-- Table 2.1, weak separability: the exact given utility has the factorized form. -/
+theorem table_weaklySeparable {I : Type*} {B : I → Type*} {L : Type*}
+    [DecidableEq I] [Finite I] [Nonempty (BlockBundle B L)]
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hex : ∃ u, Represents u r) :
+    (WeaklySeparable r ↔ EveryRepresentation r WeakSeparabilityRepresentation) ∧
+      (WeaklySeparable r ↔ SomeRepresentation r WeakSeparabilityRepresentation) :=
+  representation_quantifiers_of_invariance hex (fun _ hu => proposition_2_12 hu)
+
+/-- Exact additive form of a given utility, as opposed to ordinal additive representability. -/
+def AdditiveForm {I : Type*} [Fintype I] {B : I → Type*} (u : (∀ i, B i) → ℝ) : Prop :=
+  ∃ w : ∀ i, B i → ℝ, u = AdditiveUtility w
+
+/-- Table 2.1, the `some` additive representation implies strong separability. -/
+theorem table_additive_converse {I : Type*} [Fintype I] [DecidableEq I] {B : I → Type*}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (h : SomeRepresentation r AdditiveForm) :
+    StronglySeparable r := by
+  obtain ⟨u, hu, w, rfl⟩ := h
+  exact proposition_2_14_additive hu
+
+/-- The existential table entry is exactly additive representability. -/
+theorem some_additiveForm_iff {I : Type*} [Fintype I] {B : I → Type*}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} :
+    SomeRepresentation r AdditiveForm ↔ AdditivelyRepresentable r := by
+  constructor
+  · rintro ⟨u, hu, w, rfl⟩
+    exact ⟨w, hu⟩
+  · rintro ⟨w, hw⟩
+    exact ⟨AdditiveUtility w, hw, w, rfl⟩
+
+/-- Exact quasi-linear form uses money coefficient one. -/
+def QuasiLinearForm (U : X × ℝ≥0 → ℝ) : Prop :=
+  ∃ u : X → ℝ, U = QuasiLinearUtility u
+
+/-- The existential quasi-linear table entry is exactly quasi-linearity. -/
+theorem some_quasiLinearForm_iff {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop} :
+    SomeRepresentation r QuasiLinearForm ↔ QuasiLinear r := by
+  constructor
+  · rintro ⟨U, hU, u, rfl⟩
+    exact ⟨u, hU⟩
+  · rintro ⟨u, hu⟩
+    exact ⟨QuasiLinearUtility u, hu, u, rfl⟩
+
+/-- Table 2.1, the three money properties and normalized quasi-linearity: `some` both ways. -/
+theorem table_quasiLinear [Nonempty X] {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    (hr : Rational r) :
+    (OwnMoneyOrder r ∧ MoneyTranslation r ∧ MoneyCompensable r) ↔
+      SomeRepresentation r QuasiLinearForm :=
+  (proposition_2_16 hr).symm.trans some_quasiLinearForm_iff.symm
+
+/-- Table 2.1, continuous homothetic preference: `some` continuous homogeneous utility. -/
+theorem table_homogeneous (k : ℕ)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r) :
+    (ContinuousPreference r ∧ HomotheticPreference r) ↔
+      SomeRepresentation r (fun u => Continuous u ∧ HomogeneousUtility u) :=
+  proposition_2_19 k hr
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Why the representation table needs `some` rather than `all`
+
+Kreps I, Problem 2.1, Table 2.1, p. 45. Increasing transformations preserve the
+preference but need not preserve concavity, continuity, exact additive form,
+the quasi-linear money normalization, or degree-one homogeneity.
+The additive example has three nontrivial commodity blocks and continuous preference.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {X : Type*} {r : X → X → Prop}
+
+/-- Adding a constant preserves every ordinal comparison. -/
+theorem represents_add_constant {u : X → ℝ} (hu : Represents u r) (c : ℝ) :
+    Represents (fun x => u x + c) r := by
+  intro x y
+  simpa only [add_le_add_iff_right] using hu x y
+
+/-- Multiplication by a positive constant preserves every ordinal comparison. -/
+theorem represents_mul_positive {u : X → ℝ} (hu : Represents u r) {c : ℝ} (hc : 0 < c) :
+    Represents (fun x => c * u x) r := by
+  intro x y
+  simpa only [mul_le_mul_iff_right₀ hc] using hu x y
+
+/-- Concavity can hold for one representation and fail for another of the same convex preference. -/
+theorem table_concave_not_all :
+    ConvexPreference (convex_Ici (0 : ℝ)) (UtilityPref (fun x : OneGood => x.val)) ∧
+      SomeRepresentation (UtilityPref (fun x : OneGood => x.val))
+        (ConcaveUtility (convex_Ici (0 : ℝ))) ∧
+      ¬EveryRepresentation (UtilityPref (fun x : OneGood => x.val))
+        (ConcaveUtility (convex_Ici (0 : ℝ))) := by
+  have hu : Represents (fun x : OneGood => x.val) (UtilityPref (fun x : OneGood => x.val)) :=
+    fun _ _ => Iff.rfl
+  refine ⟨proposition_2_8a_concave hu identityUtility_concave,
+    ⟨_, hu, identityUtility_concave⟩, ?_⟩
+  intro hall
+  exact convexWarp_not_concave
+    (hall _ (proposition_1_20 hu convexWarp_strictMono))
+
+/-- Convexity need not give even one concave representation, despite continuous preference. -/
+theorem table_convex_not_some_concave :
+    ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref PlateauProductUtility) ∧
+      ContinuousPreference (UtilityPref PlateauProductUtility) ∧
+      ¬SomeRepresentation (UtilityPref PlateauProductUtility)
+        (ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ))) :=
+  ⟨problem_2_8a_first.2.1, problem_2_8a_first.2.2.1,
+    plateauProductPreference_no_concave_representation⟩
+
+/-- Continuity of preference guarantees a continuous representation, but not continuity of all. -/
+theorem table_continuous_not_all :
+    ContinuousPreference (UtilityPref (fun x : OneGood => x.val)) ∧
+      SomeRepresentation (UtilityPref (fun x : OneGood => x.val)) Continuous ∧
+      ¬EveryRepresentation (UtilityPref (fun x : OneGood => x.val)) Continuous := by
+  have hu : Represents (fun x : OneGood => x.val) (UtilityPref (fun x : OneGood => x.val)) :=
+    fun _ _ => Iff.rfl
+  refine ⟨continuousPreference_of_continuous_utility continuous_subtype_val,
+    ⟨_, hu, continuous_subtype_val⟩, ?_⟩
+  intro hall
+  exact jumpUtility_not_continuous
+    (hall _ (proposition_1_20 hu jumpUtility_strictMono))
+
+/-- Doubling a quasi-linear utility destroys its required money coefficient of one. -/
+theorem doubled_quasiLinear_not_form [Nonempty X] (u : X → ℝ) :
+    ¬QuasiLinearForm (fun p => 2 * QuasiLinearUtility u p) := by
+  obtain ⟨x⟩ := ‹Nonempty X›
+  rintro ⟨v, he⟩
+  have h0 := congrArg (fun U => U (x, 0)) he
+  have h1 := congrArg (fun U => U (x, 1)) he
+  norm_num [QuasiLinearUtility] at h0 h1
+  linarith
+
+/-- For every quasi-linear preference on a nonempty goods domain, `all` is false. -/
+theorem table_quasiLinear_not_all [Nonempty X]
+    {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop} (hq : QuasiLinear r) :
+    ¬EveryRepresentation r QuasiLinearForm := by
+  obtain ⟨u, hu⟩ := hq
+  intro hall
+  exact doubled_quasiLinear_not_form u
+    (hall _ (represents_mul_positive hu (by norm_num : (0 : ℝ) < 2)))
+
+/-- Shifting a homogeneous representation by one violates the required value at the origin. -/
+theorem shifted_homogeneous_not_homogeneous {k : ℕ} {u : NonnegativeOrthant k → ℝ}
+    (hh : HomogeneousUtility u) : ¬HomogeneousUtility (fun x => u x + 1) := by
+  intro hs
+  have hzero := homogeneousUtility_origin hh
+  have hshift := homogeneousUtility_origin hs
+  change u (OrthantZero k) + 1 = 0 at hshift
+  linarith
+
+/-- An ordinal homogeneous representation cannot make every representation homogeneous. -/
+theorem homogeneous_not_every_representation {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} {u : NonnegativeOrthant k → ℝ}
+    (hu : Represents u r) (hh : HomogeneousUtility u) :
+    ¬EveryRepresentation r HomogeneousUtility := by
+  intro hall
+  exact shifted_homogeneous_not_homogeneous hh (hall _ (represents_add_constant hu 1))
+
+/-- Table 2.1, continuous homogeneous representation is `some`, never `all`. -/
+theorem table_homogeneous_not_all {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hh : HomotheticPreference r) :
+    ¬EveryRepresentation r (fun u => Continuous u ∧ HomogeneousUtility u) := by
+  obtain ⟨u, hu, _, huh⟩ := (proposition_2_19 k hr).mp ⟨hc, hh⟩
+  intro hall
+  exact homogeneous_not_every_representation hu huh (fun v hv => (hall v hv).2)
+
+/-- Total quantity of three independent nonnegative commodities, in additive form. -/
+def ThreeCommodityTotal (x : Fin 3 → ℝ≥0) : ℝ :=
+  AdditiveUtility (fun (_ : Fin 3) (a : ℝ≥0) => (a : ℝ)) x
+
+/-- Total quantity is nonnegative. -/
+theorem threeCommodityTotal_nonneg (x : Fin 3 → ℝ≥0) : 0 ≤ ThreeCommodityTotal x := by
+  change 0 ≤ ∑ i : Fin 3, (x i : ℝ)
+  exact Finset.sum_nonneg (fun i _ => (x i).property)
+
+/-- Squaring total quantity preserves its preference because all its values are nonnegative. -/
+theorem squared_threeCommodityTotal_represents :
+    Represents (fun x => ThreeCommodityTotal x ^ 2) (UtilityPref ThreeCommodityTotal) := by
+  intro x y
+  exact (sq_le_sq₀ (threeCommodityTotal_nonneg y) (threeCommodityTotal_nonneg x)).symm
+
+/-- A nonzero cross difference rules out every exact additive decomposition of the square. -/
+theorem squared_threeCommodityTotal_not_additive :
+    ¬AdditiveForm (fun x => ThreeCommodityTotal x ^ 2) := by
+  rintro ⟨w, he⟩
+  have h00 := congrArg (fun U => U (![0, 0, 0] : Fin 3 → ℝ≥0)) he
+  have h10 := congrArg (fun U => U (![1, 0, 0] : Fin 3 → ℝ≥0)) he
+  have h01 := congrArg (fun U => U (![0, 1, 0] : Fin 3 → ℝ≥0)) he
+  have h11 := congrArg (fun U => U (![1, 1, 0] : Fin 3 → ℝ≥0)) he
+  norm_num [ThreeCommodityTotal, AdditiveUtility, Fin.sum_univ_succ] at h00 h10 h01 h11
+  linarith
+
+/-- Every commodity in the additive counterexample is nontrivial, independently of its context. -/
+theorem threeCommodityTotal_nontrivial (i : Fin 3) :
+    NontrivialBlock (UtilityPref ThreeCommodityTotal) i := by
+  refine ⟨1, 0, fun _ => 0, ?_⟩
+  change (ThreeCommodityTotal (Function.update (fun _ => 0) i 0) ≤
+      ThreeCommodityTotal (Function.update (fun _ => 0) i 1)) ∧
+    ¬(ThreeCommodityTotal (Function.update (fun _ => 0) i 1) ≤
+      ThreeCommodityTotal (Function.update (fun _ => 0) i 0))
+  fin_cases i <;>
+    norm_num [ThreeCommodityTotal, AdditiveUtility, Fin.sum_univ_succ, Function.update]
+
+/-- The counterexample satisfies the substantive three-nontrivial-block hypothesis. -/
+theorem threeCommodityTotal_threeNontrivial :
+    ThreeNontrivialBlocks (UtilityPref ThreeCommodityTotal) :=
+  ⟨0, 1, 2, by decide, by decide, by decide, threeCommodityTotal_nontrivial 0,
+    threeCommodityTotal_nontrivial 1, threeCommodityTotal_nontrivial 2⟩
+
+/-- The additive counterexample's preference is rational, continuous, and strongly separable. -/
+theorem threeCommodityTotal_preference_properties :
+    Rational (UtilityPref ThreeCommodityTotal) ∧
+      ContinuousPreference (UtilityPref ThreeCommodityTotal) ∧
+      StronglySeparable (UtilityPref ThreeCommodityTotal) := by
+  have hu : Represents (AdditiveUtility (fun (_ : Fin 3) (a : ℝ≥0) => (a : ℝ)))
+      (UtilityPref ThreeCommodityTotal) := fun _ _ => Iff.rfl
+  exact ⟨proposition_1_3a ThreeCommodityTotal,
+    continuousPreference_of_additive hu (fun _ => NNReal.continuous_coe),
+    proposition_2_14_additive hu⟩
+
+/-- Strong separability need not make every representation additive, even with three active blocks.
+-/
+theorem table_additive_not_all :
+    SomeRepresentation (UtilityPref ThreeCommodityTotal) AdditiveForm ∧
+      ¬EveryRepresentation (UtilityPref ThreeCommodityTotal) AdditiveForm := by
+  refine ⟨⟨ThreeCommodityTotal, (fun _ _ => Iff.rfl), (fun _ a => (a : ℝ)), rfl⟩, ?_⟩
+  intro hall
+  exact squared_threeCommodityTotal_not_additive (hall _ squared_threeCommodityTotal_represents)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# One step of the recursive utility assignment
+
+Kreps I, Problem 2.14(d), p. 49. A previously available numerical representation
+supplies only comparisons. The new assigned value copies an indifferent point,
+exceeds the previous maximum by one, falls below the previous minimum by one,
+or is the midpoint between the adjacent assigned values. This file verifies that
+one insertion preserves all comparisons with the previously assigned points.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*}
+
+/-- The old numerical values preserve the order of the original ranks. -/
+def RankPreserving (v u : I → ℝ) : Prop := ∀ i j, v i ≤ v j ↔ u i ≤ u j
+
+/-- An order-preserving reassignment preserves strict comparisons too. -/
+theorem rankPreserving_lt {v u : I → ℝ} (h : RankPreserving v u) (i j : I) :
+    v i < v j ↔ u i < u j := by
+  simp only [lt_iff_le_not_ge, ← h i j, ← h j i]
+
+/-- The finite set of already assigned values strictly below a new rank. -/
+def PreviousLowerRanks (v u : I → ℝ) (a : ℝ) : Set ℝ := u '' {i | v i < a}
+
+/-- The finite set of already assigned values strictly above a new rank. -/
+def PreviousUpperRanks (v u : I → ℝ) (a : ℝ) : Set ℝ := u '' {i | a < v i}
+
+/-- The book's four-case rule for inserting one new rank. -/
+noncomputable def InsertedRank (v u : I → ℝ) (a : ℝ) : ℝ := by
+  classical
+  exact if ht : ∃ i, v i = a then u ht.choose
+    else if ∀ i, v i < a then sSup (Set.range u) + 1
+    else if ∀ i, a < v i then sInf (Set.range u) - 1
+    else (sSup (PreviousLowerRanks v u a) + sInf (PreviousUpperRanks v u a)) / 2
+
+/-- Ties may be copied from any prior representative of that rank. -/
+theorem insertedRank_tie {v u : I → ℝ} (h : RankPreserving v u)
+    {a : ℝ} (i : I) (hi : v i = a) : InsertedRank v u a = u i := by
+  classical
+  have ht : ∃ j, v j = a := ⟨i, hi⟩
+  rw [InsertedRank, dite_eq_left ht]
+  apply le_antisymm
+  · exact (h _ i).mp (le_of_eq (ht.choose_spec.trans hi.symm))
+  · exact (h i _).mp (le_of_eq (hi.trans ht.choose_spec.symm))
+
+/-- A strictly new highest rank receives the preceding maximum plus one. -/
+theorem insertedRank_above {v u : I → ℝ} {a : ℝ} (ha : ∀ i, v i < a) :
+    InsertedRank v u a = sSup (Set.range u) + 1 := by
+  classical
+  have ht : ¬ ∃ i, v i = a := by rintro ⟨i, hi⟩; exact (ha i).ne hi
+  simp only [InsertedRank, dite_eq_right ht, ite_eq_left ha]
+
+/-- A strictly new lowest rank receives the preceding minimum minus one. -/
+theorem insertedRank_below [Nonempty I] {v u : I → ℝ} {a : ℝ}
+    (ha : ∀ i, a < v i) : InsertedRank v u a = sInf (Set.range u) - 1 := by
+  classical
+  have ht : ¬ ∃ i, v i = a := by rintro ⟨i, hi⟩; exact (ha i).ne hi.symm
+  have hn : ¬ ∀ i, v i < a := by
+    intro h
+    obtain ⟨i⟩ := ‹Nonempty I›
+    exact (ha i).not_gt (h i)
+  simp only [InsertedRank, dite_eq_right ht, ite_eq_right hn, ite_eq_left ha]
+
+/-- With ranks on both sides and no tie, the insertion is the midpoint of its neighbors. -/
+theorem insertedRank_between {v u : I → ℝ} {a : ℝ}
+    (ht : ¬ ∃ i, v i = a) (hl : ∃ i, v i < a) (hh : ∃ i, a < v i) :
+    InsertedRank v u a =
+      (sSup (PreviousLowerRanks v u a) + sInf (PreviousUpperRanks v u a)) / 2 := by
+  classical
+  have hnlo : ¬ ∀ i, a < v i := by obtain ⟨i, hi⟩ := hl; exact fun h => hi.not_gt (h i)
+  have hnhi : ¬ ∀ i, v i < a := by obtain ⟨i, hi⟩ := hh; exact fun h => hi.not_gt (h i)
+  simp only [InsertedRank, dite_eq_right ht, ite_eq_right hnhi, ite_eq_right hnlo]
+
+/-- The maximum lower assigned rank is strictly below the minimum upper assigned rank. -/
+theorem previousRanks_gap [Finite I] {v u : I → ℝ} (h : RankPreserving v u) {a : ℝ}
+    (hl : ∃ i, v i < a) (hh : ∃ i, a < v i) :
+    sSup (PreviousLowerRanks v u a) < sInf (PreviousUpperRanks v u a) := by
+  have hln : (PreviousLowerRanks v u a).Nonempty := by
+    obtain ⟨i, hi⟩ := hl
+    exact ⟨u i, i, hi, rfl⟩
+  have hhn : (PreviousUpperRanks v u a).Nonempty := by
+    obtain ⟨i, hi⟩ := hh
+    exact ⟨u i, i, hi, rfl⟩
+  have hlf : (PreviousLowerRanks v u a).Finite := (Set.toFinite _).image u
+  have hhf : (PreviousUpperRanks v u a).Finite := (Set.toFinite _).image u
+  obtain ⟨i, hi, he⟩ := hln.csSup_mem hlf
+  obtain ⟨j, hj, hf⟩ := hhn.csInf_mem hhf
+  rw [← he, ← hf]
+  exact (rankPreserving_lt h i j).mp (hi.trans hj)
+
+/-- Every lower old rank remains strictly below the newly assigned value. -/
+theorem insertedRank_gt [Finite I] [Nonempty I] {v u : I → ℝ} (h : RankPreserving v u)
+    {a : ℝ} {i : I} (hi : v i < a) : u i < InsertedRank v u a := by
+  classical
+  by_cases ht : ∃ j, v j = a
+  · obtain ⟨j, hj⟩ := ht
+    rw [insertedRank_tie h j hj]
+    exact (rankPreserving_lt h i j).mp (hi.trans_eq hj.symm)
+  by_cases hhi : ∀ j, v j < a
+  · rw [insertedRank_above hhi]
+    have hb := le_csSup (Set.finite_range u).bddAbove (Set.mem_range_self i)
+    linarith
+  have hh : ∃ j, a < v j := by
+    push Not at hhi
+    obtain ⟨j, hj⟩ := hhi
+    exact ⟨j, lt_of_le_of_ne hj (fun he => ht ⟨j, he.symm⟩)⟩
+  rw [insertedRank_between ht ⟨i, hi⟩ hh]
+  have hgap := previousRanks_gap h ⟨i, hi⟩ hh
+  have hb : u i ≤ sSup (PreviousLowerRanks v u a) :=
+    le_csSup ((Set.toFinite _).image u).bddAbove ⟨i, hi, rfl⟩
+  linarith
+
+/-- Every higher old rank remains strictly above the newly assigned value. -/
+theorem insertedRank_lt [Finite I] [Nonempty I] {v u : I → ℝ} (h : RankPreserving v u)
+    {a : ℝ} {i : I} (hi : a < v i) : InsertedRank v u a < u i := by
+  classical
+  by_cases ht : ∃ j, v j = a
+  · obtain ⟨j, hj⟩ := ht
+    rw [insertedRank_tie h j hj]
+    exact (rankPreserving_lt h j i).mp (hj.trans_lt hi)
+  by_cases hlo : ∀ j, a < v j
+  · rw [insertedRank_below hlo]
+    have hb := csInf_le (Set.finite_range u).bddBelow (Set.mem_range_self i)
+    linarith
+  have hl : ∃ j, v j < a := by
+    push Not at hlo
+    obtain ⟨j, hj⟩ := hlo
+    exact ⟨j, lt_of_le_of_ne hj (fun he => ht ⟨j, he⟩)⟩
+  rw [insertedRank_between ht hl ⟨i, hi⟩]
+  have hgap := previousRanks_gap h hl ⟨i, hi⟩
+  have hb : sInf (PreviousUpperRanks v u a) ≤ u i :=
+    csInf_le ((Set.toFinite _).image u).bddBelow ⟨i, hi, rfl⟩
+  linarith
+
+/-- The insertion preserves both weak comparisons with every previously assigned point. -/
+theorem insertedRank_compare [Finite I] [Nonempty I] {v u : I → ℝ} (h : RankPreserving v u)
+    (a : ℝ) (i : I) :
+    (v i ≤ a ↔ u i ≤ InsertedRank v u a) ∧
+      (a ≤ v i ↔ InsertedRank v u a ≤ u i) := by
+  rcases lt_trichotomy (v i) a with hi | hi | hi
+  · have hu := insertedRank_gt h hi
+    exact ⟨iff_of_true hi.le hu.le, iff_of_false (not_le_of_gt hi) (not_le_of_gt hu)⟩
+  · rw [insertedRank_tie h i hi, hi]
+    simp
+  · have hu := insertedRank_lt h hi
+    exact ⟨iff_of_false (not_le_of_gt hi) (not_le_of_gt hu), iff_of_true hi.le hu.le⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Recursive utility values on an enumerated domain
+
+Kreps I, Problem 2.14(d), p. 49. Start at zero and apply the preceding insertion
+rule successively. Old assignments never change. The resulting sequence preserves
+every comparison of the original numerical ranks, including ties and repeated
+points in the enumeration. Thus the construction gives a representation on the
+enumerated subset rather than merely on its finite prefixes.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The first `n + 1` assigned values after `n` successive insertions. -/
+noncomputable def RecursiveRankStage (v : ℕ → ℝ) : (n : ℕ) → Fin (n + 1) → ℝ
+  | 0 => fun _ => 0
+  | n + 1 => Fin.lastCases
+      (InsertedRank (fun i : Fin (n + 1) => v i) (RecursiveRankStage v n) (v (n + 1)))
+      (RecursiveRankStage v n)
+
+/-- A new stage retains each previously assigned value. -/
+theorem recursiveRankStage_castSucc (v : ℕ → ℝ) (n : ℕ) (i : Fin (n + 1)) :
+    RecursiveRankStage v (n + 1) i.castSucc = RecursiveRankStage v n i := by
+  simp only [RecursiveRankStage, Fin.lastCases_castSucc]
+
+/-- The newly appended value is computed by the book's insertion rule. -/
+theorem recursiveRankStage_last (v : ℕ → ℝ) (n : ℕ) :
+    RecursiveRankStage v (n + 1) (Fin.last (n + 1)) =
+      InsertedRank (fun i : Fin (n + 1) => v i) (RecursiveRankStage v n) (v (n + 1)) := by
+  simp only [RecursiveRankStage, Fin.lastCases_last]
+
+/-- Every finite stage preserves all original rank comparisons. -/
+theorem recursiveRankStage_preserving (v : ℕ → ℝ) (n : ℕ) :
+    RankPreserving (fun i : Fin (n + 1) => v i) (RecursiveRankStage v n) := by
+  induction n with
+  | zero =>
+      intro i j
+      fin_cases i
+      fin_cases j
+      simp [RecursiveRankStage]
+  | succ n ih =>
+      intro i j
+      refine Fin.lastCases ?_ (fun i => ?_) i
+      · refine Fin.lastCases ?_ (fun j => ?_) j
+        · simp
+        · simpa only [Fin.val_last, Fin.val_castSucc, recursiveRankStage_last,
+            recursiveRankStage_castSucc] using
+            (insertedRank_compare ih (v (n + 1)) j).2
+      · refine Fin.lastCases ?_ (fun j => ?_) j
+        · simpa only [Fin.val_last, Fin.val_castSucc, recursiveRankStage_last,
+            recursiveRankStage_castSucc] using
+            (insertedRank_compare ih (v (n + 1)) i).1
+        · simpa only [Fin.val_castSucc, recursiveRankStage_castSucc] using ih i j
+
+/-- The value permanently assigned to the `n`th enumerated point. -/
+noncomputable def RecursiveRank (v : ℕ → ℝ) (n : ℕ) : ℝ :=
+  RecursiveRankStage v n (Fin.last n)
+
+/-- The arbitrary initial normalization is zero. -/
+theorem recursiveRank_zero (v : ℕ → ℝ) : RecursiveRank v 0 = 0 := rfl
+
+/-- Each finite stage consists of the already permanent assigned values. -/
+theorem recursiveRankStage_eq_rank (v : ℕ → ℝ) (n : ℕ) (i : Fin (n + 1)) :
+    RecursiveRankStage v n i = RecursiveRank v i := by
+  induction n with
+  | zero =>
+      fin_cases i
+      rfl
+  | succ n ih =>
+      refine Fin.lastCases ?_ (fun i => ?_) i
+      · rfl
+      · rw [recursiveRankStage_castSucc]
+        exact ih i
+
+/-- The permanent sequence satisfies the four-case recursion on its previous values. -/
+theorem recursiveRank_succ (v : ℕ → ℝ) (n : ℕ) :
+    RecursiveRank v (n + 1) =
+      InsertedRank (fun i : Fin (n + 1) => v i)
+        (fun i => RecursiveRank v i) (v (n + 1)) := by
+  change RecursiveRankStage v (n + 1) (Fin.last (n + 1)) = _
+  rw [recursiveRankStage_last]
+  congr 1
+  funext i
+  exact recursiveRankStage_eq_rank v n i
+
+/-- All comparisons are preserved in the infinite enumerated sequence. -/
+theorem recursiveRank_preserving (v : ℕ → ℝ) : RankPreserving v (RecursiveRank v) := by
+  intro i j
+  let n := max i j
+  let i' : Fin (n + 1) := ⟨i, Nat.lt_succ_of_le (le_max_left i j)⟩
+  let j' : Fin (n + 1) := ⟨j, Nat.lt_succ_of_le (le_max_right i j)⟩
+  have h := recursiveRankStage_preserving v n i' j'
+  simpa only [recursiveRankStage_eq_rank] using h
+
+/-- Equal original ranks receive equal assigned values, even at different enumeration indices. -/
+theorem recursiveRank_eq_iff (v : ℕ → ℝ) (i j : ℕ) :
+    RecursiveRank v i = RecursiveRank v j ↔ v i = v j := by
+  simp only [le_antisymm_iff, ← recursiveRank_preserving v i j,
+    ← recursiveRank_preserving v j i]
+
+/-- Strict original comparisons are preserved. -/
+theorem recursiveRank_lt_iff (v : ℕ → ℝ) (i j : ℕ) :
+    RecursiveRank v i < RecursiveRank v j ↔ v i < v j :=
+  (rankPreserving_lt (recursiveRank_preserving v) i j).symm
+
+/-- **Problem 2.14(d):** the recursively assigned sequence represents the sampled preference. -/
+theorem problem_2_14d_sequence {X : Type*} {r : X → X → Prop}
+    {v : X → ℝ} (hv : Represents v r) (q : ℕ → X) :
+    Represents (RecursiveRank (v ∘ q)) (fun i j => r (q i) (q j)) := by
+  intro i j
+  exact (hv (q i) (q j)).trans (recursiveRank_preserving (v ∘ q) j i)
+
+/-- A sampled preference needs only rationality for the recursive representation to exist. -/
+theorem problem_2_14d_exists {X : Type*} {r : X → X → Prop}
+    (hr : Rational r) (q : ℕ → X) :
+    ∃ v : ℕ → ℝ, Represents (RecursiveRank v) (fun i j => r (q i) (q j)) := by
+  have hs : Rational (fun i j => r (q i) (q j)) :=
+    ⟨fun i j => hr.1 (q i) (q j), fun i j k => hr.2 (q i) (q j) (q k)⟩
+  obtain ⟨v, hv⟩ := proposition_1_11 hs
+  refine ⟨v, ?_⟩
+  intro i j
+  exact (hv i j).trans (recursiveRank_preserving v j i)
+
+/-- Copy the permanent value of any enumeration index of a point in the sampled range. -/
+noncomputable def RecursiveRangeUtility {X : Type*} (q : ℕ → X) (v : X → ℝ)
+    (x : Set.range q) : ℝ := RecursiveRank (v ∘ q) x.property.choose
+
+/-- Choosing an enumeration index does not affect the assigned value. -/
+theorem recursiveRangeUtility_apply {X : Type*} (q : ℕ → X) (v : X → ℝ) (n : ℕ) :
+    RecursiveRangeUtility q v ⟨q n, Set.mem_range_self n⟩ = RecursiveRank (v ∘ q) n := by
+  apply (recursiveRank_eq_iff (v ∘ q) _ n).mpr
+  change v (q _) = v (q n)
+  exact congrArg v (Set.mem_range_self n).choose_spec
+
+/-- **Problem 2.14(d):** a well-defined representation on the enumerated subset itself. -/
+theorem problem_2_14d {X : Type*} {r : X → X → Prop}
+    {v : X → ℝ} (hv : Represents v r) (q : ℕ → X) :
+    Represents (RecursiveRangeUtility q v) (fun x y => r x.val y.val) := by
+  intro x y
+  have hx := x.property.choose_spec
+  have hy := y.property.choose_spec
+  have h := problem_2_14d_sequence hv q x.property.choose y.property.choose
+  simpa only [hx, hy, RecursiveRangeUtility] using h
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Density of the recursively assigned values
+
+Kreps I, Problem 2.14(e), p. 49. The first point inserted between two adjacent
+assigned ranks receives their midpoint. If the original sampled order has a rank
+strictly between any two distinct ranks, this midpoint rule rules out gaps in the
+closure of the numerical range.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- An order-dense enumeration remains order-dense after the recursive reassignment. -/
+theorem recursiveRank_has_between (v : ℕ → ℝ)
+    (hd : ∀ i j, v i < v j → ∃ k, v i < v k ∧ v k < v j)
+    {i j : ℕ} (hij : RecursiveRank v i < RecursiveRank v j) :
+    ∃ k, RecursiveRank v i < RecursiveRank v k ∧ RecursiveRank v k < RecursiveRank v j := by
+  obtain ⟨k, hik, hkj⟩ := hd i j ((recursiveRank_lt_iff v i j).mp hij)
+  exact ⟨k, (recursiveRank_lt_iff v i k).mpr hik, (recursiveRank_lt_iff v k j).mpr hkj⟩
+
+/-- The first insertion into a gap of a finite prefix must be the gap's midpoint. -/
+theorem recursiveRank_first_between (v : ℕ → ℝ) (i j N : ℕ) (hiN : i ≤ N) (hjN : j ≤ N)
+    (hgap : ∀ k ≤ N, ¬ (RecursiveRank v i < RecursiveRank v k ∧
+      RecursiveRank v k < RecursiveRank v j))
+    (hne : ∃ k, RecursiveRank v i < RecursiveRank v k ∧
+      RecursiveRank v k < RecursiveRank v j) :
+    ∃ k, RecursiveRank v k = (RecursiveRank v i + RecursiveRank v j) / 2 := by
+  classical
+  let n := Nat.find hne
+  have hn : RecursiveRank v i < RecursiveRank v n ∧ RecursiveRank v n < RecursiveRank v j :=
+    Nat.find_spec hne
+  have hprior : ∀ k < n, ¬ (RecursiveRank v i < RecursiveRank v k ∧
+      RecursiveRank v k < RecursiveRank v j) := fun _ hk => Nat.find_min hne hk
+  have hNn : N < n := by
+    by_contra h
+    exact hgap n (Nat.le_of_not_gt h) hn
+  have hn0 : n ≠ 0 := by omega
+  obtain ⟨m, hm⟩ := Nat.exists_eq_succ_of_ne_zero hn0
+  let vp : Fin (m + 1) → ℝ := fun k => v k
+  let up : Fin (m + 1) → ℝ := fun k => RecursiveRank v k
+  let i' : Fin (m + 1) := ⟨i, by omega⟩
+  let j' : Fin (m + 1) := ⟨j, by omega⟩
+  have he : RecursiveRank v n = InsertedRank vp up (v n) := by
+    simpa only [hm] using recursiveRank_succ v m
+  have hil : vp i' < v n := (recursiveRank_lt_iff v i n).mp hn.1
+  have hjh : v n < vp j' := (recursiveRank_lt_iff v n j).mp hn.2
+  have hnt : ¬ ∃ k, vp k = v n := by
+    rintro ⟨k, hk⟩
+    have heq : RecursiveRank v k = RecursiveRank v n := (recursiveRank_eq_iff v k n).mpr hk
+    exact hprior k (by have := k.isLt; omega) (by simpa only [heq] using hn)
+  have hmax : sSup (PreviousLowerRanks vp up (v n)) = RecursiveRank v i := by
+    apply IsGreatest.csSup_eq
+    refine ⟨⟨i', hil, rfl⟩, ?_⟩
+    rintro y ⟨k, hk, rfl⟩
+    by_contra h
+    have hleft : RecursiveRank v i < RecursiveRank v k := lt_of_not_ge h
+    have hright : RecursiveRank v k < RecursiveRank v n :=
+      (recursiveRank_lt_iff v k n).mpr hk
+    exact hprior k (by have := k.isLt; omega) ⟨hleft, hright.trans hn.2⟩
+  have hmin : sInf (PreviousUpperRanks vp up (v n)) = RecursiveRank v j := by
+    apply IsLeast.csInf_eq
+    refine ⟨⟨j', hjh, rfl⟩, ?_⟩
+    rintro y ⟨k, hk, rfl⟩
+    by_contra h
+    have hright : RecursiveRank v k < RecursiveRank v j := lt_of_not_ge h
+    have hleft : RecursiveRank v n < RecursiveRank v k :=
+      (recursiveRank_lt_iff v n k).mpr hk
+    exact hprior k (by have := k.isLt; omega) ⟨hn.1.trans hleft, hright⟩
+  refine ⟨n, ?_⟩
+  rw [he, insertedRank_between hnt ⟨i', hil⟩ ⟨j', hjh⟩, hmax, hmin]
+
+/-- No open interval between assigned values can be missing from their closure. -/
+theorem recursiveRank_between_mem_closure (v : ℕ → ℝ)
+    (hd : ∀ i j, v i < v j → ∃ k, v i < v k ∧ v k < v j)
+    {i j : ℕ} {r : ℝ} (hi : RecursiveRank v i < r) (hj : r < RecursiveRank v j) :
+    r ∈ closure (Set.range (RecursiveRank v)) := by
+  classical
+  let u := RecursiveRank v
+  apply Metric.mem_closure_iff.mpr
+  intro ε hε
+  by_contra hmissing
+  have hdist : ∀ n, ε ≤ |u n - r| := by
+    intro n
+    have h := not_lt.mpr (le_of_not_gt (fun hn =>
+      hmissing ⟨u n, Set.mem_range_self n, hn⟩))
+    simpa only [Real.dist_eq, abs_sub_comm, not_lt] using h
+  have hne : ∀ n, u n ≠ r := by
+    intro n hn
+    have h := hdist n
+    rw [hn, sub_self, abs_zero] at h
+    linarith
+  let L : Set ℝ := Set.range u ∩ Set.Iio r
+  let H : Set ℝ := Set.range u ∩ Set.Ioi r
+  have hLn : L.Nonempty := ⟨u i, Set.mem_range_self i, hi⟩
+  have hHn : H.Nonempty := ⟨u j, Set.mem_range_self j, hj⟩
+  have hLb : BddAbove L := ⟨r, fun _ hz => hz.2.le⟩
+  have hHb : BddBelow H := ⟨r, fun _ hz => hz.2.le⟩
+  let l := sSup L
+  let h := sInf H
+  have hll : l ≤ r - ε := by
+    apply csSup_le hLn
+    rintro y ⟨⟨n, rfl⟩, hn⟩
+    have h := hdist n
+    rw [abs_of_neg (sub_neg.mpr hn)] at h
+    linarith
+  have hhh : r + ε ≤ h := by
+    apply le_csInf hHn
+    rintro y ⟨⟨n, rfl⟩, hn⟩
+    have h := hdist n
+    rw [abs_of_pos (sub_pos.mpr hn)] at h
+    linarith
+  have hlh : l < h := by linarith
+  let δ := (h - l) / 4
+  have hδ : 0 < δ := by dsimp [δ]; linarith
+  obtain ⟨a, haL, haNear⟩ := exists_lt_of_lt_csSup hLn (show l - δ < l by linarith)
+  obtain ⟨b, hbH, hbNear⟩ := exists_lt_of_csInf_lt hHn (show h < h + δ by linarith)
+  obtain ⟨ia, hia⟩ := haL.1
+  obtain ⟨ib, hib⟩ := hbH.1
+  let N := max ia ib
+  let up : Fin (N + 1) → ℝ := fun k => u k
+  let LP : Set ℝ := up '' {k | up k < r}
+  let HP : Set ℝ := up '' {k | r < up k}
+  let ia' : Fin (N + 1) := ⟨ia, Nat.lt_succ_of_le (le_max_left ia ib)⟩
+  let ib' : Fin (N + 1) := ⟨ib, Nat.lt_succ_of_le (le_max_right ia ib)⟩
+  have hialow : up ia' < r := by
+    change u ia < r
+    rw [hia]
+    exact haL.2
+  have hibhigh : r < up ib' := by
+    change r < u ib
+    rw [hib]
+    exact hbH.2
+  have hLPn : LP.Nonempty := ⟨a, ia', hialow, hia⟩
+  have hHPn : HP.Nonempty := ⟨b, ib', hibhigh, hib⟩
+  have hLPf : LP.Finite := (Set.toFinite _).image up
+  have hHPf : HP.Finite := (Set.toFinite _).image up
+  obtain ⟨ip, hip, heip⟩ := hLPn.csSup_mem hLPf
+  obtain ⟨jp, hjp, hejp⟩ := hHPn.csInf_mem hHPf
+  have hipNear : l - δ < up ip := by
+    have haLe' : a ≤ sSup LP := le_csSup hLPf.bddAbove ⟨ia', hialow, hia⟩
+    rw [← heip] at haLe'
+    exact haNear.trans_le haLe'
+  have hjpNear : up jp < h + δ := by
+    have hbLe : sInf HP ≤ b := csInf_le hHPf.bddBelow ⟨ib', hibhigh, hib⟩
+    rw [← hejp] at hbLe
+    exact hbLe.trans_lt hbNear
+  have hipBound : up ip ≤ l := le_csSup hLb ⟨Set.mem_range_self ip.val, hip⟩
+  have hjpBound : h ≤ up jp := csInf_le hHb ⟨Set.mem_range_self jp.val, hjp⟩
+  have hgap : ∀ k ≤ N, ¬ (u ip < u k ∧ u k < u jp) := by
+    intro k hk hbetween
+    let k' : Fin (N + 1) := ⟨k, Nat.lt_succ_of_le hk⟩
+    rcases lt_or_gt_of_ne (hne k) with hkr | hrk
+    · have hkLe : up k' ≤ sSup LP := le_csSup hLPf.bddAbove ⟨k', hkr, rfl⟩
+      rw [← heip] at hkLe
+      exact not_lt_of_ge hkLe hbetween.1
+    · have hkLe : sInf HP ≤ up k' := csInf_le hHPf.bddBelow ⟨k', hrk, rfl⟩
+      rw [← hejp] at hkLe
+      exact not_lt_of_ge hkLe hbetween.2
+  have hbetween := recursiveRank_has_between v hd (show u ip < u jp from hip.trans hjp)
+  obtain ⟨k, hk⟩ := recursiveRank_first_between v ip jp N
+    (Nat.le_of_lt_succ ip.isLt) (Nat.le_of_lt_succ jp.isLt) hgap hbetween
+  have hmidlo : l < u k := by
+    change u k = (up ip + up jp) / 2 at hk
+    dsimp [δ] at hipNear hjpNear
+    linarith
+  have hmidhi : u k < h := by
+    change u k = (up ip + up jp) / 2 at hk
+    dsimp [δ] at hipNear hjpNear
+    linarith
+  rcases lt_or_gt_of_ne (hne k) with hkr | hrk
+  · have hkLe : u k ≤ l := le_csSup hLb ⟨Set.mem_range_self k, hkr⟩
+    exact not_lt_of_ge hkLe hmidlo
+  · have hkLe : h ≤ u k := csInf_le hHb ⟨Set.mem_range_self k, hrk⟩
+    exact not_lt_of_ge hkLe hmidhi
+
+/-- The smallest interval containing all values of the recursive assignment. -/
+def RecursiveRankInterval (v : ℕ → ℝ) : Set ℝ :=
+  {t | ∃ i j, RecursiveRank v i ≤ t ∧ t ≤ RecursiveRank v j}
+
+/-- Every assigned value belongs to the containing interval. -/
+theorem recursiveRank_range_subset_interval (v : ℕ → ℝ) :
+    Set.range (RecursiveRank v) ⊆ RecursiveRankInterval v := by
+  rintro _ ⟨n, rfl⟩
+  exact ⟨n, n, le_rfl, le_rfl⟩
+
+/-- The containing set really is an interval. -/
+theorem recursiveRankInterval_ordConnected (v : ℕ → ℝ) :
+    Set.OrdConnected (RecursiveRankInterval v) := by
+  constructor
+  rintro x ⟨i, _, hix, _⟩ y ⟨_, j, _, hyj⟩ z ⟨hxz, hzy⟩
+  exact ⟨i, j, hix.trans hxz, hzy.trans hyj⟩
+
+/-- Every interval containing all assigned values contains this interval. -/
+theorem recursiveRankInterval_minimal (v : ℕ → ℝ) {S : Set ℝ}
+    (hS : Set.OrdConnected S) (hrange : Set.range (RecursiveRank v) ⊆ S) :
+    RecursiveRankInterval v ⊆ S := by
+  rintro t ⟨i, j, hit, htj⟩
+  exact hS.out (hrange (Set.mem_range_self i)) (hrange (Set.mem_range_self j)) ⟨hit, htj⟩
+
+/-- The closure of the assigned values contains every point of their smallest interval. -/
+theorem recursiveRankInterval_subset_closure (v : ℕ → ℝ)
+    (hd : ∀ i j, v i < v j → ∃ k, v i < v k ∧ v k < v j) :
+    RecursiveRankInterval v ⊆ closure (Set.range (RecursiveRank v)) := by
+  rintro t ⟨i, j, hit, htj⟩
+  rcases hit.eq_or_lt with he | hi
+  · exact he ▸ subset_closure (Set.mem_range_self i)
+  rcases htj.eq_or_lt with he | hj
+  · exact he.symm ▸ subset_closure (Set.mem_range_self j)
+  exact recursiveRank_between_mem_closure v hd hi hj
+
+/-- Relative density of the recursively assigned values in their smallest containing interval. -/
+theorem recursiveRank_dense_in_interval (v : ℕ → ℝ)
+    (hd : ∀ i j, v i < v j → ∃ k, v i < v k ∧ v k < v j) :
+    DenseRange (Set.inclusion (recursiveRank_range_subset_interval v)) :=
+  (denseRange_inclusion_iff _).mpr (recursiveRankInterval_subset_closure v hd)
+
+/-- **Problem 2.14(e):** the assigned values are dense in their smallest containing interval. -/
+theorem problem_2_14e {X : Type*} [TopologicalSpace X] [PreconnectedSpace X]
+    {r : X → X → Prop} {v : X → ℝ} (hr : Rational r) (hc : ContinuousPreference r)
+    (hv : Represents v r) (q : ℕ → X) (hq : DenseRange q) :
+    DenseRange (Set.inclusion (recursiveRank_range_subset_interval (v ∘ q))) := by
+  apply recursiveRank_dense_in_interval
+  intro i j hij
+  obtain ⟨x, ⟨k, rfl⟩, hik, hkj⟩ := dense_strictRankSeparator hr hc hv hq (q i) (q j) hij
+  exact ⟨k, hik, hkj⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: Euclidean distance and elementary topology
+
+Definitions A2.1–A2.5 and Proposition A2.4, pp. 441–443. Euclidean space carries
+its genuine sum-of-squares norm. Its explicit homeomorphism to the finite product
+explains why the chapter can use the product metric for topological arguments.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The appendix's finite-dimensional Euclidean space, with its Euclidean norm. -/
+abbrev CommodityEuclidean (k : ℕ) := EuclideanSpace ℝ (Fin k)
+
+/-- **Definition A2.1:** Euclidean distance is the square root of the sum of squared differences. -/
+theorem definition_A2_1 {k : ℕ} (x y : CommodityEuclidean k) :
+    dist x y = Real.sqrt (∑ j, (x j - y j) ^ 2) := by
+  simpa only [Real.dist_eq, sq_abs] using EuclideanSpace.dist_eq x y
+
+/-- The four metric properties listed immediately after Definition A2.1. -/
+theorem euclidean_distance_properties {k : ℕ} (x y z : CommodityEuclidean k) (a : ℝ) :
+    0 ≤ dist x y ∧ (dist x y = 0 ↔ x = y) ∧ dist x y = dist y x ∧
+      dist (a • x) (a • y) = |a| * dist x y ∧ dist x z ≤ dist x y + dist y z := by
+  exact ⟨dist_nonneg, dist_eq_zero, dist_comm x y,
+    by simpa only [Real.norm_eq_abs] using dist_smul₀ a x y, dist_triangle x y z⟩
+
+/-- The translation invariance noted alongside Definition A2.1. -/
+theorem euclidean_distance_translation {k : ℕ} (x y z : CommodityEuclidean k) :
+    dist (x + z) (y + z) = dist x y := dist_add_right x y z
+
+/-- The Euclidean and coordinate-product presentations have the same topology. -/
+noncomputable def euclideanProductHomeomorph (k : ℕ) :
+    CommodityEuclidean k ≃ₜ (Fin k → ℝ) := PiLp.homeomorph 2 (fun _ => ℝ)
+
+/-- **Definition A2.2:** the epsilon-neighborhood is an open metric ball. -/
+theorem definition_A2_2 {k : ℕ} (x : CommodityEuclidean k) (ε : ℝ) :
+    {y | dist y x < ε} = Metric.ball x ε := rfl
+
+/-- The exercise in footnote 2: every open ball is open. -/
+theorem appendix2_open_ball {X : Type*} [PseudoMetricSpace X] (x : X) (ε : ℝ) :
+    IsOpen (Metric.ball x ε) := Metric.isOpen_ball
+
+/-- **Definition A2.3:** every point of an open set has a ball inside the set. -/
+theorem definition_A2_3_open {X : Type*} [PseudoMetricSpace X] (S : Set X) :
+    IsOpen S ↔ ∀ x ∈ S, ∃ ε > 0, Metric.ball x ε ⊆ S := Metric.isOpen_iff
+
+/-- **Definition A2.3:** closed sets are precisely the complements of open sets. -/
+theorem definition_A2_3_closed {X : Type*} [TopologicalSpace X] (S : Set X) :
+    IsClosed S ↔ IsOpen Sᶜ := isOpen_compl_iff.symm
+
+/-- Empty and full spaces are both open and closed, as observed on p. 442. -/
+theorem appendix2_empty_univ_clopen {X : Type*} [TopologicalSpace X] :
+    IsOpen (∅ : Set X) ∧ IsClosed (∅ : Set X) ∧
+      IsOpen (Set.univ : Set X) ∧ IsClosed (Set.univ : Set X) :=
+  ⟨isOpen_empty, isClosed_empty, isOpen_univ, isClosed_univ⟩
+
+/-- **Proposition A2.4:** arbitrary unions of open sets are open. -/
+theorem proposition_A2_4_open_union {X I : Type*} [TopologicalSpace X]
+    (U : I → Set X) (hU : ∀ i, IsOpen (U i)) : IsOpen (⋃ i, U i) := isOpen_iUnion hU
+
+/-- **Proposition A2.4:** finite intersections of open sets are open. -/
+theorem proposition_A2_4_open_inter {X I : Type*} [TopologicalSpace X] [Finite I]
+    (U : I → Set X) (hU : ∀ i, IsOpen (U i)) : IsOpen (⋂ i, U i) :=
+  isOpen_iInter_of_finite hU
+
+/-- **Proposition A2.4:** finite unions of closed sets are closed. -/
+theorem proposition_A2_4_closed_union {X I : Type*} [TopologicalSpace X] [Finite I]
+    (C : I → Set X) (hC : ∀ i, IsClosed (C i)) : IsClosed (⋃ i, C i) :=
+  isClosed_iUnion_of_finite hC
+
+/-- **Proposition A2.4:** arbitrary intersections of closed sets are closed. -/
+theorem proposition_A2_4_closed_inter {X I : Type*} [TopologicalSpace X]
+    (C : I → Set X) (hC : ∀ i, IsClosed (C i)) : IsClosed (⋂ i, C i) :=
+  isClosed_iInter hC
+
+/-- The relative-open definition on p. 443, expressed through subtype preimages. -/
+theorem appendix2_relative_open {X : Type*} [TopologicalSpace X] (S : Set X) (A : Set S) :
+    IsOpen A ↔ ∃ U : Set X, IsOpen U ∧ Subtype.val ⁻¹' U = A := isOpen_induced_iff
+
+/-- The corresponding relative-closed definition. -/
+theorem appendix2_relative_closed {X : Type*} [TopologicalSpace X] (S : Set X) (A : Set S) :
+    IsClosed A ↔ ∃ C : Set X, IsClosed C ∧ Subtype.val ⁻¹' C = A := isClosed_induced_iff
+
+/-- **Definition A2.5:** closure is the least closed superset. -/
+theorem definition_A2_5_closure {X : Type*} [TopologicalSpace X] (S : Set X) :
+    IsClosed (closure S) ∧ S ⊆ closure S ∧
+      ∀ C, IsClosed C → S ⊆ C → closure S ⊆ C :=
+  ⟨isClosed_closure, subset_closure, fun _ hC hSC => closure_minimal hSC hC⟩
+
+/-- **Definition A2.5:** interior is the greatest open subset. -/
+theorem definition_A2_5_interior {X : Type*} [TopologicalSpace X] (S : Set X) :
+    IsOpen (interior S) ∧ interior S ⊆ S ∧
+      ∀ U, IsOpen U → U ⊆ S → U ⊆ interior S :=
+  ⟨isOpen_interior, interior_subset, fun _ hU hUS => interior_maximal hUS hU⟩
+
+/-- The intersection construction of closure described after Definition A2.5. -/
+theorem appendix2_closure_intersection {X : Type*} [TopologicalSpace X] (S : Set X) :
+    closure S = ⋂₀ {C | S ⊆ C ∧ IsClosed C} := by
+  apply Set.Subset.antisymm
+  · intro x hx
+    exact Set.mem_sInter.mpr (fun C hC => closure_minimal hC.1 hC.2 hx)
+  · intro x hx
+    exact Set.mem_sInter.mp hx _ ⟨subset_closure, isClosed_closure⟩
+
+/-- The union construction of interior described on p. 443. -/
+theorem appendix2_interior_union {X : Type*} [TopologicalSpace X] (S : Set X) :
+    interior S = ⋃₀ {U | U ⊆ S ∧ IsOpen U} := by
+  apply Set.Subset.antisymm
+  · intro x hx
+    exact Set.mem_sUnion.mpr ⟨interior S, ⟨interior_subset, isOpen_interior⟩, hx⟩
+  · intro x hx
+    obtain ⟨U, hU, hxU⟩ := Set.mem_sUnion.mp hx
+    exact interior_maximal hU.1 hU.2 hxU
+
+/-- Interior points are exactly the centers of balls contained in the set. -/
+theorem appendix2_interior_ball {X : Type*} [PseudoMetricSpace X] (S : Set X) (x : X) :
+    x ∈ interior S ↔ ∃ ε > 0, Metric.ball x ε ⊆ S := by
+  rw [mem_interior_iff_mem_nhds, Metric.mem_nhds_iff]
+
+/-- The complement-duality exercise on p. 443. -/
+theorem appendix2_closure_interior_complement {X : Type*} [TopologicalSpace X] (S : Set X) :
+    closure S = (interior Sᶜ)ᶜ ∧ interior S = (closure Sᶜ)ᶜ :=
+  ⟨closure_eq_compl_interior_compl, interior_eq_compl_closure_compl⟩
+
+/-- The relative interior of a domain in itself is the entire domain. -/
+theorem appendix2_relative_interior_self {X : Type*} [TopologicalSpace X] (S : Set X) :
+    interior (Set.univ : Set S) = Set.univ := interior_univ
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: semicontinuity and compact maximization
+
+Definition A2.24 and Proposition A2.26, p. 451. The final diagnostic exercise
+requires a correction: absolute summability alone does not imply upper
+semicontinuity for signed coefficients. Nonnegative coefficients do suffice.
+A single negative coefficient on the closed set `{0}` disproves the printed claim.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- **Definition A2.24:** the book's non-strict epsilon formulation of upper semicontinuity. -/
+theorem definition_A2_24_upper {X : Type*} [PseudoMetricSpace X] (f : X → ℝ) (x : X) :
+    UpperSemicontinuousAt f x ↔
+      ∀ ε > 0, ∃ δ > 0, ∀ y, dist y x < δ → f y ≤ f x + ε := by
+  constructor
+  · intro h ε hε
+    obtain ⟨δ, hδ, hnear⟩ := Metric.eventually_nhds_iff.mp
+      (h (f x + ε) (by linarith))
+    exact ⟨δ, hδ, fun y hy => (hnear hy).le⟩
+  · intro h b hb
+    obtain ⟨δ, hδ, hnear⟩ := h ((b - f x) / 2) (by linarith)
+    apply Metric.eventually_nhds_iff.mpr
+    refine ⟨δ, hδ, fun y hy => ?_⟩
+    have hbound := hnear y hy
+    linarith
+
+/-- **Definition A2.24:** the corresponding lower-semicontinuity formulation. -/
+theorem definition_A2_24_lower {X : Type*} [PseudoMetricSpace X] (f : X → ℝ) (x : X) :
+    LowerSemicontinuousAt f x ↔
+      ∀ ε > 0, ∃ δ > 0, ∀ y, dist y x < δ → f x ≤ f y + ε := by
+  constructor
+  · intro h ε hε
+    obtain ⟨δ, hδ, hnear⟩ := Metric.eventually_nhds_iff.mp
+      (h (f x - ε) (by linarith))
+    refine ⟨δ, hδ, fun y hy => ?_⟩
+    have hbound := hnear hy
+    linarith
+  · intro h a ha
+    obtain ⟨δ, hδ, hnear⟩ := h ((f x - a) / 2) (by linarith)
+    apply Metric.eventually_nhds_iff.mpr
+    refine ⟨δ, hδ, fun y hy => ?_⟩
+    have hbound := hnear y hy
+    linarith
+
+/-- **Proposition A2.26:** an upper semicontinuous function attains its finite supremum. -/
+theorem proposition_A2_26 {X : Type*} [TopologicalSpace X] {K : Set X} {f : X → ℝ}
+    (hK : IsCompact K) (hne : K.Nonempty) (hf : UpperSemicontinuousOn f K) :
+    ∃ x ∈ K, f x = sSup (f '' K) ∧ ∀ y ∈ K, f y ≤ f x := by
+  obtain ⟨x, hx, hmax⟩ := UpperSemicontinuousOn.exists_isMaxOn hne hK hf
+  have hg : IsGreatest (f '' K) (f x) := by
+    refine ⟨⟨x, hx, rfl⟩, ?_⟩
+    rintro _ ⟨y, hy, rfl⟩
+    exact hmax hy
+  exact ⟨x, hx, hg.csSup_eq.symm, hmax⟩
+
+/-- The economic consequence on p. 451: upper semicontinuous utility gives compact-menu choice. -/
+theorem upperSemicontinuous_compact_choice {X : Type*} [TopologicalSpace X]
+    {r : X → X → Prop} {u : X → ℝ} {K : Set X}
+    (hu : Represents u r) (hK : IsCompact K) (hne : K.Nonempty)
+    (hc : UpperSemicontinuousOn u K) : (PrefChoice r K).Nonempty := by
+  obtain ⟨x, hx, _, hmax⟩ := proposition_A2_26 hK hne hc
+  exact ⟨x, hx, fun y hy => (hu x y).mpr (hmax y hy)⟩
+
+/-- The weighted closed-set indicator series from the final diagnostic exercise. -/
+noncomputable def ClosedIndicatorSeries {X : Type*} (C : ℕ → Set X) (w : ℕ → ℝ)
+    (x : X) : ℝ := ∑' n, (C n).indicator (fun _ => w n) x
+
+/-- The diagnostic claim is valid when its absolutely summable coefficients are nonnegative. -/
+theorem appendix2_diagnostic_nonnegative {X : Type*} [TopologicalSpace X]
+    (C : ℕ → Set X) (hC : ∀ n, IsClosed (C n)) (w : ℕ → ℝ)
+    (hw : ∀ n, 0 ≤ w n) (hs : Summable (fun n => |w n|)) :
+    UpperSemicontinuous (ClosedIndicatorSeries C w) := by
+  apply upperSemicontinuous_tsum_of_norm_le hs
+  · intro n
+    exact (hC n).upperSemicontinuous_indicator (hw n)
+  · intro n x
+    simpa only [Real.norm_eq_abs] using
+      norm_indicator_le_norm_self (s := C n) (fun _ => w n) x
+
+/-- A single negative coefficient; all later coefficients vanish. -/
+def DiagnosticNegativeWeights (n : ℕ) : ℝ := if n = 0 then -1 else 0
+
+/-- The closed sets in the counterexample can all be the same singleton. -/
+def DiagnosticClosedSets (_ : ℕ) : Set ℝ := {0}
+
+/-- The counterexample satisfies the printed absolute-summability hypothesis. -/
+theorem diagnosticNegativeWeights_summable :
+    Summable (fun n => |DiagnosticNegativeWeights n|) := by
+  have he : (fun n => |DiagnosticNegativeWeights n|) =
+      fun n : ℕ => if n = 0 then 1 else 0 := by
+    funext n
+    by_cases hn : n = 0 <;> simp [DiagnosticNegativeWeights, hn]
+  rw [he]
+  exact (hasSum_ite_eq (0 : ℕ) (1 : ℝ)).summable
+
+/-- Its indicator sum is negative at zero and vanishes elsewhere. -/
+theorem diagnosticNegative_formula (x : ℝ) :
+    ClosedIndicatorSeries DiagnosticClosedSets DiagnosticNegativeWeights x =
+      if x = 0 then -1 else 0 := by
+  by_cases hx : x = 0
+  · subst x
+    simp [ClosedIndicatorSeries, DiagnosticClosedSets, DiagnosticNegativeWeights]
+  · simp [ClosedIndicatorSeries, DiagnosticClosedSets, hx]
+
+/-- The printed signed-coefficient diagnostic fails already at the origin of the real line. -/
+theorem diagnosticNegative_not_upperSemicontinuousAt :
+    ¬ UpperSemicontinuousAt
+      (ClosedIndicatorSeries DiagnosticClosedSets DiagnosticNegativeWeights) 0 := by
+  intro h
+  have hnear := h (-1 / 2) (by
+    change ClosedIndicatorSeries DiagnosticClosedSets DiagnosticNegativeWeights 0 < -1 / 2
+    rw [diagnosticNegative_formula]
+    norm_num)
+  have hlim := tendsto_pow_atTop_nhds_zero_of_lt_one
+    (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num : (1 / 2 : ℝ) < 1)
+  obtain ⟨n, hn⟩ := (hlim.eventually hnear).exists
+  rw [diagnosticNegative_formula, ite_eq_right (ne_of_gt (pow_pos (by norm_num) n))] at hn
+  norm_num at hn
+
+/-- A formal counterexample to the final diagnostic as printed, with all its stated hypotheses. -/
+theorem appendix2_diagnostic_counterexample :
+    (∀ n, IsClosed (DiagnosticClosedSets n)) ∧
+      Summable (fun n => |DiagnosticNegativeWeights n|) ∧
+      ¬ UpperSemicontinuous
+        (ClosedIndicatorSeries DiagnosticClosedSets DiagnosticNegativeWeights) := by
+  exact ⟨fun _ => isClosed_singleton, diagnosticNegativeWeights_summable,
+    fun h => diagnosticNegative_not_upperSemicontinuousAt (h 0)⟩
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -6860,3 +8527,154 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.oneCommodityApproach_strict
 #print axioms Kreps.PreferenceProperties.orthant_comap_positive
 #print axioms Kreps.PreferenceProperties.problem_2_15_not_continuous
+#print axioms Kreps.PreferenceProperties.TwoGoodProduct
+#print axioms Kreps.PreferenceProperties.product_mix_ge_average_of_cross
+#print axioms Kreps.PreferenceProperties.product_mix_ge_min
+#print axioms Kreps.PreferenceProperties.twoGoodProduct_continuous
+#print axioms Kreps.PreferenceProperties.twoGoodProduct_quasiConcave
+#print axioms Kreps.PreferenceProperties.product_mix_gt_average_of_cross
+#print axioms Kreps.PreferenceProperties.product_mix_gt_lower
+#print axioms Kreps.PreferenceProperties.twoGoodProduct_pos_iff
+#print axioms Kreps.PreferenceProperties.twoGoodProduct_mix_strict
+#print axioms Kreps.PreferenceProperties.twoGoodProduct_mix_pos
+#print axioms Kreps.PreferenceProperties.ProductPlateau
+#print axioms Kreps.PreferenceProperties.productPlateau_below
+#print axioms Kreps.PreferenceProperties.productPlateau_middle
+#print axioms Kreps.PreferenceProperties.productPlateau_above
+#print axioms Kreps.PreferenceProperties.productPlateau_monotone
+#print axioms Kreps.PreferenceProperties.productPlateau_continuous
+#print axioms Kreps.PreferenceProperties.PlateauProductUtility
+#print axioms Kreps.PreferenceProperties.plateauProductUtility_continuous
+#print axioms Kreps.PreferenceProperties.plateauProductUtility_quasiConcave
+#print axioms Kreps.PreferenceProperties.plateauProductUtility_not_semiStrict
+#print axioms Kreps.PreferenceProperties.plateauProductPreference_not_semiStrict
+#print axioms Kreps.PreferenceProperties.plateauProductPreference_no_concave_representation
+#print axioms Kreps.PreferenceProperties.problem_2_8a_first
+#print axioms Kreps.PreferenceProperties.SplitProductUtility
+#print axioms Kreps.PreferenceProperties.splitProductUtility_below
+#print axioms Kreps.PreferenceProperties.splitProductUtility_at_lower
+#print axioms Kreps.PreferenceProperties.splitProductUtility_at_upper
+#print axioms Kreps.PreferenceProperties.splitProductUtility_above
+#print axioms Kreps.PreferenceProperties.splitProductUtility_zero
+#print axioms Kreps.PreferenceProperties.splitProductUtility_nonneg
+#print axioms Kreps.PreferenceProperties.splitProductUtility_strict_of_product_lt
+#print axioms Kreps.PreferenceProperties.splitProductUtility_product_le
+#print axioms Kreps.PreferenceProperties.splitProductPreference_convex
+#print axioms Kreps.PreferenceProperties.splitProductPreference_semiStrict
+#print axioms Kreps.PreferenceProperties.SplitProductApproach
+#print axioms Kreps.PreferenceProperties.splitProductApproach_rank
+#print axioms Kreps.PreferenceProperties.splitProductApproach_tendsto
+#print axioms Kreps.PreferenceProperties.splitProductPreference_not_continuous
+#print axioms Kreps.PreferenceProperties.splitProductPreference_no_concave_representation
+#print axioms Kreps.PreferenceProperties.problem_2_8a_second
+#print axioms Kreps.PreferenceProperties.EveryRepresentation
+#print axioms Kreps.PreferenceProperties.SomeRepresentation
+#print axioms Kreps.PreferenceProperties.representation_quantifiers_of_invariance
+#print axioms Kreps.PreferenceProperties.table_monotone
+#print axioms Kreps.PreferenceProperties.table_strictlyMonotone
+#print axioms Kreps.PreferenceProperties.table_quasiConcave
+#print axioms Kreps.PreferenceProperties.table_semiStrictlyQuasiConcave
+#print axioms Kreps.PreferenceProperties.table_strictlyQuasiConcave
+#print axioms Kreps.PreferenceProperties.table_concave_converse
+#print axioms Kreps.PreferenceProperties.table_strictlyConcave_converse
+#print axioms Kreps.PreferenceProperties.table_continuous
+#print axioms Kreps.PreferenceProperties.table_weaklySeparable
+#print axioms Kreps.PreferenceProperties.AdditiveForm
+#print axioms Kreps.PreferenceProperties.table_additive_converse
+#print axioms Kreps.PreferenceProperties.some_additiveForm_iff
+#print axioms Kreps.PreferenceProperties.QuasiLinearForm
+#print axioms Kreps.PreferenceProperties.some_quasiLinearForm_iff
+#print axioms Kreps.PreferenceProperties.table_quasiLinear
+#print axioms Kreps.PreferenceProperties.table_homogeneous
+#print axioms Kreps.PreferenceProperties.represents_add_constant
+#print axioms Kreps.PreferenceProperties.represents_mul_positive
+#print axioms Kreps.PreferenceProperties.table_concave_not_all
+#print axioms Kreps.PreferenceProperties.table_convex_not_some_concave
+#print axioms Kreps.PreferenceProperties.table_continuous_not_all
+#print axioms Kreps.PreferenceProperties.doubled_quasiLinear_not_form
+#print axioms Kreps.PreferenceProperties.table_quasiLinear_not_all
+#print axioms Kreps.PreferenceProperties.shifted_homogeneous_not_homogeneous
+#print axioms Kreps.PreferenceProperties.homogeneous_not_every_representation
+#print axioms Kreps.PreferenceProperties.table_homogeneous_not_all
+#print axioms Kreps.PreferenceProperties.ThreeCommodityTotal
+#print axioms Kreps.PreferenceProperties.threeCommodityTotal_nonneg
+#print axioms Kreps.PreferenceProperties.squared_threeCommodityTotal_represents
+#print axioms Kreps.PreferenceProperties.squared_threeCommodityTotal_not_additive
+#print axioms Kreps.PreferenceProperties.threeCommodityTotal_nontrivial
+#print axioms Kreps.PreferenceProperties.threeCommodityTotal_threeNontrivial
+#print axioms Kreps.PreferenceProperties.threeCommodityTotal_preference_properties
+#print axioms Kreps.PreferenceProperties.table_additive_not_all
+#print axioms Kreps.PreferenceProperties.RankPreserving
+#print axioms Kreps.PreferenceProperties.rankPreserving_lt
+#print axioms Kreps.PreferenceProperties.PreviousLowerRanks
+#print axioms Kreps.PreferenceProperties.PreviousUpperRanks
+#print axioms Kreps.PreferenceProperties.InsertedRank
+#print axioms Kreps.PreferenceProperties.insertedRank_tie
+#print axioms Kreps.PreferenceProperties.insertedRank_above
+#print axioms Kreps.PreferenceProperties.insertedRank_below
+#print axioms Kreps.PreferenceProperties.insertedRank_between
+#print axioms Kreps.PreferenceProperties.previousRanks_gap
+#print axioms Kreps.PreferenceProperties.insertedRank_gt
+#print axioms Kreps.PreferenceProperties.insertedRank_lt
+#print axioms Kreps.PreferenceProperties.insertedRank_compare
+#print axioms Kreps.PreferenceProperties.RecursiveRankStage
+#print axioms Kreps.PreferenceProperties.recursiveRankStage_castSucc
+#print axioms Kreps.PreferenceProperties.recursiveRankStage_last
+#print axioms Kreps.PreferenceProperties.recursiveRankStage_preserving
+#print axioms Kreps.PreferenceProperties.RecursiveRank
+#print axioms Kreps.PreferenceProperties.recursiveRank_zero
+#print axioms Kreps.PreferenceProperties.recursiveRankStage_eq_rank
+#print axioms Kreps.PreferenceProperties.recursiveRank_succ
+#print axioms Kreps.PreferenceProperties.recursiveRank_preserving
+#print axioms Kreps.PreferenceProperties.recursiveRank_eq_iff
+#print axioms Kreps.PreferenceProperties.recursiveRank_lt_iff
+#print axioms Kreps.PreferenceProperties.problem_2_14d_sequence
+#print axioms Kreps.PreferenceProperties.problem_2_14d_exists
+#print axioms Kreps.PreferenceProperties.RecursiveRangeUtility
+#print axioms Kreps.PreferenceProperties.recursiveRangeUtility_apply
+#print axioms Kreps.PreferenceProperties.problem_2_14d
+#print axioms Kreps.PreferenceProperties.recursiveRank_has_between
+#print axioms Kreps.PreferenceProperties.recursiveRank_first_between
+#print axioms Kreps.PreferenceProperties.recursiveRank_between_mem_closure
+#print axioms Kreps.PreferenceProperties.RecursiveRankInterval
+#print axioms Kreps.PreferenceProperties.recursiveRank_range_subset_interval
+#print axioms Kreps.PreferenceProperties.recursiveRankInterval_ordConnected
+#print axioms Kreps.PreferenceProperties.recursiveRankInterval_minimal
+#print axioms Kreps.PreferenceProperties.recursiveRankInterval_subset_closure
+#print axioms Kreps.PreferenceProperties.recursiveRank_dense_in_interval
+#print axioms Kreps.PreferenceProperties.problem_2_14e
+#print axioms Kreps.PreferenceProperties.CommodityEuclidean
+#print axioms Kreps.PreferenceProperties.definition_A2_1
+#print axioms Kreps.PreferenceProperties.euclidean_distance_properties
+#print axioms Kreps.PreferenceProperties.euclidean_distance_translation
+#print axioms Kreps.PreferenceProperties.euclideanProductHomeomorph
+#print axioms Kreps.PreferenceProperties.definition_A2_2
+#print axioms Kreps.PreferenceProperties.appendix2_open_ball
+#print axioms Kreps.PreferenceProperties.definition_A2_3_open
+#print axioms Kreps.PreferenceProperties.definition_A2_3_closed
+#print axioms Kreps.PreferenceProperties.appendix2_empty_univ_clopen
+#print axioms Kreps.PreferenceProperties.proposition_A2_4_open_union
+#print axioms Kreps.PreferenceProperties.proposition_A2_4_open_inter
+#print axioms Kreps.PreferenceProperties.proposition_A2_4_closed_union
+#print axioms Kreps.PreferenceProperties.proposition_A2_4_closed_inter
+#print axioms Kreps.PreferenceProperties.appendix2_relative_open
+#print axioms Kreps.PreferenceProperties.appendix2_relative_closed
+#print axioms Kreps.PreferenceProperties.definition_A2_5_closure
+#print axioms Kreps.PreferenceProperties.definition_A2_5_interior
+#print axioms Kreps.PreferenceProperties.appendix2_closure_intersection
+#print axioms Kreps.PreferenceProperties.appendix2_interior_union
+#print axioms Kreps.PreferenceProperties.appendix2_interior_ball
+#print axioms Kreps.PreferenceProperties.appendix2_closure_interior_complement
+#print axioms Kreps.PreferenceProperties.appendix2_relative_interior_self
+#print axioms Kreps.PreferenceProperties.definition_A2_24_upper
+#print axioms Kreps.PreferenceProperties.definition_A2_24_lower
+#print axioms Kreps.PreferenceProperties.proposition_A2_26
+#print axioms Kreps.PreferenceProperties.upperSemicontinuous_compact_choice
+#print axioms Kreps.PreferenceProperties.ClosedIndicatorSeries
+#print axioms Kreps.PreferenceProperties.appendix2_diagnostic_nonnegative
+#print axioms Kreps.PreferenceProperties.DiagnosticNegativeWeights
+#print axioms Kreps.PreferenceProperties.DiagnosticClosedSets
+#print axioms Kreps.PreferenceProperties.diagnosticNegativeWeights_summable
+#print axioms Kreps.PreferenceProperties.diagnosticNegative_formula
+#print axioms Kreps.PreferenceProperties.diagnosticNegative_not_upperSemicontinuousAt
+#print axioms Kreps.PreferenceProperties.appendix2_diagnostic_counterexample

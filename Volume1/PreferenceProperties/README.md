@@ -63,10 +63,21 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [MeasureUtility](PreferenceProperties/MeasureUtility.lean) | 10 | Lower-contour representation, cumulative-distribution identity and null-class continuity |
 | [OrthantMeasure](PreferenceProperties/OrthantMeasure.lean) | 5 | Boundary neighborhoods have positive Lebesgue measure; exact Problem 2.15 hypotheses |
 | [MeasureUtilityAtoms](PreferenceProperties/MeasureUtilityAtoms.lean) | 8 | Problem 2.15: a unit atom gives discontinuity under strictly increasing one-good preference |
+| [ProductQuasiconcavity](PreferenceProperties/ProductQuasiconcavity.lean) | 9 | Product mixture inequalities, including strict positive-rank inequalities |
+| [PlateauProductPreference](PreferenceProperties/PlateauProductPreference.lean) | 11 | Problem 2.8a, first utility: convex and continuous, no concave representation |
+| [SplitProductPreference](PreferenceProperties/SplitProductPreference.lean) | 13 | Problem 2.8a, second utility: semi-strict convexity and discontinuity |
+| [SplitProductNoConcavity](PreferenceProperties/SplitProductNoConcavity.lean) | 2 | Direct Jensen contradiction excludes every concave representation of the split preference |
+| [RepresentationQuantifiers](PreferenceProperties/RepresentationQuantifiers.lean) | 15 | Problem 2.1: all/some statements for ordinal and representation properties |
+| [RepresentationQuantifierExamples](PreferenceProperties/RepresentationQuantifierExamples.lean) | 17 | Same-preference transformations separating some from all representations |
+| [RecursiveRankInsertion](PreferenceProperties/RecursiveRankInsertion.lean) | 9 | Problem 2.14d: exact tie, max-plus-one, min-minus-one and midpoint insertion rule |
+| [RecursiveRanks](PreferenceProperties/RecursiveRanks.lean) | 13 | Problem 2.14d: permanent ranks, preserved comparisons and representation on the enumerated set |
+| [RecursiveRankDensity](PreferenceProperties/RecursiveRankDensity.lean) | 9 | Problem 2.14e: first midpoint insertion, exclusion of gaps and density in the smallest interval |
+| [AppendixMetricTopology](PreferenceProperties/AppendixMetricTopology.lean) | 21 | Appendix 2: Euclidean distance, basic topology, relative sets, closure and interior |
+| [AppendixSemicontinuity](PreferenceProperties/AppendixSemicontinuity.lean) | 9 | Appendix 2: semicontinuity, compact maxima and correction of the signed-series diagnostic |
 
-The current subset passes the full fresh-source audit: **427 theorems** and
-**561 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **329 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **555 theorems** and
+**712 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **457 new chapter and appendix theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
@@ -79,7 +90,12 @@ Problem 2.13 distinguishes full identification from a nonzero homothetic curve
 from identification over the observed goods projection in the quasi-linear case.
 The general continuous-representation theorem is proved through Cantor's countable
 order isomorphism and rational cuts; the book's diagonal proof is also complete.
-Problem 2.14c is complete; its specific recursive construction remains a separate obligation.
+Problems 2.14c–e are complete, including the specified recursive assignment and its
+interval-dense range. The connecting curve and sequence-limit extension remain in progress.
+Problem 2.8a is complete for both exact displayed utilities. Problem 2.1 retains only
+the additive-existence dependency; the book's excluded ???? cell is unclaimed.
+The [Appendix 2 inventory](docs/appendix2-source-map.md) separates completed bridges
+from its remaining obligations and records the signed-series diagnostic correction.
 Problem 2.15 is complete under its stated measure assumptions. Indifference classes
 of zero measure suffice for continuity; atoms can prevent it even under strict monotonicity.
 This is not a completed-chapter claim.

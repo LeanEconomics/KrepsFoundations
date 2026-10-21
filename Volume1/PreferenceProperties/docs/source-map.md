@@ -36,14 +36,14 @@ This chapter is in progress. `Pending` makes no formalization claim.
 
 | Source | Claim | Lean / status |
 | --- | --- | --- |
-| Problem 2.1; Table 2.1, p. 45 | All/some quantifiers for every representation-property row | Monotonicity rows verified; concavity and quasi-concavity implications follow from Proposition 2.8. Remaining rows and the complete quantifier table are pending. The explicitly excluded ???? cell stays unclaimed. Strong separability uses Proposition 2.14's hypotheses. |
+| Problem 2.1; Table 2.1, p. 45 | All/some quantifiers for every representation-property row | `RepresentationQuantifiers` proves all/some statements with representation existence explicit where needed. `RepresentationQuantifierExamples` gives exact counterexamples to all-representation claims for concavity, continuity, quasi-linearity, homogeneity and additivity; convexity can fail even to admit some concave representation. The only pending nonexcluded table direction is additive existence under Proposition 2.14's hypotheses. The explicitly excluded ???? cell stays unclaimed. |
 | Problem 2.2, p. 46 | Strictly convex preference can fail to attain a best point on a compact convex menu; open and unbounded introductory examples | `NonattainingUtility`, `problem_2_2`; `problem_2_2_intervals` proves nonemptiness, convexity and empty best sets on `(1,5)` and `(3,∞)` for every strictly monotone preference on the nonnegative half-line |
 | Problem 2.3, p. 46 | Global insatiability plus semi-strict convexity implies local insatiability; convexity alone does not | `problem_2_3_implication`, `FlatUtility`, `problem_2_3_counterexample` |
 | Problem 2.4, p. 46 | Proof of Proposition 2.5 | `problem_2_4` |
 | Problem 2.5a-b, p. 46 | Increasing transformations can destroy concavity and continuity | `ConvexWarp`, `problem_2_5a`, `jumpUtility_not_continuous`, `problem_2_5b` |
 | Problem 2.6, p. 46 | Strict all-coordinate monotonicity iff monotonicity plus LNS under continuity; conclusions without continuity | `problem_2_6`, `strictAllIncrease_locallyInsatiable`, `monotone_locallyInsatiable_strictAllIncrease`, `problem_2_6_without_continuity` |
 | Problem 2.7, p. 46 | Continuous, locally insatiable preference can fail the coordinatewise path-crossing assertion without monotonicity | `NetUtility`, `AvoidingPath`, `problem_2_7`, `netPreference_not_monotone` |
-| Problem 2.8a, pp. 46-47 | The two displayed product-based utilities: convexity, lack of any concave representation, semi-strictness and continuity | Pending; exact piecewise formulas were checked against page images |
+| Problem 2.8a, pp. 46-47 | The two displayed product-based utilities: convexity, lack of any concave representation, semi-strictness and continuity | `problem_2_8a_first` and `problem_2_8a_second` verify both exact displayed utilities and all requested classifications. The plateau-product preference is convex and continuous but not semi-strictly convex; the split-product preference is convex and semi-strictly convex but discontinuous. Neither has any concave representation; the second nonexistence proof uses a direct Jensen contradiction. |
 | Problem 2.8b, p. 47 | The displayed continuous semi-strictly convex preference has no concave representation | Pending; the difficult nonexistence conclusion is required |
 | Problem 2.9a, p. 47 | Positive linear utility: indifference curves and all seven listed preference properties | `TwoGoodLinearUtility`, `twoGoodLinear_indifference_curve`, `problem_2_9a`; monotone, strictly monotone, locally insatiable, convex, semi-strictly convex and continuous, but not strictly convex. The exact feasible line equation gives slope `-α/β`. |
 | Problem 2.9b, p. 47 | Leontief utility: indifference curves and all seven listed preference properties | `LeontiefUtility`, `leontief_indifference_curve`, `problem_2_9b`; monotone, locally insatiable, convex, semi-strictly convex and continuous, but neither strictly monotone nor strictly convex. Each level is exactly the union of the horizontal and vertical rays meeting at `(αc,βc)`. |
@@ -54,7 +54,8 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.14a, p. 48 | Construct a continuous connected curve with preference bounds for every bundle, including attained/unattained extrema | Pending |
 | Problem 2.14b, p. 48 | Every indifference class meets the constructed curve | Pending construction of the specified curve in part (a); the general connected-image crossing lemma is available |
 | Problem 2.14c, p. 48 | Extend a continuous curve representation to the full domain by indifference | `LiftedUtility`, `liftedUtility_represents`, `liftedUtility_agrees`, `liftedUtility_range`, `continuous_of_ordConnected_range`, `problem_2_14c`; the curve is connected and meets every indifference class |
-| Problem 2.14d-e, p. 49 | Recursive countable assignment represents preference and has interval-dense values | Pending; choose initial value zero for the first class |
+| Problem 2.14d, p. 49 | Exact recursive countable assignment represents preference | `InsertedRank`, `RecursiveRankStage`, `RecursiveRank`; the first value is zero, later values obey the four printed cases, old assignments remain unchanged, and `problem_2_14d` represents the sampled set with ties and repetitions allowed. `problem_2_14d_exists` needs only rationality. |
+| Problem 2.14e, p. 49 | Recursive values are dense in their smallest containing interval | `RecursiveRankInterval`, its interval/minimality lemmas, and `problem_2_14e`; a first insertion into an empty gap must be its midpoint, excluding positive-length gaps between assigned ranks. |
 | Problem 2.14f-g, p. 49 | Finite sequence limits, independence of sequence, continuous representation on the curve | Pending |
 | Problem 2.15, p. 49 | Finite-measure lower-contour utility: representation, upper semicontinuity, discontinuity example and sufficient continuity conditions | `problem_2_15` proves representation and upper semicontinuity under the exact Lebesgue-positivity assumption; `orthantLebesgue_open_pos` handles boundary neighborhoods. `problem_2_15_not_continuous` gives a finite Lebesgue-positive measure with a unit atom and strictly increasing continuous one-good preference. `problem_2_15_continuity` gives continuity when every indifference class has zero measure; the pointwise result is `measureUtility_continuousAt_of_null_class`. |
 
@@ -69,7 +70,7 @@ are unchanged; imports and namespaces are local. They remain covered by the
 freshly audited again in this project. Their theorem counts are prerequisite counts,
 not new Chapter 2 results.
 
-Appendix 2, pp. 441-451, and the relevant portions of Appendix 3, pp. 452-468, need
-itemized source inventories and book-statement bridges. Imported Mathlib support is
-not by itself a claim that either appendix is complete. The volume proposal records
-which later chapters own the rest of Appendix 3.
+The [Appendix 2 source map](appendix2-source-map.md) inventories pp. 441–451 and
+records explicit bridges and pending work. The relevant Appendix 3 material on
+pp. 452–468 still needs its complete inventory. Importing Mathlib does not itself
+complete an appendix; the volume proposal records later ownership of Appendix 3.
