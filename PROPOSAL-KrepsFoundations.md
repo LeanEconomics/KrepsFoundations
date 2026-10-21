@@ -25,7 +25,7 @@ DynamicProgramming pins and its stricter no-placeholder verifier where the refer
 differ; do not copy the other repository’s model-specific scope or local machine setup.
 
 Status: Chapters 1–2 and their required foundations are complete. Chapter 1 has
-263 theorems and 387 audited declarations; Chapter 2 has 951 new chapter/appendix
+263 theorems and 387 audited declarations; Chapter 2 has 966 new chapter/appendix
 theorems, plus 98 attributed local prerequisite theorems. Source maps and fresh
 verification records specify the checked scope. Appendix 1 and Appendix 2 are complete;
 the Appendix 3 inventory distinguishes the foundations used here from its later material.

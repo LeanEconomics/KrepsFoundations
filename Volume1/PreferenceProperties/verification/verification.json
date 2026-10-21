@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T16:10:35.083003+00:00",
-  "theorems": 1049,
+  "checked_at_utc": "2026-10-21T20:48:34.583048+00:00",
+  "theorems": 1064,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/UpperSemicontinuousSeries.lean": 2,
@@ -150,9 +150,12 @@
     "PreferenceProperties/NondegenerateScalarAdditiveExistence.lean": 1,
     "PreferenceProperties/PrimitiveAdditiveExistence.lean": 3,
     "PreferenceProperties/AdditiveRepresentationQuantifiers.lean": 2,
-    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean": 6
+    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean": 6,
+    "PreferenceProperties/FoodClothingExample.lean": 8,
+    "PreferenceProperties/CommodityProjectionExample.lean": 5,
+    "PreferenceProperties/QuasiLinearWealthExample.lean": 2
   },
-  "audited_declarations": 1354,
+  "audited_declarations": 1378,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -6923,6 +6926,126 @@
       "name": "Kreps.PreferenceProperties.proposition_2_14_orthant_iff",
       "kind": "theorem",
       "module": "PreferenceProperties/CommodityPartitionAdditiveExistence.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.FoodClothingBundle",
+      "kind": "abbrev",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.FoodWithClothing",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.FirstFoodBundle",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SecondFoodBundle",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SkirtContext",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.JeansContext",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.replaceFoodBlock",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothing_comparison_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothing_strict_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothing_printed_comparison",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothing_printed_strict",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.FoodClothingWitnessUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothingWitness_separable",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothingWitness_initial_ranking",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.foodClothingWitness_properties",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FoodClothingExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.BeerWineBreadBundle",
+      "kind": "def",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.BeerBreadOwner",
+      "kind": "def",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.beerBreadOwner_selected",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.beerBreadOwner_leftover",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.beerWineBread_projection",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.beerWineBread_leftover",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.beerWineBread_reconstruction",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommodityProjectionExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.moneyTranslation_wealth_example",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearWealthExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_wealth_example",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearWealthExample.lean"
     }
   ],
   "full_build": "passed",
@@ -13391,6 +13514,124 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.FoodClothingBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.FoodWithClothing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.FirstFoodBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SecondFoodBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SkirtContext": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.JeansContext": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.replaceFoodBlock": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothing_comparison_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothing_strict_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothing_printed_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothing_printed_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.FoodClothingWitnessUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothingWitness_separable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothingWitness_initial_ranking": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.foodClothingWitness_properties": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.BeerWineBreadBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.BeerBreadOwner": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.beerBreadOwner_selected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.beerBreadOwner_leftover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.beerWineBread_projection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.beerWineBread_leftover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.beerWineBread_reconstruction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.moneyTranslation_wealth_example": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_wealth_example": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -13477,7 +13718,7 @@
     "PreferenceProperties/SplitProductPreference.lean": "bd51fd5e148da1f8c096505ad3d2211f191c3b033ccb66ceb9549ebc52db14b4",
     "PreferenceProperties/RecursiveRankDensity.lean": "6b9ddf460c01b77fab6d950d100f2b4f66c0bb23df89a633adeb5afd16e58a43",
     "PreferenceProperties/RatioSumUtility.lean": "1a82336c7599e255de1d839803a28295be1094013fbfae54156e11004302037a",
-    "PreferenceProperties/StrongSeparabilityCancellation.lean": "3c427dbbfe4c6cd4a0dda13d8c9a3af77ccb1fd731714dfa50893598b62a2b01",
+    "PreferenceProperties/StrongSeparabilityCancellation.lean": "0d3bdfad6c1d1f99791870d23ef08de65f897702c0a167961473ac4a099a09f5",
     "PreferenceProperties/IntervalScoreRepresentation.lean": "ee2d80f7b9b23055570fba4f99713fd89915596a726932e94b68563a8ceec94d",
     "PreferenceProperties/PairSumRepresentation.lean": "6078dcdcff125781ca12f26ad2d08fc25f6cf18c02a84d88fb3c0ac77b55189c",
     "PreferenceProperties/AdditiveChartCalibrationOn.lean": "d44b913c96a59f92e893f7d2f79aa80a60f61fe3fa2a57985b7a0dc1e9055951",
@@ -13543,16 +13784,19 @@
     "PreferenceProperties/PrimitiveAdditiveExistence.lean": "f812dbdafd77cdc8a02fd2d818a8b499cae45b50347ea16fe4482e6b90aff4ee",
     "PreferenceProperties/AdditiveRepresentationQuantifiers.lean": "ea5a7e6b76253a5a561263409f9df0e5bac9f6299dbe8f683d498ffb9bb29fa8",
     "PreferenceProperties/CommodityPartitionAdditiveExistence.lean": "8f17fb5548ff5b4c80eb1e3250f09d6ae3d2f4f8bc0f53ab4c758d517120c552",
-    "PreferenceProperties.lean": "8c8b300472c267474d79050981a94f46c69ef4b41bdba835ebb2861d1fb3c627",
+    "PreferenceProperties/FoodClothingExample.lean": "233313eecfb5dc2a75724d3a890b1e5e795199abd99a64f7ca193d2ffe00c79a",
+    "PreferenceProperties/CommodityProjectionExample.lean": "b3996c77dc2ec02dee52f8e1104577a97a63253d583fbdc9bcc7f99d5d5da81f",
+    "PreferenceProperties/QuasiLinearWealthExample.lean": "9f8304c9aa45e66ad003bf523a326dd41878570470c1ededc26cc5e6a19e6d7d",
+    "PreferenceProperties.lean": "d69092e932dfdb7b5e5ff3793df8d261ba0af3011b0af5714f65e6675d98c961",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "16d88497d9bd23347835d7b674d003cb096ac96c6190a79dc652c29b8a6abdc1",
+    "proof-manifest.json": "2bfef3328b4d866872c712536a39b1186ca4762062646e6f009ccd050b143bc9",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "eecae2f6dd4eb9c1eae469fb907e6deebd246e6c44db3ccb2c7af5cbe086774e",
+  "fresh_audit_sha256": "eacb8b871274254d48e6cefee97794dd84da63178285a24648fefb405a2b085c",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 complete: all numbered definitions, propositions and Lemma 2.10; Problems 2.1\u20132.15, excluding only the Table 2.1 cell explicitly excluded by the book; and the mathematical examples inventoried in docs/source-map.md. Proposition 2.14 constructs continuous additive utility from primitive rationality, continuity, strong separability and three nontrivial blocks, including the original commodity-partition orthant, attained endpoints and inessential blocks. Its Table 2.1 existence entry and the non-all counterexample are complete. No representation or commodity monotonicity assumption is added to this source theorem. General continuous representation, the diagonal construction, weak separability, quasi-linearity and signed homogeneous representation are complete. Problem 2.14 uses its specified connecting curve, exact recursive rank assignment, interval density, finite sequence limits and continuous extension. Problem 2.15 uses its exact Lebesgue-positivity assumption, including the discontinuity example and null-class continuity criterion. Twelve attributed local Chapter 1 prerequisite modules contribute 98 theorems. Appendix 2 is fully covered by explicit statement bridges, examples and corrections. Appendix 3 definitions and propositions A3.1\u20137 and A3.16\u201323 have explicit bridges; the inventory identifies its later-use material and unformalized p. 456 illustration, without claiming completion of that entire appendix. See the source maps, corrections and additive-construction guide for exact scope.",
+  "scope": "Chapter 2 complete: all numbered definitions, propositions and Lemma 2.10; Problems 2.1\u20132.15, excluding only the Table 2.1 cell explicitly excluded by the book; and the mathematical examples inventoried in docs/source-map.md, including the literal food/clothing comparison, beer/wine/bread projection and ten-dollar wealth comparison. Proposition 2.14 constructs continuous additive utility from primitive rationality, continuity, strong separability and three nontrivial blocks, including the original commodity-partition orthant, attained endpoints and inessential blocks. Its Table 2.1 existence entry and the non-all counterexample are complete. No representation or commodity monotonicity assumption is added to this source theorem. General continuous representation, the diagonal construction, weak separability, quasi-linearity and signed homogeneous representation are complete. Problem 2.14 uses its specified connecting curve, exact recursive rank assignment, interval density, finite sequence limits and continuous extension. Problem 2.15 uses its exact Lebesgue-positivity assumption, including the discontinuity example and null-class continuity criterion. Twelve attributed local Chapter 1 prerequisite modules contribute 98 theorems. Appendix 2 is fully covered by explicit statement bridges, examples and corrections. Appendix 3 definitions and propositions A3.1\u20137 and A3.16\u201323 have explicit bridges; the inventory identifies its later-use material and unformalized p. 456 illustration, without claiming completion of that entire appendix. See the source maps, corrections and additive-construction guide for exact scope.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

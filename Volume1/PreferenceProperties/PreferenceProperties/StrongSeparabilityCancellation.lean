@@ -11,8 +11,9 @@ import PreferenceProperties.AdditiveSeparability
 Preparation for Kreps I, Proposition 2.14. Debreu's 1959 discussion paper,
 pp. 12-13, derives the local Thomsen hexagon by compensating in a third block.
 The cancellation below is proved from strong separability, not assumed as an axiom.
-Connectedness and continuity supply the compensator locally. Constructing an
-additive cardinal scale from this local cancellation is a separate remaining step.
+Connectedness and continuity supply the compensator locally. The cardinal-scale
+construction and its global extension culminate in `proposition_2_14_exists`
+in `PrimitiveAdditiveExistence`.
 
 Source: https://cowles.yale.edu/sites/default/files/2022-08/d0076.pdf
 -/

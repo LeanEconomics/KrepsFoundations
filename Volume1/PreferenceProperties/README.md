@@ -161,10 +161,13 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [PrimitiveAdditiveExistence](PreferenceProperties/PrimitiveAdditiveExistence.lean) | 3 | Continuous additive utility from primitive preference assumptions |
 | [AdditiveRepresentationQuantifiers](PreferenceProperties/AdditiveRepresentationQuantifiers.lean) | 2 | The additive existence entry in Table 2.1 |
 | [CommodityPartitionAdditiveExistence](PreferenceProperties/CommodityPartitionAdditiveExistence.lean) | 6 | Additive utility on the original partitioned commodity orthant |
+| [FoodClothingExample](PreferenceProperties/FoodClothingExample.lean) | 8 | Section 2.5: exact food bundles, skirt/jeans comparison and a separable witness |
+| [CommodityProjectionExample](PreferenceProperties/CommodityProjectionExample.lean) | 5 | Section 2.5: exact beer/wine/bread projection, leftover and reconstruction |
+| [QuasiLinearWealthExample](PreferenceProperties/QuasiLinearWealthExample.lean) | 2 | Section 2.6: the exact ten-dollar trade at two wealth levels |
 
-The complete chapter passes the full fresh-source audit: **1049 theorems** and
-**1354 audited declarations** across 149 modules. This includes 98 theorems
-in twelve local Chapter 1 prerequisite modules and **951 new chapter and appendix
+The complete chapter passes the full fresh-source audit: **1064 theorems** and
+**1378 audited declarations** across 152 modules. This includes 98 theorems
+in twelve local Chapter 1 prerequisite modules and **966 new chapter and appendix
 theorems**. All 14 verifier tests pass. The copied modules are from Chapter 1 commit
 `dfb548d`; the project has no dependency on another chapter's build products.
 The [verification record](verification/verification.json) contains the source hashes
@@ -184,6 +187,8 @@ in the quasi-linear case. General continuous representation is proved both throu
 the book's diagonal argument and without monotonicity through countable ranks.
 Problem 2.14 follows its exact curve, recursive assignment, density and limit construction.
 Problem 2.15 uses the stated measure assumptions, including atoms and null indifference classes.
+The literal food/clothing, commodity-projection and ten-dollar wealth illustrations
+are instantiated with the printed quantities and linked to the general chapter definitions.
 
 The [Appendix 2 inventory](docs/appendix2-source-map.md) maps every statement and
 mathematical example, including the signed-series diagnostic correction.

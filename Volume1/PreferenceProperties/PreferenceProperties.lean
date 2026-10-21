@@ -152,6 +152,9 @@ import PreferenceProperties.NondegenerateScalarAdditiveExistence
 import PreferenceProperties.PrimitiveAdditiveExistence
 import PreferenceProperties.AdditiveRepresentationQuantifiers
 import PreferenceProperties.CommodityPartitionAdditiveExistence
+import PreferenceProperties.FoodClothingExample
+import PreferenceProperties.CommodityProjectionExample
+import PreferenceProperties.QuasiLinearWealthExample
 
 /-!
 # Kreps I, Chapter 2

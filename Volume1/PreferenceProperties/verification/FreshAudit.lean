@@ -9910,8 +9910,9 @@ Authors: KrepsFoundations contributors
 Preparation for Kreps I, Proposition 2.14. Debreu's 1959 discussion paper,
 pp. 12-13, derives the local Thomsen hexagon by compensating in a third block.
 The cancellation below is proved from strong separability, not assumed as an axiom.
-Connectedness and continuity supply the compensator locally. Constructing an
-additive cardinal scale from this local cancellation is a separate remaining step.
+Connectedness and continuity supply the compensator locally. The cardinal-scale
+construction and its global extension culminate in `proposition_2_14_exists`
+in `PrimitiveAdditiveExistence`.
 
 Source: https://cowles.yale.edu/sites/default/files/2022-08/d0076.pdf
 -/
@@ -16950,6 +16951,232 @@ theorem proposition_2_14_orthant_iff (owner : Fin k → Fin n)
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Food rankings independent of clothing
+
+Kreps I, Section 2.5, p. 39. Food coordinates are steaks, corn, potatoes and
+lettuce, in that order. The printed alternatives are `(2,2,3,0)` and `(1,5,0,3)`.
+Weak separability makes their comparison independent of clothing. The book's
+ranking is conditional: no particular ranking is imposed on every consumer.
+
+We encode the skirt and jeans contexts by `(1,0)` and `(0,1)` in a nonnegative
+two-good clothing block. Those numeric clothing encodings are ours; the book
+names the contexts without assigning coordinates. Food is the single selected
+block and clothing is the leftover block in `WeaklySeparable`.
+
+The final utility is a constructed witness, not a utility specified by Kreps.
+It gives all six goods positive weights and satisfies the illustrated ranking.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Four food quantities in one selected block, together with two clothing quantities. -/
+abbrev FoodClothingBundle :=
+  BlockBundle (fun _ : Fin 1 => NonnegativeOrthant 4) (NonnegativeOrthant 2)
+
+/-- Combine a food bundle with its clothing context. -/
+def FoodWithClothing (food : NonnegativeOrthant 4) (clothing : NonnegativeOrthant 2) :
+    FoodClothingBundle := (fun _ => food, clothing)
+
+/-- The first printed food bundle: two steaks, two corn, three potatoes and no lettuce. -/
+def FirstFoodBundle : NonnegativeOrthant 4 :=
+  ⟨![2, 2, 3, 0], by intro j; fin_cases j <;> norm_num⟩
+
+/-- The second printed bundle: one steak, five corn, no potatoes and three kilograms of lettuce. -/
+def SecondFoodBundle : NonnegativeOrthant 4 :=
+  ⟨![1, 5, 0, 3], by intro j; fin_cases j <;> norm_num⟩
+
+/-- Our nonnegative two-good encoding of wearing a skirt. -/
+def SkirtContext : NonnegativeOrthant 2 :=
+  ⟨![1, 0], by intro j; fin_cases j <;> norm_num⟩
+
+/-- Our nonnegative two-good encoding of wearing jeans. -/
+def JeansContext : NonnegativeOrthant 2 :=
+  ⟨![0, 1], by intro j; fin_cases j <;> norm_num⟩
+
+/-- Replacing the selected block replaces precisely the food and keeps the clothing. -/
+theorem replaceFoodBlock (s : FoodClothingBundle) (food : NonnegativeOrthant 4) :
+    ReplaceBlock s 0 food = FoodWithClothing food s.2 := by
+  apply Prod.ext
+  · funext i
+    have hi : i = 0 := Subsingleton.elim _ _
+    subst i
+    simp [ReplaceBlock, FoodWithClothing]
+  · rfl
+
+/-- Weak separability preserves any food comparison between arbitrary clothing contexts. -/
+theorem foodClothing_comparison_iff {r : FoodClothingBundle → FoodClothingBundle → Prop}
+    (hs : WeaklySeparable r) (a b : NonnegativeOrthant 4) (c d : NonnegativeOrthant 2) :
+    r (FoodWithClothing a c) (FoodWithClothing b c) ↔
+      r (FoodWithClothing a d) (FoodWithClothing b d) := by
+  simpa only [replaceFoodBlock, FoodWithClothing] using
+    hs 0 a b (FoodWithClothing a c) (FoodWithClothing a d)
+
+/-- Strict food comparisons are also independent of the surrounding clothing quantities. -/
+theorem foodClothing_strict_iff {r : FoodClothingBundle → FoodClothingBundle → Prop}
+    (hs : WeaklySeparable r) (a b : NonnegativeOrthant 4) (c d : NonnegativeOrthant 2) :
+    Strict r (FoodWithClothing a c) (FoodWithClothing b c) ↔
+      Strict r (FoodWithClothing a d) (FoodWithClothing b d) := by
+  simpa only [replaceFoodBlock, FoodWithClothing] using
+    weaklySeparable_strict hs 0 a b (FoodWithClothing a c) (FoodWithClothing a d)
+
+/-- The p. 39 food bundles have the same weak comparison in the skirt and jeans contexts. -/
+theorem foodClothing_printed_comparison {r : FoodClothingBundle → FoodClothingBundle → Prop}
+    (hs : WeaklySeparable r) :
+    r (FoodWithClothing FirstFoodBundle SkirtContext)
+      (FoodWithClothing SecondFoodBundle SkirtContext) ↔
+    r (FoodWithClothing FirstFoodBundle JeansContext)
+      (FoodWithClothing SecondFoodBundle JeansContext) :=
+  foodClothing_comparison_iff hs FirstFoodBundle SecondFoodBundle SkirtContext JeansContext
+
+/-- If the first printed bundle is strictly preferred in a skirt, it is preferred in jeans. -/
+theorem foodClothing_printed_strict {r : FoodClothingBundle → FoodClothingBundle → Prop}
+    (hs : WeaklySeparable r)
+    (hfood : Strict r (FoodWithClothing FirstFoodBundle SkirtContext)
+      (FoodWithClothing SecondFoodBundle SkirtContext)) :
+    Strict r (FoodWithClothing FirstFoodBundle JeansContext)
+      (FoodWithClothing SecondFoodBundle JeansContext) :=
+  (foodClothing_strict_iff hs FirstFoodBundle SecondFoodBundle SkirtContext JeansContext).mp hfood
+
+/-- A constructed additive witness: steaks have weight four and every other good weight one. -/
+def FoodClothingWitnessUtility (x : FoodClothingBundle) : ℝ :=
+  4 * (x.1 0).val 0 + (x.1 0).val 1 + (x.1 0).val 2 + (x.1 0).val 3 +
+    x.2.val 0 + x.2.val 1
+
+/-- The constructed utility satisfies food separability on the full nonnegative domain. -/
+theorem foodClothingWitness_separable :
+    WeaklySeparable (UtilityPref FoodClothingWitnessUtility) := by
+  intro i a b s t
+  have hi : i = 0 := Subsingleton.elim _ _
+  subst i
+  simp only [replaceFoodBlock, UtilityPref, FoodClothingWitnessUtility, FoodWithClothing]
+  constructor <;> intro h <;> linarith
+
+/-- The constructed witness ranks the first food bundle strictly above the second in a skirt. -/
+theorem foodClothingWitness_initial_ranking :
+    Strict (UtilityPref FoodClothingWitnessUtility)
+      (FoodWithClothing FirstFoodBundle SkirtContext)
+      (FoodWithClothing SecondFoodBundle SkirtContext) := by
+  norm_num [Strict, UtilityPref, FoodClothingWitnessUtility, FoodWithClothing,
+    FirstFoodBundle, SecondFoodBundle, SkirtContext]
+
+/-- A rational, separable preference realizes the book's conditional ranking in both contexts. -/
+theorem foodClothingWitness_properties :
+    Rational (UtilityPref FoodClothingWitnessUtility) ∧
+    WeaklySeparable (UtilityPref FoodClothingWitnessUtility) ∧
+    Strict (UtilityPref FoodClothingWitnessUtility)
+      (FoodWithClothing FirstFoodBundle SkirtContext)
+      (FoodWithClothing SecondFoodBundle SkirtContext) ∧
+    Strict (UtilityPref FoodClothingWitnessUtility)
+      (FoodWithClothing FirstFoodBundle JeansContext)
+      (FoodWithClothing SecondFoodBundle JeansContext) :=
+  ⟨proposition_1_3a _, foodClothingWitness_separable, foodClothingWitness_initial_ranking,
+    foodClothing_printed_strict foodClothingWitness_separable foodClothingWitness_initial_ranking⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The beer, wine and bread projection
+
+Kreps I, p. 40. The full bundle consists of four beers, three wines and five loaves
+of bread. Selecting commodities `{1,3}` gives the beer-and-bread sub-bundle `(4,5)`;
+the complementary wine quantity is three. The book uses one-based commodity names.
+Here `Fin 3` uses zero-based coordinates, so the selected set is `{0,2}` and wine
+has coordinate one. The example uses the chapter's actual `orthantGrouping`
+equivalence, including its leftover block and reconstruction of the original bundle.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The full printed bundle `(4,3,5)`, in beer, wine and bread order. -/
+def BeerWineBreadBundle : NonnegativeOrthant 3 :=
+  ⟨![4, 3, 5], by intro j; fin_cases j <;> norm_num⟩
+
+/-- Assign beer and bread to block zero, leaving wine outside the selected block. -/
+def BeerBreadOwner (j : Fin 3) : Option (Fin 1) := if j = 1 then none else some 0
+
+/-- The selected coordinates are exactly `{0,2}`, the printed commodity names `{1,3}`. -/
+theorem beerBreadOwner_selected :
+    {j | BeerBreadOwner j = some 0} = ({0, 2} : Set (Fin 3)) := by
+  ext j
+  fin_cases j <;> norm_num [BeerBreadOwner]
+
+/-- The complementary commodity is exactly wine, with zero-based coordinate one. -/
+theorem beerBreadOwner_leftover :
+    {j | BeerBreadOwner j = none} = ({1} : Set (Fin 3)) := by
+  ext j
+  fin_cases j <;> norm_num [BeerBreadOwner]
+
+/-- Reading beer and bread from the actual selected block gives the printed pair `(4,5)`. -/
+theorem beerWineBread_projection :
+    (((orthantGrouping BeerBreadOwner BeerWineBreadBundle).1 0
+        ⟨0, by norm_num [BeerBreadOwner]⟩ : ℝ),
+      ((orthantGrouping BeerBreadOwner BeerWineBreadBundle).1 0
+        ⟨2, by norm_num [BeerBreadOwner]⟩ : ℝ)) = (4, 5) := by
+  rfl
+
+/-- Reading the actual leftover block gives the original wine quantity, three. -/
+theorem beerWineBread_leftover :
+    ((orthantGrouping BeerBreadOwner BeerWineBreadBundle).2
+      ⟨1, by norm_num [BeerBreadOwner]⟩ : ℝ) = 3 := by
+  rfl
+
+/-- The selected sub-bundle and its complement reconstruct the complete printed bundle. -/
+theorem beerWineBread_reconstruction :
+    (orthantGrouping BeerBreadOwner).symm
+      (orthantGrouping BeerBreadOwner BeerWineBreadBundle) = BeerWineBreadBundle :=
+  (orthantGrouping BeerBreadOwner).symm_apply_apply BeerWineBreadBundle
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The ten-dollar trade at two wealth levels
+
+Kreps I, Section 2.6, p. 43. A consumer accepts exchanging goods `x` and ten
+dollars for goods `x'` at zero money left over exactly when the same exchange
+is acceptable at one hundred thousand dollars left over. Both comparisons are
+conditional on preference: quasi-linearity does not assert that the trade is
+accepted. All money amounts belong to the nonnegative domain.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {X : Type*} {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+
+/-- The exact p. 43 comparison follows from common-addition invariance alone. -/
+theorem moneyTranslation_wealth_example (ht : MoneyTranslation r) (x x' : X) :
+    r (x', 0) (x, 10) ↔ r (x', 100000) (x, 100010) := by
+  convert ht x' x 0 10 100000 using 1
+  norm_num
+
+/-- Quasi-linear preferences preserve the book's ten-dollar trade at both wealth levels. -/
+theorem quasiLinear_wealth_example (hq : QuasiLinear r) (x x' : X) :
+    r (x', 0) (x, 10) ↔ r (x', 100000) (x, 100010) := by
+  obtain ⟨u, hu⟩ := hq
+  exact moneyTranslation_wealth_example (quasiLinear_moneyTranslation hu) x x'
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -18305,3 +18532,27 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.proposition_2_14_orthant
 #print axioms Kreps.PreferenceProperties.proposition_2_14_orthant_additive
 #print axioms Kreps.PreferenceProperties.proposition_2_14_orthant_iff
+#print axioms Kreps.PreferenceProperties.FoodClothingBundle
+#print axioms Kreps.PreferenceProperties.FoodWithClothing
+#print axioms Kreps.PreferenceProperties.FirstFoodBundle
+#print axioms Kreps.PreferenceProperties.SecondFoodBundle
+#print axioms Kreps.PreferenceProperties.SkirtContext
+#print axioms Kreps.PreferenceProperties.JeansContext
+#print axioms Kreps.PreferenceProperties.replaceFoodBlock
+#print axioms Kreps.PreferenceProperties.foodClothing_comparison_iff
+#print axioms Kreps.PreferenceProperties.foodClothing_strict_iff
+#print axioms Kreps.PreferenceProperties.foodClothing_printed_comparison
+#print axioms Kreps.PreferenceProperties.foodClothing_printed_strict
+#print axioms Kreps.PreferenceProperties.FoodClothingWitnessUtility
+#print axioms Kreps.PreferenceProperties.foodClothingWitness_separable
+#print axioms Kreps.PreferenceProperties.foodClothingWitness_initial_ranking
+#print axioms Kreps.PreferenceProperties.foodClothingWitness_properties
+#print axioms Kreps.PreferenceProperties.BeerWineBreadBundle
+#print axioms Kreps.PreferenceProperties.BeerBreadOwner
+#print axioms Kreps.PreferenceProperties.beerBreadOwner_selected
+#print axioms Kreps.PreferenceProperties.beerBreadOwner_leftover
+#print axioms Kreps.PreferenceProperties.beerWineBread_projection
+#print axioms Kreps.PreferenceProperties.beerWineBread_leftover
+#print axioms Kreps.PreferenceProperties.beerWineBread_reconstruction
+#print axioms Kreps.PreferenceProperties.moneyTranslation_wealth_example
+#print axioms Kreps.PreferenceProperties.quasiLinear_wealth_example

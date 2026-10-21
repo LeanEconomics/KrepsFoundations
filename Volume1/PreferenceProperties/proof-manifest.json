@@ -149,7 +149,10 @@
     "PreferenceProperties/NondegenerateScalarAdditiveExistence.lean",
     "PreferenceProperties/PrimitiveAdditiveExistence.lean",
     "PreferenceProperties/AdditiveRepresentationQuantifiers.lean",
-    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean"
+    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean",
+    "PreferenceProperties/FoodClothingExample.lean",
+    "PreferenceProperties/CommodityProjectionExample.lean",
+    "PreferenceProperties/QuasiLinearWealthExample.lean"
   ],
   "theorem_counts": {
     "PreferenceProperties/Basic.lean": 5,
@@ -300,8 +303,11 @@
     "PreferenceProperties/NondegenerateScalarAdditiveExistence.lean": 1,
     "PreferenceProperties/PrimitiveAdditiveExistence.lean": 3,
     "PreferenceProperties/AdditiveRepresentationQuantifiers.lean": 2,
-    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean": 6
+    "PreferenceProperties/CommodityPartitionAdditiveExistence.lean": 6,
+    "PreferenceProperties/FoodClothingExample.lean": 8,
+    "PreferenceProperties/CommodityProjectionExample.lean": 5,
+    "PreferenceProperties/QuasiLinearWealthExample.lean": 2
   },
-  "scope": "Chapter 2 complete: all numbered definitions, propositions and Lemma 2.10; Problems 2.1–2.15, excluding only the Table 2.1 cell explicitly excluded by the book; and the mathematical examples inventoried in docs/source-map.md. Proposition 2.14 constructs continuous additive utility from primitive rationality, continuity, strong separability and three nontrivial blocks, including the original commodity-partition orthant, attained endpoints and inessential blocks. Its Table 2.1 existence entry and the non-all counterexample are complete. No representation or commodity monotonicity assumption is added to this source theorem. General continuous representation, the diagonal construction, weak separability, quasi-linearity and signed homogeneous representation are complete. Problem 2.14 uses its specified connecting curve, exact recursive rank assignment, interval density, finite sequence limits and continuous extension. Problem 2.15 uses its exact Lebesgue-positivity assumption, including the discontinuity example and null-class continuity criterion. Twelve attributed local Chapter 1 prerequisite modules contribute 98 theorems. Appendix 2 is fully covered by explicit statement bridges, examples and corrections. Appendix 3 definitions and propositions A3.1–7 and A3.16–23 have explicit bridges; the inventory identifies its later-use material and unformalized p. 456 illustration, without claiming completion of that entire appendix. See the source maps, corrections and additive-construction guide for exact scope.",
+  "scope": "Chapter 2 complete: all numbered definitions, propositions and Lemma 2.10; Problems 2.1–2.15, excluding only the Table 2.1 cell explicitly excluded by the book; and the mathematical examples inventoried in docs/source-map.md, including the literal food/clothing comparison, beer/wine/bread projection and ten-dollar wealth comparison. Proposition 2.14 constructs continuous additive utility from primitive rationality, continuity, strong separability and three nontrivial blocks, including the original commodity-partition orthant, attained endpoints and inessential blocks. Its Table 2.1 existence entry and the non-all counterexample are complete. No representation or commodity monotonicity assumption is added to this source theorem. General continuous representation, the diagonal construction, weak separability, quasi-linearity and signed homogeneous representation are complete. Problem 2.14 uses its specified connecting curve, exact recursive rank assignment, interval density, finite sequence limits and continuous extension. Problem 2.15 uses its exact Lebesgue-positivity assumption, including the discontinuity example and null-class continuity criterion. Twelve attributed local Chapter 1 prerequisite modules contribute 98 theorems. Appendix 2 is fully covered by explicit statement bridges, examples and corrections. Appendix 3 definitions and propositions A3.1–7 and A3.16–23 have explicit bridges; the inventory identifies its later-use material and unformalized p. 456 illustration, without claiming completion of that entire appendix. See the source maps, corrections and additive-construction guide for exact scope.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }
