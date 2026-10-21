@@ -12,6 +12,8 @@ import Mathlib.Topology.Compactness.Compact
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Analysis.Convex.Quasiconvex
 import Mathlib.Topology.Order.Compact
+import Mathlib.Basic.NNReal.Basic
+import Mathlib.Order.CountableDenseLinearOrder
 set_option autoImplicit false
 
 /-
@@ -2837,6 +2839,524 @@ theorem netPreference_not_monotone : ¬MonotonePreference (UtilityPref NetUtilit
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Quasi-linear utility and compensating money
+
+Kreps I, Definition 2.15 and Proposition 2.16, pp. 43-44, and Problem 2.11,
+p. 48. The non-money bundle has any nonempty type X; taking X to be the
+nonnegative orthant gives the book's domain. Money is nonnegative throughout.
+The construction follows the hint: calibrate each bundle against a fixed x₀,
+then assign the difference between the two compensating money amounts.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {X : Type*}
+
+/-- **Definition 2.15:** subutility plus the amount of money left over. -/
+def QuasiLinearUtility (u : X → ℝ) (p : X × ℝ≥0) : ℝ := u p.1 + p.2
+
+/-- A preference admits a utility representation with money coefficient one. -/
+def QuasiLinear (r : (X × ℝ≥0) → (X × ℝ≥0) → Prop) : Prop :=
+  ∃ u : X → ℝ, Represents (QuasiLinearUtility u) r
+
+/-- **Proposition 2.16a:** for fixed non-money goods, money orders the bundles. -/
+def OwnMoneyOrder (r : (X × ℝ≥0) → (X × ℝ≥0) → Prop) : Prop :=
+  ∀ x m n, r (x, m) (x, n) ↔ n ≤ m
+
+/-- **Proposition 2.16b:** each common nonnegative money addition preserves comparisons. -/
+def MoneyTranslation (r : (X × ℝ≥0) → (X × ℝ≥0) → Prop) : Prop :=
+  ∀ x y m n t, r (x, m) (y, n) ↔ r (x, m + t) (y, n + t)
+
+/-- **Proposition 2.16c:** money can make any two non-money bundles indifferent. -/
+def MoneyCompensable (r : (X × ℝ≥0) → (X × ℝ≥0) → Prop) : Prop :=
+  ∀ x y, ∃ m n, Indifferent r (x, m) (y, n)
+
+/-- Indifferent substitutions leave every weak comparison unchanged. -/
+theorem indifferent_compare_iff {Y : Type*} {r : Y → Y → Prop}
+    (ht : TransitivePref r) {x x' y y' : Y}
+    (hx : Indifferent r x x') (hy : Indifferent r y y') : r x y ↔ r x' y' := by
+  constructor
+  · intro h
+    exact ht x' y y' (ht x' x y hx.2 h) hy.1
+  · intro h
+    exact ht x y' y (ht x x' y' hx.1 h) hy.2
+
+/-- Translation invariance also preserves indifference in both directions. -/
+theorem moneyTranslation_indifferent {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    (ht : MoneyTranslation r) (x y : X) (m n t : ℝ≥0) :
+    Indifferent r (x, m) (y, n) ↔ Indifferent r (x, m + t) (y, n + t) := by
+  exact and_congr (ht x y m n t) (ht y x n m t)
+
+/-- A quasi-linear representation has the fixed-goods money order. -/
+theorem quasiLinear_ownMoneyOrder {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r) : OwnMoneyOrder r := by
+  intro x m n
+  rw [hu]
+  change (u x + (n : ℝ) ≤ u x + (m : ℝ)) ↔ n ≤ m
+  rw [add_le_add_iff_left, NNReal.coe_le_coe]
+
+/-- Common additions cancel from comparisons of quasi-linear utilities. -/
+theorem quasiLinear_moneyTranslation {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r) : MoneyTranslation r := by
+  intro x y m n t
+  rw [hu, hu]
+  simp only [QuasiLinearUtility, NNReal.coe_add]
+  constructor <;> intro h <;> linarith
+
+/-- Positive and negative parts of the utility difference give feasible compensations. -/
+theorem quasiLinear_moneyCompensable {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r) : MoneyCompensable r := by
+  intro x y
+  let m : ℝ≥0 := .mk (max 0 (u y - u x)) (le_max_left _ _)
+  let n : ℝ≥0 := .mk (max 0 (u x - u y)) (le_max_left _ _)
+  have he : QuasiLinearUtility u (x, m) = QuasiLinearUtility u (y, n) := by
+    change u x + max 0 (u y - u x) = u y + max 0 (u x - u y)
+    rcases le_total (u x) (u y) with h | h
+    · rw [max_eq_right (sub_nonneg.mpr h), max_eq_left (sub_nonpos.mpr h)]
+      ring
+    · rw [max_eq_left (sub_nonpos.mpr h), max_eq_right (sub_nonneg.mpr h)]
+      ring
+  exact ⟨m, n, (hu _ _).mpr he.ge, (hu _ _).mpr he.le⟩
+
+/-- The compensating-money construction in the hint to **Problem 2.11**. -/
+theorem quasiLinear_of_money_properties {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    (hr : Rational r) (hm : OwnMoneyOrder r) (ht : MoneyTranslation r)
+    (hc : MoneyCompensable r) (x₀ : X) : QuasiLinear r := by
+  classical
+  choose m n h using fun x => hc x x₀
+  let u : X → ℝ := fun x => (n x : ℝ) - (m x : ℝ)
+  refine ⟨u, ?_⟩
+  rintro ⟨x, a⟩ ⟨y, b⟩
+  change r (x, a) (y, b) ↔ u y + (b : ℝ) ≤ u x + (a : ℝ)
+  let T := m x + m y
+  have hx : Indifferent r (x, a + T) (x₀, n x + a + m y) := by
+    simpa [T, add_assoc, add_left_comm, add_comm] using
+      (moneyTranslation_indifferent ht x x₀ (m x) (n x) (a + m y)).mp (h x)
+  have hy : Indifferent r (y, b + T) (x₀, n y + b + m x) := by
+    simpa [T, add_assoc, add_left_comm, add_comm] using
+      (moneyTranslation_indifferent ht y x₀ (m y) (n y) (b + m x)).mp (h y)
+  calc
+    r (x, a) (y, b) ↔ r (x, a + T) (y, b + T) := ht x y a b T
+    _ ↔ r (x₀, n x + a + m y) (x₀, n y + b + m x) :=
+      indifferent_compare_iff hr.2 hx hy
+    _ ↔ n y + b + m x ≤ n x + a + m y := hm x₀ _ _
+    _ ↔ u y + (b : ℝ) ≤ u x + (a : ℝ) := by
+      rw [← NNReal.coe_le_coe]
+      simp only [NNReal.coe_add]
+      dsimp [u]
+      constructor <;> intro hle <;> linarith
+
+/-- **Proposition 2.16:** all three money properties characterize quasi-linearity. -/
+theorem proposition_2_16 [Nonempty X] {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    (hr : Rational r) :
+    QuasiLinear r ↔ OwnMoneyOrder r ∧ MoneyTranslation r ∧ MoneyCompensable r := by
+  constructor
+  · rintro ⟨u, hu⟩
+    exact ⟨quasiLinear_ownMoneyOrder hu, quasiLinear_moneyTranslation hu,
+      quasiLinear_moneyCompensable hu⟩
+  · rintro ⟨hm, ht, hc⟩
+    obtain ⟨x₀⟩ := ‹Nonempty X›
+    exact quasiLinear_of_money_properties hr hm ht hc x₀
+
+/-- **Problem 2.11:** the characterization, with a nonnegative money domain. -/
+theorem problem_2_11 [Nonempty X] {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    (hr : Rational r) :
+    QuasiLinear r ↔ OwnMoneyOrder r ∧ MoneyTranslation r ∧ MoneyCompensable r :=
+  proposition_2_16 hr
+
+/-- The money-unit utility difference in the compensation discussion on p. 44. -/
+def QuasiLinearDifference (u : X → ℝ) (p q : X × ℝ≥0) : ℝ :=
+  QuasiLinearUtility u p - QuasiLinearUtility u q
+
+/-- The corrected bundle keeps q's goods and adds the utility difference to q's money. -/
+theorem quasiLinear_compensation {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r) (p q : X × ℝ≥0)
+    (hf : 0 ≤ (q.2 : ℝ) + QuasiLinearDifference u p q) :
+    Indifferent r p (q.1, .mk ((q.2 : ℝ) + QuasiLinearDifference u p q) hf) := by
+  have he : QuasiLinearUtility u
+      (q.1, .mk ((q.2 : ℝ) + QuasiLinearDifference u p q) hf) =
+      QuasiLinearUtility u p := by
+    change u q.1 + ((q.2 : ℝ) + (u p.1 + p.2 - (u q.1 + q.2))) = u p.1 + p.2
+    ring
+  exact ⟨(hu _ _).mpr he.le, (hu _ _).mpr he.ge⟩
+
+/-- A weakly preferred starting bundle guarantees that the compensation stays feasible. -/
+theorem quasiLinear_compensation_of_preferred {r : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+    {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r) {p q : X × ℝ≥0}
+    (hpq : r p q) : ∃ n : ℝ≥0, (n : ℝ) = q.2 + QuasiLinearDifference u p q ∧
+      Indifferent r p (q.1, n) := by
+  have hd : 0 ≤ QuasiLinearDifference u p q := sub_nonneg.mpr ((hu p q).mp hpq)
+  have hf := add_nonneg q.2.property hd
+  exact ⟨.mk _ hf, rfl, quasiLinear_compensation hu p q hf⟩
+
+/-- Reusing the original goods, as in the printed final formula, fails even for linear utility. -/
+theorem printed_compensation_bundle_counterexample :
+    ¬Indifferent (UtilityPref (QuasiLinearUtility (fun x : ℝ≥0 => (x : ℝ))))
+      (1, 0) (1, 1) := by
+  norm_num [Indifferent, UtilityPref, QuasiLinearUtility]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Countable dense ranks for the general continuous-representation theorem
+
+Kreps I, Proposition 2.9, pp. 35-38. The general proof here uses Cantor's
+isomorphism theorem on the interior ranks of a countable dense subset. It handles
+attained and unattained extrema without assuming monotonicity. Problem 2.14's
+particular recursive assignment is a separate source-map obligation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*}
+
+/-- Every strict numerical gap contains a rank from the chosen subset. -/
+def StrictRankSeparator (v : X → ℝ) (D : Set X) : Prop :=
+  ∀ x y, v x < v y → ∃ d ∈ D, v x < v d ∧ v d < v y
+
+/-- A dense subset strictly separates represented continuous preferences on a connected space. -/
+theorem dense_strictRankSeparator [TopologicalSpace X] [PreconnectedSpace X]
+    {r : X → X → Prop} {v : X → ℝ} (hr : Rational r) (hc : ContinuousPreference r)
+    (hv : Represents v r) {D : Set X} (hD : Dense D) : StrictRankSeparator v D := by
+  intro x y hxy
+  obtain ⟨z, hyz, hzx⟩ := exists_strict_between hr hc
+    ((strict_iff_utility_lt hv y x).mpr hxy)
+  have ho := continuousPreference_openStrictContours hc
+  obtain ⟨d, hd, hdx, hyd⟩ := hD.exists_mem_open ((ho x).1.inter (ho y).2) ⟨z, hzx, hyz⟩
+  exact ⟨d, hd, (strict_iff_utility_lt hv d x).mp hdx,
+    (strict_iff_utility_lt hv y d).mp hyd⟩
+
+/-- Remove any globally best and worst ranks from the chosen countable set. -/
+def InteriorRankSet (v : X → ℝ) (D : Set X) : Set ℝ :=
+  {a | a ∈ v '' D ∧ (∃ x, v x < a) ∧ ∃ y, a < v y}
+
+/-- Every interior rank is the utility of an actual bundle. -/
+theorem interiorRank_witness {v : X → ℝ} {D : Set X} (a : InteriorRankSet v D) :
+    ∃ x, v x = a.val := by
+  obtain ⟨x, _, hx⟩ := a.property.1
+  exact ⟨x, hx⟩
+
+/-- Every strict comparison brackets an interior rank, including near global endpoints. -/
+theorem interiorRank_between {v : X → ℝ} {D : Set X} (hs : StrictRankSeparator v D)
+    {x y : X} (hxy : v x < v y) :
+    ∃ a : InteriorRankSet v D, v x < a.val ∧ a.val < v y := by
+  obtain ⟨d, hd, hxd, hdy⟩ := hs x y hxy
+  exact ⟨⟨v d, ⟨d, hd, rfl⟩, ⟨x, hxd⟩, ⟨y, hdy⟩⟩, hxd, hdy⟩
+
+/-- The rank set remains countable after excluding endpoints. -/
+theorem interiorRankSet_countable {v : X → ℝ} {D : Set X} (hD : D.Countable) :
+    (InteriorRankSet v D).Countable :=
+  (hD.image v).mono (fun _ h => h.1)
+
+/-- The bounded rational scale used to fill every numerical gap. -/
+abbrev RationalUnit : Type := Set.Ioo (0 : ℚ) 1
+
+/-- A nonconstant preference's interior countable ranks have exactly the order type of (0,1) ∩ ℚ. -/
+theorem interiorRanks_orderIso {v : X → ℝ} {D : Set X} (hD : D.Countable)
+    (hs : StrictRankSeparator v D) (hn : ∃ x y, v x < v y) :
+    Nonempty (InteriorRankSet v D ≃o RationalUnit) := by
+  let A : Type := InteriorRankSet v D
+  let : Countable A := (interiorRankSet_countable hD).to_subtype
+  let : Nonempty A := by
+    obtain ⟨x, y, hxy⟩ := hn
+    obtain ⟨a, _⟩ := interiorRank_between hs hxy
+    exact ⟨a⟩
+  let : DenselyOrdered A := ⟨by
+    intro a b hab
+    obtain ⟨x, hx⟩ := interiorRank_witness a
+    obtain ⟨y, hy⟩ := interiorRank_witness b
+    have hxy : v x < v y := by rw [hx, hy]; exact hab
+    obtain ⟨c, hxc, hcy⟩ := interiorRank_between hs hxy
+    rw [hx] at hxc
+    rw [hy] at hcy
+    exact ⟨c, hxc, hcy⟩⟩
+  let : NoMinOrder A := ⟨by
+    intro a
+    obtain ⟨x, hxa⟩ := a.property.2.1
+    obtain ⟨y, hy⟩ := interiorRank_witness a
+    obtain ⟨b, _, hby⟩ := interiorRank_between hs (hy.symm ▸ hxa)
+    rw [hy] at hby
+    exact ⟨b, hby⟩⟩
+  let : NoMaxOrder A := ⟨by
+    intro a
+    obtain ⟨y, hay⟩ := a.property.2.2
+    obtain ⟨x, hx⟩ := interiorRank_witness a
+    obtain ⟨b, hxb, _⟩ := interiorRank_between hs (hx.symm ▸ hay)
+    rw [hx] at hxb
+    exact ⟨b, hxb⟩⟩
+  let : Nonempty RationalUnit := ⟨⟨1 / 2, by constructor <;> norm_num⟩⟩
+  exact Order.iso_of_countable_dense A RationalUnit
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A bounded utility from dense rational ranks
+
+The construction supporting the general Proposition 2.9 assigns each bundle
+the supremum of its lower rational ranks. Adding zero makes every cut nonempty;
+the rational scale lies in (0,1), so all cuts are bounded, even at extreme ranks.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*} {v : X → ℝ} {D : Set X}
+
+/-- A countable interior rank's rational value, viewed as a real number. -/
+def RationalRankValue (e : InteriorRankSet v D ≃o RationalUnit)
+    (a : InteriorRankSet v D) : ℝ := (e a).val
+
+/-- All rational ranks are strictly between zero and one. -/
+theorem rationalRankValue_bounds (e : InteriorRankSet v D ≃o RationalUnit)
+    (a : InteriorRankSet v D) : 0 < RationalRankValue e a ∧ RationalRankValue e a < 1 := by
+  have h := (e a).property
+  change 0 < ((e a).val : ℝ) ∧ ((e a).val : ℝ) < 1
+  exact_mod_cast h
+
+/-- The real-valued rank scale preserves every strict comparison. -/
+theorem rationalRankValue_strictMono (e : InteriorRankSet v D ≃o RationalUnit) :
+    StrictMono (RationalRankValue e) := by
+  intro a b hab
+  have hq : (e a).val < (e b).val := e.strictMono hab
+  change ((e a).val : ℝ) < ((e b).val : ℝ)
+  exact_mod_cast hq
+
+/-- A lower cut, with zero included to cover a possible worst bundle. -/
+def RankCutSet (e : InteriorRankSet v D ≃o RationalUnit) (x : X) : Set ℝ :=
+  {t | t = 0 ∨ ∃ a : InteriorRankSet v D, t = RationalRankValue e a ∧ a.val ≤ v x}
+
+/-- Every lower cut contains zero. -/
+theorem rankCutSet_nonempty (e : InteriorRankSet v D ≃o RationalUnit) (x : X) :
+    (RankCutSet e x).Nonempty := ⟨0, Or.inl rfl⟩
+
+/-- One bounds every lower cut, whether or not a best bundle exists. -/
+theorem rankCutSet_bddAbove (e : InteriorRankSet v D ≃o RationalUnit) (x : X) :
+    BddAbove (RankCutSet e x) := by
+  refine ⟨1, ?_⟩
+  intro t ht
+  rcases ht with rfl | ⟨a, rfl, _⟩
+  · exact zero_le_one
+  · exact (rationalRankValue_bounds e a).2.le
+
+/-- The supremum of the lower rational ranks is the new utility scale. -/
+noncomputable def RankCutUtility (e : InteriorRankSet v D ≃o RationalUnit) (x : X) : ℝ :=
+  sSup (RankCutSet e x)
+
+/-- The completed scale never falls below zero. -/
+theorem rankCutUtility_nonneg (e : InteriorRankSet v D ≃o RationalUnit) (x : X) :
+    0 ≤ RankCutUtility e x :=
+  le_csSup (rankCutSet_bddAbove e x) (Or.inl rfl)
+
+/-- The completed scale never exceeds one. -/
+theorem rankCutUtility_le_one (e : InteriorRankSet v D ≃o RationalUnit) (x : X) :
+    RankCutUtility e x ≤ 1 := by
+  apply csSup_le (rankCutSet_nonempty e x)
+  intro t ht
+  rcases ht with rfl | ⟨a, rfl, _⟩
+  · exact zero_le_one
+  · exact (rationalRankValue_bounds e a).2.le
+
+/-- Larger original utility gives a larger lower cut. -/
+theorem rankCutUtility_mono (e : InteriorRankSet v D ≃o RationalUnit) {x y : X}
+    (hxy : v x ≤ v y) : RankCutUtility e x ≤ RankCutUtility e y := by
+  apply csSup_le (rankCutSet_nonempty e x)
+  intro t ht
+  apply le_csSup (rankCutSet_bddAbove e y)
+  rcases ht with h0 | ⟨a, ha, hax⟩
+  · exact Or.inl h0
+  · exact Or.inr ⟨a, ha, hax.trans hxy⟩
+
+/-- An upper rational rank bounds the completed utility from above. -/
+theorem rankCutUtility_upper (e : InteriorRankSet v D ≃o RationalUnit)
+    {x : X} {a : InteriorRankSet v D} (hx : v x ≤ a.val) :
+    RankCutUtility e x ≤ RationalRankValue e a := by
+  apply csSup_le (rankCutSet_nonempty e x)
+  intro t ht
+  rcases ht with rfl | ⟨b, rfl, hbx⟩
+  · exact (rationalRankValue_bounds e a).1.le
+  · exact (rationalRankValue_strictMono e).monotone (hbx.trans hx)
+
+/-- A lower rational rank bounds the completed utility from below. -/
+theorem rankCutUtility_lower (e : InteriorRankSet v D ≃o RationalUnit)
+    {x : X} {a : InteriorRankSet v D} (hx : a.val ≤ v x) :
+    RationalRankValue e a ≤ RankCutUtility e x :=
+  le_csSup (rankCutSet_bddAbove e x) (Or.inr ⟨a, rfl, hx⟩)
+
+/-- The extension agrees exactly with every prescribed rational rank. -/
+theorem rankCutUtility_at_rank (e : InteriorRankSet v D ≃o RationalUnit)
+    {x : X} {a : InteriorRankSet v D} (hx : v x = a.val) :
+    RankCutUtility e x = RationalRankValue e a :=
+  le_antisymm (rankCutUtility_upper e hx.le) (rankCutUtility_lower e hx.ge)
+
+/-- Two interior ranks between distinct preferences force a strict utility inequality. -/
+theorem rankCutUtility_strict (e : InteriorRankSet v D ≃o RationalUnit)
+    (hs : StrictRankSeparator v D) {x y : X} (hxy : v x < v y) :
+    RankCutUtility e x < RankCutUtility e y := by
+  obtain ⟨a, hxa, hay⟩ := interiorRank_between hs hxy
+  obtain ⟨z, hz⟩ := interiorRank_witness a
+  have hzy : v z < v y := by rw [hz]; exact hay
+  obtain ⟨b, hzb, hby⟩ := interiorRank_between hs hzy
+  have hab : a < b := by
+    change a.val < b.val
+    rwa [hz] at hzb
+  exact (rankCutUtility_upper e hxa.le).trans_lt
+    ((rationalRankValue_strictMono e hab).trans_le (rankCutUtility_lower e hby.le))
+
+/-- Completing the rational scale preserves the original preference representation. -/
+theorem rankCutUtility_represents (e : InteriorRankSet v D ≃o RationalUnit)
+    (hs : StrictRankSeparator v D) {r : X → X → Prop} (hv : Represents v r) :
+    Represents (RankCutUtility e) r := by
+  intro x y
+  constructor
+  · intro hxy
+    exact rankCutUtility_mono e ((hv x y).mp hxy)
+  · intro hxy
+    by_contra hn
+    have hlt : v x < v y := lt_of_not_ge (fun h => hn ((hv x y).mpr h))
+    exact (not_lt_of_ge hxy) (rankCutUtility_strict e hs hlt)
+
+/-- Every rational point strictly between zero and one is attained by the new utility. -/
+theorem rankCutUtility_attains_rationals (e : InteriorRankSet v D ≃o RationalUnit)
+    (q : RationalUnit) : ∃ x, RankCutUtility e x = (q.val : ℝ) := by
+  let a := e.symm q
+  obtain ⟨x, hx⟩ := interiorRank_witness a
+  refine ⟨x, ?_⟩
+  calc
+    RankCutUtility e x = RationalRankValue e a := rankCutUtility_at_rank e hx
+    _ = (q.val : ℝ) := by simp [RationalRankValue, a]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The general continuous-representation theorem
+
+Kreps I, Proposition 2.9, pp. 35-38. Countable dense ranks and their rational
+completion give a continuous utility without any monotonicity assumption.
+Open strict contours prove continuity at every bundle, including extreme ranks.
+The proof works on any separable connected space and is specialized below to
+every finite-dimensional nonnegative orthant, including dimension zero.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*} [TopologicalSpace X] {r : X → X → Prop}
+
+/-- A bounded representation attaining all interior rational values has no discontinuous gaps. -/
+theorem continuous_of_dense_rational_range {u : X → ℝ} (hu : Represents u r)
+    (hc : ContinuousPreference r) (hb : ∀ x, 0 ≤ u x ∧ u x ≤ 1)
+    (hq : ∀ q : ℚ, 0 < q → q < 1 → ∃ x, u x = (q : ℝ)) : Continuous u := by
+  apply OrderTopology.continuous_iff.mpr
+  intro a
+  have ho := continuousPreference_openStrictContours hc
+  constructor
+  · apply isOpen_iff_mem_nhds.mpr
+    intro x hx
+    change a < u x at hx
+    by_cases ha : a < 0
+    · exact Filter.mem_of_superset Filter.univ_mem (fun y _ => ha.trans_le (hb y).1)
+    · obtain ⟨q, haq, hqx⟩ := exists_rat_btwn hx
+      have hq0 : (0 : ℝ) < q := (le_of_not_gt ha).trans_lt haq
+      have hq1 : (q : ℝ) < 1 := hqx.trans_le (hb x).2
+      obtain ⟨z, hz⟩ := hq q (by exact_mod_cast hq0) (by exact_mod_cast hq1)
+      have hxz : Strict r x z := (strict_iff_utility_lt hu x z).mpr (hz.symm ▸ hqx)
+      apply Filter.mem_of_superset ((ho z).1.mem_nhds hxz)
+      intro y hy
+      change a < u y
+      have hzy := (strict_iff_utility_lt hu y z).mp hy
+      rw [hz] at hzy
+      exact haq.trans hzy
+  · apply isOpen_iff_mem_nhds.mpr
+    intro x hx
+    change u x < a at hx
+    by_cases ha : 1 < a
+    · exact Filter.mem_of_superset Filter.univ_mem (fun y _ => (hb y).2.trans_lt ha)
+    · obtain ⟨q, hxq, hqa⟩ := exists_rat_btwn hx
+      have hq0 : (0 : ℝ) < q := (hb x).1.trans_lt hxq
+      have hq1 : (q : ℝ) < 1 := hqa.trans_le (le_of_not_gt ha)
+      obtain ⟨z, hz⟩ := hq q (by exact_mod_cast hq0) (by exact_mod_cast hq1)
+      have hzx : Strict r z x := (strict_iff_utility_lt hu z x).mpr (hz.symm ▸ hxq)
+      apply Filter.mem_of_superset ((ho z).2.mem_nhds hzx)
+      intro y hy
+      change u y < a
+      have hyz := (strict_iff_utility_lt hu z y).mp hy
+      rw [hz] at hyz
+      exact hyz.trans hqa
+
+/-- The completed rational-rank representation is continuous, even at its possible endpoints. -/
+theorem rankCutUtility_continuous {v : X → ℝ} {D : Set X}
+    (e : InteriorRankSet v D ≃o RationalUnit) (hs : StrictRankSeparator v D)
+    (hv : Represents v r) (hc : ContinuousPreference r) : Continuous (RankCutUtility e) := by
+  apply continuous_of_dense_rational_range (rankCutUtility_represents e hs hv) hc
+    (fun x => ⟨rankCutUtility_nonneg e x, rankCutUtility_le_one e x⟩)
+  intro q hq0 hq1
+  exact rankCutUtility_attains_rationals e ⟨q, hq0, hq1⟩
+
+/-- General Debreu representation on a connected separable domain, with a bounded utility. -/
+theorem continuous_represents_of_continuous_connected [PreconnectedSpace X]
+    [TopologicalSpace.SeparableSpace X] (hr : Rational r) (hc : ContinuousPreference r) :
+    ∃ u : X → ℝ, Represents u r ∧ Continuous u ∧ ∀ x, 0 ≤ u x ∧ u x ≤ 1 := by
+  obtain ⟨v, hv⟩ := represents_of_continuous_connected hr hc
+  by_cases hn : ∃ x y, v x < v y
+  · obtain ⟨D, hD, hd⟩ := TopologicalSpace.exists_countable_dense X
+    have hs := dense_strictRankSeparator hr hc hv hd
+    obtain ⟨e⟩ := interiorRanks_orderIso hD hs hn
+    exact ⟨RankCutUtility e, rankCutUtility_represents e hs hv,
+      rankCutUtility_continuous e hs hv hc,
+      fun x => ⟨rankCutUtility_nonneg e x, rankCutUtility_le_one e x⟩⟩
+  · refine ⟨fun _ => 0, ?_, continuous_const, fun _ => ⟨le_rfl, zero_le_one⟩⟩
+    intro x y
+    exact iff_of_true ((hv x y).mpr (le_of_not_gt (fun h => hn ⟨x, y, h⟩))) le_rfl
+
+/-- **Proposition 2.9:** the full equivalence, with no monotonicity hypothesis. -/
+theorem proposition_2_9 (k : ℕ)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r) :
+    ContinuousPreference r ↔
+      ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u := by
+  constructor
+  · intro hc
+    let : PreconnectedSpace (NonnegativeOrthant k) :=
+      isPreconnected_iff_preconnectedSpace.mp
+        (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)).isPreconnected
+    obtain ⟨u, hu, hc', _⟩ := continuous_represents_of_continuous_connected hr hc
+    exact ⟨u, hu, hc'⟩
+  · rintro ⟨u, hu, hc⟩
+    exact proposition_2_9_forward hu hc
+
+/-- The same equivalence using the common-radius metric continuity convention. -/
+theorem proposition_2_9_metric (k : ℕ)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r) :
+    MetricContinuousPreference r ↔
+      ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u :=
+  continuousPreference_iff_metric.symm.trans (proposition_2_9 k hr)
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -3114,3 +3634,49 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.avoidingPath_no_indifference
 #print axioms Kreps.PreferenceProperties.problem_2_7
 #print axioms Kreps.PreferenceProperties.netPreference_not_monotone
+#print axioms Kreps.PreferenceProperties.QuasiLinearUtility
+#print axioms Kreps.PreferenceProperties.QuasiLinear
+#print axioms Kreps.PreferenceProperties.OwnMoneyOrder
+#print axioms Kreps.PreferenceProperties.MoneyTranslation
+#print axioms Kreps.PreferenceProperties.MoneyCompensable
+#print axioms Kreps.PreferenceProperties.indifferent_compare_iff
+#print axioms Kreps.PreferenceProperties.moneyTranslation_indifferent
+#print axioms Kreps.PreferenceProperties.quasiLinear_ownMoneyOrder
+#print axioms Kreps.PreferenceProperties.quasiLinear_moneyTranslation
+#print axioms Kreps.PreferenceProperties.quasiLinear_moneyCompensable
+#print axioms Kreps.PreferenceProperties.quasiLinear_of_money_properties
+#print axioms Kreps.PreferenceProperties.proposition_2_16
+#print axioms Kreps.PreferenceProperties.problem_2_11
+#print axioms Kreps.PreferenceProperties.QuasiLinearDifference
+#print axioms Kreps.PreferenceProperties.quasiLinear_compensation
+#print axioms Kreps.PreferenceProperties.quasiLinear_compensation_of_preferred
+#print axioms Kreps.PreferenceProperties.printed_compensation_bundle_counterexample
+#print axioms Kreps.PreferenceProperties.StrictRankSeparator
+#print axioms Kreps.PreferenceProperties.dense_strictRankSeparator
+#print axioms Kreps.PreferenceProperties.InteriorRankSet
+#print axioms Kreps.PreferenceProperties.interiorRank_witness
+#print axioms Kreps.PreferenceProperties.interiorRank_between
+#print axioms Kreps.PreferenceProperties.interiorRankSet_countable
+#print axioms Kreps.PreferenceProperties.RationalUnit
+#print axioms Kreps.PreferenceProperties.interiorRanks_orderIso
+#print axioms Kreps.PreferenceProperties.RationalRankValue
+#print axioms Kreps.PreferenceProperties.rationalRankValue_bounds
+#print axioms Kreps.PreferenceProperties.rationalRankValue_strictMono
+#print axioms Kreps.PreferenceProperties.RankCutSet
+#print axioms Kreps.PreferenceProperties.rankCutSet_nonempty
+#print axioms Kreps.PreferenceProperties.rankCutSet_bddAbove
+#print axioms Kreps.PreferenceProperties.RankCutUtility
+#print axioms Kreps.PreferenceProperties.rankCutUtility_nonneg
+#print axioms Kreps.PreferenceProperties.rankCutUtility_le_one
+#print axioms Kreps.PreferenceProperties.rankCutUtility_mono
+#print axioms Kreps.PreferenceProperties.rankCutUtility_upper
+#print axioms Kreps.PreferenceProperties.rankCutUtility_lower
+#print axioms Kreps.PreferenceProperties.rankCutUtility_at_rank
+#print axioms Kreps.PreferenceProperties.rankCutUtility_strict
+#print axioms Kreps.PreferenceProperties.rankCutUtility_represents
+#print axioms Kreps.PreferenceProperties.rankCutUtility_attains_rationals
+#print axioms Kreps.PreferenceProperties.continuous_of_dense_rational_range
+#print axioms Kreps.PreferenceProperties.rankCutUtility_continuous
+#print axioms Kreps.PreferenceProperties.continuous_represents_of_continuous_connected
+#print axioms Kreps.PreferenceProperties.proposition_2_9
+#print axioms Kreps.PreferenceProperties.proposition_2_9_metric

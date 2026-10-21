@@ -36,17 +36,22 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [DiagonalRepresentation](PreferenceProperties/DiagonalRepresentation.lean) | 10 | Unique diagonal coordinate, representation and continuity |
 | [IndifferenceCurves](PreferenceProperties/IndifferenceCurves.lean) | 4 | Thin classes, decreasing two-good curves and strict mixtures |
 | [PathCounterexample](PreferenceProperties/PathCounterexample.lean) | 7 | Problem 2.7: coordinate bounds without monotonicity do not imply crossing |
+| [QuasiLinear](PreferenceProperties/QuasiLinear.lean) | 11 | Proposition 2.16, Problem 2.11 and feasible money compensation |
+| [DensePreferenceRanks](PreferenceProperties/DensePreferenceRanks.lean) | 5 | Countable interior ranks and Cantor's order isomorphism |
+| [RankCutUtility](PreferenceProperties/RankCutUtility.lean) | 13 | Bounded rational-cut representation, including extreme ranks |
+| [GeneralContinuousRepresentation](PreferenceProperties/GeneralContinuousRepresentation.lean) | 5 | Full Proposition 2.9 without monotonicity |
 
-The current subset passes the full fresh-source audit: **201 theorems** and
-**276 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **103 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **235 theorems** and
+**322 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **137 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
 
-The general continuous-representation theorem, separability, quasi-linearity,
-homotheticity and remaining problem solutions are still in progress. The diagonal
-construction retains the book's extra monotonicity assumptions.
+Separability, homotheticity and remaining problem solutions are still in progress.
+The general continuous-representation theorem is proved through Cantor's countable
+order isomorphism and rational cuts; the book's diagonal proof is also complete.
+Problem 2.14's specific recursive construction remains a separate obligation.
 This is not a completed-chapter claim.
 
 ## Build and verify

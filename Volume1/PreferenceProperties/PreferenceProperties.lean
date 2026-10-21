@@ -27,3 +27,7 @@ import PreferenceProperties.DiagonalBounds
 import PreferenceProperties.DiagonalRepresentation
 import PreferenceProperties.IndifferenceCurves
 import PreferenceProperties.PathCounterexample
+import PreferenceProperties.QuasiLinear
+import PreferenceProperties.DensePreferenceRanks
+import PreferenceProperties.RankCutUtility
+import PreferenceProperties.GeneralContinuousRepresentation

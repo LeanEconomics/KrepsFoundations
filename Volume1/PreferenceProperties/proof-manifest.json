@@ -24,7 +24,11 @@
     "PreferenceProperties/DiagonalBounds.lean",
     "PreferenceProperties/DiagonalRepresentation.lean",
     "PreferenceProperties/IndifferenceCurves.lean",
-    "PreferenceProperties/PathCounterexample.lean"
+    "PreferenceProperties/PathCounterexample.lean",
+    "PreferenceProperties/QuasiLinear.lean",
+    "PreferenceProperties/DensePreferenceRanks.lean",
+    "PreferenceProperties/RankCutUtility.lean",
+    "PreferenceProperties/GeneralContinuousRepresentation.lean"
   ],
   "theorem_counts": {
     "PreferenceProperties/Basic.lean": 5,
@@ -50,8 +54,12 @@
     "PreferenceProperties/DiagonalBounds.lean": 8,
     "PreferenceProperties/DiagonalRepresentation.lean": 10,
     "PreferenceProperties/IndifferenceCurves.lean": 4,
-    "PreferenceProperties/PathCounterexample.lean": 7
+    "PreferenceProperties/PathCounterexample.lean": 7,
+    "PreferenceProperties/QuasiLinear.lean": 11,
+    "PreferenceProperties/DensePreferenceRanks.lean": 5,
+    "PreferenceProperties/RankCutUtility.lean": 13,
+    "PreferenceProperties/GeneralContinuousRepresentation.lean": 5
   },
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4 and 2.7; Propositions 2.2, 2.5, 2.6 and 2.8; forward Proposition 2.9 and its monotone diagonal construction; Lemma 2.10; indifference-curve conclusions; Problems 2.2-2.7, with the introductory intervals in 2.2 still pending; monotonicity quantifiers in Problem 2.1. Twelve local Chapter 1 prerequisite modules contribute 98 theorems to the total. Remaining items are pending in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7 and 2.15; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9 and full 2.16; the diagonal construction; Lemma 2.10; indifference-curve conclusions; Problems 2.2-2.7 and 2.11, with the introductory intervals in 2.2 still pending; monotonicity quantifiers in Problem 2.1. The general continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's specific algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. Remaining items are pending in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

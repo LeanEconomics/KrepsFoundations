@@ -18,7 +18,7 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Proposition 2.8a, p. 34 | Concave/strictly concave representation implies convex/strictly convex preference | `proposition_2_8a_concave`, `proposition_2_8a_strict` |
 | Proposition 2.8b, p. 34 | Three quasi-concavity equivalences | `proposition_2_8b_quasi`, `proposition_2_8b_strict`, `proposition_2_8b_semiStrict` |
 | Section 2.2, p. 35 | Concavity need not survive ordinal rescaling; quasi-concavity does | `quasiConcave_strictMono_transform`, `problem_2_5a`; nonexistence of any concave representation remains pending in Problem 2.8 |
-| Proposition 2.9, pp. 35-38 | Continuous representation implies continuous preference, and full converse | `proposition_2_9_forward`; the general converse remains pending and must not assume monotonicity |
+| Proposition 2.9, pp. 35-38 | Continuous representation implies continuous preference, and full converse | `proposition_2_9`, `proposition_2_9_metric`; full converse without monotonicity, via countable interior ranks, Cantor's order isomorphism and rational cuts |
 | Lemma 2.10, pp. 36, 38 | A continuous path crosses any intervening indifference class | `indifference_on_connected_image`, `lemma_2_10`; no continuous representation assumed |
 | Section 2.3, pp. 36-38 | Five-step diagonal construction under the additional monotonicity assumptions | `DiagonalBounds` and `DiagonalRepresentation`: existence, uniqueness, representation and continuity; `proposition_2_9_monotone`, `continuous_representation_strictAllIncrease` |
 | Section 2.3, p. 35 | Compact-menu attainment via continuous utility | `compact_choice_of_continuous_utility`; separate from the copied Chapter 1 direct compactness proof |
@@ -27,8 +27,8 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Definition 2.13, p. 42 | Strong separability for unions of blocks; nontriviality of a block | Pending |
 | Proposition 2.14, p. 42 | Continuous strong separability with at least three nontrivial blocks gives continuous additive representation | Pending; this full theorem is in scope despite the book referring out for its proof |
 | Proposition 2.14, p. 42 | An additive representation implies strong separability | Pending |
-| Definition 2.15; Proposition 2.16, pp. 43-44 | Quasi-linearity iff own-money order, common money-translation invariance and compensability | Pending; money remains nonnegative |
-| Section 2.6, p. 44 | Utility differences measure compensating money in quasi-linear units | Pending; printed bundle typo and feasibility condition in corrections |
+| Definition 2.15; Proposition 2.16, pp. 43-44 | Quasi-linearity iff own-money order, common money-translation invariance and compensability | `QuasiLinearUtility`, `QuasiLinear`, `OwnMoneyOrder`, `MoneyTranslation`, `MoneyCompensable`, `proposition_2_16`; money is nonnegative throughout |
+| Section 2.6, p. 44 | Utility differences measure compensating money in quasi-linear units | `QuasiLinearDifference`, `quasiLinear_compensation`, `quasiLinear_compensation_of_preferred`, `printed_compensation_bundle_counterexample`; corrected goods and explicit feasibility |
 | Definitions 2.17-2.18, p. 44 | Homothetic preference, cones and homogeneous functions | Pending; nonnegative scalars include zero |
 | Proposition 2.19, p. 44 | Continuous homothetic preference iff continuous degree-one homogeneous representation | Pending; full theorem without imposing strict monotonicity |
 
@@ -48,7 +48,7 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.9a, p. 47 | Positive linear utility: indifference curves and all seven listed preference properties | Pending |
 | Problem 2.9b, p. 47 | Leontief utility: indifference curves and all seven listed preference properties | Pending |
 | Problem 2.10, p. 47 | The rational-weight construction is upper semicontinuous | Pending |
-| Problem 2.11, p. 48 | Full quasi-linear characterization, including the compensating-money construction | Pending |
+| Problem 2.11, p. 48 | Full quasi-linear characterization, including the compensating-money construction | `quasiLinear_of_money_properties`, `problem_2_11`; subutility is receipt minus payment relative to a fixed reference bundle |
 | Problem 2.12, p. 48 | Homogeneous representation | Pending; the optional strict-monotonicity simplification does not replace Proposition 2.19 in full |
 | Problem 2.13, p. 48 | Information recoverable from one indifference curve under homotheticity or quasi-linearity | Pending; characterize the region actually identified |
 | Problem 2.14a, p. 48 | Construct a continuous connected curve with preference bounds for every bundle, including attained/unattained extrema | Pending |

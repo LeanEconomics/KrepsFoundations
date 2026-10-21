@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T13:36:09.738729+00:00",
-  "theorems": 201,
+  "checked_at_utc": "2026-10-21T13:43:38.670307+00:00",
+  "theorems": 235,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -25,9 +25,13 @@
     "PreferenceProperties/DiagonalBounds.lean": 8,
     "PreferenceProperties/DiagonalRepresentation.lean": 10,
     "PreferenceProperties/IndifferenceCurves.lean": 4,
-    "PreferenceProperties/PathCounterexample.lean": 7
+    "PreferenceProperties/PathCounterexample.lean": 7,
+    "PreferenceProperties/QuasiLinear.lean": 11,
+    "PreferenceProperties/DensePreferenceRanks.lean": 5,
+    "PreferenceProperties/RankCutUtility.lean": 13,
+    "PreferenceProperties/GeneralContinuousRepresentation.lean": 5
   },
-  "audited_declarations": 276,
+  "audited_declarations": 322,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -1408,6 +1412,236 @@
       "name": "Kreps.PreferenceProperties.netPreference_not_monotone",
       "kind": "theorem",
       "module": "PreferenceProperties/PathCounterexample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.QuasiLinearUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.QuasiLinear",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OwnMoneyOrder",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.MoneyTranslation",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.MoneyCompensable",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.indifferent_compare_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.moneyTranslation_indifferent",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_ownMoneyOrder",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_moneyTranslation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_moneyCompensable",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_of_money_properties",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_2_16",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_11",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.QuasiLinearDifference",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_compensation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_compensation_of_preferred",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.printed_compensation_bundle_counterexample",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinear.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.StrictRankSeparator",
+      "kind": "def",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dense_strictRankSeparator",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.InteriorRankSet",
+      "kind": "def",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interiorRank_witness",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interiorRank_between",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interiorRankSet_countable",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.RationalUnit",
+      "kind": "abbrev",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interiorRanks_orderIso",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.RationalRankValue",
+      "kind": "def",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rationalRankValue_bounds",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rationalRankValue_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.RankCutSet",
+      "kind": "def",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutSet_nonempty",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutSet_bddAbove",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.RankCutUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_nonneg",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_le_one",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_mono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_upper",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_lower",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_at_rank",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_strict",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_attains_rationals",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.continuous_of_dense_rational_range",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.rankCutUtility_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.continuous_represents_of_continuous_connected",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_2_9",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_2_9_metric",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GeneralContinuousRepresentation.lean"
     }
   ],
   "full_build": "passed",
@@ -2613,6 +2847,232 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.QuasiLinearUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.QuasiLinear": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.OwnMoneyOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.MoneyTranslation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.MoneyCompensable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.indifferent_compare_iff": [],
+    "Kreps.PreferenceProperties.moneyTranslation_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_ownMoneyOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_moneyTranslation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_moneyCompensable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_of_money_properties": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_2_16": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.QuasiLinearDifference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_compensation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_compensation_of_preferred": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.printed_compensation_bundle_counterexample": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.StrictRankSeparator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dense_strictRankSeparator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.InteriorRankSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interiorRank_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interiorRank_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interiorRankSet_countable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.RationalUnit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interiorRanks_orderIso": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.RationalRankValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rationalRankValue_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rationalRankValue_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.RankCutSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutSet_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutSet_bddAbove": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.RankCutUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_le_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_upper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_at_rank": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_attains_rationals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.continuous_of_dense_rational_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.rankCutUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.continuous_represents_of_continuous_connected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_2_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_2_9_metric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -2640,16 +3100,20 @@
     "PreferenceProperties/DiagonalRepresentation.lean": "17a8b8e7eb776fc7800a1416b7893b7ed86432ba45e000057e119f200281f9d6",
     "PreferenceProperties/IndifferenceCurves.lean": "4e875bedac555d974e76f0a07311f9f7991b89846621e851e249ae3e3d273c71",
     "PreferenceProperties/PathCounterexample.lean": "ed09baea84223dd267ac6eaf1582703cd772e999026d63aff961dabd8463bf92",
-    "PreferenceProperties.lean": "33a781f8d3b9917ee298458636a345ad62ef2c88b97950b2b749780bc18b668e",
+    "PreferenceProperties/QuasiLinear.lean": "2cda2dd996d37cfde8ddda22113143ef4a646ff25dbff8ecb637e300e745390b",
+    "PreferenceProperties/DensePreferenceRanks.lean": "7c5dd015d801a8dcd79b02f3c4f9c039a2a3d332a4f12c0a6e75fed548476674",
+    "PreferenceProperties/RankCutUtility.lean": "1c70b25e1e023ee15c770eec10ae7765ae5ec46a5bd21e6b22b2799a28c19ffa",
+    "PreferenceProperties/GeneralContinuousRepresentation.lean": "4cffdefaed62f67aa949b8ad84b1f6b2bc7f1f24d69294c3a8bdfb49f76f4196",
+    "PreferenceProperties.lean": "479a64b43f81162d4d6addb25a98251c8e4e6268c48d37df80e897d6877e0440",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "84bd3be8c21d528396d4f8e73d2ca19b1df2899a0010edd2f736c8b9089abeb3",
+    "proof-manifest.json": "03b6d962a7b1a07d2ce3069a3483bd8199586cd2fc13021be9c14a37aee45f58",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "a7a9218c8560f293e57f2607f32c5581c7fed33ce48557e3f5599ea442df26b1",
+  "fresh_audit_sha256": "7b3c88d229ec921b2f7f41ca49e8c6ffd820924ab220e512656aefac2520eee0",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4 and 2.7; Propositions 2.2, 2.5, 2.6 and 2.8; forward Proposition 2.9 and its monotone diagonal construction; Lemma 2.10; indifference-curve conclusions; Problems 2.2-2.7, with the introductory intervals in 2.2 still pending; monotonicity quantifiers in Problem 2.1. Twelve local Chapter 1 prerequisite modules contribute 98 theorems to the total. Remaining items are pending in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7 and 2.15; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9 and full 2.16; the diagonal construction; Lemma 2.10; indifference-curve conclusions; Problems 2.2-2.7 and 2.11, with the introductory intervals in 2.2 still pending; monotonicity quantifiers in Problem 2.1. The general continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's specific algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. Remaining items are pending in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }
