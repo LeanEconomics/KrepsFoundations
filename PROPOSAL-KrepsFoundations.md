@@ -24,13 +24,15 @@ mathematics, explicit assumptions, provenance and upstream-candidate tracking.
 DynamicProgramming pins and its stricter no-placeholder verifier where the references
 differ; do not copy the other repository’s model-specific scope or local machine setup.
 
-Status: active implementation goal, 2026-10-21. Chapter 1 and Appendix 1 are complete
-(213 theorems, 322 audited declarations); Chapter 2 is active with 871 new chapter/appendix theorems audited.
-The current authorized goal ends after Chapters 1–2 and their required foundations are
-complete, audited and pushed to the public `LeanEconomics/KrepsFoundations` repository.
-Create that repository if needed when this checkpoint is ready. Then end this goal;
-the remaining volume stays as the longer-term roadmap. Chapter 2 remains incomplete.
-Source maps and audit records track actual progress.
+Status: Chapters 1–2 and their required foundations are complete. Chapter 1 has
+213 theorems and 322 audited declarations; Chapter 2 has 951 new chapter/appendix
+theorems, plus 98 attributed local prerequisite theorems. Source maps and fresh
+verification records specify the checked scope. Appendix 1 and Appendix 2 are complete;
+the Appendix 3 inventory distinguishes the foundations used here from its later material.
+
+The authorized milestone ends with publication of these chapters in the public
+`LeanEconomics/KrepsFoundations` repository. Chapters 3–16 remain a roadmap and require
+the user to resume work; publication does not authorize beginning the next chapter.
 
 ---
 

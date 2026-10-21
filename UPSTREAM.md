@@ -53,6 +53,36 @@ The polygonal interpolation in `PolygonalCurve.lean` is more general than its ec
 application, but it has not received a comprehensive duplication search. It remains a
 local helper, not a listed upstream theorem.
 
+## Additional reusable constructions under review
+
+The additive-existence proof also separates several purely mathematical APIs:
+
+- [Interval chart continuation](Volume1/PreferenceProperties/PreferenceProperties/AffineIntervalContinuation.lean)
+  globalizes a positive affine atlas on a real interval, with a specified seed chart.
+  The translation specialization preserves slope one on every chart.
+- [Endpoint extension](Volume1/PreferenceProperties/PreferenceProperties/MonotoneEndpointExtension.lean)
+  extends a continuous monotone real function from a dense domain whose only missing
+  points are extreme elements. Finite one-sided bounds suffice at attained ends;
+  strict monotonicity is preserved on densely ordered domains.
+- [Dense comparison transport](Volume1/PreferenceProperties/PreferenceProperties/DenseProductRepresentation.lean)
+  shows that continuous strictly increasing utilities on products of densely ordered
+  blocks have identical comparisons everywhere when they agree on a dense subset.
+- [Local comparison transport](Volume1/PreferenceProperties/PreferenceProperties/LocalToGlobalOrder.lean)
+  turns local agreement along monotone paths into global order agreement.
+
+The endpoint search inspected `Topology/DenseEmbedding.lean`,
+`Topology/Order/MonotoneConvergence.lean`, `Topology/Order/MonotoneContinuity.lean`,
+`Order/Monotone/Extension.lean`, and order-topology closure results. The local proofs
+reuse `Dense.extend`, `Dense.continuous_extend`, `tendsto_atBot_ciInf`, and
+`tendsto_atTop_ciSup`. Mathlib's bounded monotone extension theorem does not by itself
+supply the required continuous extension on possibly unbounded intervals. The path
+proof reuses `exists_monotone_Icc_subset_open_cover_unitInterval`.
+
+These are reusable local results, not established Mathlib omissions. Before proposing
+any of them, perform a broader duplication search, remove the economics namespace,
+review minimal imports and hypotheses, and discuss whether the combined interfaces
+are useful beyond this application. No upstream submission has been made.
+
 ## Already available in Mathlib
 
 The appendix wrappers for closure of convex sets, closed convex hulls, finite convex

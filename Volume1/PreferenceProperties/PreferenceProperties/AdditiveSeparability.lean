@@ -13,7 +13,8 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 Kreps I, Definition 2.13 and the additive-to-strong direction of Proposition 2.14,
 p. 42. Strong separability applies to every union of blocks, and nontriviality
 does not depend on the other goods. The converse existence theorem with three
-nontrivial blocks is a separate pending obligation.
+nontrivial blocks is proved in `PrimitiveAdditiveExistence`, with the original
+commodity-partition specialization in `CommodityPartitionAdditiveExistence`.
 -/
 
 namespace Kreps.PreferenceProperties

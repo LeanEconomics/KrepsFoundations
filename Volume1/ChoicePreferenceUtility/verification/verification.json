@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-10-21T13:07:07.551576+00:00",
+  "checked_at_utc": "2026-10-21T16:07:56.653356+00:00",
   "theorems": 213,
   "module_theorems": {
     "ChoicePreferenceUtility/Basic.lean": 5,
@@ -2861,7 +2861,7 @@
     "ChoicePreferenceUtility/ThresholdChains.lean": "17c6017aaa873b5f6b2de9faa533eea54366f60230dc08d15c77082202326f78",
     "ChoicePreferenceUtility/ThresholdRepresentation.lean": "e42769a1ed0cd014a5ebb3431d162e76241f87c62323254df5355e50b7213126",
     "ChoicePreferenceUtility/MathematicalInduction.lean": "a319a45f76293a6f1f1153f5867727782f56ef4be7c4dbd7c2fd6b788d1d3f52",
-    "ChoicePreferenceUtility.lean": "e1af4e73a4a33d6d55669a69605105191222bc1c3c39a8921be6761082b25d0a",
+    "ChoicePreferenceUtility.lean": "868cdcd7a782861b955e3eb2b51ee201acee81f77c6370425677d28964624b6d",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "4bb53c4e878d0235a85744d63307bb02211c4abb52ca0476bbb8460cd3da5e06",
     "lake-manifest.json": "36750276dda73ced74cac075190123d02919ee4611dca4121d8d706619835c47",

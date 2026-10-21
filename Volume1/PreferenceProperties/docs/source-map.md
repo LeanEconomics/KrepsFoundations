@@ -2,7 +2,7 @@
 
 David M. Kreps, *Microeconomic Foundations I*, Chapter 2, pp. 30-49.
 Printed pages; Lean names relative to `Kreps.PreferenceProperties`.
-This chapter is in progress. `Pending` makes no formalization claim.
+Chapter 2 and its exercises are complete, with the exclusions and corrections recorded below.
 
 ## Definitions and propositions
 
@@ -25,18 +25,19 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Section 2.4, pp. 38-39 | Thin indifference classes; decreasing two-good curves; crossing; strict convexity | `indifferenceClass_no_ball`, `indifferenceClass_interior_empty`, `indifferenceCurve_decreasing`, `monotone_path_crossing`, `indifference_mixture_strict`; no smoothness claim |
 | Definition 2.11; Proposition 2.12, pp. 40-41 | Disjoint commodity blocks; weak separability iff a strictly increasing aggregator on attained subutility ranges | `WeaklySeparable`, `BaselineSubutility`, `SubutilityAggregator`, `proposition_2_12`; `exists_commodity_assignment`, `orthantGrouping` and `proposition_2_12_orthant` cover arbitrary disjoint subsets and leftovers |
 | Definition 2.13, p. 42 | Strong separability for unions of blocks; nontriviality of a block | `StronglySeparable`, `NontrivialBlock`, `ThreeNontrivialBlocks`, `stronglySeparable_weakly`, `nontrivialBlock_iff_every_context`, `threeNontrivialBlocks_card` |
-| Proposition 2.14, p. 42 | Continuous strong separability with at least three nontrivial blocks gives continuous additive representation | Pending; this full theorem is in scope despite the book referring out for its proof |
+| Proposition 2.14, p. 42 | Continuous strong separability with at least three nontrivial blocks gives continuous additive representation | `proposition_2_14_exists` constructs continuous block utilities from rationality, continuity, strong separability and three nontrivial blocks; `proposition_2_14_orthant` specializes to the original commodity partition. Endpoints and inessential blocks are included. See the [construction guide](additive-construction.md). |
 | Proposition 2.14, p. 42 | An additive representation implies strong separability | `AdditiveUtility`, `AdditivelyRepresentable`, `proposition_2_14_additive`; continuous subutilities also yield continuous utility and preference |
 | Definition 2.15; Proposition 2.16, pp. 43-44 | Quasi-linearity iff own-money order, common money-translation invariance and compensability | `QuasiLinearUtility`, `QuasiLinear`, `OwnMoneyOrder`, `MoneyTranslation`, `MoneyCompensable`, `proposition_2_16`; money is nonnegative throughout |
 | Section 2.6, p. 44 | Utility differences measure compensating money in quasi-linear units | `QuasiLinearDifference`, `quasiLinear_compensation`, `quasiLinear_compensation_of_preferred`, `printed_compensation_bundle_counterexample`; corrected goods and explicit feasibility |
 | Definitions 2.17-2.18, p. 44 | Homothetic preference, cones and homogeneous functions | `HomotheticPreference`, `NonnegativeCone`, `HomogeneousOfDegree`, `HomogeneousUtility`, `homogeneousUtility_iff_degree_one`; nonnegative scalars include zero |
+| Cod-liver oil and manna, p. 44 | The exact numerical rank reversal under fivefold scaling contradicts homotheticity | `codLiverManna_rank_reversal_not_homothetic` proves the contradiction directly from the printed rankings; `codLiverManna_example` supplies a continuous rational witness. Its utility formula is a constructed example, not a formula printed in the book. |
 | Proposition 2.19, p. 44 | Continuous homothetic preference iff continuous degree-one homogeneous representation | `proposition_2_19`; the full theorem without commodity monotonicity. Positive and negative reference rays cover all ranks; `SignedRay` joins them when both occur. One-sided and constant preferences are handled separately. |
 
 ## Problems
 
 | Source | Claim | Lean / status |
 | --- | --- | --- |
-| Problem 2.1; Table 2.1, p. 45 | All/some quantifiers for every representation-property row | `RepresentationQuantifiers` proves all/some statements with representation existence explicit where needed. `RepresentationQuantifierExamples` gives exact counterexamples to all-representation claims for concavity, continuity, quasi-linearity, homogeneity and additivity; convexity can fail even to admit some concave representation. The only pending nonexcluded table direction is additive existence under Proposition 2.14's hypotheses. The explicitly excluded ???? cell stays unclaimed. |
+| Problem 2.1; Table 2.1, p. 45 | All/some quantifiers for every representation-property row | `RepresentationQuantifiers` proves all/some statements with representation existence explicit where needed. `RepresentationQuantifierExamples` gives exact counterexamples to all-representation claims for concavity, continuity, quasi-linearity, homogeneity and additivity; convexity can fail even to admit some concave representation. `table_additive` and `table_continuous_additive` complete the additive existence equivalences under Proposition 2.14's primitive hypotheses. The explicitly excluded ???? cell stays unclaimed. |
 | Problem 2.2, p. 46 | Strictly convex preference can fail to attain a best point on a compact convex menu; open and unbounded introductory examples | `NonattainingUtility`, `problem_2_2`; `problem_2_2_intervals` proves nonemptiness, convexity and empty best sets on `(1,5)` and `(3,∞)` for every strictly monotone preference on the nonnegative half-line |
 | Problem 2.3, p. 46 | Global insatiability plus semi-strict convexity implies local insatiability; convexity alone does not | `problem_2_3_implication`, `FlatUtility`, `problem_2_3_counterexample` |
 | Problem 2.4, p. 46 | Proof of Proposition 2.5 | `problem_2_4` |
@@ -77,16 +78,6 @@ definitions and propositions A3.1–7 and A3.16–23 have explicit bridges here.
 p. 456 illustration and later separation, support-function and calculus material are
 identified separately; this does not claim completion of the entire appendix.
 
-The additive-existence construction now has the following proved stages:
-
-- Continuous bisymmetric-mean cardinal scales and normalized all-pair comparisons.
-- Full local additive charts at every interior point of the scalar interval product.
-- Finite pair transfers and local-to-global comparison transport.
-- Positive affine uniqueness, fixed-companion calibration, and global continuation
-  of positive affine or translation chart atlases on real intervals.
-- Finite bounds at attained endpoints, continuous strictly increasing extensions,
-  and full-product comparison transport from a dense interior.
-
-The final theorem still requires constructing the synchronized global coordinate
-chart families from the original preference hypotheses and assembling these stages.
-The source Proposition 2.14 existence direction remains explicitly pending.
+The [additive construction guide](additive-construction.md) explains the complete proof of
+Proposition 2.14, from primitive preference hypotheses through local cardinal scales,
+synchronized global charts, attained endpoints and the original commodity partition.

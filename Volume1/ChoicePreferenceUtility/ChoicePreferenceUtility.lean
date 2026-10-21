@@ -29,3 +29,9 @@ import ChoicePreferenceUtility.CommentaryExamples
 import ChoicePreferenceUtility.ThresholdChains
 import ChoicePreferenceUtility.ThresholdRepresentation
 import ChoicePreferenceUtility.MathematicalInduction
+
+/-!
+# Kreps I, Chapter 1
+
+Complete chapter library, exercises and Appendix 1 foundations.
+-/

@@ -20,7 +20,7 @@ explicit when interpreting an `all` statement as an equivalence, preventing
 vacuous conclusions for unrepresentable preferences. Continuity, quasi-linearity,
 and continuous degree-one homogeneity instead admit the indicated `some` forms.
 The strict-convex-to-strict-concave box excluded by the book is not asserted.
-The additive-existence direction remains the separate Proposition 2.14 obligation.
+The additive row is completed from primitive assumptions in `AdditiveRepresentationQuantifiers`.
 -/
 
 namespace Kreps.PreferenceProperties
