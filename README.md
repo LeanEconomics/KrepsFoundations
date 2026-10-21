@@ -11,7 +11,7 @@ maps, corrections and fresh proof audits. Work proceeds in book order.
 | Project | Chapter | Checked results | Start here |
 | --- | --- | --- | --- |
 | [Volume1/ChoicePreferenceUtility](Volume1/ChoicePreferenceUtility/README.md) | 1. Choice, Preference, and Utility | 213 theorems / 322 declarations audited; Chapter 1 and Appendix 1 mathematical coverage complete | [Chapter overview](Volume1/ChoicePreferenceUtility/README.md) |
-| [Volume1/PreferenceProperties](Volume1/PreferenceProperties/README.md) | 2. Structural Properties of Preferences and Utility Functions | In progress: 606 new chapter/appendix theorems; 704 total with local prerequisites; fresh audit passed | [Chapter overview](Volume1/PreferenceProperties/README.md) |
+| [Volume1/PreferenceProperties](Volume1/PreferenceProperties/README.md) | 2. Structural Properties of Preferences and Utility Functions | In progress: 681 new chapter/appendix theorems; 779 total with local prerequisites; fresh audit passed | [Chapter overview](Volume1/PreferenceProperties/README.md) |
 
 ## Build and verify
 

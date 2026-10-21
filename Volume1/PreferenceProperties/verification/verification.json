@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T15:07:28.364095+00:00",
-  "theorems": 704,
+  "checked_at_utc": "2026-10-21T15:20:56.128436+00:00",
+  "theorems": 779,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -77,11 +77,20 @@
     "PreferenceProperties/StrongSeparabilityTopology.lean": 6,
     "PreferenceProperties/SubutilityContinuity.lean": 8,
     "PreferenceProperties/FiniteProductContinuity.lean": 4,
-    "PreferenceProperties/AppendixSequences.lean": 15,
+    "PreferenceProperties/AppendixSequences.lean": 16,
     "PreferenceProperties/AppendixContinuousFunctions.lean": 12,
-    "PreferenceProperties/AppendixExtrema.lean": 14
+    "PreferenceProperties/AppendixExtrema.lean": 14,
+    "PreferenceProperties/IntervalScoreRepresentation.lean": 9,
+    "PreferenceProperties/InteriorReferenceScores.lean": 4,
+    "PreferenceProperties/BisymmetricMeanGrid.lean": 11,
+    "PreferenceProperties/BisymmetricMeanDensity.lean": 2,
+    "PreferenceProperties/AppendixSequenceLimits.lean": 16,
+    "PreferenceProperties/AppendixSequentialSemicontinuity.lean": 6,
+    "PreferenceProperties/AppendixTopologyExamples.lean": 7,
+    "PreferenceProperties/AppendixEuclideanNorms.lean": 10,
+    "PreferenceProperties/AppendixSequenceExamples.lean": 9
   },
-  "audited_declarations": 882,
+  "audited_declarations": 977,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -4309,6 +4318,11 @@
       "module": "PreferenceProperties/AppendixSequences.lean"
     },
     {
+      "name": "Kreps.PreferenceProperties.appendix2_accumulation_strict_index",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequences.lean"
+    },
+    {
       "name": "Kreps.PreferenceProperties.appendix2_accumulation_subsequence",
       "kind": "theorem",
       "module": "PreferenceProperties/AppendixSequences.lean"
@@ -4492,6 +4506,476 @@
       "name": "Kreps.PreferenceProperties.proposition_A2_21",
       "kind": "theorem",
       "module": "PreferenceProperties/AppendixExtrema.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.BaselineScores",
+      "kind": "def",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScoreAggregator",
+      "kind": "def",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.baselineScores_reference",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.baselineScores_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.baselineScores_ordConnected",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreAggregator_factors",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreAggregator_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreAggregator_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreRepresentatives_piecewise",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreAggregator_stronglySeparable",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scoreAggregator_reference_axis",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalScoreRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.nontrivialBlock_interior_rank_at",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorReferenceScores.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_interior_reference",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorReferenceScores.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.baselineScores_reference_interior",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorReferenceScores.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_interior_baseline_scores",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorReferenceScores.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean",
+      "kind": "structure",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.mk",
+      "kind": "constructor",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.mean",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.reflexive",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.symmetric",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.bisymmetric",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_left",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_right",
+      "kind": "projection",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.MeanDyadicGrid",
+      "kind": "def",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.orderedMean_between",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_even",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_odd",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_left",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_right",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_near",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_midpoint",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_lt_succ",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_strictMonoOn",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicGrid_refine",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.MeanDyadicPoints",
+      "kind": "def",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicPoints_mean",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanGrid.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicPoints_closure_mean",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanDensity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.meanDyadicPoints_dense",
+      "kind": "theorem",
+      "module": "PreferenceProperties/BisymmetricMeanDensity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SequenceTailSup",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SequenceTailInf",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailSup_antitone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailInf_monotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.definition_A2_22_limsup",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.definition_A2_22_liminf",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailSup_tendsto",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailInf_tendsto",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_limsup_greatest_accumulation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_liminf_least_accumulation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_A2_23",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_finite_limit",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_positive_infinite_limit",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_negative_infinite_limit",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailSup_unbounded",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_limsup_unbounded",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sequenceTailInf_unbounded",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_liminf_unbounded",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceLimits.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.upperSemicontinuousAt_real_coe",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.lowerSemicontinuousAt_real_coe",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_upper_sequence_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_lower_sequence_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_A2_25_upper",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_A2_25_lower",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequentialSemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_half_open_interval",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_infinite_open_intersection",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_relative_open_ambient",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_relative_closed_ambient",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_relative_closure",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_rule",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_continuousAt",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixTopologyExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.StrictlyPositiveOrthant",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_nonnegative_coordinates",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_nonnegative_orthant_closed",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_positive_orthant_open",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.euclidean_norm_le_sum_abs",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_norm_comparison",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sumEuclideanHomeomorph",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sumEuclideanHomeomorph_apply",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_bounded_coordinates",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AppendixDistancePointA",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AppendixDistancePointB",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_example_euclidean_distance",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_example_supremum_distance",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_example_sum_distance",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixEuclideanNorms.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.TenSequence",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.tenSequence_tendsto",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.tenSequence_no_accumulation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.tenSequence_no_limit",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AlternatingDecimalSequence",
+      "kind": "def",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.alternatingDecimal_even",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.alternatingDecimal_odd",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.decimalPerturbation_tendsto",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.alternatingDecimal_subsequence_limits",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_alternating_accumulation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.appendix2_alternating_no_limit",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AppendixSequenceExamples.lean"
     }
   ],
   "full_build": "passed",
@@ -8465,6 +8949,11 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "Kreps.PreferenceProperties.appendix2_accumulation_strict_index": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "Kreps.PreferenceProperties.appendix2_accumulation_subsequence": [
       "propext",
       "Classical.choice",
@@ -8641,6 +9130,446 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.BaselineScores": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScoreAggregator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.baselineScores_reference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.baselineScores_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.baselineScores_ordConnected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreAggregator_factors": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreAggregator_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreAggregator_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreRepresentatives_piecewise": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreAggregator_stronglySeparable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scoreAggregator_reference_axis": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.nontrivialBlock_interior_rank_at": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_interior_reference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.baselineScores_reference_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_interior_baseline_scores": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.mk": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.mean": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.reflexive": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.symmetric": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.bisymmetric": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_left": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_right": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.MeanDyadicGrid": [],
+    "Kreps.PreferenceProperties.orderedMean_between": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_even": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_odd": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_left": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_right": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_near": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_midpoint": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_lt_succ": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_strictMonoOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicGrid_refine": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.MeanDyadicPoints": [
+      "propext"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicPoints_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicPoints_closure_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.meanDyadicPoints_dense": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SequenceTailSup": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SequenceTailInf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailSup_antitone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailInf_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.definition_A2_22_limsup": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.definition_A2_22_liminf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailSup_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailInf_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_limsup_greatest_accumulation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_liminf_least_accumulation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_A2_23": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_finite_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_positive_infinite_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_negative_infinite_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailSup_unbounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_limsup_unbounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sequenceTailInf_unbounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_liminf_unbounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.upperSemicontinuousAt_real_coe": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.lowerSemicontinuousAt_real_coe": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_upper_sequence_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_lower_sequence_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_A2_25_upper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_A2_25_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_half_open_interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_infinite_open_intersection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_relative_open_ambient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_relative_closed_ambient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_relative_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_rule": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_continuousAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.StrictlyPositiveOrthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_nonnegative_coordinates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_nonnegative_orthant_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_positive_orthant_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.euclidean_norm_le_sum_abs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_norm_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sumEuclideanHomeomorph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sumEuclideanHomeomorph_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_bounded_coordinates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AppendixDistancePointA": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AppendixDistancePointB": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_example_euclidean_distance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_example_supremum_distance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_example_sum_distance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.TenSequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.tenSequence_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.tenSequence_no_accumulation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.tenSequence_no_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AlternatingDecimalSequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.alternatingDecimal_even": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.alternatingDecimal_odd": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.decimalPerturbation_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.alternatingDecimal_subsequence_limits": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_alternating_accumulation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.appendix2_alternating_no_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -8719,19 +9648,28 @@
     "PreferenceProperties/StrongSeparabilityTopology.lean": "9aa6adb07c1b64964ee63935b26b597bfdd9411ce695db12a3e0598fa28eb262",
     "PreferenceProperties/SubutilityContinuity.lean": "b2ef53ed4139bccc484f67e8cbda0407d2fb891dc55b49311d453b3541210525",
     "PreferenceProperties/FiniteProductContinuity.lean": "1801c473820b04b6feea3411727f2b0d449d1ed15b35be1c157579160cbacd08",
-    "PreferenceProperties/AppendixSequences.lean": "506038773a095baf053223759b306938bc0008b2df65e52f3e194f0c5650402a",
+    "PreferenceProperties/AppendixSequences.lean": "965c918973c9de079cfccbb59148e30d27c0e7dac4e6852d7421397d5481697d",
     "PreferenceProperties/AppendixContinuousFunctions.lean": "e0c92cc70dd572c854382c6b9493ef2d28065e3f5e2b30113ca51ba71299dcab",
     "PreferenceProperties/AppendixExtrema.lean": "daea148b7bc98d2e6d8a3fb9b8afa1269ac48f414f22b6b432a8b3f75a22a5df",
-    "PreferenceProperties.lean": "60add56d64db6c46ab2788e509b460821f63ce561ec0962996d30ffe9751e34e",
+    "PreferenceProperties/IntervalScoreRepresentation.lean": "ee2d80f7b9b23055570fba4f99713fd89915596a726932e94b68563a8ceec94d",
+    "PreferenceProperties/InteriorReferenceScores.lean": "6fce162fd4fee48ea0e10d7c0eeeb6b75d5cdab21f3f9e1352bd7563e235126a",
+    "PreferenceProperties/BisymmetricMeanGrid.lean": "d366db54cda415399b66c11e3dabb7825e07e8602914fb7dec1122375c21ccb9",
+    "PreferenceProperties/BisymmetricMeanDensity.lean": "a864e11ee865d6b1d2971169e9752a43f7ae8e8e1ec306d72a3ed8d59c77c856",
+    "PreferenceProperties/AppendixSequenceLimits.lean": "916aedb05f7ff5b5143bb9eec65a9b2cfd28a8daebdd0327b16e999a368a746d",
+    "PreferenceProperties/AppendixSequentialSemicontinuity.lean": "268c1fa75dfe1f398968b35a3c36e13cb26990578db476aa19095bf0cb47c26d",
+    "PreferenceProperties/AppendixTopologyExamples.lean": "4445ffac40ffa951d32351d277e2d0bcbf9f293fd20e07017837913f3b079c46",
+    "PreferenceProperties/AppendixEuclideanNorms.lean": "905f4bdc3d3abb9b6b195aea338ddd69a8ba6d707ec83cb44d9656963baa9007",
+    "PreferenceProperties/AppendixSequenceExamples.lean": "7c184be6211071d260924de341c3bfc4328cc399bc645b7892003f914b636a09",
+    "PreferenceProperties.lean": "40cecb17d806e66925415c7ef36a56360cdb4b7b5e3db6d0c53d2833d7e98d9d",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "93d2fee16184aa1bb760bfc95d692aea40976439adc6e55714418c8d8c11e1b8",
+    "proof-manifest.json": "1edce78f7bc819b7eab69dfe6cc438638050dae6c1692b9948c05fec15516cb5",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "169edc8bc8f4f1dbe7a5a1f6829df7e839aced400600a3e3999a30f4db47e03e",
+  "fresh_audit_sha256": "400c63272fe3bda0af65cf59b992a4c700549769a3ef6461244610bc42c59c8d",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.15. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14 is complete by its specified curve, recursive assignment, interval density, finite sequence limits and continuous extension, including a single segment when both extrema are attained. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md. Problem 2.15 uses the exact Lebesgue-positivity assumption on the orthant, proves representation and upper semicontinuity, supplies a finite full-support measure with an atom giving discontinuity even for strictly increasing one-good preference, and proves continuity when indifference classes have zero measure. Problem 2.1 has all nonexcluded quantifier entries and witnesses except the additive-existence direction. Appendix 2 has explicit metric/topology and semicontinuity/compact-maximum bridges, with a counterexample and corrected nonnegative-weight theorem for its erroneous signed-series diagnostic. Remaining appendix obligations are inventoried separately. Additive-existence prerequisites include local Thomsen cancellation, subutility range homeomorphisms and joint continuity of monotone separately continuous aggregators; the full existence theorem remains pending. Appendix 2 now includes explicit sequence, compactness, continuity, intermediate-value and extended-extrema bridges.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.15. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14 is complete by its specified curve, recursive assignment, interval density, finite sequence limits and continuous extension, including a single segment when both extrema are attained. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md. Problem 2.15 uses the exact Lebesgue-positivity assumption on the orthant, proves representation and upper semicontinuity, supplies a finite full-support measure with an atom giving discontinuity even for strictly increasing one-good preference, and proves continuity when indifference classes have zero measure. Problem 2.1 has all nonexcluded quantifier entries and witnesses except the additive-existence direction. Appendix 2 has explicit metric/topology and semicontinuity/compact-maximum bridges, with a counterexample and corrected nonnegative-weight theorem for its erroneous signed-series diagnostic. Appendix 2 is fully covered by explicit statement bridges, including its examples and corrections; relevant Appendix 3 material remains in progress. Additive-existence prerequisites include local Thomsen cancellation, subutility range homeomorphisms and joint continuity of monotone separately continuous aggregators; the full existence theorem remains pending. Appendix 2 includes every numbered statement, norm/sequence example, relative-topology exercise, pointwise semicontinuity criterion and the signed-series correction. Additive-existence preparation now includes scalar interval reduction, a common interior reference rank, and dense strictly ordered bisymmetric dyadic grids. These prerequisites do not yet establish the full additive-existence theorem.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

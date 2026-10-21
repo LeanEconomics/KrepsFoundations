@@ -87,13 +87,22 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [StrongSeparabilityTopology](PreferenceProperties/StrongSeparabilityTopology.lean) | 6 | Local Thomsen cancellation from continuity, connectedness and a third block |
 | [SubutilityContinuity](PreferenceProperties/SubutilityContinuity.lean) | 8 | Order-homeomorphic subutility ranges and coordinate continuity of the aggregator |
 | [FiniteProductContinuity](PreferenceProperties/FiniteProductContinuity.lean) | 4 | Joint continuity from coordinate continuity and monotonicity on finite interval products |
-| [AppendixSequences](PreferenceProperties/AppendixSequences.lean) | 15 | Appendix 2: convergence, accumulation, completeness and compactness |
+| [AppendixSequences](PreferenceProperties/AppendixSequences.lean) | 16 | Appendix 2: convergence, accumulation, completeness and compactness |
 | [AppendixContinuousFunctions](PreferenceProperties/AppendixContinuousFunctions.lean) | 12 | Appendix 2: continuity, relative domains and the intermediate-value theorem |
 | [AppendixExtrema](PreferenceProperties/AppendixExtrema.lean) | 14 | Appendix 2: finite and extended extrema, empty sets and compact maximum attainment |
+| [IntervalScoreRepresentation](PreferenceProperties/IntervalScoreRepresentation.lean) | 9 | Exact reduction to a continuous strictly increasing scalar aggregator on intervals |
+| [InteriorReferenceScores](PreferenceProperties/InteriorReferenceScores.lean) | 4 | A common reference rank interior to every nontrivial block-score interval |
+| [BisymmetricMeanGrid](PreferenceProperties/BisymmetricMeanGrid.lean) | 11 | Dyadic grid construction, refinement, strict ordering and midpoint identity |
+| [BisymmetricMeanDensity](PreferenceProperties/BisymmetricMeanDensity.lean) | 2 | Density of the generated grid for a continuous strict bisymmetric mean |
+| [AppendixSequenceLimits](PreferenceProperties/AppendixSequenceLimits.lean) | 16 | Appendix 2: tail extrema, extended limsup/liminf, infinite cases and finite limits |
+| [AppendixSequentialSemicontinuity](PreferenceProperties/AppendixSequentialSemicontinuity.lean) | 6 | Proposition A2.25: exact pointwise sequential semicontinuity criteria |
+| [AppendixTopologyExamples](PreferenceProperties/AppendixTopologyExamples.lean) | 7 | Half-open intervals, infinite open intersections, relative closure and pointwise Lipschitz rules |
+| [AppendixEuclideanNorms](PreferenceProperties/AppendixEuclideanNorms.lean) | 10 | Orthants, equivalent norms, coordinate bounds and the exact three-distance example |
+| [AppendixSequenceExamples](PreferenceProperties/AppendixSequenceExamples.lean) | 9 | The exact multiples-of-ten and alternating decimal examples, including all accumulation points |
 
-The current subset passes the full fresh-source audit: **704 theorems** and
-**882 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **606 new chapter and appendix theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **779 theorems** and
+**977 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **681 new chapter and appendix theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
@@ -110,8 +119,8 @@ Problem 2.14 is complete through the connecting curve, exact recursive assignmen
 interval-dense range, finite sequence limits and continuous extension.
 Problem 2.8 is complete for all three exact displayed utilities. Problem 2.1 retains only
 the additive-existence dependency; the book's excluded ???? cell is unclaimed.
-The [Appendix 2 inventory](docs/appendix2-source-map.md) separates completed bridges
-from its remaining obligations and records the signed-series diagnostic correction.
+The [Appendix 2 inventory](docs/appendix2-source-map.md) maps every statement and
+mathematical example, including the signed-series diagnostic correction.
 Problem 2.15 is complete under its stated measure assumptions. Indifference classes
 of zero measure suffice for continuity; atoms can prevent it even under strict monotonicity.
 This is not a completed-chapter claim.

@@ -50,6 +50,12 @@ import Mathlib.Analysis.Normed.Group.Bounded
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Topology.Connected.PathConnected
 import Mathlib.Topology.MetricSpace.Lipschitz
+import Mathlib.Order.Interval.Set.Monotone
+import Mathlib.Topology.Constructions.SumProd
+import Mathlib.Topology.Order.MonotoneConvergence
+import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
+import Mathlib.Topology.Order.DenselyOrdered
+import Mathlib.Topology.MetricSpace.Pseudo.Pi
 set_option autoImplicit false
 
 /-
@@ -9783,6 +9789,20 @@ theorem definition_A2_9 {X : Type*} [PseudoMetricSpace X] (u : ℕ → X) (x : X
   rw [Metric.nhds_basis_ball.mapClusterPt_iff_frequently]
   simp only [Filter.frequently_atTop, Metric.mem_ball]
 
+/-- The printed definition uses a strictly later index, giving the same accumulation criterion. -/
+theorem appendix2_accumulation_strict_index {X : Type*} [PseudoMetricSpace X]
+    (u : ℕ → X) (x : X) :
+    MapClusterPt x Filter.atTop u ↔
+      ∀ ε > 0, ∀ N : ℕ, ∃ n > N, dist (u n) x < ε := by
+  rw [definition_A2_9]
+  constructor
+  · intro h ε hε N
+    obtain ⟨n, hn, hx⟩ := h ε hε (N + 1)
+    exact ⟨n, by omega, hx⟩
+  · intro h ε hε N
+    obtain ⟨n, hn, hx⟩ := h ε hε N
+    exact ⟨n, hn.le, hx⟩
+
 /-- **Definition A2.10** and its exercise: accumulation means a convergent subsequence exists. -/
 theorem appendix2_accumulation_subsequence {X : Type*} [PseudoMetricSpace X]
     (u : ℕ → X) (x : X) :
@@ -10072,6 +10092,1043 @@ theorem proposition_A2_21 {X : Type*} [TopologicalSpace X] {S : Set X} {f : X �
     BddAbove (f '' S) ∧ ∃ x ∈ S, f x = sSup (f '' S) ∧ ∀ y ∈ S, f y ≤ f x := by
   obtain ⟨x, hx, heq, hmax⟩ := hS.exists_sSup_image_eq_and_ge hne hf
   exact ⟨hS.bddAbove_image hf, x, hx, heq.symm, hmax⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Reduction to continuous increasing utility on real intervals
+
+Preparation for Kreps I, Proposition 2.14. The baseline construction turns
+connected commodity blocks into real intervals and preserves strong
+separability. Its aggregator is jointly continuous and strictly increasing.
+Every baseline axis is normalized to the same original utility scale.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*}
+
+/-- The utility score of each commodity block at a common reference bundle. -/
+def BaselineScores (u : (∀ i, B i) → ℝ) (z : ∀ i, B i) (i : I) (a : B i) : ℝ :=
+  BaselineSubutility (fun p : BlockBundle B Unit => u p.1) (z, ()) i a
+
+/-- The exact utility aggregator on the attained real block-score ranges. -/
+noncomputable def ScoreAggregator (u : (∀ i, B i) → ℝ) (z : ∀ i, B i)
+    (q : ∀ i, Set.range (BaselineScores u z i)) : ℝ :=
+  SubutilityAggregator (fun p : BlockBundle B Unit => u p.1) (BaselineScores u z) (q, ())
+
+/-- Every block's reference score equals the reference bundle's overall utility. -/
+theorem baselineScores_reference (u : (∀ i, B i) → ℝ) (z : ∀ i, B i) (i : I) :
+    BaselineScores u z i (z i) = u z := by
+  simp only [BaselineScores, BaselineSubutility, ReplaceBlock, Function.update_eq_self]
+
+/-- The baseline block scores are continuous. -/
+theorem baselineScores_continuous [∀ i, TopologicalSpace (B i)]
+    {u : (∀ i, B i) → ℝ} (hc : Continuous u) (z : ∀ i, B i) (i : I) :
+    Continuous (BaselineScores u z i) :=
+  baselineSubutility_continuous (hc.comp continuous_fst) (z, ()) i
+
+/-- Each connected commodity block is replaced by a real interval. -/
+theorem baselineScores_ordConnected [∀ i, TopologicalSpace (B i)]
+    {u : (∀ i, B i) → ℝ} (hc : Continuous u) (z : ∀ i, B i) (i : I)
+    [PreconnectedSpace (B i)] : Set.OrdConnected (Set.range (BaselineScores u z i)) :=
+  (isPreconnected_range (baselineScores_continuous hc z i)).ordConnected
+
+/-- Strong separability gives an exact factorization through the scalar scores. -/
+theorem scoreAggregator_factors [Finite I] {u : (∀ i, B i) → ℝ}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hu : Represents u r)
+    (hs : StronglySeparable r) (z x : ∀ i, B i) :
+    u x = ScoreAggregator u z (BlockScores (BaselineScores u z) x) :=
+  subutilityAggregator_factors (fun x y : BlockBundle B Unit => hu x.1 y.1)
+    (stronglySeparable_weakly hs)
+    (z, ()) (x, ())
+
+/-- The scalar-score aggregator is strictly increasing. -/
+theorem scoreAggregator_strictMono [Finite I] {u : (∀ i, B i) → ℝ}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hu : Represents u r)
+    (hs : StronglySeparable r) (z : ∀ i, B i) : StrictMono (ScoreAggregator u z) :=
+  subutilityAggregator_increasing (fun x y : BlockBundle B Unit => hu x.1 y.1)
+    (stronglySeparable_weakly hs) (z, ()) ()
+
+/-- The scalar-score aggregator is jointly continuous on its finite interval product. -/
+theorem scoreAggregator_continuous [Finite I] [∀ i, TopologicalSpace (B i)]
+    [∀ i, PreconnectedSpace (B i)] {u : (∀ i, B i) → ℝ}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hu : Represents u r)
+    (hs : StronglySeparable r) (hc : Continuous u) (z : ∀ i, B i) :
+    Continuous (ScoreAggregator u z) := by
+  let : ∀ i, Set.OrdConnected (Set.range (BaselineScores u z i)) :=
+    fun i => baselineScores_ordConnected hc z i
+  apply finiteProductMonotone_continuous (scoreAggregator_strictMono hu hs z).monotone
+  intro q i
+  exact subutilityAggregator_coordinate_continuous (fun x y : BlockBundle B Unit => hu x.1 y.1)
+    (stronglySeparable_weakly hs) (hc.comp continuous_fst) (z, ()) q () i
+
+/-- Representative selection respects a partition into a set of coordinates and its complement. -/
+theorem scoreRepresentatives_piecewise (w : ∀ i, B i → ℝ) (s : Finset I)
+    (p q : ∀ i, Set.range (w i)) :
+    (fun i => ScoreRepresentative w i (s.piecewise p q i)) =
+      s.piecewise (fun i => ScoreRepresentative w i (p i))
+        (fun i => ScoreRepresentative w i (q i)) := by
+  funext i
+  by_cases hi : i ∈ s
+  · simp only [Finset.piecewise_eq_of_mem _ _ _ hi]
+  · simp only [Finset.piecewise_eq_of_notMem _ _ _ hi]
+
+/-- Strong separability survives the reduction to scalar block scores. -/
+theorem scoreAggregator_stronglySeparable {u : (∀ i, B i) → ℝ}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hu : Represents u r)
+    (hs : StronglySeparable r) (z : ∀ i, B i) :
+    StronglySeparable (UtilityPref (ScoreAggregator u z)) := by
+  intro s a b p q
+  unfold UtilityPref ScoreAggregator SubutilityAggregator
+  simp only [scoreRepresentatives_piecewise]
+  rw [← hu, ← hu]
+  exact hs s _ _ _ _
+
+/-- Along any reference axis, the aggregator equals the numerical score on that axis. -/
+theorem scoreAggregator_reference_axis [Finite I] {u : (∀ i, B i) → ℝ}
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hu : Represents u r)
+    (hs : StronglySeparable r) (z : ∀ i, B i) (i : I)
+    (t : Set.range (BaselineScores u z i)) :
+    ScoreAggregator u z (Function.update (BlockScores (BaselineScores u z) z) i t) = t.val := by
+  obtain ⟨a, ha⟩ := t.property
+  have ht : (⟨BaselineScores u z i a, a, rfl⟩ : Set.range (BaselineScores u z i)) = t :=
+    Subtype.ext ha
+  have hf := scoreAggregator_factors hu hs z (Function.update z i a)
+  rw [blockScores_update, ht] at hf
+  exact hf.symm.trans ha
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Interior reference scores
+
+Preparation for Kreps I, Proposition 2.14. The reference bundle can be chosen
+so that every nontrivial block has both strictly better and strictly worse
+alternatives. Consequently its common baseline utility lies in the interior
+of each nontrivial block's real score interval.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*}
+variable [∀ i, TopologicalSpace (B i)]
+variable {r : (∀ i, B i) → (∀ i, B i) → Prop}
+
+/-- A connected nontrivial block has an intermediate rank at every fixed surrounding bundle. -/
+theorem nontrivialBlock_interior_rank_at (hr : Rational r) (hc : ContinuousPreference r)
+    (hs : StronglySeparable r) (z : ∀ i, B i) (i : I) [PreconnectedSpace (B i)]
+    (hnt : NontrivialBlock r i) :
+    ∃ a lo hi, Strict r (Function.update z i a) (Function.update z i lo) ∧
+      Strict r (Function.update z i hi) (Function.update z i a) := by
+  let : Nonempty (∀ i, B i) := ⟨z⟩
+  obtain ⟨hi, lo, hh⟩ := (nontrivialBlock_iff_every_context hs i).mp hnt
+  let f : B i → ∀ j, B j := fun a => Function.update z i a
+  have hfc : Continuous f := continuous_const.update i continuous_id
+  obtain ⟨a, hhia, halo⟩ := exists_strict_between (rational_preference_pullback hr f)
+    (continuousPreference_pullback hc hfc) (hh z)
+  exact ⟨a, lo, hi, halo, hhia⟩
+
+/-- One reference bundle simultaneously puts all nontrivial blocks at interior preference ranks. -/
+theorem exists_interior_reference [∀ i, PreconnectedSpace (B i)]
+    (hr : Rational r) (hc : ContinuousPreference r) (hs : StronglySeparable r)
+    (z : ∀ i, B i) :
+    ∃ t : ∀ i, B i, ∀ i, NontrivialBlock r i →
+      ∃ lo hi, Strict r t (Function.update t i lo) ∧
+        Strict r (Function.update t i hi) t := by
+  classical
+  have hp (i : I) : ∃ a : B i, NontrivialBlock r i →
+      ∃ lo hi, Strict r (Function.update z i a) (Function.update z i lo) ∧
+        Strict r (Function.update z i hi) (Function.update z i a) := by
+    by_cases hnt : NontrivialBlock r i
+    · obtain ⟨a, lo, hi, hlo, hhi⟩ := nontrivialBlock_interior_rank_at hr hc hs z i hnt
+      exact ⟨a, fun _ => ⟨lo, hi, hlo, hhi⟩⟩
+    · exact ⟨z i, fun h => (hnt h).elim⟩
+  choose t ht using hp
+  refine ⟨t, fun i hnt => ?_⟩
+  obtain ⟨lo, hi, hlo, hhi⟩ := ht i hnt
+  have hl := (weaklySeparable_strict (stronglySeparable_weakly hs)
+    i (t i) lo (z, ()) (t, ())).mp hlo
+  have hh := (weaklySeparable_strict (stronglySeparable_weakly hs)
+    i hi (t i) (z, ()) (t, ())).mp hhi
+  exact ⟨lo, hi, by simpa only [Strict, ReplaceBlock, Function.update_eq_self] using hl,
+    by simpa only [Strict, ReplaceBlock, Function.update_eq_self] using hh⟩
+
+/-- Interior ordinal rank is interior membership in the baseline score interval. -/
+theorem baselineScores_reference_interior {u : (∀ i, B i) → ℝ} (hu : Represents u r)
+    (hc : Continuous u) (z : ∀ i, B i) (i : I) [PreconnectedSpace (B i)]
+    (hi : ∃ lo hi, Strict r z (Function.update z i lo) ∧
+      Strict r (Function.update z i hi) z) :
+    u z ∈ interior (Set.range (BaselineScores u z i)) := by
+  obtain ⟨lo, hi, hlo, hhi⟩ := hi
+  have hl : BaselineScores u z i lo < u z := (strict_iff_utility_lt hu _ _).mp hlo
+  have hh : u z < BaselineScores u z i hi := (strict_iff_utility_lt hu _ _).mp hhi
+  apply mem_interior_iff_mem_nhds.mpr
+  apply Filter.mem_of_superset (Ioo_mem_nhds hl hh)
+  intro v hv
+  exact (baselineScores_ordConnected hc z i).out ⟨lo, rfl⟩ ⟨hi, rfl⟩
+    ⟨hv.1.le, hv.2.le⟩
+
+/-- All nontrivial score intervals can share the same interior reference utility. -/
+theorem exists_interior_baseline_scores [∀ i, PreconnectedSpace (B i)]
+    {u : (∀ i, B i) → ℝ} (hr : Rational r) (hu : Represents u r)
+    (hs : StronglySeparable r) (hc : Continuous u) (z : ∀ i, B i) :
+    ∃ t : ∀ i, B i, ∀ i, NontrivialBlock r i →
+      u t ∈ interior (Set.range (BaselineScores u t i)) := by
+  obtain ⟨t, ht⟩ := exists_interior_reference hr (proposition_2_9_forward hu hc) hs z
+  exact ⟨t, fun i hi => baselineScores_reference_interior hu hc t i (ht i hi)⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Dyadic grids for ordered bisymmetric means
+
+The algebraic stage of the cardinal-scale construction used in Proposition 2.14.
+No additive representation is assumed: a reflexive symmetric bisymmetric mean
+generates its own nested grid, and bisymmetry supplies the midpoint identity.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The algebraic and order properties of a strict symmetric bisymmetric mean. -/
+structure OrderedBisymmetricMean (α : Type*) [LinearOrder α] where
+  mean : α → α → α
+  reflexive : ∀ x, mean x x = x
+  symmetric : ∀ x y, mean x y = mean y x
+  bisymmetric : ∀ x y z w, mean (mean x y) (mean z w) = mean (mean x z) (mean y w)
+  strictMono_left : ∀ y, StrictMono (fun x => mean x y)
+  strictMono_right : ∀ x, StrictMono (mean x)
+
+variable {α : Type*} [LinearOrder α]
+
+/-- Repeated midpoint subdivision, with the endpoint values retained at even grid indices. -/
+def MeanDyadicGrid (F : α → α → α) (a b : α) : ℕ → ℕ → α
+  | 0, k => if k = 0 then a else b
+  | n + 1, k => F (MeanDyadicGrid F a b n (k / 2))
+      (MeanDyadicGrid F a b n ((k + 1) / 2))
+
+/-- A strict mean lies strictly between unequal ordered arguments. -/
+theorem orderedMean_between (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b) :
+    a < M.mean a b ∧ M.mean a b < b := by
+  constructor
+  · exact by simpa only [M.reflexive] using M.strictMono_right a hab
+  · exact by simpa only [M.reflexive] using M.strictMono_left b hab
+
+/-- Refining the grid preserves an old point at twice its former index. -/
+theorem meanDyadicGrid_even (M : OrderedBisymmetricMean α) (a b : α) (n k : ℕ) :
+    MeanDyadicGrid M.mean a b (n + 1) (2 * k) = MeanDyadicGrid M.mean a b n k := by
+  have h₀ : 2 * k / 2 = k := by omega
+  have h₁ : (2 * k + 1) / 2 = k := by omega
+  simp only [MeanDyadicGrid, h₀, h₁, M.reflexive]
+
+/-- New odd-index points are means of neighboring old points. -/
+theorem meanDyadicGrid_odd (M : OrderedBisymmetricMean α) (a b : α) (n k : ℕ) :
+    MeanDyadicGrid M.mean a b (n + 1) (2 * k + 1) =
+      M.mean (MeanDyadicGrid M.mean a b n k) (MeanDyadicGrid M.mean a b n (k + 1)) := by
+  have h₀ : (2 * k + 1) / 2 = k := by omega
+  have h₁ : (2 * k + 1 + 1) / 2 = k + 1 := by omega
+  simp only [MeanDyadicGrid, h₀, h₁]
+
+/-- Every refinement starts at the designated left endpoint. -/
+theorem meanDyadicGrid_left (M : OrderedBisymmetricMean α) (a b : α) (n : ℕ) :
+    MeanDyadicGrid M.mean a b n 0 = a := by
+  induction n with
+  | zero => simp [MeanDyadicGrid]
+  | succ n ih => simpa only [Nat.mul_zero, ih] using meanDyadicGrid_even M a b n 0
+
+/-- Every refinement ends at the designated right endpoint. -/
+theorem meanDyadicGrid_right (M : OrderedBisymmetricMean α) (a b : α) (n : ℕ) :
+    MeanDyadicGrid M.mean a b n (2 ^ n) = b := by
+  induction n with
+  | zero => simp [MeanDyadicGrid]
+  | succ n ih =>
+    rw [pow_succ, Nat.mul_comm, meanDyadicGrid_even, ih]
+
+/-- A two-step interval has its middle grid point as its mean. -/
+theorem meanDyadicGrid_near (M : OrderedBisymmetricMean α) (a b : α) (n : ℕ)
+    (hmid : ∀ i j, i ≤ 2 ^ n → j ≤ 2 ^ n →
+      M.mean (MeanDyadicGrid M.mean a b n i) (MeanDyadicGrid M.mean a b n j) =
+        MeanDyadicGrid M.mean a b (n + 1) (i + j))
+    (k : ℕ) (hk : k + 2 ≤ 2 ^ (n + 1)) :
+    M.mean (MeanDyadicGrid M.mean a b (n + 1) k)
+      (MeanDyadicGrid M.mean a b (n + 1) (k + 2)) =
+        MeanDyadicGrid M.mean a b (n + 1) (k + 1) := by
+  have hp : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ, Nat.mul_comm]
+  by_cases he : k % 2 = 0
+  · have hk' : k = 2 * (k / 2) := by omega
+    have hk₂ : k + 2 = 2 * (k / 2 + 1) := by omega
+    have hk₁ : k + 1 = 2 * (k / 2) + 1 := by omega
+    have hl := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk').trans
+      (meanDyadicGrid_even M a b n (k / 2))
+    have hr := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₂).trans
+      (meanDyadicGrid_even M a b n (k / 2 + 1))
+    have hm := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₁).trans
+      (meanDyadicGrid_odd M a b n (k / 2))
+    rw [hl, hr, hm]
+  · have hk' : k = 2 * (k / 2) + 1 := by omega
+    have hk₂ : k + 2 = 2 * (k / 2 + 1) + 1 := by omega
+    have hk₁ : k + 1 = 2 * (k / 2 + 1) := by omega
+    have hl := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk').trans
+      (meanDyadicGrid_odd M a b n (k / 2))
+    have hr := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₂).trans
+      (meanDyadicGrid_odd M a b n (k / 2 + 1))
+    have hm := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₁).trans
+      (meanDyadicGrid_even M a b n (k / 2 + 1))
+    rw [hl, hr, hm]
+    rw [M.symmetric (MeanDyadicGrid M.mean a b n (k / 2 + 1))
+      (MeanDyadicGrid M.mean a b n (k / 2 + 1 + 1)), M.bisymmetric, M.reflexive]
+    have hi : k / 2 ≤ 2 ^ n := by omega
+    have hj : k / 2 + 1 + 1 ≤ 2 ^ n := by omega
+    rw [hmid _ _ hi hj]
+    have hsum : k / 2 + (k / 2 + 1 + 1) = 2 * (k / 2 + 1) := by omega
+    rw [hsum, meanDyadicGrid_even, M.reflexive]
+
+/-- Bisymmetry makes arbitrary grid pairs average their dyadic indices. -/
+theorem meanDyadicGrid_midpoint (M : OrderedBisymmetricMean α) (a b : α) (n i j : ℕ)
+    (hi : i ≤ 2 ^ n) (hj : j ≤ 2 ^ n) :
+    M.mean (MeanDyadicGrid M.mean a b n i) (MeanDyadicGrid M.mean a b n j) =
+      MeanDyadicGrid M.mean a b (n + 1) (i + j) := by
+  induction n generalizing i j with
+  | zero =>
+    norm_num at hi hj
+    interval_cases i <;> interval_cases j <;>
+      simp [MeanDyadicGrid, M.reflexive, M.symmetric]
+  | succ n ih =>
+    have hp : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ, Nat.mul_comm]
+    have hi₀ : i / 2 ≤ 2 ^ n := by omega
+    have hi₁ : (i + 1) / 2 ≤ 2 ^ n := by omega
+    have hj₀ : j / 2 ≤ 2 ^ n := by omega
+    have hj₁ : (j + 1) / 2 ≤ 2 ^ n := by omega
+    change M.mean
+      (M.mean (MeanDyadicGrid M.mean a b n (i / 2))
+        (MeanDyadicGrid M.mean a b n ((i + 1) / 2)))
+      (M.mean (MeanDyadicGrid M.mean a b n (j / 2))
+        (MeanDyadicGrid M.mean a b n ((j + 1) / 2))) =
+      M.mean (MeanDyadicGrid M.mean a b (n + 1) ((i + j) / 2))
+        (MeanDyadicGrid M.mean a b (n + 1) ((i + j + 1) / 2))
+    rw [M.bisymmetric, ih _ _ hi₀ hj₀, ih _ _ hi₁ hj₁]
+    by_cases hei : i % 2 = 0
+    · congr 2 <;> omega
+    · by_cases hej : j % 2 = 0
+      · congr 2 <;> omega
+      · have hright : (i + 1) / 2 + (j + 1) / 2 = i / 2 + j / 2 + 2 := by omega
+        have hmiddle : (i + j) / 2 = i / 2 + j / 2 + 1 := by omega
+        have hmiddle' : (i + j + 1) / 2 = i / 2 + j / 2 + 1 := by omega
+        rw [hright, hmiddle, hmiddle', M.reflexive]
+        exact meanDyadicGrid_near M a b n ih (i / 2 + j / 2) (by omega)
+
+/-- Consecutive dyadic grid points are strictly ordered between distinct endpoints. -/
+theorem meanDyadicGrid_lt_succ (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b)
+    (n k : ℕ) (hk : k < 2 ^ n) :
+    MeanDyadicGrid M.mean a b n k < MeanDyadicGrid M.mean a b n (k + 1) := by
+  induction n generalizing k with
+  | zero =>
+    have hk0 : k = 0 := by norm_num at hk; omega
+    subst k
+    simpa [MeanDyadicGrid] using hab
+  | succ n ih =>
+    have hp : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ, Nat.mul_comm]
+    have hkhalf : k / 2 < 2 ^ n := by omega
+    have hbetween := orderedMean_between M (ih (k / 2) hkhalf)
+    by_cases he : k % 2 = 0
+    · have hk' : k = 2 * (k / 2) := by omega
+      have hk₁ : k + 1 = 2 * (k / 2) + 1 := by omega
+      have hl := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk').trans
+        (meanDyadicGrid_even M a b n (k / 2))
+      have hr := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₁).trans
+        (meanDyadicGrid_odd M a b n (k / 2))
+      rw [hl, hr]
+      exact hbetween.1
+    · have hk' : k = 2 * (k / 2) + 1 := by omega
+      have hk₁ : k + 1 = 2 * (k / 2 + 1) := by omega
+      have hl := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk').trans
+        (meanDyadicGrid_odd M a b n (k / 2))
+      have hr := (congrArg (MeanDyadicGrid M.mean a b (n + 1)) hk₁).trans
+        (meanDyadicGrid_even M a b n (k / 2 + 1))
+      rw [hl, hr]
+      exact hbetween.2
+
+/-- Each finite grid is strictly increasing in its valid index interval. -/
+theorem meanDyadicGrid_strictMonoOn (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b)
+    (n : ℕ) : StrictMonoOn (MeanDyadicGrid M.mean a b n) (Set.Iic (2 ^ n)) :=
+  strictMonoOn_Iic_of_lt_succ (fun k hk => meanDyadicGrid_lt_succ M hab n k hk)
+
+/-- Repeated refinement does not change any existing grid point. -/
+theorem meanDyadicGrid_refine (M : OrderedBisymmetricMean α) (a b : α) (n m k : ℕ) :
+    MeanDyadicGrid M.mean a b (n + m) (k * 2 ^ m) = MeanDyadicGrid M.mean a b n k := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    have hindex : k * 2 ^ (m + 1) = 2 * (k * 2 ^ m) := by rw [pow_succ]; ring
+    rw [Nat.add_succ, hindex, meanDyadicGrid_even, ih]
+
+/-- The union of all finite dyadic mean grids. -/
+def MeanDyadicPoints (M : OrderedBisymmetricMean α) (a b : α) : Set α :=
+  {x | ∃ n k, k ≤ 2 ^ n ∧ x = MeanDyadicGrid M.mean a b n k}
+
+/-- The dyadic points are closed under the mean operation. -/
+theorem meanDyadicPoints_mean (M : OrderedBisymmetricMean α) (a b : α) {x y : α}
+    (hx : x ∈ MeanDyadicPoints M a b) (hy : y ∈ MeanDyadicPoints M a b) :
+    M.mean x y ∈ MeanDyadicPoints M a b := by
+  obtain ⟨n, i, hi, rfl⟩ := hx
+  obtain ⟨m, j, hj, rfl⟩ := hy
+  have hi' : i * 2 ^ m ≤ 2 ^ (n + m) := by
+    rw [pow_add]
+    exact Nat.mul_le_mul_right _ hi
+  have hj' : j * 2 ^ n ≤ 2 ^ (n + m) := by
+    rw [Nat.add_comm n m, pow_add]
+    exact Nat.mul_le_mul_right _ hj
+  refine ⟨n + m + 1, i * 2 ^ m + j * 2 ^ n, ?_, ?_⟩
+  · rw [pow_succ]
+    omega
+  · have hleft := meanDyadicGrid_refine M a b n m i
+    have hright := meanDyadicGrid_refine M a b m n j
+    rw [Nat.add_comm m n] at hright
+    rw [← hleft, ← hright]
+    exact meanDyadicGrid_midpoint M a b (n + m) _ _ hi' hj'
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Density of bisymmetric mean grids
+
+On a compact ordered interval the dyadic mean grid is dense. Its closure is
+closed under the continuous mean; any gap in that closure would contain the
+mean of its two boundary points, contradicting strict internality.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Set
+
+variable {α : Type*} [LinearOrder α] [TopologicalSpace α]
+
+/-- Continuity preserves closure under the mean. -/
+theorem meanDyadicPoints_closure_mean (M : OrderedBisymmetricMean α) (a b : α)
+    (hc : Continuous (fun p : α × α => M.mean p.1 p.2)) {x y : α}
+    (hx : x ∈ closure (MeanDyadicPoints M a b))
+    (hy : y ∈ closure (MeanDyadicPoints M a b)) :
+    M.mean x y ∈ closure (MeanDyadicPoints M a b) := by
+  have hm : MapsTo (fun p : α × α => M.mean p.1 p.2)
+      (MeanDyadicPoints M a b ×ˢ MeanDyadicPoints M a b) (MeanDyadicPoints M a b) :=
+    fun _ hp => meanDyadicPoints_mean M a b hp.1 hp.2
+  exact hm.closure hc (show (x, y) ∈ closure
+    (MeanDyadicPoints M a b ×ˢ MeanDyadicPoints M a b) from
+    by simpa only [closure_prod_eq, mem_prod] using And.intro hx hy)
+
+/-- A continuous strict bisymmetric mean has a dense dyadic grid on a compact interval. -/
+theorem meanDyadicPoints_dense [OrderTopology α] [CompactSpace α]
+    (M : OrderedBisymmetricMean α) (a b : α)
+    (ha : ∀ x, a ≤ x) (hb : ∀ x, x ≤ b)
+    (hc : Continuous (fun p : α × α => M.mean p.1 p.2)) :
+    Dense (MeanDyadicPoints M a b) := by
+  intro x
+  have hleft : a ∈ closure (MeanDyadicPoints M a b) :=
+    subset_closure ⟨0, 0, by norm_num, (meanDyadicGrid_left M a b 0).symm⟩
+  have hright : b ∈ closure (MeanDyadicPoints M a b) :=
+    subset_closure ⟨0, 1, by norm_num, (meanDyadicGrid_right M a b 0).symm⟩
+  have hloClosed : IsClosed (closure (MeanDyadicPoints M a b) ∩ Iic x) :=
+    isClosed_closure.inter isClosed_Iic
+  have hhiClosed : IsClosed (closure (MeanDyadicPoints M a b) ∩ Ici x) :=
+    isClosed_closure.inter isClosed_Ici
+  obtain ⟨l, hl⟩ := hloClosed.isCompact.exists_isGreatest ⟨a, hleft, ha x⟩
+  obtain ⟨r, hr⟩ := hhiClosed.isCompact.exists_isLeast ⟨b, hright, hb x⟩
+  by_contra hx
+  have hlx : l < x := lt_of_le_of_ne hl.1.2 (fun h => hx (h ▸ hl.1.1))
+  have hxr : x < r := lt_of_le_of_ne hr.1.2 (fun h => hx (h.symm ▸ hr.1.1))
+  have hbetween := orderedMean_between M (hlx.trans hxr)
+  have hm := meanDyadicPoints_closure_mean M a b hc hl.1.1 hr.1.1
+  rcases le_total (M.mean l r) x with h | h
+  · exact (not_le_of_gt hbetween.1) (hl.2 ⟨hm, h⟩)
+  · exact (not_le_of_gt hbetween.2) (hr.2 ⟨hm, h⟩)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: limsup and liminf
+
+Definition A2.22 and Proposition A2.23, pp. 450–451. Suprema, infima and
+accumulation points are taken in the extended real line so that every sequence
+is covered. The finite-limit theorem separately identifies ordinary real convergence.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- The extended supremum of a sequence tail in Definition A2.22. -/
+noncomputable def SequenceTailSup (u : ℕ → ℝ) (N : ℕ) : EReal :=
+  ⨆ n ≥ N, (u n : EReal)
+
+/-- The extended infimum of a sequence tail in Definition A2.22. -/
+noncomputable def SequenceTailInf (u : ℕ → ℝ) (N : ℕ) : EReal :=
+  ⨅ n ≥ N, (u n : EReal)
+
+/-- Tail suprema are nonincreasing, including infinite values. -/
+theorem sequenceTailSup_antitone (u : ℕ → ℝ) : Antitone (SequenceTailSup u) := by
+  intro M N hMN
+  apply iSup_le
+  intro n
+  apply iSup_le
+  intro hn
+  exact le_iSup_of_le n (le_iSup_of_le (hMN.trans hn) le_rfl)
+
+/-- Tail infima are nondecreasing. -/
+theorem sequenceTailInf_monotone (u : ℕ → ℝ) : Monotone (SequenceTailInf u) := by
+  intro M N hMN
+  apply le_iInf
+  intro n
+  apply le_iInf
+  intro hn
+  exact iInf_le_of_le n (iInf_le_of_le (hMN.trans hn) le_rfl)
+
+/-- **Definition A2.22:** limsup is the infimum of the tail suprema. -/
+theorem definition_A2_22_limsup (u : ℕ → ℝ) :
+    Filter.limsup (fun n => (u n : EReal)) Filter.atTop = ⨅ N, SequenceTailSup u N :=
+  Filter.limsup_eq_iInf_iSup_of_nat
+
+/-- **Definition A2.22:** liminf is the supremum of the tail infima. -/
+theorem definition_A2_22_liminf (u : ℕ → ℝ) :
+    Filter.liminf (fun n => (u n : EReal)) Filter.atTop = ⨆ N, SequenceTailInf u N :=
+  Filter.liminf_eq_iSup_iInf_of_nat
+
+/-- The tail suprema actually converge to the limsup, as in the book's definition. -/
+theorem sequenceTailSup_tendsto (u : ℕ → ℝ) :
+    Filter.Tendsto (SequenceTailSup u) Filter.atTop
+      (𝓝 (Filter.limsup (fun n => (u n : EReal)) Filter.atTop)) := by
+  rw [definition_A2_22_limsup]
+  exact tendsto_atTop_iInf (sequenceTailSup_antitone u)
+
+/-- The tail infima converge to the liminf. -/
+theorem sequenceTailInf_tendsto (u : ℕ → ℝ) :
+    Filter.Tendsto (SequenceTailInf u) Filter.atTop
+      (𝓝 (Filter.liminf (fun n => (u n : EReal)) Filter.atTop)) := by
+  rw [definition_A2_22_liminf]
+  exact tendsto_atTop_iSup (sequenceTailInf_monotone u)
+
+/-- The limsup is the greatest extended-real accumulation point. -/
+theorem appendix2_limsup_greatest_accumulation (u : ℕ → ℝ) :
+    IsGreatest {x : EReal | MapClusterPt x Filter.atTop (fun n => (u n : EReal))}
+      (Filter.limsup (fun n => (u n : EReal)) Filter.atTop) :=
+  isGreatest_mapClusterPt_limsup
+
+/-- The liminf is the least extended-real accumulation point. -/
+theorem appendix2_liminf_least_accumulation (u : ℕ → ℝ) :
+    IsLeast {x : EReal | MapClusterPt x Filter.atTop (fun n => (u n : EReal))}
+      (Filter.liminf (fun n => (u n : EReal)) Filter.atTop) :=
+  isLeast_mapClusterPt_liminf
+
+/-- **Proposition A2.23:** equality of extended liminf and limsup characterizes convergence. -/
+theorem proposition_A2_23 (u : ℕ → ℝ) :
+    (∃ x : EReal, Filter.Tendsto (fun n => (u n : EReal)) Filter.atTop (𝓝 x)) ↔
+      Filter.liminf (fun n => (u n : EReal)) Filter.atTop =
+        Filter.limsup (fun n => (u n : EReal)) Filter.atTop := by
+  constructor
+  · rintro ⟨x, hx⟩
+    exact hx.liminf_eq.trans hx.limsup_eq.symm
+  · intro h
+    exact ⟨_, tendsto_of_liminf_eq_limsup rfl h.symm⟩
+
+/-- Ordinary real convergence requires the common extended limit to be finite. -/
+theorem appendix2_finite_limit (u : ℕ → ℝ) (x : ℝ) :
+    Filter.Tendsto u Filter.atTop (𝓝 x) ↔
+      Filter.liminf (fun n => (u n : EReal)) Filter.atTop = (x : EReal) ∧
+        Filter.limsup (fun n => (u n : EReal)) Filter.atTop = (x : EReal) := by
+  constructor
+  · intro h
+    have he := EReal.tendsto_coe.mpr h
+    exact ⟨he.liminf_eq, he.limsup_eq⟩
+  · rintro ⟨hi, hs⟩
+    exact EReal.tendsto_coe.mp (tendsto_of_liminf_eq_limsup hi hs)
+
+/-- Divergence to positive infinity gives infinite liminf and limsup. -/
+theorem appendix2_positive_infinite_limit {u : ℕ → ℝ}
+    (hu : Filter.Tendsto u Filter.atTop Filter.atTop) :
+    Filter.liminf (fun n => (u n : EReal)) Filter.atTop = ⊤ ∧
+      Filter.limsup (fun n => (u n : EReal)) Filter.atTop = ⊤ := by
+  have he := EReal.tendsto_coe_nhds_top_iff.mpr hu
+  exact ⟨he.liminf_eq, he.limsup_eq⟩
+
+/-- Divergence to negative infinity gives the negative-infinite caveat in the text. -/
+theorem appendix2_negative_infinite_limit {u : ℕ → ℝ}
+    (hu : Filter.Tendsto u Filter.atTop Filter.atBot) :
+    Filter.liminf (fun n => (u n : EReal)) Filter.atTop = ⊥ ∧
+      Filter.limsup (fun n => (u n : EReal)) Filter.atTop = ⊥ := by
+  have he := EReal.tendsto_coe_nhds_bot_iff.mpr hu
+  exact ⟨he.liminf_eq, he.limsup_eq⟩
+
+/-- Removing a finite prefix cannot bound an unbounded-above real sequence. -/
+theorem sequenceTailSup_unbounded {u : ℕ → ℝ} (hu : ¬BddAbove (Set.range u)) (N : ℕ) :
+    SequenceTailSup u N = ⊤ := by
+  have ht : ¬BddAbove (u '' Set.Ici N) := by
+    rintro ⟨M, hM⟩
+    apply hu
+    apply Filter.IsBoundedUnder.bddAbove_range
+    exact Filter.isBoundedUnder_of_eventually_le (a := M)
+      (Filter.eventually_atTop.mpr ⟨N, fun n hn => hM ⟨n, hn, rfl⟩⟩)
+  simpa only [Set.image_image, Function.comp_def, sSup_image, Set.mem_Ici,
+    SequenceTailSup] using appendix2_extended_sup_unbounded ht
+
+/-- An unbounded-above sequence has positive-infinite limsup even if it does not diverge. -/
+theorem appendix2_limsup_unbounded {u : ℕ → ℝ} (hu : ¬BddAbove (Set.range u)) :
+    Filter.limsup (fun n => (u n : EReal)) Filter.atTop = ⊤ := by
+  rw [definition_A2_22_limsup]
+  simp only [sequenceTailSup_unbounded hu, iInf_const]
+
+/-- The lower-tail version of the same finite-prefix observation. -/
+theorem sequenceTailInf_unbounded {u : ℕ → ℝ} (hu : ¬BddBelow (Set.range u)) (N : ℕ) :
+    SequenceTailInf u N = ⊥ := by
+  have ht : ¬BddBelow (u '' Set.Ici N) := by
+    rintro ⟨M, hM⟩
+    apply hu
+    apply Filter.IsBoundedUnder.bddBelow_range
+    exact Filter.isBoundedUnder_of_eventually_ge (a := M)
+      (Filter.eventually_atTop.mpr ⟨N, fun n hn => hM ⟨n, hn, rfl⟩⟩)
+  simpa only [Set.image_image, Function.comp_def, sInf_image, Set.mem_Ici,
+    SequenceTailInf] using appendix2_extended_inf_unbounded ht
+
+/-- An unbounded-below sequence has negative-infinite liminf. -/
+theorem appendix2_liminf_unbounded {u : ℕ → ℝ} (hu : ¬BddBelow (Set.range u)) :
+    Filter.liminf (fun n => (u n : EReal)) Filter.atTop = ⊥ := by
+  rw [definition_A2_22_liminf]
+  simp only [sequenceTailInf_unbounded hu, iSup_const]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: sequential semicontinuity
+
+Proposition A2.25, p. 451. Extended-real limsup and liminf include sequences
+whose function values are unbounded. Subtype domains give the stated relative version.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- Real-valued upper semicontinuity is unchanged by inclusion in the extended real line. -/
+theorem upperSemicontinuousAt_real_coe {X : Type*} [TopologicalSpace X]
+    (f : X → ℝ) (x : X) :
+    UpperSemicontinuousAt (fun y => (f y : EReal)) x ↔ UpperSemicontinuousAt f x := by
+  constructor
+  · intro h r hr
+    exact (h (r : EReal) (EReal.coe_lt_coe hr)).mono fun _ hy =>
+      EReal.coe_lt_coe_iff.mp hy
+  · intro h a hxa
+    induction a using EReal.rec with
+    | bot => exact False.elim (not_lt_bot hxa)
+    | coe r =>
+      exact (h r (EReal.coe_lt_coe_iff.mp hxa)).mono fun _ hy => EReal.coe_lt_coe hy
+    | top => exact Filter.Eventually.of_forall fun y => EReal.coe_lt_top (f y)
+
+/-- Real-valued lower semicontinuity is also unchanged by the inclusion. -/
+theorem lowerSemicontinuousAt_real_coe {X : Type*} [TopologicalSpace X]
+    (f : X → ℝ) (x : X) :
+    LowerSemicontinuousAt (fun y => (f y : EReal)) x ↔ LowerSemicontinuousAt f x := by
+  constructor
+  · intro h r hr
+    exact (h (r : EReal) (EReal.coe_lt_coe hr)).mono fun _ hy =>
+      EReal.coe_lt_coe_iff.mp hy
+  · intro h a hax
+    induction a using EReal.rec with
+    | bot => exact Filter.Eventually.of_forall fun y => EReal.bot_lt_coe (f y)
+    | coe r =>
+      exact (h r (EReal.coe_lt_coe_iff.mp hax)).mono fun _ hy => EReal.coe_lt_coe hy
+    | top => exact False.elim (not_top_lt hax)
+
+/-- Upper semicontinuity at a point is characterized by sequential limsup inequalities. -/
+theorem appendix2_upper_sequence_iff {X γ : Type*} [PseudoMetricSpace X]
+    [CompleteLinearOrder γ] [TopologicalSpace γ] [OrderTopology γ] (f : X → γ) (x : X) :
+    UpperSemicontinuousAt f x ↔ ∀ u : ℕ → X,
+      Filter.Tendsto u Filter.atTop (𝓝 x) → Filter.limsup (f ∘ u) Filter.atTop ≤ f x := by
+  constructor
+  · intro h u hu
+    exact hu.limsup_comp_le_limsup.trans (upperSemicontinuousAt_iff_limsup_le.mp h)
+  · intro h a ha
+    have hx : x ∉ closure {y | a ≤ f y} := by
+      intro hmem
+      obtain ⟨u, hu, hlim⟩ := mem_closure_iff_seq_limit.mp hmem
+      have hlo : a ≤ Filter.liminf (f ∘ u) Filter.atTop :=
+        Filter.le_liminf_of_le (by isBoundedDefault) (Filter.Eventually.of_forall hu)
+      have hls : Filter.liminf (f ∘ u) Filter.atTop ≤ Filter.limsup (f ∘ u) Filter.atTop :=
+        Filter.liminf_le_limsup
+      exact (not_le_of_gt ha) (hlo.trans (hls.trans (h u hlim)))
+    filter_upwards [isClosed_closure.isOpen_compl.mem_nhds hx] with y hy
+    exact lt_of_not_ge (fun hge => hy (subset_closure hge))
+
+/-- The lower-semicontinuity version follows by reversing the complete order. -/
+theorem appendix2_lower_sequence_iff {X γ : Type*} [PseudoMetricSpace X]
+    [CompleteLinearOrder γ] [TopologicalSpace γ] [OrderTopology γ] (f : X → γ) (x : X) :
+    LowerSemicontinuousAt f x ↔ ∀ u : ℕ → X,
+      Filter.Tendsto u Filter.atTop (𝓝 x) → f x ≤ Filter.liminf (f ∘ u) Filter.atTop :=
+  appendix2_upper_sequence_iff (γ := γᵒᵈ) f x
+
+/-- **Proposition A2.25:** upper semicontinuity at a point is the limsup inequality. -/
+theorem proposition_A2_25_upper {X : Type*} [PseudoMetricSpace X] (f : X → ℝ) (x : X) :
+    UpperSemicontinuousAt f x ↔ ∀ u : ℕ → X,
+      Filter.Tendsto u Filter.atTop (𝓝 x) →
+        Filter.limsup (fun n => (f (u n) : EReal)) Filter.atTop ≤ (f x : EReal) :=
+  (upperSemicontinuousAt_real_coe f x).symm.trans (appendix2_upper_sequence_iff _ x)
+
+/-- **Proposition A2.25:** lower semicontinuity at a point is the liminf inequality. -/
+theorem proposition_A2_25_lower {X : Type*} [PseudoMetricSpace X] (f : X → ℝ) (x : X) :
+    LowerSemicontinuousAt f x ↔ ∀ u : ℕ → X,
+      Filter.Tendsto u Filter.atTop (𝓝 x) →
+        (f x : EReal) ≤ Filter.liminf (fun n => (f (u n) : EReal)) Filter.atTop :=
+  (lowerSemicontinuousAt_real_coe f x).symm.trans (appendix2_lower_sequence_iff _ x)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: relative topology and examples
+
+The half-open interval and infinite-intersection examples on p. 442, the
+relative-topology exercises on p. 443, and the Lipschitz footnote on pp. 447–448.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The interval `(0,1]` is neither open nor closed. -/
+theorem appendix2_half_open_interval :
+    ¬IsOpen (Set.Ioc (0 : ℝ) 1) ∧ ¬IsClosed (Set.Ioc (0 : ℝ) 1) := by
+  constructor
+  · intro h
+    have he := h.interior_eq
+    rw [interior_Ioc] at he
+    have hmem : (1 : ℝ) ∈ Set.Ioo 0 1 := he.symm ▸ (by norm_num : (1 : ℝ) ∈ Set.Ioc 0 1)
+    exact (lt_irrefl (1 : ℝ)) hmem.2
+  · intro h
+    have he := h.closure_eq
+    rw [closure_Ioc (by norm_num : (0 : ℝ) ≠ 1)] at he
+    have hmem : (0 : ℝ) ∈ Set.Ioc 0 1 := he ▸ (by norm_num : (0 : ℝ) ∈ Set.Icc 0 1)
+    exact (lt_irrefl (0 : ℝ)) hmem.1
+
+/-- An arbitrary intersection of open neighborhoods may fail to be open. -/
+theorem appendix2_infinite_open_intersection :
+    (∀ ε > 0, IsOpen (Metric.ball (0 : ℝ) ε)) ∧
+      ¬IsOpen (⋂ ε > 0, Metric.ball (0 : ℝ) ε) := by
+  refine ⟨fun _ _ => Metric.isOpen_ball, ?_⟩
+  rw [Metric.biInter_gt_ball, Metric.closedBall_zero]
+  exact not_isOpen_singleton 0
+
+/-- A relatively open subset of an open domain is open in the ambient space. -/
+theorem appendix2_relative_open_ambient {X : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : IsOpen S) {A : Set S} (hA : IsOpen A) : IsOpen (Subtype.val '' A) :=
+  hS.isOpenMap_subtype_val A hA
+
+/-- A relatively closed subset of a closed domain is closed in the ambient space. -/
+theorem appendix2_relative_closed_ambient {X : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : IsClosed S) {A : Set S} (hA : IsClosed A) : IsClosed (Subtype.val '' A) :=
+  hS.isClosedMap_subtype_val A hA
+
+/-- Relative closure is ambient closure intersected with the domain, expressed by preimage. -/
+theorem appendix2_relative_closure {X : Type*} [TopologicalSpace X] {S : Set X}
+    (A : Set S) : closure A = Subtype.val ⁻¹' closure (Subtype.val '' A) :=
+  Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image A
+
+/-- The footnote's linear epsilon–delta rule is exactly a bound at the base point. -/
+theorem appendix2_pointwise_lipschitz_rule {X Y : Type*}
+    [PseudoMetricSpace X] [PseudoMetricSpace Y] (f : X → Y) (x : X)
+    {C : ℝ} (hC : 0 < C) :
+    (∀ y, dist (f y) (f x) ≤ C * dist y x) ↔
+      ∀ ε > 0, ∀ y, dist y x < ε / C → dist (f y) (f x) < ε := by
+  constructor
+  · intro h ε _ y hy
+    have hd := (lt_div_iff₀ hC).mp hy
+    have hf := h y
+    nlinarith
+  · intro h y
+    by_contra hn
+    have hlt : C * dist y x < dist (f y) (f x) := lt_of_not_ge hn
+    have hpos : 0 < (dist (f y) (f x) + C * dist y x) / 2 := by
+      nlinarith [dist_nonneg (x := y) (y := x)]
+    have hd : dist y x < ((dist (f y) (f x) + C * dist y x) / 2) / C := by
+      apply (lt_div_iff₀ hC).mpr
+      nlinarith
+    have hf := h _ hpos y hd
+    nlinarith
+
+/-- A positive pointwise Lipschitz constant implies continuity at that point. -/
+theorem appendix2_pointwise_lipschitz_continuousAt {X Y : Type*}
+    [PseudoMetricSpace X] [PseudoMetricSpace Y] {f : X → Y} {x : X}
+    {C : ℝ} (hC : 0 < C) (hf : ∀ y, dist (f y) (f x) ≤ C * dist y x) :
+    ContinuousAt f x := by
+  apply Metric.continuousAt_iff.mpr
+  intro ε hε
+  exact ⟨ε / C, div_pos hε hC, fun _ hy =>
+    (appendix2_pointwise_lipschitz_rule f x hC).mp hf ε hε _ hy⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: coordinate spaces and equivalent norms
+
+The orthants on p. 441, the three distances on p. 444, and the coordinate-bound
+characterization of Definition A2.11. Strict positivity means positivity in
+every coordinate, rather than strict inequality in the product partial order.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The strictly positive orthant described on p. 441. -/
+def StrictlyPositiveOrthant (k : ℕ) := {x : Fin k → ℝ // ∀ j, 0 < x j}
+
+/-- Membership of the nonnegative orthant is exactly coordinatewise nonnegativity. -/
+theorem appendix2_nonnegative_coordinates {k : ℕ} (x : Fin k → ℝ) :
+    x ∈ Set.Ici 0 ↔ ∀ j, 0 ≤ x j := Iff.rfl
+
+/-- The nonnegative orthant is a closed domain, including its boundary. -/
+theorem appendix2_nonnegative_orthant_closed (k : ℕ) :
+    IsClosed (Set.Ici (0 : Fin k → ℝ)) := isClosed_Ici
+
+/-- Strict coordinatewise positivity defines an open domain. -/
+theorem appendix2_positive_orthant_open (k : ℕ) :
+    IsOpen {x : Fin k → ℝ | ∀ j, 0 < x j} := by
+  have he : {x : Fin k → ℝ | ∀ j, 0 < x j} = ⋂ j, {x | 0 < x j} := by
+    ext x
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
+  rw [he]
+  exact isOpen_iInter_of_finite fun j => isOpen_lt continuous_const (continuous_apply j)
+
+/-- The sum norm dominates the Euclidean norm by the coordinate-vector triangle inequality. -/
+theorem euclidean_norm_le_sum_abs {k : ℕ} (x : CommodityEuclidean k) :
+    ‖x‖ ≤ ∑ j, |x j| := by
+  have he : (∑ j : Fin k, PiLp.single 2 j (x j) : CommodityEuclidean k) = x := by
+    ext j
+    simp
+  calc
+    ‖x‖ = ‖∑ j : Fin k, (PiLp.single 2 j (x j) : CommodityEuclidean k)‖ :=
+      congrArg norm he.symm
+    _ ≤ ∑ j : Fin k, ‖(PiLp.single 2 j (x j) : CommodityEuclidean k)‖ := norm_sum_le _ _
+    _ = ∑ j, |x j| := by simp only [PiLp.norm_single, Real.norm_eq_abs]
+
+/-- The three norms have explicit dimension-dependent comparison constants. -/
+theorem appendix2_norm_comparison {k : ℕ} (x : CommodityEuclidean k) :
+    ‖(fun j => x j : Fin k → ℝ)‖ ≤ ‖x‖ ∧ ‖x‖ ≤ ∑ j, |x j| ∧
+      (∑ j, |x j|) ≤ k * ‖(fun j => x j : Fin k → ℝ)‖ := by
+  refine ⟨(pi_norm_le_iff_of_nonneg (norm_nonneg x)).mpr (PiLp.norm_apply_le x),
+    euclidean_norm_le_sum_abs x, ?_⟩
+  simpa only [Real.norm_eq_abs, Fintype.card_fin, nsmul_eq_mul] using
+    Pi.sum_norm_apply_le_norm (fun j => x j)
+
+/-- The sum norm and Euclidean norm give the same topology. -/
+noncomputable def sumEuclideanHomeomorph (k : ℕ) :
+    PiLp 1 (fun _ : Fin k => ℝ) ≃ₜ CommodityEuclidean k :=
+  (PiLp.homeomorph 1 (fun _ : Fin k => ℝ)).trans
+    (PiLp.homeomorph 2 (fun _ : Fin k => ℝ)).symm
+
+/-- This homeomorphism preserves every coordinate. -/
+theorem sumEuclideanHomeomorph_apply {k : ℕ} (x : PiLp 1 (fun _ : Fin k => ℝ))
+    (j : Fin k) : sumEuclideanHomeomorph k x j = x j := rfl
+
+/-- **Definition A2.11:** Euclidean boundedness is equivalent to uniform coordinate bounds. -/
+theorem appendix2_bounded_coordinates {k : ℕ} (S : Set (CommodityEuclidean k)) :
+    Bornology.IsBounded S ↔ ∃ M > 0, ∀ x ∈ S, ∀ j, |x j| < M := by
+  constructor
+  · intro h
+    obtain ⟨M, hM, hb⟩ := h.exists_pos_norm_le
+    refine ⟨M + 1, by linarith, fun x hx j => ?_⟩
+    have hj : |x j| ≤ M := by
+      simpa only [Real.norm_eq_abs] using (PiLp.norm_apply_le x j).trans (hb x hx)
+    linarith
+  · rintro ⟨M, _, hb⟩
+    apply isBounded_iff_forall_norm_le.mpr
+    refine ⟨k * M, fun x hx => ?_⟩
+    calc
+      ‖x‖ ≤ ∑ j, |x j| := euclidean_norm_le_sum_abs x
+      _ ≤ ∑ _j : Fin k, M := Finset.sum_le_sum fun j _ => (hb x hx j).le
+      _ = k * M := by simp
+
+/-- The first point in the book's three-distance example. -/
+def AppendixDistancePointA : Fin 2 → ℝ := ![1, 3]
+
+/-- The second point in the example. -/
+def AppendixDistancePointB : Fin 2 → ℝ := ![5, 0]
+
+/-- The ordinary Euclidean distance in the displayed example is five. -/
+theorem appendix2_example_euclidean_distance :
+    dist (WithLp.toLp 2 AppendixDistancePointA) (WithLp.toLp 2 AppendixDistancePointB) = 5 := by
+  norm_num [definition_A2_1, AppendixDistancePointA, AppendixDistancePointB,
+    Fin.sum_univ_two, PiLp.toLp_apply, Real.sqrt_eq_iff_eq_sq]
+
+/-- The supremum distance in the same example is four. -/
+theorem appendix2_example_supremum_distance :
+    dist AppendixDistancePointA AppendixDistancePointB = 4 := by
+  norm_num [dist_pi_def, Finset.univ_fin2, AppendixDistancePointA, AppendixDistancePointB,
+    Real.nndist_eq, Real.dist_eq]
+
+/-- The sum (Manhattan) distance in the same example is seven. -/
+theorem appendix2_example_sum_distance :
+    dist (WithLp.toLp 1 AppendixDistancePointA) (WithLp.toLp 1 AppendixDistancePointB) = 7 := by
+  norm_num [PiLp.dist_eq_of_L1, AppendixDistancePointA, AppendixDistancePointB,
+    Fin.sum_univ_two, PiLp.toLp_apply, Real.dist_eq]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: the two sequence examples
+
+The sequences `{10,20,30,...}` and `{1.1,2.1,1.01,2.01,...}` on pp. 445–446.
+Natural-number indexing begins at zero, so the first formula uses `n + 1`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- The diverging sequence displayed on p. 445. -/
+def TenSequence (n : ℕ) : ℝ := 10 * (n + 1)
+
+/-- The multiples of ten diverge to positive infinity. -/
+theorem tenSequence_tendsto : Filter.Tendsto TenSequence Filter.atTop Filter.atTop := by
+  apply Filter.tendsto_atTop.mpr
+  intro b
+  obtain ⟨N, hN⟩ := exists_nat_gt (b / 10)
+  filter_upwards [Filter.eventually_ge_atTop N] with n hn
+  have hcast : (N : ℝ) ≤ n := by exact_mod_cast hn
+  dsimp [TenSequence]
+  nlinarith
+
+/-- The diverging sequence has no real accumulation point, as asserted on p. 446. -/
+theorem tenSequence_no_accumulation (x : ℝ) : ¬MapClusterPt x Filter.atTop TenSequence := by
+  intro h
+  obtain ⟨φ, hφ, hlim⟩ := h.tendsto_subseq
+  exact not_tendsto_atTop_of_tendsto_nhds hlim (tenSequence_tendsto.comp hφ.tendsto_atTop)
+
+/-- In particular the sequence has no finite limit. -/
+theorem tenSequence_no_limit : ¬∃ x : ℝ, Filter.Tendsto TenSequence Filter.atTop (𝓝 x) := by
+  rintro ⟨x, hx⟩
+  exact tenSequence_no_accumulation x hx.mapClusterPt
+
+/-- The alternating decimal sequence, with each decimal increment used twice. -/
+noncomputable def AlternatingDecimalSequence (n : ℕ) : ℝ :=
+  (if n % 2 = 0 then 1 else 2) + (1 / 10 : ℝ) ^ (n / 2 + 1)
+
+/-- The even-indexed subsequence approaches one. -/
+theorem alternatingDecimal_even (n : ℕ) :
+    AlternatingDecimalSequence (2 * n) = 1 + (1 / 10 : ℝ) ^ (n + 1) := by
+  have hm : (2 * n) % 2 = 0 := by omega
+  have hd : (2 * n) / 2 = n := by omega
+  simp only [AlternatingDecimalSequence, hm, hd, ite_true]
+
+/-- The odd-indexed subsequence approaches two. -/
+theorem alternatingDecimal_odd (n : ℕ) :
+    AlternatingDecimalSequence (2 * n + 1) = 2 + (1 / 10 : ℝ) ^ (n + 1) := by
+  have hm : (2 * n + 1) % 2 ≠ 0 := by omega
+  have hd : (2 * n + 1) / 2 = n := by omega
+  simp only [AlternatingDecimalSequence, hm, hd, ite_false]
+
+/-- The displayed decimal perturbations tend to zero. -/
+theorem decimalPerturbation_tendsto :
+    Filter.Tendsto (fun n : ℕ => (1 / 10 : ℝ) ^ (n / 2 + 1)) Filter.atTop (𝓝 0) := by
+  have hp : Filter.Tendsto (fun n : ℕ => (1 / 10 : ℝ) ^ n) Filter.atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
+  apply hp.comp
+  apply Filter.tendsto_atTop.mpr
+  intro N
+  exact Filter.eventually_atTop.mpr ⟨2 * N, fun n hn => by omega⟩
+
+/-- Both printed subsequences converge to their stated, distinct limits. -/
+theorem alternatingDecimal_subsequence_limits :
+    Filter.Tendsto (fun n => AlternatingDecimalSequence (2 * n)) Filter.atTop (𝓝 1) ∧
+      Filter.Tendsto (fun n => AlternatingDecimalSequence (2 * n + 1)) Filter.atTop (𝓝 2) := by
+  have hp : Filter.Tendsto (fun n : ℕ => (1 / 10 : ℝ) ^ n) Filter.atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
+  constructor
+  · simpa only [alternatingDecimal_even, pow_succ, zero_mul, add_zero] using
+      (tendsto_const_nhds.add (hp.mul_const (1 / 10 : ℝ)) :
+        Filter.Tendsto (fun n => 1 + (1 / 10 : ℝ) ^ n * (1 / 10)) Filter.atTop (𝓝 (1 + 0 * _)))
+  · simpa only [alternatingDecimal_odd, pow_succ, zero_mul, add_zero] using
+      (tendsto_const_nhds.add (hp.mul_const (1 / 10 : ℝ)) :
+        Filter.Tendsto (fun n => 2 + (1 / 10 : ℝ) ^ n * (1 / 10)) Filter.atTop (𝓝 (2 + 0 * _)))
+
+/-- The accumulation points are exactly one and two. -/
+theorem appendix2_alternating_accumulation (x : ℝ) :
+    MapClusterPt x Filter.atTop AlternatingDecimalSequence ↔ x = 1 ∨ x = 2 := by
+  constructor
+  · intro h
+    obtain ⟨φ, hφ, hlim⟩ := h.tendsto_subseq
+    have hbase := hlim.sub (decimalPerturbation_tendsto.comp hφ.tendsto_atTop)
+    have hin : ∀ n, AlternatingDecimalSequence (φ n) -
+        (1 / 10 : ℝ) ^ (φ n / 2 + 1) ∈ ({1, 2} : Set ℝ) := by
+      intro n
+      by_cases hn : φ n % 2 = 0 <;> simp [AlternatingDecimalSequence, hn]
+    have hc : IsClosed ({1, 2} : Set ℝ) := (by simp : Set.Finite ({1, 2} : Set ℝ)).isClosed
+    have hx := hc.mem_of_tendsto hbase (Filter.Eventually.of_forall hin)
+    simpa only [sub_zero, Set.mem_insert_iff, Set.mem_singleton_iff] using hx
+  · rintro (rfl | rfl)
+    · have hm : StrictMono (fun n : ℕ => 2 * n) := by intro a b h; dsimp; omega
+      exact MapClusterPt.of_comp hm.tendsto_atTop
+        alternatingDecimal_subsequence_limits.1.mapClusterPt
+    · have hm : StrictMono (fun n : ℕ => 2 * n + 1) := by intro a b h; dsimp; omega
+      exact MapClusterPt.of_comp hm.tendsto_atTop
+        alternatingDecimal_subsequence_limits.2.mapClusterPt
+
+/-- The alternating sequence has no limit despite its two accumulation points. -/
+theorem appendix2_alternating_no_limit :
+    ¬∃ x : ℝ, Filter.Tendsto AlternatingDecimalSequence Filter.atTop (𝓝 x) := by
+  rintro ⟨x, hx⟩
+  have he : StrictMono (fun n : ℕ => 2 * n) := by intro a b h; dsimp; omega
+  have ho : StrictMono (fun n : ℕ => 2 * n + 1) := by intro a b h; dsimp; omega
+  have h1 := tendsto_nhds_unique (hx.comp he.tendsto_atTop)
+    alternatingDecimal_subsequence_limits.1
+  have h2 := tendsto_nhds_unique (hx.comp ho.tendsto_atTop)
+    alternatingDecimal_subsequence_limits.2
+  linarith
 
 end Kreps.PreferenceProperties
 
@@ -10921,6 +11978,7 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.proposition_A2_7
 #print axioms Kreps.PreferenceProperties.proposition_A2_8
 #print axioms Kreps.PreferenceProperties.definition_A2_9
+#print axioms Kreps.PreferenceProperties.appendix2_accumulation_strict_index
 #print axioms Kreps.PreferenceProperties.appendix2_accumulation_subsequence
 #print axioms Kreps.PreferenceProperties.appendix2_closure_sequence
 #print axioms Kreps.PreferenceProperties.appendix2_set_accumulation_self
@@ -10958,3 +12016,97 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.proposition_A2_20c
 #print axioms Kreps.PreferenceProperties.appendix2_empty_extrema
 #print axioms Kreps.PreferenceProperties.proposition_A2_21
+#print axioms Kreps.PreferenceProperties.BaselineScores
+#print axioms Kreps.PreferenceProperties.ScoreAggregator
+#print axioms Kreps.PreferenceProperties.baselineScores_reference
+#print axioms Kreps.PreferenceProperties.baselineScores_continuous
+#print axioms Kreps.PreferenceProperties.baselineScores_ordConnected
+#print axioms Kreps.PreferenceProperties.scoreAggregator_factors
+#print axioms Kreps.PreferenceProperties.scoreAggregator_strictMono
+#print axioms Kreps.PreferenceProperties.scoreAggregator_continuous
+#print axioms Kreps.PreferenceProperties.scoreRepresentatives_piecewise
+#print axioms Kreps.PreferenceProperties.scoreAggregator_stronglySeparable
+#print axioms Kreps.PreferenceProperties.scoreAggregator_reference_axis
+#print axioms Kreps.PreferenceProperties.nontrivialBlock_interior_rank_at
+#print axioms Kreps.PreferenceProperties.exists_interior_reference
+#print axioms Kreps.PreferenceProperties.baselineScores_reference_interior
+#print axioms Kreps.PreferenceProperties.exists_interior_baseline_scores
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.mk
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.mean
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.reflexive
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.symmetric
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.bisymmetric
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_left
+#print axioms Kreps.PreferenceProperties.OrderedBisymmetricMean.strictMono_right
+#print axioms Kreps.PreferenceProperties.MeanDyadicGrid
+#print axioms Kreps.PreferenceProperties.orderedMean_between
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_even
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_odd
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_left
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_right
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_near
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_midpoint
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_lt_succ
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_strictMonoOn
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_refine
+#print axioms Kreps.PreferenceProperties.MeanDyadicPoints
+#print axioms Kreps.PreferenceProperties.meanDyadicPoints_mean
+#print axioms Kreps.PreferenceProperties.meanDyadicPoints_closure_mean
+#print axioms Kreps.PreferenceProperties.meanDyadicPoints_dense
+#print axioms Kreps.PreferenceProperties.SequenceTailSup
+#print axioms Kreps.PreferenceProperties.SequenceTailInf
+#print axioms Kreps.PreferenceProperties.sequenceTailSup_antitone
+#print axioms Kreps.PreferenceProperties.sequenceTailInf_monotone
+#print axioms Kreps.PreferenceProperties.definition_A2_22_limsup
+#print axioms Kreps.PreferenceProperties.definition_A2_22_liminf
+#print axioms Kreps.PreferenceProperties.sequenceTailSup_tendsto
+#print axioms Kreps.PreferenceProperties.sequenceTailInf_tendsto
+#print axioms Kreps.PreferenceProperties.appendix2_limsup_greatest_accumulation
+#print axioms Kreps.PreferenceProperties.appendix2_liminf_least_accumulation
+#print axioms Kreps.PreferenceProperties.proposition_A2_23
+#print axioms Kreps.PreferenceProperties.appendix2_finite_limit
+#print axioms Kreps.PreferenceProperties.appendix2_positive_infinite_limit
+#print axioms Kreps.PreferenceProperties.appendix2_negative_infinite_limit
+#print axioms Kreps.PreferenceProperties.sequenceTailSup_unbounded
+#print axioms Kreps.PreferenceProperties.appendix2_limsup_unbounded
+#print axioms Kreps.PreferenceProperties.sequenceTailInf_unbounded
+#print axioms Kreps.PreferenceProperties.appendix2_liminf_unbounded
+#print axioms Kreps.PreferenceProperties.upperSemicontinuousAt_real_coe
+#print axioms Kreps.PreferenceProperties.lowerSemicontinuousAt_real_coe
+#print axioms Kreps.PreferenceProperties.appendix2_upper_sequence_iff
+#print axioms Kreps.PreferenceProperties.appendix2_lower_sequence_iff
+#print axioms Kreps.PreferenceProperties.proposition_A2_25_upper
+#print axioms Kreps.PreferenceProperties.proposition_A2_25_lower
+#print axioms Kreps.PreferenceProperties.appendix2_half_open_interval
+#print axioms Kreps.PreferenceProperties.appendix2_infinite_open_intersection
+#print axioms Kreps.PreferenceProperties.appendix2_relative_open_ambient
+#print axioms Kreps.PreferenceProperties.appendix2_relative_closed_ambient
+#print axioms Kreps.PreferenceProperties.appendix2_relative_closure
+#print axioms Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_rule
+#print axioms Kreps.PreferenceProperties.appendix2_pointwise_lipschitz_continuousAt
+#print axioms Kreps.PreferenceProperties.StrictlyPositiveOrthant
+#print axioms Kreps.PreferenceProperties.appendix2_nonnegative_coordinates
+#print axioms Kreps.PreferenceProperties.appendix2_nonnegative_orthant_closed
+#print axioms Kreps.PreferenceProperties.appendix2_positive_orthant_open
+#print axioms Kreps.PreferenceProperties.euclidean_norm_le_sum_abs
+#print axioms Kreps.PreferenceProperties.appendix2_norm_comparison
+#print axioms Kreps.PreferenceProperties.sumEuclideanHomeomorph
+#print axioms Kreps.PreferenceProperties.sumEuclideanHomeomorph_apply
+#print axioms Kreps.PreferenceProperties.appendix2_bounded_coordinates
+#print axioms Kreps.PreferenceProperties.AppendixDistancePointA
+#print axioms Kreps.PreferenceProperties.AppendixDistancePointB
+#print axioms Kreps.PreferenceProperties.appendix2_example_euclidean_distance
+#print axioms Kreps.PreferenceProperties.appendix2_example_supremum_distance
+#print axioms Kreps.PreferenceProperties.appendix2_example_sum_distance
+#print axioms Kreps.PreferenceProperties.TenSequence
+#print axioms Kreps.PreferenceProperties.tenSequence_tendsto
+#print axioms Kreps.PreferenceProperties.tenSequence_no_accumulation
+#print axioms Kreps.PreferenceProperties.tenSequence_no_limit
+#print axioms Kreps.PreferenceProperties.AlternatingDecimalSequence
+#print axioms Kreps.PreferenceProperties.alternatingDecimal_even
+#print axioms Kreps.PreferenceProperties.alternatingDecimal_odd
+#print axioms Kreps.PreferenceProperties.decimalPerturbation_tendsto
+#print axioms Kreps.PreferenceProperties.alternatingDecimal_subsequence_limits
+#print axioms Kreps.PreferenceProperties.appendix2_alternating_accumulation
+#print axioms Kreps.PreferenceProperties.appendix2_alternating_no_limit

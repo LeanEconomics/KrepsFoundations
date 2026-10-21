@@ -71,6 +71,6 @@ freshly audited again in this project. Their theorem counts are prerequisite cou
 not new Chapter 2 results.
 
 The [Appendix 2 source map](appendix2-source-map.md) inventories pp. 441–451 and
-records explicit bridges and pending work. The relevant Appendix 3 material on
+records completed explicit bridges for every mathematical entry. The relevant Appendix 3 material on
 pp. 452–468 still needs its complete inventory. Importing Mathlib does not itself
 complete an appendix; the volume proposal records later ownership of Appendix 3.

@@ -57,6 +57,20 @@ theorem definition_A2_9 {X : Type*} [PseudoMetricSpace X] (u : ℕ → X) (x : X
   rw [Metric.nhds_basis_ball.mapClusterPt_iff_frequently]
   simp only [Filter.frequently_atTop, Metric.mem_ball]
 
+/-- The printed definition uses a strictly later index, giving the same accumulation criterion. -/
+theorem appendix2_accumulation_strict_index {X : Type*} [PseudoMetricSpace X]
+    (u : ℕ → X) (x : X) :
+    MapClusterPt x Filter.atTop u ↔
+      ∀ ε > 0, ∀ N : ℕ, ∃ n > N, dist (u n) x < ε := by
+  rw [definition_A2_9]
+  constructor
+  · intro h ε hε N
+    obtain ⟨n, hn, hx⟩ := h ε hε (N + 1)
+    exact ⟨n, by omega, hx⟩
+  · intro h ε hε N
+    obtain ⟨n, hn, hx⟩ := h ε hε N
+    exact ⟨n, hn.le, hx⟩
+
 /-- **Definition A2.10** and its exercise: accumulation means a convergent subsequence exists. -/
 theorem appendix2_accumulation_subsequence {X : Type*} [PseudoMetricSpace X]
     (u : ℕ → X) (x : X) :
