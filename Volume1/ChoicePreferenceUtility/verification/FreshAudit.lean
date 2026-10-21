@@ -16,6 +16,8 @@ import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Algebra.Order.Archimedean.Basic
 import Mathlib.NumberTheory.Real.Irrational
+import Mathlib.Data.Nat.Nth
+import Mathlib.Data.Nat.Pairing
 set_option autoImplicit false
 
 /-
@@ -911,7 +913,8 @@ Kreps I, Problem 1.16c and Definition 1.22, p. 28.
 The printed strict relation omits membership of the rejected alternative in the menu.
 `printed_strict_counterexample` shows why that membership condition is necessary:
 utility-maximizing choice can otherwise exhibit the forbidden two-alternative cycle.
-The general rationalizability proof is a separate remaining task.
+The general rationalizability equivalence is proved in `proposition_1_23`
+in the module `ChoicePreferenceUtility.SGARP`.
 -/
 
 namespace Kreps.ChoicePreferenceUtility
@@ -2527,7 +2530,8 @@ below its argument. At every positive rational point, the utility has a jump of 
 least that point's weight and is discontinuous. These conclusions hold for every
 positive summable weight assignment, including geometric weights from any injective
 enumeration of the rationals, hence also the enumeration displayed in the problem.
-Identity is an explicit continuous representation of the same preference.
+The exact displayed index and its utility are constructed in `RationalEnumeration` and
+`PrintedRationalUtility`. Identity continuously represents the same preference.
 -/
 
 namespace Kreps.ChoicePreferenceUtility
@@ -3179,6 +3183,563 @@ theorem appendix_A1_not_all_nonnegative_rational :
 
 end Kreps.ChoicePreferenceUtility
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The beer-and-wine illustration of indecision
+
+Kreps I, Section 1.8, pp. 20-21. The bundles are three beers and ten wines, twenty
+beers and six wines, and four beers and eleven wines. The third is strictly better
+than the first, while both are incomparable with the second. This ranking pattern
+alone contradicts negative transitivity of strict preference.
+
+The book specifies these comparisons, not a relation on all bundles. Coordinatewise
+Pareto preference is one explicit model realizing them. Its strict part and equality
+also satisfy the partial-preference axioms considered in Problem 1.17.
+-/
+
+namespace Kreps.ChoicePreferenceUtility
+
+/-- The first bundle on p. 20: three cans of beer and ten bottles of wine. -/
+def BeerWineFirst : NonnegativeOrthant 2 :=
+  ⟨fun j => if j = 0 then 3 else 10, by intro j; dsimp; split_ifs <;> norm_num⟩
+
+/-- The second bundle on p. 20: twenty cans of beer and six bottles of wine. -/
+def BeerWineSecond : NonnegativeOrthant 2 :=
+  ⟨fun j => if j = 0 then 20 else 6, by intro j; dsimp; split_ifs <;> norm_num⟩
+
+/-- The improved bundle on p. 21: four cans of beer and eleven bottles of wine. -/
+def BeerWineImproved : NonnegativeOrthant 2 :=
+  ⟨fun j => if j = 0 then 4 else 11, by intro j; dsimp; split_ifs <;> norm_num⟩
+
+/-- The literal strict ranking pattern already refutes negative transitivity. -/
+theorem beerWine_pattern_not_negativelyTransitive
+    {s : NonnegativeOrthant 2 → NonnegativeOrthant 2 → Prop}
+    (hbetter : s BeerWineImproved BeerWineFirst)
+    (hleft : ¬s BeerWineSecond BeerWineFirst)
+    (hright : ¬s BeerWineImproved BeerWineSecond) : ¬NegativelyTransitive s := by
+  intro hn
+  exact (hn BeerWineImproved BeerWineFirst BeerWineSecond hbetter).elim hleft hright
+
+/-- In the Pareto witness model, the first two bundles cannot be weakly compared. -/
+theorem beerWine_first_second_incomparable :
+    ¬ParetoPreference BeerWineFirst BeerWineSecond ∧
+      ¬ParetoPreference BeerWineSecond BeerWineFirst := by
+  constructor
+  · intro h
+    have hzero := h 0
+    norm_num [BeerWineFirst, BeerWineSecond] at hzero
+  · intro h
+    have hone := h 1
+    norm_num [BeerWineFirst, BeerWineSecond] at hone
+
+/-- In the same model, the improved bundle is still incomparable with the second. -/
+theorem beerWine_improved_second_incomparable :
+    ¬ParetoPreference BeerWineImproved BeerWineSecond ∧
+      ¬ParetoPreference BeerWineSecond BeerWineImproved := by
+  constructor
+  · intro h
+    have hzero := h 0
+    norm_num [BeerWineImproved, BeerWineSecond] at hzero
+  · intro h
+    have hone := h 1
+    norm_num [BeerWineImproved, BeerWineSecond] at hone
+
+/-- Four beers and eleven wines strictly Pareto dominate three beers and ten wines. -/
+theorem beerWine_strict_improvement :
+    Strict ParetoPreference BeerWineImproved BeerWineFirst := by
+  constructor
+  · intro j
+    dsimp [BeerWineFirst, BeerWineImproved]
+    split_ifs <;> norm_num
+  · intro h
+    have hzero := h 0
+    norm_num [BeerWineFirst, BeerWineImproved] at hzero
+
+/-- The book's three bundles witness failure of negative transitivity in this model. -/
+theorem beerWine_not_negativelyTransitive :
+    ¬NegativelyTransitive (Strict (ParetoPreference (k := 2))) :=
+  beerWine_pattern_not_negativelyTransitive beerWine_strict_improvement
+    (fun h => beerWine_first_second_incomparable.2 h.1)
+    (fun h => beerWine_improved_second_incomparable.1 h.1)
+
+/-- Strict Pareto preference and positive equality obey all partial-preference axioms. -/
+theorem beerWine_partialPreferenceAxioms :
+    PartialPreferenceAxioms (Strict (ParetoPreference (k := 2))) (· = ·) := by
+  constructor
+  · exact problem_1_6_asymmetric 2
+  · exact proposition_1_9h (problem_1_6_transitive 2)
+  · exact fun _ => rfl
+  · exact fun _ _ h => h.symm
+  · exact fun _ _ _ hxy hyz => hxy.trans hyz
+  · rintro x y z hxy rfl
+    exact hxy
+  · rintro x y z rfl hyz
+    exact hyz
+
+/-- The witness satisfies the partial theory while failing the standard strict axiom. -/
+theorem beerWine_indecision_model :
+    PartialPreferenceAxioms (Strict (ParetoPreference (k := 2))) (· = ·) ∧
+      ¬NegativelyTransitive (Strict (ParetoPreference (k := 2))) :=
+  ⟨beerWine_partialPreferenceAxioms, beerWine_not_negativelyTransitive⟩
+
+end Kreps.ChoicePreferenceUtility
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Reduced fraction codes for the printed rational enumeration
+
+Kreps I, Problem 1.12, p. 26 enumerates the rational unit interval by increasing
+reduced denominator, then increasing numerator. A valid natural code is the
+pairing of a positive denominator with a coprime numerator between zero and
+that denominator. Pairing preserves this ordering on the indicated triangle.
+Counting preceding valid codes gives a bijection with the natural numbers.
+-/
+
+namespace Kreps.ChoicePreferenceUtility
+
+/-- A code decodes to a positive denominator and a reduced numerator in its unit interval. -/
+abbrev ValidRationalCode (c : ℕ) : Prop :=
+  0 < (Nat.unpair c).1 ∧ (Nat.unpair c).2 ≤ (Nat.unpair c).1 ∧
+    (Nat.unpair c).2.Coprime (Nat.unpair c).1
+
+/-- Read a valid code as the corresponding canonical reduced rational. -/
+def RationalCodeValue (c : {c : ℕ // ValidRationalCode c}) : ℚ :=
+  ⟨(Nat.unpair c.val).2, (Nat.unpair c.val).1, c.property.1.ne',
+    by simpa using c.property.2.2⟩
+
+/-- Every valid code represents a rational in the closed unit interval. -/
+theorem rationalCodeValue_mem (c : {c : ℕ // ValidRationalCode c}) :
+    RationalCodeValue c ∈ Set.Icc (0 : ℚ) 1 := by
+  constructor
+  · apply Rat.num_nonneg.mp
+    exact Int.natCast_nonneg _
+  · rw [Rat.le_iff]
+    simpa [RationalCodeValue] using c.property.2.1
+
+/-- Encode a unit rational by its canonical denominator and nonnegative numerator. -/
+def UnitRationalCode (q : Set.Icc (0 : ℚ) 1) : ℕ :=
+  Nat.pair q.val.den q.val.num.toNat
+
+/-- The canonical rational numerator is nonnegative on the unit interval. -/
+theorem unitRational_num_nonneg (q : Set.Icc (0 : ℚ) 1) : 0 ≤ q.val.num :=
+  Rat.num_nonneg.mpr q.property.1
+
+/-- The canonical numerator does not exceed the denominator on the unit interval. -/
+theorem unitRational_num_le_den (q : Set.Icc (0 : ℚ) 1) :
+    q.val.num.toNat ≤ q.val.den := by
+  have h : q.val.num ≤ q.val.den := by simpa [Rat.le_iff] using q.property.2
+  omega
+
+/-- Every unit rational produces a valid reduced-fraction code. -/
+theorem unitRationalCode_valid (q : Set.Icc (0 : ℚ) 1) :
+    ValidRationalCode (UnitRationalCode q) := by
+  simp only [ValidRationalCode, UnitRationalCode, Nat.unpair_pair]
+  refine ⟨q.val.den_pos, unitRational_num_le_den q, ?_⟩
+  have hn : (q.val.num.toNat : ℤ) = q.val.num := by
+    have h := unitRational_num_nonneg q
+    omega
+  have h := q.val.reduced
+  rw [← hn] at h
+  simpa only [Int.natAbs_natCast] using h
+
+/-- Decoding the canonical code recovers the original rational. -/
+theorem rationalCodeValue_unitRationalCode (q : Set.Icc (0 : ℚ) 1) :
+    RationalCodeValue ⟨UnitRationalCode q, unitRationalCode_valid q⟩ = q.val := by
+  apply Rat.ext
+  · simp only [RationalCodeValue, UnitRationalCode, Nat.unpair_pair]
+    have h := unitRational_num_nonneg q
+    omega
+  · simp [RationalCodeValue, UnitRationalCode]
+
+/-- Encoding a decoded valid code recovers precisely that code. -/
+theorem unitRationalCode_rationalCodeValue (c : {c : ℕ // ValidRationalCode c}) :
+    UnitRationalCode ⟨RationalCodeValue c, rationalCodeValue_mem c⟩ = c.val := by
+  simp [UnitRationalCode, RationalCodeValue]
+
+/-- The closed rational unit interval is equivalent to the valid reduced-fraction codes. -/
+def UnitRationalCodeEquiv : Set.Icc (0 : ℚ) 1 ≃ {c : ℕ // ValidRationalCode c} where
+  toFun q := ⟨UnitRationalCode q, unitRationalCode_valid q⟩
+  invFun c := ⟨RationalCodeValue c, rationalCodeValue_mem c⟩
+  left_inv q := Subtype.ext (rationalCodeValue_unitRationalCode q)
+  right_inv c := Subtype.ext (unitRationalCode_rationalCodeValue c)
+
+/-- Fractions with numerator one supply infinitely many valid codes. -/
+theorem validRationalCode_infinite : (Set.ofPred ValidRationalCode).Infinite := by
+  apply Set.infinite_of_injective_forall_mem (f := fun n => Nat.pair (n + 1) 1)
+  · intro m n h
+    have h' := (Nat.pair_eq_pair.mp h).1
+    omega
+  · intro n
+    simp [ValidRationalCode]
+
+/-- Ranking valid codes and selecting their successive values are inverse operations. -/
+noncomputable def RationalCodeIndex : {c : ℕ // ValidRationalCode c} ≃ ℕ where
+  toFun c := Nat.count ValidRationalCode c.val
+  invFun n := ⟨Nat.nth ValidRationalCode n,
+    Nat.nth_mem_of_infinite validRationalCode_infinite n⟩
+  left_inv c := Subtype.ext (Nat.nth_count c.property)
+  right_inv n := Nat.count_nth_of_infinite validRationalCode_infinite n
+
+/-- The index of a rational is the number of valid codes strictly before its own code. -/
+noncomputable def UnitRationalIndex : Set.Icc (0 : ℚ) 1 ≃ ℕ :=
+  UnitRationalCodeEquiv.trans RationalCodeIndex
+
+/-- On the reduced-fraction triangle, pairing orders denominator first, then numerator. -/
+theorem rationalCode_lt_iff {d n e m : ℕ} (hn : n ≤ d) (hm : m ≤ e) :
+    Nat.pair d n < Nat.pair e m ↔ d < e ∨ d = e ∧ n < m := by
+  simp only [Nat.pair, not_lt_of_ge hn, not_lt_of_ge hm, ite_false]
+  constructor
+  · intro h
+    by_cases hde : d < e
+    · exact Or.inl hde
+    · right
+      have hed : e ≤ d := le_of_not_gt hde
+      have heq : d = e := by
+        by_contra hne
+        have hlt : e < d := lt_of_le_of_ne hed (Ne.symm hne)
+        nlinarith
+      exact ⟨heq, by subst e; omega⟩
+  · rintro (h | ⟨rfl, h⟩)
+    · nlinarith
+    · omega
+
+/-- Natural indices agree exactly with the ordering of their valid codes. -/
+theorem rationalCodeIndex_lt_iff (c d : {c : ℕ // ValidRationalCode c}) :
+    RationalCodeIndex c < RationalCodeIndex d ↔ c.val < d.val := by
+  constructor
+  · intro h
+    exact (Nat.count_monotone ValidRationalCode).reflect_lt h
+  · intro h
+    exact Nat.count_strict_mono c.property h
+
+/-- The exact ordering interpretation: denominator, then numerator, in increasing order. -/
+theorem unitRationalIndex_lt_iff (q r : Set.Icc (0 : ℚ) 1) :
+    UnitRationalIndex q < UnitRationalIndex r ↔
+      q.val.den < r.val.den ∨ q.val.den = r.val.den ∧ q.val.num < r.val.num := by
+  change RationalCodeIndex (UnitRationalCodeEquiv q) <
+    RationalCodeIndex (UnitRationalCodeEquiv r) ↔ _
+  rw [rationalCodeIndex_lt_iff]
+  change Nat.pair q.val.den q.val.num.toNat < Nat.pair r.val.den r.val.num.toNat ↔ _
+  rw [rationalCode_lt_iff (unitRational_num_le_den q) (unitRational_num_le_den r)]
+  have hq := unitRational_num_nonneg q
+  have hr := unitRational_num_nonneg r
+  omega
+
+end Kreps.ChoicePreferenceUtility
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The exact rational enumeration in Problem 1.12
+
+The printed enumeration is zero first, then the reduced fractions with increasing
+denominator and increasing numerator within each denominator. `PrintedRationalIndex`
+is a bijection, so `PrintedRationalSequence` has neither repetitions nor gaps.
+The order theorem specifies every term, and the first nine terms agree with the
+display on p. 26: `0, 1, 1/2, 1/3, 2/3, 1/4, 3/4, 1/5, 2/5`.
+-/
+
+namespace Kreps.ChoicePreferenceUtility
+
+/-- Regard a rational in the closed unit interval as a rational point of the real interval. -/
+def RationalUnitPoint (q : Set.Icc (0 : ℚ) 1) : RationalUnitPoints :=
+  ⟨⟨q.val, ⟨by exact_mod_cast q.property.1, by exact_mod_cast q.property.2⟩⟩,
+    ⟨q.val, rfl⟩⟩
+
+/-- Rational numbers in the interval and rational points of the interval coincide bijectively. -/
+theorem rationalUnitPoint_bijective : Function.Bijective RationalUnitPoint := by
+  constructor
+  · intro q r h
+    apply Subtype.ext
+    have heq : (q.val : ℝ) = r.val := congrArg (fun x => x.val.val) h
+    exact_mod_cast heq
+  · intro x
+    obtain ⟨q, hq⟩ := x.property
+    have hmem : q ∈ Set.Icc (0 : ℚ) 1 := by
+      have hreal : (q : ℝ) ∈ Set.Icc (0 : ℝ) 1 := by
+        rw [hq]
+        exact x.val.property
+      exact ⟨by exact_mod_cast hreal.1, by exact_mod_cast hreal.2⟩
+    refine ⟨⟨q, hmem⟩, ?_⟩
+    exact Subtype.ext (Subtype.ext hq)
+
+/-- Identify the rational interval with the chapter's existing rational-point type. -/
+noncomputable def RationalUnitPointEquiv : Set.Icc (0 : ℚ) 1 ≃ RationalUnitPoints :=
+  Equiv.ofBijective RationalUnitPoint rationalUnitPoint_bijective
+
+/-- The exact zero-based index in Kreps's displayed enumeration of the rational unit interval. -/
+noncomputable def PrintedRationalIndex : RationalUnitPoints ≃ ℕ :=
+  RationalUnitPointEquiv.symm.trans UnitRationalIndex
+
+/-- Kreps's rational sequence, defined as the inverse of its bijective index. -/
+noncomputable def PrintedRationalSequence (n : ℕ) : RationalUnitPoints :=
+  PrintedRationalIndex.symm n
+
+/-- Every index is attained by its sequence term. -/
+theorem printedRationalIndex_sequence (n : ℕ) :
+    PrintedRationalIndex (PrintedRationalSequence n) = n :=
+  PrintedRationalIndex.apply_symm_apply n
+
+/-- Every rational point occurs in the sequence, at its unique assigned index. -/
+theorem printedRationalSequence_index (q : RationalUnitPoints) :
+    PrintedRationalSequence (PrintedRationalIndex q) = q :=
+  PrintedRationalIndex.symm_apply_apply q
+
+/-- The printed sequence has no repeated terms and omits no rational point. -/
+theorem printedRationalSequence_bijective : Function.Bijective PrintedRationalSequence :=
+  PrintedRationalIndex.symm.bijective
+
+/-- A canonical unit rational has its reduced-fraction counting index. -/
+theorem printedRationalIndex_point (q : Set.Icc (0 : ℚ) 1) :
+    PrintedRationalIndex (RationalUnitPoint q) =
+      Nat.count ValidRationalCode (Nat.pair q.val.den q.val.num.toNat) := by
+  change UnitRationalIndex (RationalUnitPointEquiv.symm (RationalUnitPointEquiv q)) = _
+  rw [Equiv.symm_apply_apply]
+  rfl
+
+/-- The printed order is precisely increasing denominator, then increasing numerator. -/
+theorem printedRationalIndex_lt_iff (q r : Set.Icc (0 : ℚ) 1) :
+    PrintedRationalIndex (RationalUnitPoint q) < PrintedRationalIndex (RationalUnitPoint r) ↔
+      q.val.den < r.val.den ∨ q.val.den = r.val.den ∧ q.val.num < r.val.num := by
+  rw [printedRationalIndex_point, printedRationalIndex_point]
+  exact unitRationalIndex_lt_iff q r
+
+/-- A computed index determines the real value of the corresponding sequence term. -/
+theorem printedRationalSequence_value_of_index (q : Set.Icc (0 : ℚ) 1) (n : ℕ)
+    (h : Nat.count ValidRationalCode (Nat.pair q.val.den q.val.num.toNat) = n) :
+    (PrintedRationalSequence n).val.val = (q.val : ℝ) := by
+  have hi : PrintedRationalIndex (RationalUnitPoint q) = n :=
+    (printedRationalIndex_point q).trans h
+  rw [← hi, printedRationalSequence_index]
+  rfl
+
+/-- The printed enumeration begins with zero. -/
+theorem printedRationalSequence_zero : (PrintedRationalSequence 0).val.val = 0 := by
+  simpa using printedRationalSequence_value_of_index ⟨0, by norm_num⟩ 0 (by decide +kernel)
+
+/-- The second printed term is one. -/
+theorem printedRationalSequence_one : (PrintedRationalSequence 1).val.val = 1 := by
+  simpa using printedRationalSequence_value_of_index ⟨1, by norm_num⟩ 1 (by decide +kernel)
+
+/-- The third printed term is one half. -/
+theorem printedRationalSequence_two : (PrintedRationalSequence 2).val.val = 1 / 2 := by
+  simpa using printedRationalSequence_value_of_index ⟨1 / 2, by norm_num⟩ 2 (by decide +kernel)
+
+/-- The fourth printed term is one third. -/
+theorem printedRationalSequence_three : (PrintedRationalSequence 3).val.val = 1 / 3 := by
+  simpa using printedRationalSequence_value_of_index ⟨1 / 3, by norm_num⟩ 3 (by decide +kernel)
+
+/-- The fifth printed term is two thirds. -/
+theorem printedRationalSequence_four : (PrintedRationalSequence 4).val.val = 2 / 3 := by
+  simpa using printedRationalSequence_value_of_index ⟨2 / 3, by norm_num⟩ 4 (by decide +kernel)
+
+/-- The sixth printed term is one quarter. -/
+theorem printedRationalSequence_five : (PrintedRationalSequence 5).val.val = 1 / 4 := by
+  simpa using printedRationalSequence_value_of_index ⟨1 / 4, by norm_num⟩ 5 (by decide +kernel)
+
+/-- The seventh printed term is three quarters, with the unreduced two quarters omitted. -/
+theorem printedRationalSequence_six : (PrintedRationalSequence 6).val.val = 3 / 4 := by
+  simpa using printedRationalSequence_value_of_index ⟨3 / 4, by norm_num⟩ 6 (by decide +kernel)
+
+/-- The eighth printed term is one fifth. -/
+theorem printedRationalSequence_seven : (PrintedRationalSequence 7).val.val = 1 / 5 := by
+  simpa using printedRationalSequence_value_of_index ⟨1 / 5, by norm_num⟩ 7 (by decide +kernel)
+
+/-- The ninth printed term is two fifths. -/
+theorem printedRationalSequence_eight : (PrintedRationalSequence 8).val.val = 2 / 5 := by
+  simpa using printedRationalSequence_value_of_index ⟨2 / 5, by norm_num⟩ 8 (by decide +kernel)
+
+end Kreps.ChoicePreferenceUtility
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Endpoint values and reindexing for rational utility
+
+Kreps I, Problem 1.12, p. 26, using the geometric weights in the proof of
+Proposition 1.12, p. 11. A bijective enumeration gives the ordinary natural-number
+series, with total weight one. At zero only the weight of zero contributes.
+The printed enumeration is specialized in `PrintedRationalUtility`.
+-/
+
+namespace Kreps.ChoicePreferenceUtility
+
+/-- At zero, the rational lower contour contains only zero itself. -/
+theorem rationalUtility_at_zero (w : RationalUnitPoints → ℝ) (q : RationalUnitPoints)
+    (hq : q.val.val = 0) : RationalUtility w q.val = w q := by
+  classical
+  rw [rationalUtility_formula]
+  rw [tsum_eq_single q]
+  · simp
+  · intro p hp
+    have hnot : ¬p.val.val ≤ q.val.val := by
+      intro hle
+      apply hp
+      apply Subtype.ext
+      apply Subtype.ext
+      exact le_antisymm hle (by rw [hq]; exact p.val.property.1)
+    simp only [hnot, ite_false]
+
+/-- At one, every rational point contributes its weight. -/
+theorem rationalUtility_at_one (w : RationalUnitPoints → ℝ) (x : UnitSegment)
+    (hx : x.val = 1) : RationalUtility w x = ∑' q, w q := by
+  rw [rationalUtility_formula]
+  apply tsum_congr
+  intro q
+  rw [hx, ite_eq_left q.val.property.2]
+
+/-- Reindexing by a bijection gives exactly the geometric natural-number series. -/
+theorem rationalUtility_geometric_series (e : RationalUnitPoints ≃ ℕ) (x : UnitSegment) :
+    RationalUtility (GeometricRationalWeights e.toEmbedding) x =
+      ∑' n : ℕ, if (e.symm n).val.val ≤ x.val then (1 / 2 : ℝ) ^ (n + 1) else 0 := by
+  rw [rationalUtility_formula, ← e.symm.tsum_eq]
+  apply tsum_congr
+  intro n
+  simp only [GeometricRationalWeights, Equiv.toEmbedding_apply, Equiv.apply_symm_apply]
+
+/-- The one-based geometric weights used in the book have total mass one. -/
+theorem geometricRationalWeights_sum (e : RationalUnitPoints ≃ ℕ) :
+    ∑' q, GeometricRationalWeights e.toEmbedding q = 1 := by
+  rw [← e.symm.tsum_eq]
+  simp only [GeometricRationalWeights, Equiv.toEmbedding_apply, Equiv.apply_symm_apply]
+  simp only [pow_succ]
+  rw [tsum_mul_right, tsum_geometric_two]
+  norm_num
+
+end Kreps.ChoicePreferenceUtility
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Utility for the printed rational enumeration
+
+Kreps I, Problem 1.12, p. 26, with the actual enumeration and the weights from
+Proposition 1.12, p. 11. Its first terms are zero, one, one half, and one third;
+their weights are one half, one quarter, one eighth, and one sixteenth. The utility
+is the sum of weights at rational points no larger than its argument. It represents
+the usual order, is discontinuous at every positive rational, and has endpoint
+values one half and one. There is no arbitrary enumeration parameter in this
+construction.
+-/
+
+namespace Kreps.ChoicePreferenceUtility
+
+/-- The book's geometric weights for its displayed denominator-then-numerator enumeration. -/
+noncomputable def PrintedRationalWeights : RationalUnitPoints → ℝ :=
+  GeometricRationalWeights PrintedRationalIndex.toEmbedding
+
+/-- Every printed weight is positive, and the family is summable. -/
+theorem printedRationalWeights_valid :
+    (∀ q, 0 < PrintedRationalWeights q) ∧ Summable PrintedRationalWeights :=
+  geometricRationalWeights_valid PrintedRationalIndex.toEmbedding
+
+/-- The zero-based term numbered `n` carries the book's one-based weight `2 ^ (-(n+1))`. -/
+theorem printedRationalWeights_sequence (n : ℕ) :
+    PrintedRationalWeights (PrintedRationalSequence n) = (1 / 2 : ℝ) ^ (n + 1) := by
+  simp [PrintedRationalWeights, GeometricRationalWeights, PrintedRationalSequence]
+
+/-- The first four weights belong, respectively, to zero, one, one half, and one third. -/
+theorem printedRationalWeights_first_four :
+    PrintedRationalWeights (PrintedRationalSequence 0) = 1 / 2 ∧
+      PrintedRationalWeights (PrintedRationalSequence 1) = 1 / 4 ∧
+      PrintedRationalWeights (PrintedRationalSequence 2) = 1 / 8 ∧
+      PrintedRationalWeights (PrintedRationalSequence 3) = 1 / 16 := by
+  norm_num [printedRationalWeights_sequence]
+
+/-- The total mass of the actual printed weights is one. -/
+theorem printedRationalWeights_sum : ∑' q, PrintedRationalWeights q = 1 :=
+  geometricRationalWeights_sum PrintedRationalIndex
+
+/-- The specific utility produced from the printed enumeration, not merely an ordinal equivalent. -/
+noncomputable def PrintedRationalUtility : UnitSegment → ℝ :=
+  RationalUtility PrintedRationalWeights
+
+/-- The literal construction in **Problem 1.12** represents the usual order on `[0,1]`. -/
+theorem problem_1_12_printed_represents :
+    Represents PrintedRationalUtility (UtilityPref (fun x : UnitSegment => x.val)) :=
+  problem_1_12_represents printedRationalWeights_valid.1 printedRationalWeights_valid.2
+
+/-- Every strict increase in the argument strictly increases the printed utility. -/
+theorem printedRationalUtility_strictMono : StrictMono PrintedRationalUtility := by
+  intro x y hxy
+  exact (strict_iff_utility_lt problem_1_12_printed_represents y x).mp
+    ⟨hxy.le, not_le_of_gt hxy⟩
+
+/-- An exact natural-number series formula for the graph requested in **Problem 1.12**. -/
+theorem printedRationalUtility_series (x : UnitSegment) :
+    PrintedRationalUtility x = ∑' n : ℕ,
+      if (PrintedRationalSequence n).val.val ≤ x.val then (1 / 2 : ℝ) ^ (n + 1) else 0 :=
+  rationalUtility_geometric_series PrintedRationalIndex x
+
+/-- Approaching a rational from below misses its full, explicitly indexed weight. -/
+theorem printedRationalUtility_jump (q : RationalUnitPoints) {x : UnitSegment}
+    (hx : x.val < q.val.val) :
+    PrintedRationalUtility x + (1 / 2 : ℝ) ^ (PrintedRationalIndex q + 1) ≤
+      PrintedRationalUtility q.val :=
+  rationalUtility_jump printedRationalWeights_valid.1 printedRationalWeights_valid.2 q hx
+
+/-- The literal utility is discontinuous at every positive rational, including one. -/
+theorem problem_1_12_printed_discontinuous (q : RationalUnitPoints) (hq : 0 < q.val.val) :
+    ¬ContinuousAt PrintedRationalUtility q.val :=
+  problem_1_12_discontinuous printedRationalWeights_valid.1 printedRationalWeights_valid.2 q hq
+
+/-- The particular utility produced in the exercise is not a continuous function. -/
+theorem printedRationalUtility_not_continuous : ¬Continuous PrintedRationalUtility := by
+  intro hc
+  apply problem_1_12_printed_discontinuous (PrintedRationalSequence 1) _ hc.continuousAt
+  rw [printedRationalSequence_one]
+  norm_num
+
+/-- Only the first, zero-valued rational contributes to the utility at zero. -/
+theorem printedRationalUtility_zero :
+    PrintedRationalUtility ⟨0, by norm_num⟩ = 1 / 2 := by
+  have hzero : (PrintedRationalSequence 0).val = (⟨0, by norm_num⟩ : UnitSegment) :=
+    Subtype.ext printedRationalSequence_zero
+  rw [← hzero]
+  change RationalUtility PrintedRationalWeights (PrintedRationalSequence 0).val = _
+  rw [rationalUtility_at_zero _ _ printedRationalSequence_zero,
+    printedRationalWeights_sequence]
+  norm_num
+
+/-- At one the utility includes every printed weight, whose sum is one. -/
+theorem printedRationalUtility_one :
+    PrintedRationalUtility ⟨1, by norm_num⟩ = 1 := by
+  change RationalUtility PrintedRationalWeights _ = _
+  rw [rationalUtility_at_one _ _ rfl, printedRationalWeights_sum]
+
+/-- The exact endpoint values bound the entire graph. -/
+theorem printedRationalUtility_mem_Icc (x : UnitSegment) :
+    PrintedRationalUtility x ∈ Set.Icc (1 / 2 : ℝ) 1 := by
+  constructor
+  · rw [← printedRationalUtility_zero]
+    exact printedRationalUtility_strictMono.monotone x.property.1
+  · rw [← printedRationalUtility_one]
+    exact printedRationalUtility_strictMono.monotone x.property.2
+
+end Kreps.ChoicePreferenceUtility
+
 set_option linter.style.longLine false
 #print axioms Kreps.ChoicePreferenceUtility.FullMenus
 #print axioms Kreps.ChoicePreferenceUtility.ChoiceRule
@@ -3502,3 +4063,68 @@ set_option linter.style.longLine false
 #print axioms Kreps.ChoicePreferenceUtility.appendix_A1_no_next_real
 #print axioms Kreps.ChoicePreferenceUtility.appendix_A1_zero_rational
 #print axioms Kreps.ChoicePreferenceUtility.appendix_A1_not_all_nonnegative_rational
+#print axioms Kreps.ChoicePreferenceUtility.BeerWineFirst
+#print axioms Kreps.ChoicePreferenceUtility.BeerWineSecond
+#print axioms Kreps.ChoicePreferenceUtility.BeerWineImproved
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_pattern_not_negativelyTransitive
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_first_second_incomparable
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_improved_second_incomparable
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_strict_improvement
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_not_negativelyTransitive
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_partialPreferenceAxioms
+#print axioms Kreps.ChoicePreferenceUtility.beerWine_indecision_model
+#print axioms Kreps.ChoicePreferenceUtility.ValidRationalCode
+#print axioms Kreps.ChoicePreferenceUtility.RationalCodeValue
+#print axioms Kreps.ChoicePreferenceUtility.rationalCodeValue_mem
+#print axioms Kreps.ChoicePreferenceUtility.UnitRationalCode
+#print axioms Kreps.ChoicePreferenceUtility.unitRational_num_nonneg
+#print axioms Kreps.ChoicePreferenceUtility.unitRational_num_le_den
+#print axioms Kreps.ChoicePreferenceUtility.unitRationalCode_valid
+#print axioms Kreps.ChoicePreferenceUtility.rationalCodeValue_unitRationalCode
+#print axioms Kreps.ChoicePreferenceUtility.unitRationalCode_rationalCodeValue
+#print axioms Kreps.ChoicePreferenceUtility.UnitRationalCodeEquiv
+#print axioms Kreps.ChoicePreferenceUtility.validRationalCode_infinite
+#print axioms Kreps.ChoicePreferenceUtility.RationalCodeIndex
+#print axioms Kreps.ChoicePreferenceUtility.UnitRationalIndex
+#print axioms Kreps.ChoicePreferenceUtility.rationalCode_lt_iff
+#print axioms Kreps.ChoicePreferenceUtility.rationalCodeIndex_lt_iff
+#print axioms Kreps.ChoicePreferenceUtility.unitRationalIndex_lt_iff
+#print axioms Kreps.ChoicePreferenceUtility.RationalUnitPoint
+#print axioms Kreps.ChoicePreferenceUtility.rationalUnitPoint_bijective
+#print axioms Kreps.ChoicePreferenceUtility.RationalUnitPointEquiv
+#print axioms Kreps.ChoicePreferenceUtility.PrintedRationalIndex
+#print axioms Kreps.ChoicePreferenceUtility.PrintedRationalSequence
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalIndex_sequence
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_index
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_bijective
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalIndex_point
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalIndex_lt_iff
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_value_of_index
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_zero
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_one
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_two
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_three
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_four
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_five
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_six
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_seven
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalSequence_eight
+#print axioms Kreps.ChoicePreferenceUtility.rationalUtility_at_zero
+#print axioms Kreps.ChoicePreferenceUtility.rationalUtility_at_one
+#print axioms Kreps.ChoicePreferenceUtility.rationalUtility_geometric_series
+#print axioms Kreps.ChoicePreferenceUtility.geometricRationalWeights_sum
+#print axioms Kreps.ChoicePreferenceUtility.PrintedRationalWeights
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalWeights_valid
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalWeights_sequence
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalWeights_first_four
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalWeights_sum
+#print axioms Kreps.ChoicePreferenceUtility.PrintedRationalUtility
+#print axioms Kreps.ChoicePreferenceUtility.problem_1_12_printed_represents
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_strictMono
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_series
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_jump
+#print axioms Kreps.ChoicePreferenceUtility.problem_1_12_printed_discontinuous
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_not_continuous
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_zero
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_one
+#print axioms Kreps.ChoicePreferenceUtility.printedRationalUtility_mem_Icc

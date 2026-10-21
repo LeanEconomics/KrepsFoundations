@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T16:07:56.653356+00:00",
-  "theorems": 213,
+  "checked_at_utc": "2026-10-21T20:21:08.302067+00:00",
+  "theorems": 263,
   "module_theorems": {
     "ChoicePreferenceUtility/Basic.lean": 5,
     "ChoicePreferenceUtility/Rationalization.lean": 12,
@@ -27,9 +27,14 @@
     "ChoicePreferenceUtility/CommentaryExamples.lean": 12,
     "ChoicePreferenceUtility/ThresholdChains.lean": 11,
     "ChoicePreferenceUtility/ThresholdRepresentation.lean": 3,
-    "ChoicePreferenceUtility/MathematicalInduction.lean": 9
+    "ChoicePreferenceUtility/MathematicalInduction.lean": 9,
+    "ChoicePreferenceUtility/BeerWineExample.lean": 7,
+    "ChoicePreferenceUtility/RationalEnumerationCodes.lean": 10,
+    "ChoicePreferenceUtility/RationalEnumeration.lean": 16,
+    "ChoicePreferenceUtility/RationalUtilityValues.lean": 4,
+    "ChoicePreferenceUtility/PrintedRationalUtility.lean": 13
   },
-  "audited_declarations": 322,
+  "audited_declarations": 387,
   "declarations": [
     {
       "name": "Kreps.ChoicePreferenceUtility.FullMenus",
@@ -1640,6 +1645,331 @@
       "name": "Kreps.ChoicePreferenceUtility.appendix_A1_not_all_nonnegative_rational",
       "kind": "theorem",
       "module": "ChoicePreferenceUtility/MathematicalInduction.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.BeerWineFirst",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.BeerWineSecond",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.BeerWineImproved",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_pattern_not_negativelyTransitive",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_first_second_incomparable",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_improved_second_incomparable",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_strict_improvement",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_not_negativelyTransitive",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_partialPreferenceAxioms",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.beerWine_indecision_model",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/BeerWineExample.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.ValidRationalCode",
+      "kind": "abbrev",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.RationalCodeValue",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalCodeValue_mem",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.UnitRationalCode",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.unitRational_num_nonneg",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.unitRational_num_le_den",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.unitRationalCode_valid",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalCodeValue_unitRationalCode",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.unitRationalCode_rationalCodeValue",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.UnitRationalCodeEquiv",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.validRationalCode_infinite",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.RationalCodeIndex",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.UnitRationalIndex",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalCode_lt_iff",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalCodeIndex_lt_iff",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.unitRationalIndex_lt_iff",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumerationCodes.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.RationalUnitPoint",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalUnitPoint_bijective",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.RationalUnitPointEquiv",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.PrintedRationalIndex",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.PrintedRationalSequence",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalIndex_sequence",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_index",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_bijective",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalIndex_point",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalIndex_lt_iff",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_value_of_index",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_zero",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_one",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_two",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_three",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_four",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_five",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_six",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_seven",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalSequence_eight",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalEnumeration.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalUtility_at_zero",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalUtilityValues.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalUtility_at_one",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalUtilityValues.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.rationalUtility_geometric_series",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalUtilityValues.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.geometricRationalWeights_sum",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/RationalUtilityValues.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.PrintedRationalWeights",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalWeights_valid",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalWeights_sequence",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalWeights_first_four",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalWeights_sum",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.PrintedRationalUtility",
+      "kind": "def",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.problem_1_12_printed_represents",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_strictMono",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_series",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_jump",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.problem_1_12_printed_discontinuous",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_not_continuous",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_zero",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_one",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoicePreferenceUtility.printedRationalUtility_mem_Icc",
+      "kind": "theorem",
+      "module": "ChoicePreferenceUtility/PrintedRationalUtility.lean"
     }
   ],
   "full_build": "passed",
@@ -2832,6 +3162,323 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.BeerWineFirst": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.BeerWineSecond": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.BeerWineImproved": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_pattern_not_negativelyTransitive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_first_second_incomparable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_improved_second_incomparable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_strict_improvement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_not_negativelyTransitive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_partialPreferenceAxioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.beerWine_indecision_model": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.ValidRationalCode": [],
+    "Kreps.ChoicePreferenceUtility.RationalCodeValue": [],
+    "Kreps.ChoicePreferenceUtility.rationalCodeValue_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.UnitRationalCode": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.unitRational_num_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.unitRational_num_le_den": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.unitRationalCode_valid": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalCodeValue_unitRationalCode": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.unitRationalCode_rationalCodeValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.UnitRationalCodeEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.validRationalCode_infinite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.RationalCodeIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.UnitRationalIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalCode_lt_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalCodeIndex_lt_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.unitRationalIndex_lt_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.RationalUnitPoint": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalUnitPoint_bijective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.RationalUnitPointEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.PrintedRationalIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.PrintedRationalSequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalIndex_sequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_index": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_bijective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalIndex_point": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalIndex_lt_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_value_of_index": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_two": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_three": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_four": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_five": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_six": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_seven": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalSequence_eight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalUtility_at_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalUtility_at_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.rationalUtility_geometric_series": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.geometricRationalWeights_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.PrintedRationalWeights": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalWeights_valid": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalWeights_sequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalWeights_first_four": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalWeights_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.PrintedRationalUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.problem_1_12_printed_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_series": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_jump": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.problem_1_12_printed_discontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_not_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoicePreferenceUtility.printedRationalUtility_mem_Icc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -2842,7 +3489,7 @@
     "ChoicePreferenceUtility/CountableUtility.lean": "75333c506edc5e24b6e6ff0ad7bf5af3022c85373df6b6c6d87701acb412d125",
     "ChoicePreferenceUtility/InfiniteChoice.lean": "f78136c936be11178a8a6222a531a7d679a63b060fb3232a460873297b8875b6",
     "ChoicePreferenceUtility/UtilityEquivalence.lean": "d619516e1b53f026d828ea5b1569fdc90938aaa98bb4c334bd44a6b08b7dfe38",
-    "ChoicePreferenceUtility/RevealedPreference.lean": "1f40b10cdb0738f1a8bfdeab81d673ba74eb257b9b8c8af4d1b21a6e29f72278",
+    "ChoicePreferenceUtility/RevealedPreference.lean": "1f6a47abbc8eb303979f070d8db75d6a2fd274badcd9a2474095134314068bca",
     "ChoicePreferenceUtility/ContinuousPreference.lean": "a6bc48052b712bebc229fce6a61a907f67a7c65baa32f11412229fd4dcc65b4c",
     "ChoicePreferenceUtility/OrthantRepresentation.lean": "2fc20c6fecc5d53e5354c21d452c421b8e8360133005c4b4cef95cf131e03b5d",
     "ChoicePreferenceUtility/CompactChoice.lean": "c7bc1ece1bef135bf1e686e5dee546490622d96f5a7ab73ff446016dede1d517",
@@ -2856,21 +3503,26 @@
     "ChoicePreferenceUtility/Lexicographic.lean": "a0921cb4dea64ac54ffba4477b9fc6d049134ad78660623c412f860c7f1b028c",
     "ChoicePreferenceUtility/PartialPreference.lean": "1cfa0e6ed536a7745b43932c784b7c8b526a655f57ef6834bca5c49436183ad9",
     "ChoicePreferenceUtility/InfiniteChoiceExamples.lean": "51cc845b786e8d1a847b667ab5db84a7ed3a872171d4da52da36ff069dcad34b",
-    "ChoicePreferenceUtility/RationalUtilityExamples.lean": "1c14d852f49400790b06a1b9134794ab2b063334827c4e96a034d100611ad7aa",
+    "ChoicePreferenceUtility/RationalUtilityExamples.lean": "dd174499edafeadd92ab885b90fc4bdc8c0699fc7525b4b2847ce4bbc3b09987",
     "ChoicePreferenceUtility/CommentaryExamples.lean": "315d781cf2d7d1af64ef0fc13d8b25e1906f278adf4cefe7cf9a11e87b2ffe3e",
     "ChoicePreferenceUtility/ThresholdChains.lean": "17c6017aaa873b5f6b2de9faa533eea54366f60230dc08d15c77082202326f78",
     "ChoicePreferenceUtility/ThresholdRepresentation.lean": "e42769a1ed0cd014a5ebb3431d162e76241f87c62323254df5355e50b7213126",
     "ChoicePreferenceUtility/MathematicalInduction.lean": "a319a45f76293a6f1f1153f5867727782f56ef4be7c4dbd7c2fd6b788d1d3f52",
-    "ChoicePreferenceUtility.lean": "868cdcd7a782861b955e3eb2b51ee201acee81f77c6370425677d28964624b6d",
+    "ChoicePreferenceUtility/BeerWineExample.lean": "0d9c0123fc5e6e06caf78304d1fd8900b591b29be5d5b686c9e06d5b11223748",
+    "ChoicePreferenceUtility/RationalEnumerationCodes.lean": "348cd8a33a8f0ad1833cdca6e3db1b72b6cd51004c51e295cb874c2af983a170",
+    "ChoicePreferenceUtility/RationalEnumeration.lean": "4bd3e6e1c6109a14ee9e35d3d5ffbe587394e3ee4e3430367ec33bedab1d1c99",
+    "ChoicePreferenceUtility/RationalUtilityValues.lean": "695c4dbd8396e0177c4db11d39420f5dfa20c1dadea8e48a7a8de48fc42d06e5",
+    "ChoicePreferenceUtility/PrintedRationalUtility.lean": "29c4468bef51bb6c76dd1fd0393edd02646d03a77a7caf418f705f94d02b75a7",
+    "ChoicePreferenceUtility.lean": "f256f9a9898120f24c800d86e514ae418e5e3bd593840907be1ce46a79bf4b87",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "4bb53c4e878d0235a85744d63307bb02211c4abb52ca0476bbb8460cd3da5e06",
     "lake-manifest.json": "36750276dda73ced74cac075190123d02919ee4611dca4121d8d706619835c47",
-    "proof-manifest.json": "1afda39dfb5cbe84935811c4ff2e8568e141a3086ca764b88db50a6bf983b240",
+    "proof-manifest.json": "ddf7d97e0af32108f2790dab669c60808f49c1cfc1a56fa943c78507578a3a4a",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "e8a31d4de384f5b826cd2b47f81ffd129abfd158ce69d76786f20534edde0bc8",
+  "fresh_audit_sha256": "c0f944deb470e177e5b63dc02a0aba193e42190335d2714db2702bbe7bd5a024",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 1, pp. 1-29: definitions, all numbered propositions and all mathematical parts of Problems 1.1-1.17; mathematical commentary examples; Appendix 1, pp. 439-440. Source corrections and excluded nonmathematical discussion are explicit in docs/source-map.md and docs/corrections.md. The bounded integer-chain criterion answers Problem 1.17f in both directions. Appendix 2 dependencies use pinned Mathlib; full Appendix 2 coverage belongs to the Chapters 1-3 program.",
-  "source": "Kreps, Microeconomic Foundations I, Chapter 1, pp. 1-29. Exact scope and remaining work: docs/source-map.md."
+  "scope": "Chapter 1, pp. 1-29: definitions, all numbered propositions and all mathematical parts of Problems 1.1-1.17; mathematical commentary examples, including the exact beer/wine bundles and the printed rational enumeration with its specific utility; Appendix 1, pp. 439-440. Source corrections and excluded nonmathematical discussion are explicit in docs/source-map.md and docs/corrections.md. The bounded integer-chain criterion answers Problem 1.17f in both directions. Appendix 2 dependencies use pinned Mathlib directly; complete Appendix 2 formalization is available in the independent Chapter 2 project.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 1, pp. 1-29. Exact scope: docs/source-map.md."
 }

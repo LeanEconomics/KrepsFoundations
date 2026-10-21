@@ -26,7 +26,12 @@
     "ChoicePreferenceUtility/CommentaryExamples.lean",
     "ChoicePreferenceUtility/ThresholdChains.lean",
     "ChoicePreferenceUtility/ThresholdRepresentation.lean",
-    "ChoicePreferenceUtility/MathematicalInduction.lean"
+    "ChoicePreferenceUtility/MathematicalInduction.lean",
+    "ChoicePreferenceUtility/BeerWineExample.lean",
+    "ChoicePreferenceUtility/RationalEnumerationCodes.lean",
+    "ChoicePreferenceUtility/RationalEnumeration.lean",
+    "ChoicePreferenceUtility/RationalUtilityValues.lean",
+    "ChoicePreferenceUtility/PrintedRationalUtility.lean"
   ],
   "theorem_counts": {
     "ChoicePreferenceUtility/Basic.lean": 5,
@@ -54,8 +59,13 @@
     "ChoicePreferenceUtility/CommentaryExamples.lean": 12,
     "ChoicePreferenceUtility/ThresholdChains.lean": 11,
     "ChoicePreferenceUtility/ThresholdRepresentation.lean": 3,
-    "ChoicePreferenceUtility/MathematicalInduction.lean": 9
+    "ChoicePreferenceUtility/MathematicalInduction.lean": 9,
+    "ChoicePreferenceUtility/BeerWineExample.lean": 7,
+    "ChoicePreferenceUtility/RationalEnumerationCodes.lean": 10,
+    "ChoicePreferenceUtility/RationalEnumeration.lean": 16,
+    "ChoicePreferenceUtility/RationalUtilityValues.lean": 4,
+    "ChoicePreferenceUtility/PrintedRationalUtility.lean": 13
   },
-  "scope": "Chapter 1, pp. 1-29: definitions, all numbered propositions and all mathematical parts of Problems 1.1-1.17; mathematical commentary examples; Appendix 1, pp. 439-440. Source corrections and excluded nonmathematical discussion are explicit in docs/source-map.md and docs/corrections.md. The bounded integer-chain criterion answers Problem 1.17f in both directions. Appendix 2 dependencies use pinned Mathlib; full Appendix 2 coverage belongs to the Chapters 1-3 program.",
-  "source": "Kreps, Microeconomic Foundations I, Chapter 1, pp. 1-29. Exact scope and remaining work: docs/source-map.md."
+  "scope": "Chapter 1, pp. 1-29: definitions, all numbered propositions and all mathematical parts of Problems 1.1-1.17; mathematical commentary examples, including the exact beer/wine bundles and the printed rational enumeration with its specific utility; Appendix 1, pp. 439-440. Source corrections and excluded nonmathematical discussion are explicit in docs/source-map.md and docs/corrections.md. The bounded integer-chain criterion answers Problem 1.17f in both directions. Appendix 2 dependencies use pinned Mathlib directly; complete Appendix 2 formalization is available in the independent Chapter 2 project.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 1, pp. 1-29. Exact scope: docs/source-map.md."
 }

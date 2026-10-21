@@ -5,8 +5,8 @@ It follows Chapter 1, pp. 1-29, including Problems 1.1-1.17 and the results insi
 [Return to the library index](../../README.md).
 
 Status: Chapter 1 mathematical coverage and Appendix 1 complete; full audit passed.
-See the [source map](docs/source-map.md) for itemized coverage and the explicit division
-of remaining appendix work, and [corrections](docs/corrections.md) for statement changes.
+See the [source map](docs/source-map.md) for itemized coverage and appendix dependencies,
+and [corrections](docs/corrections.md) for statement changes.
 All declarations are in `Kreps.ChoicePreferenceUtility`.
 
 ## Library map
@@ -32,7 +32,6 @@ All declarations are in `Kreps.ChoicePreferenceUtility`.
 | [ObservationExamples](ChoicePreferenceUtility/ObservationExamples.lean) | 5 | Problems 1.16a-b: hidden ties and cyclic pair observations |
 | [WineChoice](ChoicePreferenceUtility/WineChoice.lean) | 6 | Problem 1.1: the full wine-selection rule on a counterexample universe |
 | [Lexicographic](ChoicePreferenceUtility/Lexicographic.lean) | 3 | Problem 1.10: rationality without any real utility representation |
-
 | [PartialPreference](ChoicePreferenceUtility/PartialPreference.lean) | 10 | Problem 1.17a-e: incomplete preferences, threshold utility and a counterexample |
 | [InfiniteChoiceExamples](ChoicePreferenceUtility/InfiniteChoiceExamples.lean) | 8 | Semi-open-square nonattainment and necessity of Assumption 1.16 |
 | [RationalUtilityExamples](ChoicePreferenceUtility/RationalUtilityExamples.lean) | 9 | Problem 1.12: geometric rational weights and discontinuities |
@@ -40,12 +39,19 @@ All declarations are in `Kreps.ChoicePreferenceUtility`.
 | [ThresholdChains](ChoicePreferenceUtility/ThresholdChains.lean) | 11 | Integer-chain criterion and its necessity for threshold representation |
 | [ThresholdRepresentation](ChoicePreferenceUtility/ThresholdRepresentation.lean) | 3 | Problem 1.17f: sufficiency, exact indifference and the full equivalence |
 | [MathematicalInduction](ChoicePreferenceUtility/MathematicalInduction.lean) | 9 | Appendix 1: induction principles, parity and the real-number caution |
+| [BeerWineExample](ChoicePreferenceUtility/BeerWineExample.lean) | 7 | Section 1.8: the exact beer/wine bundles and the negative-transitivity obstruction |
+| [RationalEnumerationCodes](ChoicePreferenceUtility/RationalEnumerationCodes.lean) | 10 | Problem 1.12: reduced-fraction codes, bijection and denominator/numerator order |
+| [RationalEnumeration](ChoicePreferenceUtility/RationalEnumeration.lean) | 16 | Problem 1.12: the literal rational sequence and its nine printed opening terms |
+| [RationalUtilityValues](ChoicePreferenceUtility/RationalUtilityValues.lean) | 4 | Problem 1.12: geometric-series reindexing and general endpoint formulas |
+| [PrintedRationalUtility](ChoicePreferenceUtility/PrintedRationalUtility.lean) | 13 | Problem 1.12: the actual printed utility, weights, endpoints and discontinuities |
 
-The full fresh-source audit passes: **213 theorems**, **322 audited declarations**.
+The full fresh-source audit passes: **263 theorems**, **387 audited declarations**.
 All Chapter 1 numbered propositions, Problems 1.1-1.17, the mathematical commentary
 examples and Appendix 1 are accounted for. Problem 1.17f uses a proved necessary-and-
 sufficient integer-chain condition. Empirical discussion is documented as exposition.
-The complete Appendix 2 inventory remains part of the Chapters 1-3 program.
+Appendix 2 is fully formalized in the independent Chapter 2 project; see its
+[complete inventory](../PreferenceProperties/docs/appendix2-source-map.md). This chapter
+uses the pinned Mathlib foundations directly and has no dependency on that project.
 
 The generated [verification record](verification/verification.json) contains source
 hashes and the axiom audit for every declaration. The verifier's 14 failure-path tests

@@ -16,7 +16,8 @@ below its argument. At every positive rational point, the utility has a jump of 
 least that point's weight and is discontinuous. These conclusions hold for every
 positive summable weight assignment, including geometric weights from any injective
 enumeration of the rationals, hence also the enumeration displayed in the problem.
-Identity is an explicit continuous representation of the same preference.
+The exact displayed index and its utility are constructed in `RationalEnumeration` and
+`PrintedRationalUtility`. Identity continuously represents the same preference.
 -/
 
 namespace Kreps.ChoicePreferenceUtility

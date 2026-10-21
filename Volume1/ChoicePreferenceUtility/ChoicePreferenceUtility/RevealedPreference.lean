@@ -12,7 +12,8 @@ Kreps I, Problem 1.16c and Definition 1.22, p. 28.
 The printed strict relation omits membership of the rejected alternative in the menu.
 `printed_strict_counterexample` shows why that membership condition is necessary:
 utility-maximizing choice can otherwise exhibit the forbidden two-alternative cycle.
-The general rationalizability proof is a separate remaining task.
+The general rationalizability equivalence is proved in `proposition_1_23`
+in the module `ChoicePreferenceUtility.SGARP`.
 -/
 
 namespace Kreps.ChoicePreferenceUtility

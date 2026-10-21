@@ -25,7 +25,7 @@ DynamicProgramming pins and its stricter no-placeholder verifier where the refer
 differ; do not copy the other repository’s model-specific scope or local machine setup.
 
 Status: Chapters 1–2 and their required foundations are complete. Chapter 1 has
-213 theorems and 322 audited declarations; Chapter 2 has 951 new chapter/appendix
+263 theorems and 387 audited declarations; Chapter 2 has 951 new chapter/appendix
 theorems, plus 98 attributed local prerequisite theorems. Source maps and fresh
 verification records specify the checked scope. Appendix 1 and Appendix 2 are complete;
 the Appendix 3 inventory distinguishes the foundations used here from its later material.
@@ -336,7 +336,7 @@ on p. 28 and belong in the source map.
 
 The following records the initial module design. The implemented split and verified
 counts are in the [Chapter 1 README](Volume1/ChoicePreferenceUtility/README.md); its
-26 modules include the problem solutions and Appendix 1.
+31 modules include the problem solutions, literal examples and Appendix 1.
 
 | Module | Source | Planned result |
 | --- | --- | --- |
@@ -358,7 +358,7 @@ countable/general representation, topology and infinite choice, utility equivale
 restricted data, and remaining problems. This order follows the proof dependencies while
 the source map presents the book's order.
 
-**Chapter 1 milestone reached.** The fresh audit passes 213 theorems and 322 declarations.
+**Chapter 1 milestone reached.** The fresh audit passes 263 theorems and 387 declarations.
 Every proposition and mathematical problem is accounted for; finite and
 infinite cases are accurately distinguished; the root import covers every module; source
 maps and corrections are complete; the full verifier passes without warnings. That is

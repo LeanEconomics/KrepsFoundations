@@ -3,7 +3,7 @@
 David M. Kreps, *Microeconomic Foundations I*, Chapter 1, pp. 1-29.
 Printed pages; Lean names relative to `Kreps.ChoicePreferenceUtility`.
 All numbered Chapter 1 propositions and the mathematical parts of Problems 1.1-1.17
-are covered. Nonmathematical discussion and remaining appendix work are identified below.
+are covered. Nonmathematical discussion and appendix dependencies are identified below.
 
 ## Definitions, assumptions and propositions
 
@@ -36,6 +36,7 @@ are covered. Nonmathematical discussion and remaining appendix work are identifi
 | Section 1.8, p. 18 | Utility differences and the utility zero have no ordinal meaning | `ordinalWarp_strictMono`, `ordinal_difference_reversal`, `ordinal_zero_not_invariant` |
 | Section 1.8, pp. 19-20 | The vaccination frames give identical state-contingent outcomes | `FluProbability`, `fluProbability_valid`, `framing_A_eq_X`, `framing_B_eq_Y`, `framing_reversal_impossible` |
 | Section 1.8, pp. 20-21 | Added-option reversal, rejected alternatives, and four possible comparison responses | `added_option_reversal_not_coherent`, `RejectedSet`, `rejectedSet_subset`, `partial_response_exhaustive`, `partial_positive_responses_exclusive` |
+| Section 1.8, pp. 20-21 | Beer/wine bundles `(3,10)`, `(20,6)`, `(4,11)` and the failure of negative transitivity under indecision | `BeerWineFirst`, `BeerWineSecond`, `BeerWineImproved`, `beerWine_pattern_not_negativelyTransitive`, `beerWine_first_second_incomparable`, `beerWine_improved_second_incomparable`, `beerWine_strict_improvement`, `beerWine_not_negativelyTransitive`, `beerWine_indecision_model` |
 | Definition 1.22; Proposition 1.23, p. 28 | SGARP and rationalizability | `ObservedWeak`, `ObservedStrict`, `SGARP`, `RationalizesData`, `proposition_1_23`; corrections: `printed_strict_counterexample`, `empty_observation_not_rationalizable` |
 
 ## Problems
@@ -56,7 +57,10 @@ Each row records the mathematical conclusion requested in the corresponding prob
 | Problem 1.10, p. 26 | Lexicographic rationality without real representation | `problem_1_10` |
 | Problem 1.11, p. 26 | Proof of all four continuity equivalences | `problem_1_11` |
 | Problem 1.12, p. 26 | Rational separating set and the geometric-weight construction | `rationalUnitPoints_countable`, `problem_1_12_separating`, `GeometricRationalWeights`, `geometricRationalWeights_valid`, `rationalUtility_formula`, `problem_1_12_represents` |
+| Problem 1.12, p. 26 | Exact printed enumeration: a bijection in reduced-denominator/numerator order and all nine displayed opening terms | `PrintedRationalIndex`, `PrintedRationalSequence`, `printedRationalSequence_bijective`, `printedRationalIndex_lt_iff`, `printedRationalSequence_zero` through `printedRationalSequence_eight` |
+| Problem 1.12, p. 26; Proposition 1.12 proof, p. 11 | The actual indexed geometric weights, exact series and endpoint values | `PrintedRationalWeights`, `printedRationalWeights_sequence`, `printedRationalWeights_first_four`, `PrintedRationalUtility`, `problem_1_12_printed_represents`, `printedRationalUtility_series`, `printedRationalUtility_zero`, `printedRationalUtility_one`, `printedRationalUtility_mem_Icc` |
 | Problem 1.12, p. 26 | Discontinuity at every positive rational; a continuous representation of the same continuous preference | `rationalUtility_jump`, `problem_1_12_discontinuous`, `problem_1_12_continuous_representation`, `problem_1_12_continuous_preference` |
+| Problem 1.12, p. 26 | Discontinuity of the particular printed construction, with its indexed jump bound | `printedRationalUtility_jump`, `problem_1_12_printed_discontinuous`, `printedRationalUtility_not_continuous` |
 | Problem 1.13, pp. 26-27 | Direct compactness proof; role of Assumption 1.16 | `problem_1_13_direct`, `problem_1_13_necessity`, `orthantSegment_compact`, `orthantSegment_infinite` |
 | Problem 1.14a-b, p. 27 | Equal preferences and strictly increasing transforms on the utility range | `problem_1_14a`, `problem_1_14b` |
 | Problem 1.14c, p. 27 | Jump utility with no globally strictly increasing transform | `JumpUtility`, `jumpUtility_represents`, `problem_1_14c` |
@@ -78,15 +82,26 @@ Each row records the mathematical conclusion requested in the corresponding prob
 | --- | --- | --- |
 | A1, p. 439 | Natural and positive-integer induction; strong induction; parity example | `appendix_A1_nat_induction`, `appendix_A1_strong_induction`, `appendix_A1_positive_induction`, `appendix_A1_even_or_odd`, `appendix_A1_parity_exclusive` |
 | A1, pp. 439-440 | Integer induction in both directions and the caution about real numbers | `appendix_A1_integer_induction`, `appendix_A1_no_next_real`, `appendix_A1_zero_rational`, `appendix_A1_not_all_nonnegative_rational` |
-| A2, pp. 441-451 | Dependencies used here: metric neighborhoods, sequential closedness, connectedness, countable density and compact finite intersections | Pinned Mathlib supplies these ingredients to `ContinuousPreference`, `OrthantRepresentation` and `CompactChoice`. This is dependency use, not completion of Appendix 2. Its complete source inventory and remaining bridges belong to the Chapters 1-3 program. |
+| A2, pp. 441-451 | Dependencies used here: metric neighborhoods, sequential closedness, connectedness, countable density and compact finite intersections | Pinned Mathlib supplies these ingredients to `ContinuousPreference`, `OrthantRepresentation` and `CompactChoice`. The independent Chapter 2 project now provides [complete Appendix 2 coverage](../../PreferenceProperties/docs/appendix2-source-map.md). Chapter 1 uses Mathlib directly; it does not depend on the Chapter 2 package. |
 
 ## Scope of the examples
 
-Problem 1.12 is proved for arbitrary positive summable rational weights. The explicit
-geometric recipe accepts any injective indexing and so applies to the book's displayed
-enumeration; the proof does not compute its particular numerical initial values. The
-formula describes the constructed utility, and its jumps establish the requested failure
-of continuity even though identity continuously represents the preference.
+Problem 1.12 includes both the general positive summable-weight construction and its
+literal printed instance. `PrintedRationalIndex` is a bijection obtained by counting
+reduced fractions in increasing denominator, then increasing numerator. Its inverse
+starts `0, 1, 1/2, 1/3, 2/3, 1/4, 3/4, 1/5, 2/5`, exactly as displayed. The zero-based
+term `n` has weight `(1/2)^(n+1)`, matching the book's one-based indexing. The first four
+weights are proved explicitly; these weights are distinct from utility values, which
+sum over all rational points no larger than the argument. The exact natural-number
+series has endpoint values `u(0) = 1/2` and `u(1) = 1`. Its jumps establish discontinuity
+at every positive rational, including one, even though identity continuously represents
+the same preference.
+
+The beer/wine illustration uses the book's exact three bundles. The comparison pattern
+alone contradicts negative transitivity. Pareto preference with equality as positive
+indifference supplies a concrete model of that pattern satisfying the four partial-
+preference axioms. This model is our formal witness; the book describes the comparisons
+without specifying a preference relation on every bundle.
 
 Problem 1.17f asks for an additional condition, rather than specifying one. Our condition
 uses only the primitive strict and positive-indifference relations and integer chains.

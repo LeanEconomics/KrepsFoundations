@@ -29,6 +29,11 @@ import ChoicePreferenceUtility.CommentaryExamples
 import ChoicePreferenceUtility.ThresholdChains
 import ChoicePreferenceUtility.ThresholdRepresentation
 import ChoicePreferenceUtility.MathematicalInduction
+import ChoicePreferenceUtility.BeerWineExample
+import ChoicePreferenceUtility.RationalEnumerationCodes
+import ChoicePreferenceUtility.RationalEnumeration
+import ChoicePreferenceUtility.RationalUtilityValues
+import ChoicePreferenceUtility.PrintedRationalUtility
 
 /-!
 # Kreps I, Chapter 1
