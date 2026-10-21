@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [Volume1/ChoicePreferenceUtility]
+        project: [Volume1/ChoicePreferenceUtility, Volume1/PreferenceProperties]
     defaults:
       run:
         working-directory: ${{ matrix.project }}

@@ -17,7 +17,7 @@ dependency versions, verification scripts, and CI structure. The reference files
 in section 8.
 
 Status: active implementation goal, 2026-10-21. Chapter 1 and Appendix 1 are complete
-(213 theorems, 322 audited declarations); Chapter 2 source review is underway.
+(213 theorems, 322 audited declarations); Chapter 2 is active with 69 new theorems audited.
 The user authorized continuous chapter-by-chapter work through the whole volume.
 No chapter has been marked complete; source maps and audit records track actual progress.
 

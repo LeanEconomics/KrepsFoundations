@@ -1,0 +1,24 @@
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+import PreferenceProperties.Basic
+import PreferenceProperties.Rationalization
+import PreferenceProperties.FiniteUtility
+import PreferenceProperties.StrictPreference
+import PreferenceProperties.CountableUtility
+import PreferenceProperties.InfiniteChoice
+import PreferenceProperties.UtilityEquivalence
+import PreferenceProperties.ContinuousPreference
+import PreferenceProperties.OrthantRepresentation
+import PreferenceProperties.CompactChoice
+import PreferenceProperties.UtilityExamples
+import PreferenceProperties.Lexicographic
+import PreferenceProperties.Monotonicity
+import PreferenceProperties.ConvexPreference
+import PreferenceProperties.ConcaveUtility
+import PreferenceProperties.MonotonicityExamples
+import PreferenceProperties.Insatiability
+import PreferenceProperties.ConvexityExamples
+import PreferenceProperties.TransformationExamples
