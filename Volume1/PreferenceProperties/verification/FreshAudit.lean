@@ -16,6 +16,9 @@ import Mathlib.Basic.NNReal.Basic
 import Mathlib.Order.CountableDenseLinearOrder
 import Mathlib.Data.Finset.Piecewise
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Topology.Instances.NNReal.Lemmas
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Topology.Order.IntermediateValue
 set_option autoImplicit false
 
 /-
@@ -3905,6 +3908,773 @@ theorem continuousPreference_of_additive [Fintype I] [∀ i, TopologicalSpace (B
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Homothetic preferences and homogeneous utilities
+
+Kreps I, Definitions 2.17-2.18 and the easy direction of Proposition 2.19, p. 44.
+The scalar domain includes zero. A cone here requires closure under nonnegative
+scaling; it need not be convex or closed under addition.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+/-- **Definition 2.18:** closure under all nonnegative scalar multiples. -/
+def NonnegativeCone {E : Type*} [AddCommGroup E] [Module ℝ E] (S : Set E) : Prop :=
+  ∀ x ∈ S, ∀ t : ℝ, 0 ≤ t → t • x ∈ S
+
+/-- Scalar multiplication as an operation inside the cone domain. -/
+def ScaleInCone {E : Type*} [AddCommGroup E] [Module ℝ E] {S : Set E}
+    (hS : NonnegativeCone S) (t : ℝ≥0) (x : S) : S :=
+  ⟨(t : ℝ) • x.val, hS x.val x.property t t.property⟩
+
+/-- **Definition 2.18:** homogeneity of a specified nonnegative degree. -/
+def HomogeneousOfDegree {E : Type*} [AddCommGroup E] [Module ℝ E] {S : Set E}
+    (hS : NonnegativeCone S) (α : ℝ≥0) (u : S → ℝ) : Prop :=
+  ∀ t x, u (ScaleInCone hS t x) = (t : ℝ) ^ (α : ℝ) * u x
+
+/-- Degree one is ordinary scalar homogeneity, including the zero scalar. -/
+theorem homogeneousOfDegree_one_iff {E : Type*} [AddCommGroup E] [Module ℝ E]
+    {S : Set E} (hS : NonnegativeCone S) (u : S → ℝ) :
+    HomogeneousOfDegree hS 1 u ↔ ∀ t x, u (ScaleInCone hS t x) = (t : ℝ) * u x := by
+  simp only [HomogeneousOfDegree, NNReal.coe_one, Real.rpow_one]
+
+/-- The nonnegative orthant is a cone in the book's sense. -/
+theorem orthant_nonnegativeCone (k : ℕ) :
+    NonnegativeCone (Set.Ici (0 : Fin k → ℝ)) := by
+  intro x hx t ht j
+  exact mul_nonneg ht (hx j)
+
+/-- The zero commodity bundle. -/
+def OrthantZero (k : ℕ) : NonnegativeOrthant k := ⟨0, le_rfl⟩
+
+/-- Nonnegative scalar multiplication of a consumption bundle. -/
+def ScaleBundle {k : ℕ} (t : ℝ≥0) (x : NonnegativeOrthant k) : NonnegativeOrthant k :=
+  ⟨fun j => (t : ℝ) * x.val j, fun j => mul_nonneg t.property (x.property j)⟩
+
+/-- Bundle scaling is the general cone operation specialized to the orthant. -/
+theorem scaleBundle_eq_cone {k : ℕ} (t : ℝ≥0) (x : NonnegativeOrthant k) :
+    ScaleBundle t x = ScaleInCone (orthant_nonnegativeCone k) t x := rfl
+
+/-- Scaling by zero gives the origin. -/
+theorem scaleBundle_zero {k : ℕ} (x : NonnegativeOrthant k) :
+    ScaleBundle 0 x = OrthantZero k := by
+  apply Subtype.ext
+  funext j
+  simp [ScaleBundle, OrthantZero]
+
+/-- Scaling by one preserves the bundle. -/
+theorem scaleBundle_one {k : ℕ} (x : NonnegativeOrthant k) : ScaleBundle 1 x = x := by
+  apply Subtype.ext
+  funext j
+  simp [ScaleBundle]
+
+/-- Every scalar leaves the origin fixed. -/
+theorem scaleBundle_origin {k : ℕ} (t : ℝ≥0) :
+    ScaleBundle t (OrthantZero k) = OrthantZero k := by
+  apply Subtype.ext
+  funext j
+  simp [ScaleBundle, OrthantZero]
+
+/-- Successive scalings multiply their factors. -/
+theorem scaleBundle_mul {k : ℕ} (t s : ℝ≥0) (x : NonnegativeOrthant k) :
+    ScaleBundle (t * s) x = ScaleBundle t (ScaleBundle s x) := by
+  apply Subtype.ext
+  funext j
+  simp [ScaleBundle, mul_assoc]
+
+/-- Every nonzero scaling can be undone within the nonnegative orthant. -/
+theorem scaleBundle_inv {k : ℕ} {t : ℝ≥0} (ht : t ≠ 0) (x : NonnegativeOrthant k) :
+    ScaleBundle t⁻¹ (ScaleBundle t x) = x := by
+  rw [← scaleBundle_mul, inv_mul_cancel₀ ht, scaleBundle_one]
+
+/-- Joint continuity of the scalar and the bundle. -/
+theorem scaleBundle_continuous {k : ℕ} :
+    Continuous (fun p : ℝ≥0 × NonnegativeOrthant k => ScaleBundle p.1 p.2) :=
+  (continuous_pi fun j => (NNReal.continuous_coe.comp continuous_fst).mul
+    ((continuous_apply j).comp (continuous_subtype_val.comp continuous_snd))).subtype_mk _
+
+/-- A ray is continuous in its nonnegative scalar. -/
+theorem scaleBundle_ray_continuous {k : ℕ} (x : NonnegativeOrthant k) :
+    Continuous (fun t : ℝ≥0 => ScaleBundle t x) :=
+  scaleBundle_continuous.comp (continuous_id.prodMk continuous_const)
+
+/-- Iterating a contraction along a ray converges to the origin. -/
+theorem scaleBundle_pow_tendsto_zero {k : ℕ} {t : ℝ≥0} (ht : t < 1)
+    (x : NonnegativeOrthant k) :
+    Filter.Tendsto (fun m : ℕ => ScaleBundle (t ^ m) x) Filter.atTop
+      (nhds (OrthantZero k)) := by
+  simpa only [Function.comp_def, scaleBundle_zero] using
+    (scaleBundle_ray_continuous x).continuousAt.tendsto.comp
+    (NNReal.tendsto_pow_atTop_nhds_zero_of_lt_one ht)
+
+/-- **Definition 2.17:** every common nonnegative scaling preserves weak preference. -/
+def HomotheticPreference {k : ℕ}
+    (r : NonnegativeOrthant k → NonnegativeOrthant k → Prop) : Prop :=
+  ∀ x y t, r x y → r (ScaleBundle t x) (ScaleBundle t y)
+
+/-- Positive scaling preserves a comparison in both directions. -/
+theorem homothetic_scale_iff {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hh : HomotheticPreference r)
+    {t : ℝ≥0} (ht : 0 < t) (x y : NonnegativeOrthant k) :
+    r (ScaleBundle t x) (ScaleBundle t y) ↔ r x y := by
+  constructor
+  · intro h
+    simpa only [scaleBundle_inv (ne_of_gt ht)] using hh _ _ t⁻¹ h
+  · exact hh x y t
+
+/-- Positive scaling preserves strict preference, while zero is deliberately excluded here. -/
+theorem homothetic_scale_strict_iff {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hh : HomotheticPreference r)
+    {t : ℝ≥0} (ht : 0 < t) (x y : NonnegativeOrthant k) :
+    Strict r (ScaleBundle t x) (ScaleBundle t y) ↔ Strict r x y :=
+  and_congr (homothetic_scale_iff hh ht x y) (not_congr (homothetic_scale_iff hh ht y x))
+
+/-- Positive scaling preserves indifference in both directions. -/
+theorem homothetic_scale_indifferent_iff {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hh : HomotheticPreference r)
+    {t : ℝ≥0} (ht : 0 < t) (x y : NonnegativeOrthant k) :
+    Indifferent r (ScaleBundle t x) (ScaleBundle t y) ↔ Indifferent r x y :=
+  and_congr (homothetic_scale_iff hh ht x y) (homothetic_scale_iff hh ht y x)
+
+/-- Degree-one homogeneous utility on the nonnegative commodity orthant. -/
+def HomogeneousUtility {k : ℕ} (u : NonnegativeOrthant k → ℝ) : Prop :=
+  ∀ t x, u (ScaleBundle t x) = (t : ℝ) * u x
+
+/-- The specialized definition agrees with the general cone definition at degree one. -/
+theorem homogeneousUtility_iff_degree_one {k : ℕ} (u : NonnegativeOrthant k → ℝ) :
+    HomogeneousUtility u ↔ HomogeneousOfDegree (orthant_nonnegativeCone k) 1 u := by
+  exact (homogeneousOfDegree_one_iff (orthant_nonnegativeCone k)
+    (fun x : Set.Ici (0 : Fin k → ℝ) => u ⟨x.val, x.property⟩)).symm
+
+/-- Degree-one homogeneity forces utility at the origin to be zero. -/
+theorem homogeneousUtility_origin {k : ℕ} {u : NonnegativeOrthant k → ℝ}
+    (hh : HomogeneousUtility u) : u (OrthantZero k) = 0 := by
+  have h := hh 0 (OrthantZero k)
+  simpa only [scaleBundle_zero, NNReal.coe_zero, zero_mul] using h
+
+/-- A homogeneous utility representation gives homothetic preferences. -/
+theorem homogeneous_represents_homothetic {k : ℕ} {u : NonnegativeOrthant k → ℝ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hu : Represents u r) (hh : HomogeneousUtility u) : HomotheticPreference r := by
+  intro x y t hxy
+  apply (hu _ _).mpr
+  rw [hh, hh]
+  exact mul_le_mul_of_nonneg_left ((hu x y).mp hxy) t.property
+
+/-- **Proposition 2.19**, representation-to-preference direction. -/
+theorem proposition_2_19_forward {k : ℕ} {u : NonnegativeOrthant k → ℝ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hu : Represents u r) (hc : Continuous u) (hh : HomogeneousUtility u) :
+    ContinuousPreference r ∧ HomotheticPreference r :=
+  ⟨proposition_2_9_forward hu hc, homogeneous_represents_homothetic hu hh⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Preference along rays, without commodity monotonicity
+
+Ingredients for the full Proposition 2.19 and Problem 2.12. Continuity and
+homotheticity make a ray strictly increasing above the origin's rank and strictly
+decreasing below it. Positive and negative reference rays bracket every relevant
+indifference class. No commodity-monotonicity hypothesis is used.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {k : ℕ} {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+
+/-- A preferred scalar multiple can be iterated to give a chain above the original bundle. -/
+theorem homothetic_iterate_above (hr : Rational r) (hh : HomotheticPreference r)
+    {t : ℝ≥0} {x : NonnegativeOrthant k} (h : r (ScaleBundle t x) x) :
+    ∀ m : ℕ, r (ScaleBundle (t ^ m) x) x := by
+  intro m
+  induction m with
+  | zero => simpa only [pow_zero, scaleBundle_one] using complete_refl hr.1 x
+  | succ m ih =>
+    rw [pow_succ, scaleBundle_mul]
+    exact hr.2 _ _ x (hh _ _ (t ^ m) h) ih
+
+/-- A worse scalar multiple can be iterated to give a chain below the original bundle. -/
+theorem homothetic_iterate_below (hr : Rational r) (hh : HomotheticPreference r)
+    {t : ℝ≥0} {x : NonnegativeOrthant k} (h : r x (ScaleBundle t x)) :
+    ∀ m : ℕ, r x (ScaleBundle (t ^ m) x) := by
+  intro m
+  induction m with
+  | zero => simpa only [pow_zero, scaleBundle_one] using complete_refl hr.1 x
+  | succ m ih =>
+    rw [pow_succ, scaleBundle_mul]
+    exact hr.2 x _ _ ih (hh _ _ (t ^ m) h)
+
+/-- Contracting a bundle strictly above the origin strictly reduces its rank. -/
+theorem homothetic_contract_positive (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {t : ℝ≥0} (ht : t < 1)
+    {x : NonnegativeOrthant k} (hx : Strict r x (OrthantZero k)) :
+    Strict r x (ScaleBundle t x) := by
+  apply (proposition_1_9a hr.1 x _).mpr
+  intro h
+  have hseq := homothetic_iterate_above hr hh h
+  have hclosed := ((proposition_1_14c hr).mp hc x).2
+  exact hx.2 (hclosed.mem_of_tendsto (scaleBundle_pow_tendsto_zero ht x)
+    (Filter.Eventually.of_forall hseq))
+
+/-- Contracting a bundle strictly below the origin strictly raises its rank. -/
+theorem homothetic_contract_negative (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {t : ℝ≥0} (ht : t < 1)
+    {x : NonnegativeOrthant k} (hx : Strict r (OrthantZero k) x) :
+    Strict r (ScaleBundle t x) x := by
+  apply (proposition_1_9a hr.1 _ x).mpr
+  intro h
+  have hseq := homothetic_iterate_below hr hh h
+  have hclosed := ((proposition_1_14c hr).mp hc x).1
+  exact hx.2 (hclosed.mem_of_tendsto (scaleBundle_pow_tendsto_zero ht x)
+    (Filter.Eventually.of_forall hseq))
+
+/-- Scaling preserves the origin's indifference class, even at scalar zero. -/
+theorem homothetic_origin_indifferent (hh : HomotheticPreference r)
+    {x : NonnegativeOrthant k} (hx : Indifferent r x (OrthantZero k)) (t : ℝ≥0) :
+    Indifferent r (ScaleBundle t x) (OrthantZero k) := by
+  have h : Indifferent r (ScaleBundle t x) (ScaleBundle t (OrthantZero k)) :=
+    ⟨hh _ _ t hx.1, hh _ _ t hx.2⟩
+  simpa only [scaleBundle_origin] using h
+
+/-- Larger multiples of a positive-rank bundle are strictly preferred. -/
+theorem homothetic_positive_ray (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) {t s : ℝ≥0} (hts : t < s) :
+    Strict r (ScaleBundle s p) (ScaleBundle t p) := by
+  have hs : 0 < s := (show 0 ≤ t from zero_le).trans_lt hts
+  have hts' : t / s < 1 := (div_lt_one hs).mpr hts
+  have h := (homothetic_scale_strict_iff hh hs p (ScaleBundle (t / s) p)).mpr
+    (homothetic_contract_positive hr hc hh hts' hp)
+  have he : s * (t / s) = t := by
+    rw [mul_comm, div_mul_cancel₀ _ (ne_of_gt hs)]
+  rwa [← scaleBundle_mul, he] at h
+
+/-- Larger multiples of a negative-rank bundle are strictly worse. -/
+theorem homothetic_negative_ray (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p : NonnegativeOrthant k}
+    (hp : Strict r (OrthantZero k) p) {t s : ℝ≥0} (hts : t < s) :
+    Strict r (ScaleBundle t p) (ScaleBundle s p) := by
+  have hs : 0 < s := (show 0 ≤ t from zero_le).trans_lt hts
+  have hts' : t / s < 1 := (div_lt_one hs).mpr hts
+  have h := (homothetic_scale_strict_iff hh hs (ScaleBundle (t / s) p) p).mpr
+    (homothetic_contract_negative hr hc hh hts' hp)
+  have he : s * (t / s) = t := by
+    rw [mul_comm, div_mul_cancel₀ _ (ne_of_gt hs)]
+  rwa [← scaleBundle_mul, he] at h
+
+/-- A numerical representation is strictly increasing along a positive reference ray. -/
+theorem positive_ray_strictMono (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {u : NonnegativeOrthant k → ℝ} (hu : Represents u r)
+    {p : NonnegativeOrthant k} (hp : Strict r p (OrthantZero k)) :
+    StrictMono (fun t : ℝ≥0 => u (ScaleBundle t p)) := by
+  intro t s hts
+  exact (strict_iff_utility_lt hu _ _).mp (homothetic_positive_ray hr hc hh hp hts)
+
+/-- A numerical representation is strictly decreasing along a negative reference ray. -/
+theorem negative_ray_strictAnti (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {u : NonnegativeOrthant k → ℝ} (hu : Represents u r)
+    {p : NonnegativeOrthant k} (hp : Strict r (OrthantZero k) p) :
+    StrictAnti (fun t : ℝ≥0 => u (ScaleBundle t p)) := by
+  intro t s hts
+  exact (strict_iff_utility_lt hu _ _).mp (homothetic_negative_ray hr hc hh hp hts)
+
+/-- Every bundle is strictly dominated by some positive multiple of a positive reference. -/
+theorem positive_ray_cofinal (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    {p : NonnegativeOrthant k} (hp : Strict r p (OrthantZero k)) (x : NonnegativeOrthant k) :
+    ∃ t : ℝ≥0, 0 < t ∧ Strict r (ScaleBundle t p) x := by
+  have hlim := scaleBundle_pow_tendsto_zero (show (1 / 2 : ℝ≥0) < 1 by norm_num) x
+  have hevent := hlim.eventually ((continuousPreference_openStrictContours hc p).2.mem_nhds hp)
+  obtain ⟨m, hm⟩ := hevent.exists
+  have ha : (0 : ℝ≥0) < (1 / 2) ^ m := pow_pos (by norm_num) _
+  have hinv : (0 : ℝ≥0) < ((1 / 2) ^ m)⁻¹ := inv_pos.mpr ha
+  refine ⟨((1 / 2) ^ m)⁻¹, hinv, ?_⟩
+  have h := (homothetic_scale_strict_iff hh hinv p
+    (ScaleBundle ((1 / 2) ^ m) x)).mpr hm
+  simpa only [scaleBundle_inv (ne_of_gt ha)] using h
+
+/-- Every bundle strictly dominates some positive multiple of a negative reference. -/
+theorem negative_ray_coinitial (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    {p : NonnegativeOrthant k} (hp : Strict r (OrthantZero k) p) (x : NonnegativeOrthant k) :
+    ∃ t : ℝ≥0, 0 < t ∧ Strict r x (ScaleBundle t p) := by
+  have hlim := scaleBundle_pow_tendsto_zero (show (1 / 2 : ℝ≥0) < 1 by norm_num) x
+  have hevent := hlim.eventually ((continuousPreference_openStrictContours hc p).1.mem_nhds hp)
+  obtain ⟨m, hm⟩ := hevent.exists
+  have ha : (0 : ℝ≥0) < (1 / 2) ^ m := pow_pos (by norm_num) _
+  have hinv : (0 : ℝ≥0) < ((1 / 2) ^ m)⁻¹ := inv_pos.mpr ha
+  refine ⟨((1 / 2) ^ m)⁻¹, hinv, ?_⟩
+  have h := (homothetic_scale_strict_iff hh hinv
+    (ScaleBundle ((1 / 2) ^ m) x) p).mpr hm
+  simpa only [scaleBundle_inv (ne_of_gt ha)] using h
+
+/-- Every rank weakly above the origin occurs on any positive reference ray. -/
+theorem positive_ray_indifference (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) {x : NonnegativeOrthant k}
+    (hx : r x (OrthantZero k)) : ∃ t : ℝ≥0, Indifferent r (ScaleBundle t p) x := by
+  obtain ⟨u, hu, huc⟩ := (proposition_2_9 k hr).mp hc
+  obtain ⟨T, _, hT⟩ := positive_ray_cofinal hc hh hp x
+  have hf := huc.comp (scaleBundle_ray_continuous p)
+  have h0 : u (ScaleBundle 0 p) ≤ u x := by
+    simpa only [scaleBundle_zero] using (hu x (OrthantZero k)).mp hx
+  have h1 : u x ≤ u (ScaleBundle T p) := (hu _ _).mp hT.1
+  obtain ⟨t, _, ht⟩ := intermediate_value_Icc (show 0 ≤ T from zero_le) hf.continuousOn ⟨h0, h1⟩
+  exact ⟨t, (hu _ _).mpr ht.ge, (hu _ _).mpr ht.le⟩
+
+/-- Every rank weakly below the origin occurs on any negative reference ray. -/
+theorem negative_ray_indifference (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p : NonnegativeOrthant k}
+    (hp : Strict r (OrthantZero k) p) {x : NonnegativeOrthant k}
+    (hx : r (OrthantZero k) x) : ∃ t : ℝ≥0, Indifferent r (ScaleBundle t p) x := by
+  obtain ⟨u, hu, huc⟩ := (proposition_2_9 k hr).mp hc
+  obtain ⟨T, _, hT⟩ := negative_ray_coinitial hc hh hp x
+  have hf := huc.comp (scaleBundle_ray_continuous p)
+  have h0 : u x ≤ u (ScaleBundle 0 p) := by
+    simpa only [scaleBundle_zero] using (hu (OrthantZero k) x).mp hx
+  have h1 : u (ScaleBundle T p) ≤ u x := (hu _ _).mp hT.1
+  obtain ⟨t, _, ht⟩ := intermediate_value_Icc' (show 0 ≤ T from zero_le) hf.continuousOn ⟨h1, h0⟩
+  exact ⟨t, (hu _ _).mpr ht.ge, (hu _ _).mpr ht.le⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Extending utility from a curve that meets every indifference class
+
+Kreps I, Problem 2.14c, p. 48. A continuous representation on a connected curve
+extends to the whole domain by indifference. The extension has exactly the same
+range; its continuity follows from open strict contours and an interval-valued
+range. These results also support the homogeneous representation in Proposition 2.19.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X Y : Type*} {r : X → X → Prop}
+
+/-- Give each bundle the value of a selected indifferent point on the reference curve. -/
+noncomputable def LiftedUtility (f : Y → X) (v : Y → ℝ)
+    (hcover : ∀ x, ∃ y, Indifferent r (f y) x) (x : X) : ℝ :=
+  v (Classical.choose (hcover x))
+
+/-- The chosen indifferent points preserve every original preference comparison. -/
+theorem liftedUtility_represents (hr : Rational r) (f : Y → X) (v : Y → ℝ)
+    (hcover : ∀ x, ∃ y, Indifferent r (f y) x)
+    (hv : Represents v (fun a b => r (f a) (f b))) :
+    Represents (LiftedUtility f v hcover) r := by
+  intro x y
+  have hx := Classical.choose_spec (hcover x)
+  have hy := Classical.choose_spec (hcover y)
+  constructor
+  · intro hxy
+    exact (hv _ _).mp (hr.2 _ x _ hx.1 (hr.2 x y _ hxy hy.2))
+  · intro hxy
+    have h := (hv _ _).mpr hxy
+    exact hr.2 x _ y hx.2 (hr.2 _ _ y h hy.1)
+
+/-- The extension agrees with the specified values on the reference curve. -/
+theorem liftedUtility_agrees (f : Y → X) (v : Y → ℝ)
+    (hcover : ∀ x, ∃ y, Indifferent r (f y) x)
+    (hv : Represents v (fun a b => r (f a) (f b))) (y : Y) :
+    LiftedUtility f v hcover (f y) = v y := by
+  have h := Classical.choose_spec (hcover (f y))
+  exact le_antisymm ((hv _ _).mp h.2) ((hv _ _).mp h.1)
+
+/-- Extending by indifference adds no utility values and loses none. -/
+theorem liftedUtility_range (f : Y → X) (v : Y → ℝ)
+    (hcover : ∀ x, ∃ y, Indifferent r (f y) x)
+    (hv : Represents v (fun a b => r (f a) (f b))) :
+    Set.range (LiftedUtility f v hcover) = Set.range v := by
+  apply Set.Subset.antisymm
+  · rintro a ⟨x, hx⟩
+    exact ⟨Classical.choose (hcover x), hx⟩
+  · rintro a ⟨y, hy⟩
+    exact ⟨f y, (liftedUtility_agrees f v hcover hv y).trans hy⟩
+
+/-- An interval-valued representation of a continuous preference must itself be continuous. -/
+theorem continuous_of_ordConnected_range [TopologicalSpace X] {u : X → ℝ}
+    (hu : Represents u r) (hc : ContinuousPreference r)
+    (hRange : Set.OrdConnected (Set.range u)) : Continuous u := by
+  apply OrderTopology.continuous_iff.mpr
+  intro a
+  have ho := continuousPreference_openStrictContours hc
+  by_cases ha : a ∈ Set.range u
+  · obtain ⟨z, hz⟩ := ha
+    have hgt : u ⁻¹' Set.Ioi a = StrictlyBetterThan r z := by
+      ext x
+      change a < u x ↔ Strict r x z
+      rw [strict_iff_utility_lt hu, hz]
+    have hlt : u ⁻¹' Set.Iio a = StrictlyWorseThan r z := by
+      ext x
+      change u x < a ↔ Strict r z x
+      rw [strict_iff_utility_lt hu, hz]
+    exact ⟨hgt ▸ (ho z).1, hlt ▸ (ho z).2⟩
+  · constructor
+    · apply isOpen_iff_mem_nhds.mpr
+      intro x hx
+      change a < u x at hx
+      have hall (y : X) : a < u y := by
+        by_contra hy
+        exact ha (hRange.out ⟨y, rfl⟩ ⟨x, rfl⟩ ⟨le_of_not_gt hy, hx.le⟩)
+      exact Filter.mem_of_superset Filter.univ_mem (fun y _ => hall y)
+    · apply isOpen_iff_mem_nhds.mpr
+      intro x hx
+      change u x < a at hx
+      have hall (y : X) : u y < a := by
+        by_contra hy
+        exact ha (hRange.out ⟨x, rfl⟩ ⟨y, rfl⟩ ⟨hx.le, le_of_not_gt hy⟩)
+      exact Filter.mem_of_superset Filter.univ_mem (fun y _ => hall y)
+
+/-- A continuous representation on a connected reference domain extends continuously. -/
+theorem liftedUtility_continuous [TopologicalSpace X] [TopologicalSpace Y]
+    [PreconnectedSpace Y] (hr : Rational r) (hc : ContinuousPreference r)
+    (f : Y → X) (v : Y → ℝ) (hcover : ∀ x, ∃ y, Indifferent r (f y) x)
+    (hv : Represents v (fun a b => r (f a) (f b))) (hvc : Continuous v) :
+    Continuous (LiftedUtility f v hcover) := by
+  apply continuous_of_ordConnected_range (liftedUtility_represents hr f v hcover hv) hc
+  rw [liftedUtility_range f v hcover hv]
+  exact (isPreconnected_range hvc).ordConnected
+
+/-- **Problem 2.14c:** extend the curve's continuous representation to the entire orthant. -/
+theorem problem_2_14c {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (Z : Set (NonnegativeOrthant k)) (hZ : IsPreconnected Z)
+    (v : Z → ℝ) (hv : Represents v (fun a b => r a.val b.val)) (hvc : Continuous v)
+    (hcover : ∀ x, ∃ z : Z, Indifferent r z.val x) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧
+      ∀ z : Z, u z.val = v z := by
+  let : PreconnectedSpace Z := isPreconnected_iff_preconnectedSpace.mp hZ
+  exact ⟨LiftedUtility Subtype.val v hcover,
+    liftedUtility_represents hr Subtype.val v hcover hv,
+    liftedUtility_continuous hr hc Subtype.val v hcover hv hvc,
+    liftedUtility_agrees Subtype.val v hcover hv⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Homogeneous utility from reference rays
+
+The extension construction for Proposition 2.19 preserves homogeneity when the
+reference curve and its utility scale compatibly. This module completes the
+cases where every bundle is weakly above the origin or every bundle is weakly
+below it. The case with ranks on both sides uses a signed reference curve.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {k : ℕ} {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+
+/-- The scalar itself represents preference along a positive reference ray. -/
+theorem positive_ray_represents (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) :
+    Represents (fun t : ℝ≥0 => (t : ℝ)) (fun a b => r (ScaleBundle a p) (ScaleBundle b p)) := by
+  obtain ⟨v, hv⟩ := proposition_1_15 k hr hc
+  have hs := positive_ray_strictMono hr hc hh hv hp
+  intro a b
+  exact (hv _ _).trans (hs.le_iff_le.trans NNReal.coe_le_coe.symm)
+
+/-- A scale-compatible reference representation extends to a homogeneous utility. -/
+theorem liftedUtility_homogeneous {Y : Type*} (hr : Rational r)
+    (hh : HomotheticPreference r) (f : Y → NonnegativeOrthant k) (v : Y → ℝ)
+    (hcover : ∀ x, ∃ y, Indifferent r (f y) x)
+    (hv : Represents v (fun a b => r (f a) (f b))) (σ : ℝ≥0 → Y → Y)
+    (hfScale : ∀ t y, ScaleBundle t (f y) = f (σ t y))
+    (hvScale : ∀ t y, v (σ t y) = (t : ℝ) * v y) :
+    HomogeneousUtility (LiftedUtility f v hcover) := by
+  intro t x
+  let y := Classical.choose (hcover x)
+  have hy : Indifferent r (f y) x := Classical.choose_spec (hcover x)
+  have hscaled : Indifferent r (f (σ t y)) (ScaleBundle t x) := by
+    rw [← hfScale]
+    exact ⟨hh _ _ t hy.1, hh _ _ t hy.2⟩
+  have hu := liftedUtility_represents hr f v hcover hv
+  calc
+    LiftedUtility f v hcover (ScaleBundle t x) = LiftedUtility f v hcover (f (σ t y)) :=
+      le_antisymm ((hu _ _).mp hscaled.1) ((hu _ _).mp hscaled.2)
+    _ = v (σ t y) := liftedUtility_agrees f v hcover hv _
+    _ = (t : ℝ) * v y := hvScale t y
+    _ = (t : ℝ) * LiftedUtility f v hcover x := rfl
+
+/-- A positive reference represents all ranks when every bundle is weakly above the origin. -/
+theorem homogeneous_representation_above_origin (hr : Rational r)
+    (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    {p : NonnegativeOrthant k} (hp : Strict r p (OrthantZero k))
+    (hall : ∀ x, r x (OrthantZero k)) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u := by
+  let f := fun t : ℝ≥0 => ScaleBundle t p
+  let v := fun t : ℝ≥0 => (t : ℝ)
+  have hcover (x : NonnegativeOrthant k) : ∃ t, Indifferent r (f t) x :=
+    positive_ray_indifference hr hc hh hp (hall x)
+  have hv : Represents v (fun a b => r (f a) (f b)) := positive_ray_represents hr hc hh hp
+  refine ⟨LiftedUtility f v hcover, liftedUtility_represents hr f v hcover hv,
+    liftedUtility_continuous hr hc f v hcover hv NNReal.continuous_coe, ?_⟩
+  apply liftedUtility_homogeneous hr hh f v hcover hv (fun t s => t * s)
+  · intro t s
+    exact (scaleBundle_mul t s p).symm
+  · intro t s
+    exact NNReal.coe_mul t s
+
+/-- Reversing all comparisons preserves rationality. -/
+theorem reversePreference_rational (hr : Rational r) : Rational (fun x y => r y x) :=
+  ⟨fun x y => hr.1 y x, fun x y z hxy hyz => hr.2 z y x hyz hxy⟩
+
+/-- Reversing all comparisons preserves continuity. -/
+theorem reversePreference_continuous (hc : ContinuousPreference r) :
+    ContinuousPreference (fun x y => r y x) :=
+  hc.preimage continuous_swap
+
+/-- Reversing all comparisons preserves homotheticity. -/
+theorem reversePreference_homothetic (hh : HomotheticPreference r) :
+    HomotheticPreference (fun x y => r y x) := fun x y t h => hh y x t h
+
+/-- Negating a utility for reversed preference recovers the original preference. -/
+theorem neg_utility_represents {u : NonnegativeOrthant k → ℝ}
+    (hu : Represents u (fun x y => r y x)) : Represents (fun x => -u x) r := by
+  intro x y
+  change r x y ↔ -u y ≤ -u x
+  rw [neg_le_neg_iff]
+  exact hu y x
+
+/-- Negating a homogeneous utility preserves degree one. -/
+theorem neg_utility_homogeneous {u : NonnegativeOrthant k → ℝ}
+    (hh : HomogeneousUtility u) : HomogeneousUtility (fun x => -u x) := by
+  intro t x
+  change -u (ScaleBundle t x) = (t : ℝ) * -u x
+  rw [hh]
+  ring
+
+/-- A negative reference handles the case in which every rank lies below the origin. -/
+theorem homogeneous_representation_below_origin (hr : Rational r)
+    (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    {p : NonnegativeOrthant k} (hp : Strict r (OrthantZero k) p)
+    (hall : ∀ x, r (OrthantZero k) x) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u := by
+  obtain ⟨u, hu, huc, huh⟩ := homogeneous_representation_above_origin
+    (reversePreference_rational hr) (reversePreference_continuous hc)
+    (reversePreference_homothetic hh) hp hall
+  exact ⟨fun x => -u x, neg_utility_represents hu, huc.neg, neg_utility_homogeneous huh⟩
+
+/-- If every bundle is indifferent to the origin, constant zero is a homogeneous representation. -/
+theorem homogeneous_representation_indifferent (hr : Rational r)
+    (hall : ∀ x, Indifferent r x (OrthantZero k)) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u := by
+  refine ⟨fun _ => 0, ?_, continuous_const, ?_⟩
+  · intro x y
+    exact iff_of_true (hr.2 x (OrthantZero k) y (hall x).1 (hall y).2) le_rfl
+  · intro t x
+    simp
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A signed homogeneous representation
+
+Kreps I, Proposition 2.19 and Problem 2.12. Join a positive reference ray to a
+negative reference ray at the origin, parameterize their ranks by the real line,
+and extend by indifference. Together with the one-sided and constant cases, this
+proves the full theorem without imposing monotonicity in commodities.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {k : ℕ} {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+
+/-- A positive ray for positive parameters and a negative ray for negative parameters. -/
+def SignedRay (p n : NonnegativeOrthant k) (a : ℝ) : NonnegativeOrthant k :=
+  ⟨fun j => max a 0 * p.val j + max (-a) 0 * n.val j,
+    fun j => add_nonneg (mul_nonneg (le_max_right _ _) (p.property j))
+      (mul_nonneg (le_max_right _ _) (n.property j))⟩
+
+/-- On the nonnegative half-line the signed curve is the positive reference ray. -/
+theorem signedRay_nonneg (p n : NonnegativeOrthant k) {a : ℝ} (ha : 0 ≤ a) :
+    SignedRay p n a = ScaleBundle (.mk a ha) p := by
+  apply Subtype.ext
+  funext j
+  simp [SignedRay, ScaleBundle, max_eq_left ha, max_eq_right (neg_nonpos.mpr ha)]
+
+/-- On the nonpositive half-line the signed curve is the negative reference ray. -/
+theorem signedRay_nonpos (p n : NonnegativeOrthant k) {a : ℝ} (ha : a ≤ 0) :
+    SignedRay p n a = ScaleBundle (.mk (-a) (neg_nonneg.mpr ha)) n := by
+  apply Subtype.ext
+  funext j
+  simp [SignedRay, ScaleBundle, max_eq_right ha, max_eq_left (neg_nonneg.mpr ha)]
+
+/-- The two reference rays meet at the origin. -/
+theorem signedRay_zero (p n : NonnegativeOrthant k) : SignedRay p n 0 = OrthantZero k := by
+  rw [signedRay_nonneg p n le_rfl]
+  exact scaleBundle_zero p
+
+/-- Joining the two rays gives a continuous curve, including at their meeting point. -/
+theorem signedRay_continuous (p n : NonnegativeOrthant k) : Continuous (SignedRay p n) := by
+  apply Continuous.subtype_mk
+  apply continuous_pi
+  intro j
+  exact ((continuous_id.max continuous_const).mul continuous_const).add
+    ((continuous_id.neg.max continuous_const).mul continuous_const)
+
+/-- Scalar multiplication of bundles multiplies the signed parameter by the same scalar. -/
+theorem signedRay_scale (p n : NonnegativeOrthant k) (t : ℝ≥0) (a : ℝ) :
+    ScaleBundle t (SignedRay p n a) = SignedRay p n ((t : ℝ) * a) := by
+  apply Subtype.ext
+  funext j
+  change (t : ℝ) * (max a 0 * p.val j + max (-a) 0 * n.val j) =
+    max ((t : ℝ) * a) 0 * p.val j + max (-((t : ℝ) * a)) 0 * n.val j
+  have hp : max ((t : ℝ) * a) 0 = (t : ℝ) * max a 0 := by
+    simpa only [mul_zero] using (mul_max_of_nonneg (a := (t : ℝ)) a 0 t.property).symm
+  have hn : max (-((t : ℝ) * a)) 0 = (t : ℝ) * max (-a) 0 := by
+    simpa only [mul_zero, mul_neg] using
+      (mul_max_of_nonneg (a := (t : ℝ)) (-a) 0 t.property).symm
+  rw [hp, hn]
+  ring
+
+/-- Increasing the signed parameter strictly raises preference rank. -/
+theorem homothetic_signedRay_strict (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p n : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) (hn : Strict r (OrthantZero k) n)
+    {a b : ℝ} (hab : a < b) : Strict r (SignedRay p n b) (SignedRay p n a) := by
+  by_cases hb : b ≤ 0
+  · rw [signedRay_nonpos p n hb, signedRay_nonpos p n (hab.le.trans hb)]
+    apply homothetic_negative_ray hr hc hh hn
+    exact NNReal.coe_lt_coe.mp (neg_lt_neg hab)
+  · have hb' : 0 < b := lt_of_not_ge hb
+    by_cases ha : 0 ≤ a
+    · rw [signedRay_nonneg p n hb'.le, signedRay_nonneg p n ha]
+      apply homothetic_positive_ray hr hc hh hp
+      exact NNReal.coe_lt_coe.mp hab
+    · have ha' : a < 0 := lt_of_not_ge ha
+      rw [signedRay_nonneg p n hb'.le, signedRay_nonpos p n ha'.le]
+      have hpos : Strict r (ScaleBundle (.mk b hb'.le) p) (OrthantZero k) := by
+        simpa only [scaleBundle_zero] using homothetic_positive_ray hr hc hh hp
+          (show (0 : ℝ≥0) < .mk b hb'.le from NNReal.coe_lt_coe.mp hb')
+      have hneg : Strict r (OrthantZero k)
+          (ScaleBundle (.mk (-a) (neg_nonneg.mpr ha'.le)) n) := by
+        simpa only [scaleBundle_zero] using homothetic_negative_ray hr hc hh hn
+          (show (0 : ℝ≥0) < .mk (-a) (neg_nonneg.mpr ha'.le) from
+            NNReal.coe_lt_coe.mp (neg_pos.mpr ha'))
+      exact strict_weak_trans hr.2 hpos hneg.1
+
+/-- The real parameter represents preference on the joined reference rays. -/
+theorem homothetic_signedRay_represents (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p n : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) (hn : Strict r (OrthantZero k) n) :
+    Represents (fun a : ℝ => a) (fun a b => r (SignedRay p n a) (SignedRay p n b)) := by
+  obtain ⟨u, hu⟩ := proposition_1_15 k hr hc
+  have hs : StrictMono (fun a : ℝ => u (SignedRay p n a)) := by
+    intro a b hab
+    exact (strict_iff_utility_lt hu _ _).mp (homothetic_signedRay_strict hr hc hh hp hn hab)
+  exact fun a b => (hu _ _).trans hs.le_iff_le
+
+/-- The joined rays meet every indifference class. -/
+theorem homothetic_signedRay_covers (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) {p n : NonnegativeOrthant k}
+    (hp : Strict r p (OrthantZero k)) (hn : Strict r (OrthantZero k) n)
+    (x : NonnegativeOrthant k) : ∃ a : ℝ, Indifferent r (SignedRay p n a) x := by
+  rcases hr.1 x (OrthantZero k) with hx | hx
+  · obtain ⟨t, ht⟩ := positive_ray_indifference hr hc hh hp hx
+    refine ⟨(t : ℝ), ?_⟩
+    rw [signedRay_nonneg p n (a := (t : ℝ)) t.property]
+    exact ht
+  · obtain ⟨t, ht⟩ := negative_ray_indifference hr hc hh hn hx
+    refine ⟨-(t : ℝ), ?_⟩
+    rw [signedRay_nonpos p n (a := -(t : ℝ)) (neg_nonpos.mpr t.property)]
+    have he : NNReal.mk (- -(t : ℝ)) (neg_nonneg.mpr (neg_nonpos.mpr t.property)) = t := by
+      apply NNReal.coe_injective
+      exact neg_neg (t : ℝ)
+    rw [he]
+    exact ht
+
+/-- Positive and negative references give a continuous homogeneous representation of all ranks. -/
+theorem homogeneous_representation_both_sides (hr : Rational r)
+    (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    {p n : NonnegativeOrthant k} (hp : Strict r p (OrthantZero k))
+    (hn : Strict r (OrthantZero k) n) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u := by
+  have hcover := homothetic_signedRay_covers hr hc hh hp hn
+  have hv := homothetic_signedRay_represents hr hc hh hp hn
+  refine ⟨LiftedUtility (SignedRay p n) id hcover,
+    liftedUtility_represents hr (SignedRay p n) id hcover hv,
+    liftedUtility_continuous hr hc (SignedRay p n) id hcover hv continuous_id, ?_⟩
+  exact liftedUtility_homogeneous hr hh (SignedRay p n) id hcover hv
+    (fun t a => (t : ℝ) * a) (signedRay_scale p n) (fun _ _ => rfl)
+
+/-- **Proposition 2.19:** continuity and homotheticity are equivalent to a continuous
+degree-one homogeneous representation, with no commodity-monotonicity assumption. -/
+theorem proposition_2_19 (k : ℕ)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r) :
+    ContinuousPreference r ∧ HomotheticPreference r ↔
+      ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u := by
+  constructor
+  · rintro ⟨hc, hh⟩
+    by_cases hpos : ∃ p, Strict r p (OrthantZero k)
+    · obtain ⟨p, hp⟩ := hpos
+      by_cases hneg : ∃ n, Strict r (OrthantZero k) n
+      · obtain ⟨n, hn⟩ := hneg
+        exact homogeneous_representation_both_sides hr hc hh hp hn
+      · apply homogeneous_representation_above_origin hr hc hh hp
+        intro x
+        by_contra hx
+        exact hneg ⟨x, (proposition_1_9a hr.1 _ _).mpr hx⟩
+    · by_cases hneg : ∃ n, Strict r (OrthantZero k) n
+      · obtain ⟨n, hn⟩ := hneg
+        apply homogeneous_representation_below_origin hr hc hh hn
+        intro x
+        by_contra hx
+        exact hpos ⟨x, (proposition_1_9a hr.1 _ _).mpr hx⟩
+      · apply homogeneous_representation_indifferent hr
+        intro x
+        constructor
+        · by_contra hx
+          exact hneg ⟨x, (proposition_1_9a hr.1 _ _).mpr hx⟩
+        · by_contra hx
+          exact hpos ⟨x, (proposition_1_9a hr.1 _ _).mpr hx⟩
+  · rintro ⟨u, hu, huc, huh⟩
+    exact proposition_2_19_forward hu huc huh
+
+/-- **Problem 2.12:** the full homogeneous representation, without the optional extra assumption. -/
+theorem problem_2_12 (hr : Rational r) (hc : ContinuousPreference r)
+    (hh : HomotheticPreference r) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u :=
+  (proposition_2_19 k hr).mp ⟨hc, hh⟩
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -4281,3 +5051,70 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.proposition_2_14_additive
 #print axioms Kreps.PreferenceProperties.additiveUtility_continuous
 #print axioms Kreps.PreferenceProperties.continuousPreference_of_additive
+#print axioms Kreps.PreferenceProperties.NonnegativeCone
+#print axioms Kreps.PreferenceProperties.ScaleInCone
+#print axioms Kreps.PreferenceProperties.HomogeneousOfDegree
+#print axioms Kreps.PreferenceProperties.homogeneousOfDegree_one_iff
+#print axioms Kreps.PreferenceProperties.orthant_nonnegativeCone
+#print axioms Kreps.PreferenceProperties.OrthantZero
+#print axioms Kreps.PreferenceProperties.ScaleBundle
+#print axioms Kreps.PreferenceProperties.scaleBundle_eq_cone
+#print axioms Kreps.PreferenceProperties.scaleBundle_zero
+#print axioms Kreps.PreferenceProperties.scaleBundle_one
+#print axioms Kreps.PreferenceProperties.scaleBundle_origin
+#print axioms Kreps.PreferenceProperties.scaleBundle_mul
+#print axioms Kreps.PreferenceProperties.scaleBundle_inv
+#print axioms Kreps.PreferenceProperties.scaleBundle_continuous
+#print axioms Kreps.PreferenceProperties.scaleBundle_ray_continuous
+#print axioms Kreps.PreferenceProperties.scaleBundle_pow_tendsto_zero
+#print axioms Kreps.PreferenceProperties.HomotheticPreference
+#print axioms Kreps.PreferenceProperties.homothetic_scale_iff
+#print axioms Kreps.PreferenceProperties.homothetic_scale_strict_iff
+#print axioms Kreps.PreferenceProperties.homothetic_scale_indifferent_iff
+#print axioms Kreps.PreferenceProperties.HomogeneousUtility
+#print axioms Kreps.PreferenceProperties.homogeneousUtility_iff_degree_one
+#print axioms Kreps.PreferenceProperties.homogeneousUtility_origin
+#print axioms Kreps.PreferenceProperties.homogeneous_represents_homothetic
+#print axioms Kreps.PreferenceProperties.proposition_2_19_forward
+#print axioms Kreps.PreferenceProperties.homothetic_iterate_above
+#print axioms Kreps.PreferenceProperties.homothetic_iterate_below
+#print axioms Kreps.PreferenceProperties.homothetic_contract_positive
+#print axioms Kreps.PreferenceProperties.homothetic_contract_negative
+#print axioms Kreps.PreferenceProperties.homothetic_origin_indifferent
+#print axioms Kreps.PreferenceProperties.homothetic_positive_ray
+#print axioms Kreps.PreferenceProperties.homothetic_negative_ray
+#print axioms Kreps.PreferenceProperties.positive_ray_strictMono
+#print axioms Kreps.PreferenceProperties.negative_ray_strictAnti
+#print axioms Kreps.PreferenceProperties.positive_ray_cofinal
+#print axioms Kreps.PreferenceProperties.negative_ray_coinitial
+#print axioms Kreps.PreferenceProperties.positive_ray_indifference
+#print axioms Kreps.PreferenceProperties.negative_ray_indifference
+#print axioms Kreps.PreferenceProperties.LiftedUtility
+#print axioms Kreps.PreferenceProperties.liftedUtility_represents
+#print axioms Kreps.PreferenceProperties.liftedUtility_agrees
+#print axioms Kreps.PreferenceProperties.liftedUtility_range
+#print axioms Kreps.PreferenceProperties.continuous_of_ordConnected_range
+#print axioms Kreps.PreferenceProperties.liftedUtility_continuous
+#print axioms Kreps.PreferenceProperties.problem_2_14c
+#print axioms Kreps.PreferenceProperties.positive_ray_represents
+#print axioms Kreps.PreferenceProperties.liftedUtility_homogeneous
+#print axioms Kreps.PreferenceProperties.homogeneous_representation_above_origin
+#print axioms Kreps.PreferenceProperties.reversePreference_rational
+#print axioms Kreps.PreferenceProperties.reversePreference_continuous
+#print axioms Kreps.PreferenceProperties.reversePreference_homothetic
+#print axioms Kreps.PreferenceProperties.neg_utility_represents
+#print axioms Kreps.PreferenceProperties.neg_utility_homogeneous
+#print axioms Kreps.PreferenceProperties.homogeneous_representation_below_origin
+#print axioms Kreps.PreferenceProperties.homogeneous_representation_indifferent
+#print axioms Kreps.PreferenceProperties.SignedRay
+#print axioms Kreps.PreferenceProperties.signedRay_nonneg
+#print axioms Kreps.PreferenceProperties.signedRay_nonpos
+#print axioms Kreps.PreferenceProperties.signedRay_zero
+#print axioms Kreps.PreferenceProperties.signedRay_continuous
+#print axioms Kreps.PreferenceProperties.signedRay_scale
+#print axioms Kreps.PreferenceProperties.homothetic_signedRay_strict
+#print axioms Kreps.PreferenceProperties.homothetic_signedRay_represents
+#print axioms Kreps.PreferenceProperties.homothetic_signedRay_covers
+#print axioms Kreps.PreferenceProperties.homogeneous_representation_both_sides
+#print axioms Kreps.PreferenceProperties.proposition_2_19
+#print axioms Kreps.PreferenceProperties.problem_2_12

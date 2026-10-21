@@ -29,8 +29,8 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Proposition 2.14, p. 42 | An additive representation implies strong separability | `AdditiveUtility`, `AdditivelyRepresentable`, `proposition_2_14_additive`; continuous subutilities also yield continuous utility and preference |
 | Definition 2.15; Proposition 2.16, pp. 43-44 | Quasi-linearity iff own-money order, common money-translation invariance and compensability | `QuasiLinearUtility`, `QuasiLinear`, `OwnMoneyOrder`, `MoneyTranslation`, `MoneyCompensable`, `proposition_2_16`; money is nonnegative throughout |
 | Section 2.6, p. 44 | Utility differences measure compensating money in quasi-linear units | `QuasiLinearDifference`, `quasiLinear_compensation`, `quasiLinear_compensation_of_preferred`, `printed_compensation_bundle_counterexample`; corrected goods and explicit feasibility |
-| Definitions 2.17-2.18, p. 44 | Homothetic preference, cones and homogeneous functions | Pending; nonnegative scalars include zero |
-| Proposition 2.19, p. 44 | Continuous homothetic preference iff continuous degree-one homogeneous representation | Pending; full theorem without imposing strict monotonicity |
+| Definitions 2.17-2.18, p. 44 | Homothetic preference, cones and homogeneous functions | `HomotheticPreference`, `NonnegativeCone`, `HomogeneousOfDegree`, `HomogeneousUtility`, `homogeneousUtility_iff_degree_one`; nonnegative scalars include zero |
+| Proposition 2.19, p. 44 | Continuous homothetic preference iff continuous degree-one homogeneous representation | `proposition_2_19`; the full theorem without commodity monotonicity. Positive and negative reference rays cover all ranks; `SignedRay` joins them when both occur. One-sided and constant preferences are handled separately. |
 
 ## Problems
 
@@ -49,10 +49,11 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.9b, p. 47 | Leontief utility: indifference curves and all seven listed preference properties | Pending |
 | Problem 2.10, p. 47 | The rational-weight construction is upper semicontinuous | Pending |
 | Problem 2.11, p. 48 | Full quasi-linear characterization, including the compensating-money construction | `quasiLinear_of_money_properties`, `problem_2_11`; subutility is receipt minus payment relative to a fixed reference bundle |
-| Problem 2.12, p. 48 | Homogeneous representation | Pending; the optional strict-monotonicity simplification does not replace Proposition 2.19 in full |
+| Problem 2.12, p. 48 | Homogeneous representation | `problem_2_12`; no optional strict-monotonicity assumption is used |
 | Problem 2.13, p. 48 | Information recoverable from one indifference curve under homotheticity or quasi-linearity | Pending; characterize the region actually identified |
 | Problem 2.14a, p. 48 | Construct a continuous connected curve with preference bounds for every bundle, including attained/unattained extrema | Pending |
-| Problem 2.14b-c, p. 48 | Every indifference class meets the curve; extend a continuous curve representation | Pending |
+| Problem 2.14b, p. 48 | Every indifference class meets the constructed curve | Pending construction of the specified curve in part (a); the general connected-image crossing lemma is available |
+| Problem 2.14c, p. 48 | Extend a continuous curve representation to the full domain by indifference | `LiftedUtility`, `liftedUtility_represents`, `liftedUtility_agrees`, `liftedUtility_range`, `continuous_of_ordConnected_range`, `problem_2_14c`; the curve is connected and meets every indifference class |
 | Problem 2.14d-e, p. 49 | Recursive countable assignment represents preference and has interval-dense values | Pending; choose initial value zero for the first class |
 | Problem 2.14f-g, p. 49 | Finite sequence limits, independence of sequence, continuous representation on the curve | Pending |
 | Problem 2.15, p. 49 | Finite-measure lower-contour utility: representation, upper semicontinuity, discontinuity example and sufficient continuity conditions | Pending; full measure assumptions and orthant domain required |

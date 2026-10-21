@@ -44,19 +44,26 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [WeakSeparability](PreferenceProperties/WeakSeparability.lean) | 10 | Full Proposition 2.12 and an aggregator on attained subutility ranges |
 | [CommodityBlocks](PreferenceProperties/CommodityBlocks.lean) | 12 | Arbitrary disjoint commodity subsets, leftovers and the orthant equivalence |
 | [AdditiveSeparability](PreferenceProperties/AdditiveSeparability.lean) | 7 | Definition 2.13, nontrivial blocks and additive-to-strong Proposition 2.14 |
+| [Homotheticity](PreferenceProperties/Homotheticity.lean) | 18 | Definitions 2.17-2.18, cone scaling and the forward implication of Proposition 2.19 |
+| [HomotheticRays](PreferenceProperties/HomotheticRays.lean) | 13 | Strict rank changes, cofinality and indifference on positive and negative reference rays |
+| [RepresentationExtension](PreferenceProperties/RepresentationExtension.lean) | 6 | Problem 2.14c: continuous extension from a connected curve meeting every class |
+| [HomogeneousExtension](PreferenceProperties/HomogeneousExtension.lean) | 10 | Scale-compatible extension, one-sided ranks and constant preferences |
+| [SignedHomotheticRepresentation](PreferenceProperties/SignedHomotheticRepresentation.lean) | 11 | Full Proposition 2.19 and Problem 2.12, including ranks on both sides of the origin |
 
-The current subset passes the full fresh-source audit: **267 theorems** and
-**375 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **169 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **325 theorems** and
+**442 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **227 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
 
-The additive-existence direction of Proposition 2.14, homotheticity and remaining
-problem solutions are still in progress. Weak separability is fully characterized.
+The additive-existence direction of Proposition 2.14 and remaining problem solutions
+are still in progress. Weak separability and homotheticity are fully characterized.
+The homogeneous representation handles positive, negative and origin-indifferent
+ranks without imposing commodity monotonicity.
 The general continuous-representation theorem is proved through Cantor's countable
 order isomorphism and rational cuts; the book's diagonal proof is also complete.
-Problem 2.14's specific recursive construction remains a separate obligation.
+Problem 2.14c is complete; its specific recursive construction remains a separate obligation.
 This is not a completed-chapter claim.
 
 ## Build and verify

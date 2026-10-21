@@ -35,3 +35,8 @@ import PreferenceProperties.FiniteCoordinateComparison
 import PreferenceProperties.WeakSeparability
 import PreferenceProperties.CommodityBlocks
 import PreferenceProperties.AdditiveSeparability
+import PreferenceProperties.Homotheticity
+import PreferenceProperties.HomotheticRays
+import PreferenceProperties.RepresentationExtension
+import PreferenceProperties.HomogeneousExtension
+import PreferenceProperties.SignedHomotheticRepresentation

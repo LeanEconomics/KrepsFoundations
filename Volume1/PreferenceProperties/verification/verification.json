@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T13:54:07.332828+00:00",
-  "theorems": 267,
+  "checked_at_utc": "2026-10-21T14:09:20.568297+00:00",
+  "theorems": 325,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -33,9 +33,14 @@
     "PreferenceProperties/FiniteCoordinateComparison.lean": 3,
     "PreferenceProperties/WeakSeparability.lean": 10,
     "PreferenceProperties/CommodityBlocks.lean": 12,
-    "PreferenceProperties/AdditiveSeparability.lean": 7
+    "PreferenceProperties/AdditiveSeparability.lean": 7,
+    "PreferenceProperties/Homotheticity.lean": 18,
+    "PreferenceProperties/HomotheticRays.lean": 13,
+    "PreferenceProperties/RepresentationExtension.lean": 6,
+    "PreferenceProperties/HomogeneousExtension.lean": 10,
+    "PreferenceProperties/SignedHomotheticRepresentation.lean": 11
   },
-  "audited_declarations": 375,
+  "audited_declarations": 442,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -1911,6 +1916,341 @@
       "name": "Kreps.PreferenceProperties.continuousPreference_of_additive",
       "kind": "theorem",
       "module": "PreferenceProperties/AdditiveSeparability.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.NonnegativeCone",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScaleInCone",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.HomogeneousOfDegree",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneousOfDegree_one_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.orthant_nonnegativeCone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OrthantZero",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScaleBundle",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_eq_cone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_zero",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_one",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_origin",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_mul",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_inv",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_ray_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.scaleBundle_pow_tendsto_zero",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.HomotheticPreference",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_scale_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_scale_strict_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_scale_indifferent_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.HomogeneousUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneousUtility_iff_degree_one",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneousUtility_origin",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_represents_homothetic",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_2_19_forward",
+      "kind": "theorem",
+      "module": "PreferenceProperties/Homotheticity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_iterate_above",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_iterate_below",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_contract_positive",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_contract_negative",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_origin_indifferent",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_positive_ray",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_negative_ray",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.positive_ray_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.negative_ray_strictAnti",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.positive_ray_cofinal",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.negative_ray_coinitial",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.positive_ray_indifference",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.negative_ray_indifference",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticRays.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.LiftedUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.liftedUtility_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.liftedUtility_agrees",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.liftedUtility_range",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.continuous_of_ordConnected_range",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.liftedUtility_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_14c",
+      "kind": "theorem",
+      "module": "PreferenceProperties/RepresentationExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.positive_ray_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.liftedUtility_homogeneous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_representation_above_origin",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.reversePreference_rational",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.reversePreference_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.reversePreference_homothetic",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.neg_utility_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.neg_utility_homogeneous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_representation_below_origin",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_representation_indifferent",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomogeneousExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SignedRay",
+      "kind": "def",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.signedRay_nonneg",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.signedRay_nonpos",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.signedRay_zero",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.signedRay_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.signedRay_scale",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_signedRay_strict",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_signedRay_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homothetic_signedRay_covers",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_representation_both_sides",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.proposition_2_19",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_12",
+      "kind": "theorem",
+      "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
     }
   ],
   "full_build": "passed",
@@ -3582,6 +3922,341 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.NonnegativeCone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScaleInCone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.HomogeneousOfDegree": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneousOfDegree_one_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.orthant_nonnegativeCone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.OrthantZero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScaleBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_eq_cone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_origin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_ray_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.scaleBundle_pow_tendsto_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.HomotheticPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_scale_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_scale_strict_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_scale_indifferent_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.HomogeneousUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneousUtility_iff_degree_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneousUtility_origin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_represents_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_2_19_forward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_iterate_above": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_iterate_below": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_contract_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_contract_negative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_origin_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_positive_ray": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_negative_ray": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.positive_ray_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.negative_ray_strictAnti": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.positive_ray_cofinal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.negative_ray_coinitial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.positive_ray_indifference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.negative_ray_indifference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.LiftedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.liftedUtility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.liftedUtility_agrees": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.liftedUtility_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.continuous_of_ordConnected_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.liftedUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_14c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.positive_ray_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.liftedUtility_homogeneous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_representation_above_origin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.reversePreference_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.reversePreference_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.reversePreference_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.neg_utility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.neg_utility_homogeneous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_representation_below_origin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_representation_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SignedRay": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.signedRay_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.signedRay_nonpos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.signedRay_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.signedRay_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.signedRay_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_signedRay_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_signedRay_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homothetic_signedRay_covers": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_representation_both_sides": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.proposition_2_19": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_12": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -3617,16 +4292,21 @@
     "PreferenceProperties/WeakSeparability.lean": "4610b77c7afd13ae8ca1d169f26489bf75bb99d0420d07dd2707f2a935a6bb81",
     "PreferenceProperties/CommodityBlocks.lean": "3418f9b68303a4a55eae5939bfce36aed61cdc623681dec13a53a8e499dacbc9",
     "PreferenceProperties/AdditiveSeparability.lean": "3854e45a9e7e95753363ced2d78369d549772cec0536cb6bebd216184121f5f2",
-    "PreferenceProperties.lean": "6ec01006bb88c0f7e4723d1ad93ee1e766c605129c8438deb569e48dd4aa13d8",
+    "PreferenceProperties/Homotheticity.lean": "c0e81d4e043a849001f4e57849182fa8fb0285684726e5c4c175e424c4e162e7",
+    "PreferenceProperties/HomotheticRays.lean": "949614f39822eab9a4d43b3ae995fb0336222d84700166cb2f83335e4a597f71",
+    "PreferenceProperties/RepresentationExtension.lean": "3e00236a1fc6fe0b48f70043908b1ab392dba85d14ee40b37efb896ea01edcf9",
+    "PreferenceProperties/HomogeneousExtension.lean": "57a57114a5d603c459f3a73e2b6207fd792675ca59dbfddb9cd5f2e007f0620a",
+    "PreferenceProperties/SignedHomotheticRepresentation.lean": "eeb007e156c81898194c2bea568074ca37610094536b073ce32146c3e603e4ee",
+    "PreferenceProperties.lean": "c3792b7c91eecc08964bff1c2659bd552d60c74acaed6a6b9802ee4a33d0f42d",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "3c988b37293c27747f8bcd722261a50ada1c96d3f2b67e656ec435f170a573a4",
+    "proof-manifest.json": "41628b787b1a657cdb861577c59240b1b118b47c70e4d310f6d8108ed068af32",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "ffaa1f0e6a85f48aa6d3af101c7211515195e163d169eaa66765c4622dd8d04c",
+  "fresh_audit_sha256": "3eef3c161770dbd3326b4676b48d310e93a74067b99af21ab49d3907274b35c6",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13 and 2.15; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12 and full 2.16; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7 and 2.11, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }
