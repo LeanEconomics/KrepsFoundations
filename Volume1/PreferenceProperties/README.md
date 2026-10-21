@@ -115,10 +115,33 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [AppendixConvexQuasiConcavity](PreferenceProperties/AppendixConvexQuasiConcavity.lean) | 9 | Appendix 3: quasi-concavity, monotone rescaling, maximizers and hypographs |
 | [LocalAffineUniqueness](PreferenceProperties/LocalAffineUniqueness.lean) | 3 | A compact maximum proof that uniform local midpoint identities force an affine scale |
 | [AdditiveScaleUniqueness](PreferenceProperties/AdditiveScaleUniqueness.lean) | 7 | Common positive affine uniqueness and normalized overlap identity, including trivial blocks |
+| [FiniteSumTransfers](PreferenceProperties/FiniteSumTransfers.lean) | 5 | Finite balancing transfers between interval bundles with equal sums |
+| [AdditiveChartCalibration](PreferenceProperties/AdditiveChartCalibration.lean) | 5 | Positive affine uniqueness and companion-based chart normalization |
+| [AffineIntervalLocal](PreferenceProperties/AffineIntervalLocal.lean) | 5 | Local affine maps, overlap uniqueness and interval extension |
+| [NormalizedCoordinatePairs](PreferenceProperties/NormalizedCoordinatePairs.lean) | 8 | Moving normalized scores between active coordinates |
+| [LocalToGlobalOrder](PreferenceProperties/LocalToGlobalOrder.lean) | 4 | Transporting local comparisons along monotone paths |
+| [AdditiveEndpointBounds](PreferenceProperties/AdditiveEndpointBounds.lean) | 2 | Original utility continuity bounds additive scales at attained endpoints |
+| [MonotoneEndpointExtension](PreferenceProperties/MonotoneEndpointExtension.lean) | 7 | Continuous strict extensions from dense domains across finite endpoints |
+| [DenseProductRepresentation](PreferenceProperties/DenseProductRepresentation.lean) | 4 | Dense utility comparisons extend strictly to boundary bundles |
+| [PairSumRepresentation](PreferenceProperties/PairSumRepresentation.lean) | 4 | Pair-sum invariance and strict monotonicity yield the sum representation |
+| [AdditiveChartCalibrationOn](PreferenceProperties/AdditiveChartCalibrationOn.lean) | 3 | Affine uniqueness for charts on real interval overlaps |
+| [AffineIntervalAtlas](PreferenceProperties/AffineIntervalAtlas.lean) | 4 | Positive affine chart atlases and normalized continuation |
+| [CommonActiveScoreInterval](PreferenceProperties/CommonActiveScoreInterval.lean) | 5 | A common interval for every active coordinate at a specified point |
+| [GlobalSumRepresentation](PreferenceProperties/GlobalSumRepresentation.lean) | 4 | A locally aligned sum represents utility on an entire interval product |
+| [IntervalEndpointExtension](PreferenceProperties/IntervalEndpointExtension.lean) | 3 | Interior density and continuous strict extension on real intervals |
+| [PairwiseAdditiveRepresentation](PreferenceProperties/PairwiseAdditiveRepresentation.lean) | 2 | Additive representation after continuous strict coordinate changes |
+| [CompanionChartCalibration](PreferenceProperties/CompanionChartCalibration.lean) | 3 | Fixed-companion calibration with translation transitions |
+| [AffineIntervalContinuation](PreferenceProperties/AffineIntervalContinuation.lean) | 7 | Global continuous strict scale from compatible interval charts |
+| [AllPairsLocalScale](PreferenceProperties/AllPairsLocalScale.lean) | 1 | One cardinal scale represents every local pair in every context |
+| [InteriorAdditiveExtension](PreferenceProperties/InteriorAdditiveExtension.lean) | 2 | Full interval-product representation from continuous interior scales |
+| [TranslationIntervalAtlas](PreferenceProperties/TranslationIntervalAtlas.lean) | 3 | Global chart continuation with all transition slopes equal to one |
+| [LocalScalarChart](PreferenceProperties/LocalScalarChart.lean) | 4 | Full finite-product additive charts at every interior scalar bundle |
+| [CompanionCoordinateGlobalization](PreferenceProperties/CompanionCoordinateGlobalization.lean) | 2 | Global coordinate scales from calibrated fixed-companion families |
+| [ScalarAdditiveChart](PreferenceProperties/ScalarAdditiveChart.lean) | 2 | Ambient real interval domains and functions for local additive charts |
 
-The current subset passes the full fresh-source audit: **880 theorems** and
-**1093 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **782 new chapter and appendix theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **969 theorems** and
+**1238 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **871 new chapter and appendix theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.

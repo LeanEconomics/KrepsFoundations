@@ -1,8 +1,3 @@
-/-
-Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: KrepsFoundations contributors
--/
 import PreferenceProperties.Basic
 import PreferenceProperties.Rationalization
 import PreferenceProperties.FiniteUtility
@@ -106,3 +101,26 @@ import PreferenceProperties.AppendixConvexFunctions
 import PreferenceProperties.AppendixConvexQuasiConcavity
 import PreferenceProperties.LocalAffineUniqueness
 import PreferenceProperties.AdditiveScaleUniqueness
+import PreferenceProperties.FiniteSumTransfers
+import PreferenceProperties.AdditiveChartCalibration
+import PreferenceProperties.AffineIntervalLocal
+import PreferenceProperties.NormalizedCoordinatePairs
+import PreferenceProperties.LocalToGlobalOrder
+import PreferenceProperties.AdditiveEndpointBounds
+import PreferenceProperties.MonotoneEndpointExtension
+import PreferenceProperties.DenseProductRepresentation
+import PreferenceProperties.PairSumRepresentation
+import PreferenceProperties.AdditiveChartCalibrationOn
+import PreferenceProperties.AffineIntervalAtlas
+import PreferenceProperties.CommonActiveScoreInterval
+import PreferenceProperties.GlobalSumRepresentation
+import PreferenceProperties.IntervalEndpointExtension
+import PreferenceProperties.PairwiseAdditiveRepresentation
+import PreferenceProperties.CompanionChartCalibration
+import PreferenceProperties.AffineIntervalContinuation
+import PreferenceProperties.AllPairsLocalScale
+import PreferenceProperties.InteriorAdditiveExtension
+import PreferenceProperties.TranslationIntervalAtlas
+import PreferenceProperties.LocalScalarChart
+import PreferenceProperties.CompanionCoordinateGlobalization
+import PreferenceProperties.ScalarAdditiveChart

@@ -77,8 +77,16 @@ definitions and propositions A3.1–7 and A3.16–23 have explicit bridges here.
 p. 456 illustration and later separation, support-function and calculus material are
 identified separately; this does not claim completion of the entire appendix.
 
-The additive-existence construction now has a proved continuous bisymmetric-mean
-cardinal scale, a local additive pair scale derived from the original preference
-hypotheses, and common positive affine uniqueness on overlaps, including trivial
-blocks. These are construction steps; the full Proposition 2.14 converse remains
-pending until global extension and finite-coordinate assembly are proved.
+The additive-existence construction now has the following proved stages:
+
+- Continuous bisymmetric-mean cardinal scales and normalized all-pair comparisons.
+- Full local additive charts at every interior point of the scalar interval product.
+- Finite pair transfers and local-to-global comparison transport.
+- Positive affine uniqueness, fixed-companion calibration, and global continuation
+  of positive affine or translation chart atlases on real intervals.
+- Finite bounds at attained endpoints, continuous strictly increasing extensions,
+  and full-product comparison transport from a dense interior.
+
+The final theorem still requires constructing the synchronized global coordinate
+chart families from the original preference hypotheses and assembling these stages.
+The source Proposition 2.14 existence direction remains explicitly pending.

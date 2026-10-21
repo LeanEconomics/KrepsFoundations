@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T15:30:55.395686+00:00",
-  "theorems": 880,
+  "checked_at_utc": "2026-10-21T15:48:25.950716+00:00",
+  "theorems": 969,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -104,9 +104,32 @@
     "PreferenceProperties/AppendixConvexFunctions.lean": 14,
     "PreferenceProperties/AppendixConvexQuasiConcavity.lean": 9,
     "PreferenceProperties/LocalAffineUniqueness.lean": 3,
-    "PreferenceProperties/AdditiveScaleUniqueness.lean": 7
+    "PreferenceProperties/AdditiveScaleUniqueness.lean": 7,
+    "PreferenceProperties/FiniteSumTransfers.lean": 5,
+    "PreferenceProperties/AdditiveChartCalibration.lean": 5,
+    "PreferenceProperties/AffineIntervalLocal.lean": 5,
+    "PreferenceProperties/NormalizedCoordinatePairs.lean": 8,
+    "PreferenceProperties/LocalToGlobalOrder.lean": 4,
+    "PreferenceProperties/AdditiveEndpointBounds.lean": 2,
+    "PreferenceProperties/MonotoneEndpointExtension.lean": 7,
+    "PreferenceProperties/DenseProductRepresentation.lean": 4,
+    "PreferenceProperties/PairSumRepresentation.lean": 4,
+    "PreferenceProperties/AdditiveChartCalibrationOn.lean": 3,
+    "PreferenceProperties/AffineIntervalAtlas.lean": 4,
+    "PreferenceProperties/CommonActiveScoreInterval.lean": 5,
+    "PreferenceProperties/GlobalSumRepresentation.lean": 4,
+    "PreferenceProperties/IntervalEndpointExtension.lean": 3,
+    "PreferenceProperties/PairwiseAdditiveRepresentation.lean": 2,
+    "PreferenceProperties/CompanionChartCalibration.lean": 3,
+    "PreferenceProperties/AffineIntervalContinuation.lean": 7,
+    "PreferenceProperties/AllPairsLocalScale.lean": 1,
+    "PreferenceProperties/InteriorAdditiveExtension.lean": 2,
+    "PreferenceProperties/TranslationIntervalAtlas.lean": 3,
+    "PreferenceProperties/LocalScalarChart.lean": 4,
+    "PreferenceProperties/CompanionCoordinateGlobalization.lean": 2,
+    "PreferenceProperties/ScalarAdditiveChart.lean": 2
   },
-  "audited_declarations": 1093,
+  "audited_declarations": 1238,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -5572,6 +5595,731 @@
       "name": "Kreps.PreferenceProperties.normalized_additive_scales_unique",
       "kind": "theorem",
       "module": "PreferenceProperties/AdditiveScaleUniqueness.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.intervalValues_update",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sum_interval_update",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.finite_sum_opposite_coordinates",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PairSumInvariant",
+      "kind": "def",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq_on",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq",
+      "kind": "theorem",
+      "module": "PreferenceProperties/FiniteSumTransfers.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.strictMono_coordinate_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pair_chart_positive_affine_unique",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.common_affine_slope_eq_one",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pair_chart_translation_of_companion_increment",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pair_chart_identity_of_companion_and_baseline",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.LocallyPositiveAffineOn",
+      "kind": "def",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.affine_coefficients_unique",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.locallyPositiveAffineOn_global",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.locallyPositiveAffineOn_of_affine",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.locallyPositiveAffineOn_mono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.strictMonoOn_union_intervals",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalLocal.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CoordinatePairUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.NormalizedCoordinateAxes",
+      "kind": "def",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.stronglySeparable_common_update_utility_eq",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinatePairUtility_move_first",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinatePairUtility_move_second",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.three_members_spare",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinatePairUtility_same",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.piecewise_pair_updates",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinatePairUtility_context_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinatePairUtility_all_comparisons",
+      "kind": "theorem",
+      "module": "PreferenceProperties/NormalizedCoordinatePairs.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interval_order_of_local_comparisons",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalToGlobalOrder.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interval_strict_order_of_local_comparisons",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalToGlobalOrder.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.path_order_of_local_comparisons",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalToGlobalOrder.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.global_order_of_local_comparisons",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalToGlobalOrder.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.additive_scale_bddBelow_at_least",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveEndpointBounds.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.additive_scale_bddAbove_at_greatest",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveEndpointBounds.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.tendsto_dense_comap_atBot",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.tendsto_dense_comap_atTop",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_continuous_endpoint_extension",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.continuous_extension_le_dense",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dense_le_continuous_extension",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.continuous_extension_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_continuous_strictMono_endpoint_extension",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MonotoneEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dense_comparison_strict_implies_le",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DenseProductRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_product_improvement_below",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DenseProductRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dense_product_strict_comparison",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DenseProductRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dense_product_comparison",
+      "kind": "theorem",
+      "module": "PreferenceProperties/DenseProductRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_le_bundle_with_sum",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pairSumInvariant_lt_of_sum_lt",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pairSumInvariant_comparison",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pairSumInvariant_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.open_real_set_has_pair",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibrationOn.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pair_chart_positive_affine_unique_on",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibrationOn.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.pair_chart_translation_on",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AdditiveChartCalibrationOn.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas",
+      "kind": "structure",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.mk",
+      "kind": "constructor",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.coord",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.isOpen",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.interval",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.subset",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.cover",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.continuous",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.increasing",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.transition",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible",
+      "kind": "def",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection",
+      "kind": "structure",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.mk",
+      "kind": "constructor",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.isOpen",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.interval",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.subset",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.value",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.continuous",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.increasing",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.compatible",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.seed_subset",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.seed_eq",
+      "kind": "projection",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.compatible_chart",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.seedSection",
+      "kind": "def",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.affine",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.local_relation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.unique",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_all_active_score_interval",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CommonActiveScoreEmbedding",
+      "kind": "def",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.commonActiveScoreEmbedding_active",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.commonActiveScoreEmbedding_inactive",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.commonActiveScoreEmbedding_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.commonActiveScoreEmbedding_axes",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CommonActiveScoreInterval.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.intervalProductPath",
+      "kind": "def",
+      "module": "PreferenceProperties/GlobalSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.intervalProductPath_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GlobalSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.intervalProductPath_endpoints",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GlobalSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.intervalProductPath_sum_monotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GlobalSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sum_represents_of_locally_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/GlobalSumRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interval_interior_dense",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interval_outside_interior_extreme",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.interval_exists_continuous_strictMono_extension",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalEndpointExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.coordinateMap_update",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairwiseAdditiveRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.represents_additive_of_pair_scale_invariance",
+      "kind": "theorem",
+      "module": "PreferenceProperties/PairwiseAdditiveRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily",
+      "kind": "structure",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.mk",
+      "kind": "constructor",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.coord",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.open_domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.interval",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.continuous",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.increasing",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.firstReference",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.secondReference",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.first_mem",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.second_mem",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.pair_compatible",
+      "kind": "projection",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.exists_calibration",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.calibrated_companion",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.calibrated_target_transition",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CompanionChartCalibration.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.congr",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.union",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.positive_affine",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.AffineIntervalSection.extend",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.sections_cover",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.exists_global_section",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AffineIntervalContinuation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.HasAllPairsLocalScale",
+      "kind": "def",
+      "module": "PreferenceProperties/AllPairsLocalScale.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_all_pairs_local_scale",
+      "kind": "theorem",
+      "module": "PreferenceProperties/AllPairsLocalScale.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.additiveUtility_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorAdditiveExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.additive_comparison_of_interior",
+      "kind": "theorem",
+      "module": "PreferenceProperties/InteriorAdditiveExtension.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.open_cover_constants_eq",
+      "kind": "theorem",
+      "module": "PreferenceProperties/TranslationIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.slopes_eq_one",
+      "kind": "theorem",
+      "module": "PreferenceProperties/TranslationIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize_translations",
+      "kind": "theorem",
+      "module": "PreferenceProperties/TranslationIntervalAtlas.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ordConnected_subtype_preconnected",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalScalarChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.HasLocalScalarAdditiveChart",
+      "kind": "def",
+      "module": "PreferenceProperties/LocalScalarChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_local_scalar_additive_chart",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalScalarChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.baselineScores_interior_of_open_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalScalarChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_local_scalar_additive_chart_of_open",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LocalScalarChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.globalize_target_of_calibration",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CompanionCoordinateGlobalization.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CompanionChartFamily.exists_global_target",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CompanionCoordinateGlobalization.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart",
+      "kind": "structure",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.mk",
+      "kind": "constructor",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.coord",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.open_domain",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.interval",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.subset",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.continuous",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.increasing",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.ScalarAdditiveChart.represents",
+      "kind": "projection",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.localScalarChart_to_scalarAdditiveChart",
+      "kind": "theorem",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.exists_scalarAdditiveChart_at_of_open",
+      "kind": "theorem",
+      "module": "PreferenceProperties/ScalarAdditiveChart.lean"
     }
   ],
   "full_build": "passed",
@@ -10742,6 +11490,730 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.intervalValues_update": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sum_interval_update": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.finite_sum_opposite_coordinates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PairSumInvariant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq_on": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.strictMono_coordinate_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pair_chart_positive_affine_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.common_affine_slope_eq_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pair_chart_translation_of_companion_increment": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pair_chart_identity_of_companion_and_baseline": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.LocallyPositiveAffineOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.affine_coefficients_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.locallyPositiveAffineOn_global": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.locallyPositiveAffineOn_of_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.locallyPositiveAffineOn_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.strictMonoOn_union_intervals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CoordinatePairUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.NormalizedCoordinateAxes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.stronglySeparable_common_update_utility_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinatePairUtility_move_first": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinatePairUtility_move_second": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.three_members_spare": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinatePairUtility_same": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.piecewise_pair_updates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinatePairUtility_context_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinatePairUtility_all_comparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interval_order_of_local_comparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interval_strict_order_of_local_comparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.path_order_of_local_comparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.global_order_of_local_comparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.additive_scale_bddBelow_at_least": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.additive_scale_bddAbove_at_greatest": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.tendsto_dense_comap_atBot": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.tendsto_dense_comap_atTop": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_continuous_endpoint_extension": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.continuous_extension_le_dense": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dense_le_continuous_extension": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.continuous_extension_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_continuous_strictMono_endpoint_extension": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dense_comparison_strict_implies_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_product_improvement_below": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dense_product_strict_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dense_product_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_le_bundle_with_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pairSumInvariant_lt_of_sum_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pairSumInvariant_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pairSumInvariant_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.open_real_set_has_pair": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pair_chart_positive_affine_unique_on": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.pair_chart_translation_on": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.coord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.isOpen": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.transition": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.isOpen": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.compatible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.seed_subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.seed_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.compatible_chart": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.seedSection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.local_relation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_all_active_score_interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CommonActiveScoreEmbedding": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.commonActiveScoreEmbedding_active": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.commonActiveScoreEmbedding_inactive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.commonActiveScoreEmbedding_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.commonActiveScoreEmbedding_axes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.intervalProductPath": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.intervalProductPath_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.intervalProductPath_endpoints": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.intervalProductPath_sum_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sum_represents_of_locally_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interval_interior_dense": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interval_outside_interior_extreme": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.interval_exists_continuous_strictMono_extension": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.coordinateMap_update": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.represents_additive_of_pair_scale_invariance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.coord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.open_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.firstReference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.secondReference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.first_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.second_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.pair_compatible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.exists_calibration": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.calibrated_companion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.calibrated_target_transition": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.congr": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.union": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.positive_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.AffineIntervalSection.extend": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.sections_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.exists_global_section": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.HasAllPairsLocalScale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_all_pairs_local_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.additiveUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.additive_comparison_of_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.open_cover_constants_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.slopes_eq_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize_translations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ordConnected_subtype_preconnected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.HasLocalScalarAdditiveChart": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_local_scalar_additive_chart": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.baselineScores_interior_of_open_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_local_scalar_additive_chart_of_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.globalize_target_of_calibration": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CompanionChartFamily.exists_global_target": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.coord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.open_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.interval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.ScalarAdditiveChart.represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.localScalarChart_to_scalarAdditiveChart": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.exists_scalarAdditiveChart_at_of_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -10848,16 +12320,39 @@
     "PreferenceProperties/AppendixConvexQuasiConcavity.lean": "6ec05d3cb92e9334d2b70a36b903acfb3766599303f7952401a2d9778c9fda9a",
     "PreferenceProperties/LocalAffineUniqueness.lean": "59e05bcf62681eb39f526be23868a9f83b97a7874425b1cbb2ce85272bc3ab4b",
     "PreferenceProperties/AdditiveScaleUniqueness.lean": "badfaba5809b08dc86cf01efac8696ef3e56fe476b65eb492bc751ca12ea8914",
-    "PreferenceProperties.lean": "85df7beab17c8b0782c0b6695386c2b4d5aaaadef4fbac938fc70671ec243212",
+    "PreferenceProperties/FiniteSumTransfers.lean": "18a75f08eb8afb63f7f693176720d46db500bb9a5c1d752ec2f6c8af67f3d864",
+    "PreferenceProperties/AdditiveChartCalibration.lean": "f73e38c5f0eed9cae93806dfa12d4b3d175e10869cc14f0de1edbdea0a2d5bea",
+    "PreferenceProperties/AffineIntervalLocal.lean": "6bfc4565634b07938c53c6a60a662d6430222fc557326f9deda6b7dbd98d5688",
+    "PreferenceProperties/NormalizedCoordinatePairs.lean": "442d8c53e9cb342e060b7352dedc49bb241b69b22c6c27d4c0150c2d6e013a83",
+    "PreferenceProperties/LocalToGlobalOrder.lean": "9f2d6fab9e91717e029e0d9a0d76828c617ecfed4b6329c6d3612af3958b906c",
+    "PreferenceProperties/AdditiveEndpointBounds.lean": "aa1832a9b5fca774ce9aae5e941349df99ec04b54b180c6d70a3aba546ec5d5b",
+    "PreferenceProperties/MonotoneEndpointExtension.lean": "2b49971e322f5da16da695ad14909824dceaf44aa21b5e8e50bfdc7f3eafaf36",
+    "PreferenceProperties/DenseProductRepresentation.lean": "39afaa93786f067b8cf5fbe0e5696a592961172639de8a926e4618370705746e",
+    "PreferenceProperties/PairSumRepresentation.lean": "6078dcdcff125781ca12f26ad2d08fc25f6cf18c02a84d88fb3c0ac77b55189c",
+    "PreferenceProperties/AdditiveChartCalibrationOn.lean": "d44b913c96a59f92e893f7d2f79aa80a60f61fe3fa2a57985b7a0dc1e9055951",
+    "PreferenceProperties/AffineIntervalAtlas.lean": "0f90d4c4755c8c08d9619c11a5b20751fe989729a9180aaba82803af87694e62",
+    "PreferenceProperties/CommonActiveScoreInterval.lean": "a64a6bce8713a7001c700155a3bc49fbe4fa0bec8d49d51b1ff59aa4505ba7ca",
+    "PreferenceProperties/GlobalSumRepresentation.lean": "b548971c2975ca7f305b840239c0325daff963fe18284d856e07cbba3fd50bda",
+    "PreferenceProperties/IntervalEndpointExtension.lean": "187a483f576c1e9e00a1901331b4791d98ffcfb0339dcda29bfe8488a0b0180b",
+    "PreferenceProperties/PairwiseAdditiveRepresentation.lean": "4253e556c8c5d4ab7f42b31820ff0c7c60f89d63353b800f19c239d58abbab8d",
+    "PreferenceProperties/CompanionChartCalibration.lean": "9d9be1c473a0e639921d6c36f9c10857da7ffb1fe29ea34e8fa4695076e02452",
+    "PreferenceProperties/AffineIntervalContinuation.lean": "8fbf50e8b9ac3c5f8048e2a1c40826c5393e58e6b73c596501d5b6b452f9c00a",
+    "PreferenceProperties/AllPairsLocalScale.lean": "02b97556bff6bc6bd487a1bb7c3b4dbadd5c81b89fa371fa7c36427a35c4434e",
+    "PreferenceProperties/InteriorAdditiveExtension.lean": "c59e1a18ce1aa9bc175a9bb22ea81ef22e8ff7e0f765012a9b6182bfc7237ba6",
+    "PreferenceProperties/TranslationIntervalAtlas.lean": "aa749e6737c2598acef4b67f9161bfe699759d5a0394d24f16449372b5a7f86b",
+    "PreferenceProperties/LocalScalarChart.lean": "d1a10f032119a308f4f3f5130ec0a4b1d6c2ee38fe033cd3be84fc12f8d2cea3",
+    "PreferenceProperties/CompanionCoordinateGlobalization.lean": "c7c485b6d9aec49e7893baed411c3526fede71612a012021706e66c37b6bdcba",
+    "PreferenceProperties/ScalarAdditiveChart.lean": "375e8f14b7ae6c3eccade90f2c0b508d2f28eb09711a9636c34d121b184542b9",
+    "PreferenceProperties.lean": "d64b4684ae824eb68ee658ef2f10f0d0b40a3ce4baa3488e9573c67b4abcc749",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "83b7ca50ca3ce6c814b5c5559423eefa9de98d1ddb6e572fc095e940d24e7577",
+    "proof-manifest.json": "e2198d79b25572b6d811265c4c69c04f69f9bbef0ea124ccd9627289b0517d88",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "ec79dde9b31656111927f787a16f8fc670f66eecff45a1d1120f0d45cf619eef",
+  "fresh_audit_sha256": "8bc4d8d8b70f25eff02c80886ff119d052526961f3c1dac9f694afc0e9944ab3",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.15. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14 is complete by its specified curve, recursive assignment, interval density, finite sequence limits and continuous extension, including a single segment when both extrema are attained. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md. Problem 2.15 uses the exact Lebesgue-positivity assumption on the orthant, proves representation and upper semicontinuity, supplies a finite full-support measure with an atom giving discontinuity even for strictly increasing one-good preference, and proves continuity when indifference classes have zero measure. Problem 2.1 has all nonexcluded quantifier entries and witnesses except the additive-existence direction. Appendix 2 has explicit metric/topology and semicontinuity/compact-maximum bridges, with a counterexample and corrected nonnegative-weight theorem for its erroneous signed-series diagnostic. Appendix 2 is fully covered by explicit statement bridges, including its examples and corrections; Appendix 3 definitions and propositions A3.1\u20137 and A3.16\u201323 have explicit bridges; its full inventory identifies later-use material and the unformalized p. 456 illustration. Additive-existence prerequisites include local Thomsen cancellation, subutility range homeomorphisms and joint continuity of monotone separately continuous aggregators; the full existence theorem remains pending. Appendix 2 includes every numbered statement, norm/sequence example, relative-topology exercise, pointwise semicontinuity criterion and the signed-series correction. Additive-existence preparation now includes scalar interval reduction, a common interior reference rank, and dense strictly ordered bisymmetric dyadic grids. The continuous cardinal scale, local additive pair representation from the original preference hypotheses, and common positive affine uniqueness are now proved. Global extension and finite-coordinate assembly remain necessary for the full additive-existence theorem.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.15. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14 is complete by its specified curve, recursive assignment, interval density, finite sequence limits and continuous extension, including a single segment when both extrema are attained. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md. Problem 2.15 uses the exact Lebesgue-positivity assumption on the orthant, proves representation and upper semicontinuity, supplies a finite full-support measure with an atom giving discontinuity even for strictly increasing one-good preference, and proves continuity when indifference classes have zero measure. Problem 2.1 has all nonexcluded quantifier entries and witnesses except the additive-existence direction. Appendix 2 has explicit metric/topology and semicontinuity/compact-maximum bridges, with a counterexample and corrected nonnegative-weight theorem for its erroneous signed-series diagnostic. Appendix 2 is fully covered by explicit statement bridges, including its examples and corrections; Appendix 3 definitions and propositions A3.1\u20137 and A3.16\u201323 have explicit bridges; its full inventory identifies later-use material and the unformalized p. 456 illustration. Additive-existence prerequisites include local Thomsen cancellation, subutility range homeomorphisms and joint continuity of monotone separately continuous aggregators; the full existence theorem remains pending. Appendix 2 includes every numbered statement, norm/sequence example, relative-topology exercise, pointwise semicontinuity criterion and the signed-series correction. Additive-existence preparation now includes scalar interval reduction, a common interior reference rank, and dense strictly ordered bisymmetric dyadic grids. The continuous cardinal scale, local additive pair representation from the original preference hypotheses, and common positive affine uniqueness are now proved. Finite pair transfers, full pointwise local additive charts, positive affine interval continuation, fixed-companion translation calibration, finite attained-endpoint extensions, and dense comparison transport are proved. Constructing synchronized global coordinate charts from the original hypotheses and assembling the final wrapper remain pending.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

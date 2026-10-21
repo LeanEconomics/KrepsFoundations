@@ -64,6 +64,15 @@ import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.FunProp
 import Mathlib.Analysis.Convex.Continuous
+import Mathlib.Order.Interval.Set.OrdConnected
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Topology.Piecewise
+import Mathlib.Topology.UnitInterval
+import Mathlib.Topology.DenseEmbedding
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
+import Mathlib.Analysis.Convex.Basic
 set_option autoImplicit false
 
 /-
@@ -12794,6 +12803,2342 @@ theorem normalized_additive_scales_unique {I : Type*} {S : I → Set ℝ} {f : I
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Finite transfers preserving coordinate sums
+
+Preparation for Kreps I, Proposition 2.14. On a finite product of real intervals,
+any two bundles with the same coordinate sum are joined by finitely many
+two-coordinate transfers preserving that sum. An objective invariant under
+these elementary transfers is therefore constant on every sum level set.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} {S : I → Set ℝ}
+
+/-- Taking the numerical values of interval coordinates commutes with coordinate replacement. -/
+theorem intervalValues_update [DecidableEq I] (x : ∀ i, S i) (i : I) (a : S i) :
+    (fun j => (Function.update x i a j).val) = Function.update (fun j => (x j).val) i a.val := by
+  funext j
+  by_cases hji : j = i
+  · subst j
+    simp only [Function.update_self]
+  · simp only [Function.update_of_ne hji]
+
+/-- Replacing one numerical coordinate changes a finite sum by the difference in its value. -/
+theorem sum_interval_update [DecidableEq I] (s : Finset I) (x : ∀ i, S i) {i : I}
+    (hi : i ∈ s) (a : S i) :
+    (∑ j ∈ s, (Function.update x i a j).val) = (∑ j ∈ s, (x j).val) - (x i).val + a.val := by
+  rw [intervalValues_update, Finset.sum_update_of_mem hi, Finset.sdiff_singleton_eq_erase]
+  have h := Finset.sum_erase_add s (fun j => (x j).val) hi
+  linarith
+
+/-- Unequal finite vectors with the same sum have both a deficit coordinate and a surplus one. -/
+theorem finite_sum_opposite_coordinates (s : Finset I) (x y : I → ℝ)
+    (hSum : ∑ i ∈ s, x i = ∑ i ∈ s, y i) (hne : ¬∀ i ∈ s, x i = y i) :
+    ∃ i ∈ s, ∃ j ∈ s, x i < y i ∧ y j < x j := by
+  have hleft : ∃ i ∈ s, x i < y i := by
+    by_contra h
+    push Not at h
+    have he := (Finset.sum_eq_sum_iff_of_le h).mp hSum.symm
+    exact hne (fun i hi => (he i hi).symm)
+  obtain ⟨i, hi, hix⟩ := hleft
+  have hright : ∃ j ∈ s, y j < x j := by
+    by_contra h
+    push Not at h
+    have hlt := Finset.sum_lt_sum h ⟨i, hi, hix⟩
+    exact (ne_of_lt hlt) hSum
+  obtain ⟨j, hj, hjx⟩ := hright
+  exact ⟨i, hi, j, hj, hix, hjx⟩
+
+/-- The elementary two-coordinate transfer invariance needed for the additive construction. -/
+def PairSumInvariant [DecidableEq I] (F : (∀ i, S i) → ℝ) : Prop :=
+  ∀ (x : ∀ i, S i) (i j : I) (a : S i) (b : S j), i ≠ j →
+    a.val + b.val = (x i).val + (x j).val →
+      F (Function.update (Function.update x i a) j b) = F x
+
+/-- Equal sums on a finite changing set imply equal utility under pair-transfer invariance. -/
+theorem pairSumInvariant_eq_of_sum_eq_on [DecidableEq I] [∀ i, Set.OrdConnected (S i)]
+    {F : (∀ i, S i) → ℝ} (hF : PairSumInvariant F) (s : Finset I)
+    (x y : ∀ i, S i) (hSum : ∑ i ∈ s, (x i).val = ∑ i ∈ s, (y i).val)
+    (hout : ∀ i ∉ s, x i = y i) : F x = F y := by
+  induction s using Finset.strongInductionOn generalizing x y with
+  | _ s ih =>
+    by_cases he : ∀ i ∈ s, (x i).val = (y i).val
+    · have hxy : x = y := by
+        funext i
+        by_cases hi : i ∈ s
+        · exact Subtype.ext (he i hi)
+        · exact hout i hi
+      exact congrArg F hxy
+    · obtain ⟨i, hi, j, hj, hix, hjx⟩ :=
+        finite_sum_opposite_coordinates s (fun i => (x i).val) (fun i => (y i).val) hSum he
+      have hij : i ≠ j := by intro h; subst j; linarith
+      let δ := min ((y i).val - (x i).val) ((x j).val - (y j).val)
+      have hδ : 0 ≤ δ := le_min (sub_nonneg.mpr hix.le) (sub_nonneg.mpr hjx.le)
+      have hδi : δ ≤ (y i).val - (x i).val := min_le_left _ _
+      have hδj : δ ≤ (x j).val - (y j).val := min_le_right _ _
+      let a : S i := ⟨(x i).val + δ,
+        (show Set.OrdConnected (S i) from inferInstance).out (x i).property (y i).property
+          ⟨by linarith, by linarith⟩⟩
+      let b : S j := ⟨(x j).val - δ,
+        (show Set.OrdConnected (S j) from inferInstance).out (y j).property (x j).property
+          ⟨by linarith, by linarith⟩⟩
+      let z := Function.update (Function.update x i a) j b
+      have hzi : z i = a := by simp [z, hij]
+      have hzj : z j = b := by simp [z]
+      have hzk (k : I) (hki : k ≠ i) (hkj : k ≠ j) : z k = x k := by
+        simp only [z, Function.update_of_ne hki, Function.update_of_ne hkj]
+      have hsumz : ∑ k ∈ s, (z k).val = ∑ k ∈ s, (y k).val := by
+        change (∑ k ∈ s, (Function.update (Function.update x i a) j b k).val) = _
+        rw [sum_interval_update s _ hj, sum_interval_update s _ hi,
+          Function.update_of_ne hij.symm]
+        change (∑ k ∈ s, (x k).val) - (x i).val + ((x i).val + δ) - (x j).val +
+          ((x j).val - δ) = _
+        linarith
+      have hFz : F z = F x := hF x i j a b hij (by dsimp [a, b]; ring)
+      have hmatch : ∃ k ∈ s, z k = y k := by
+        rcases le_total ((y i).val - (x i).val) ((x j).val - (y j).val) with h | h
+        · refine ⟨i, hi, ?_⟩
+          rw [hzi]
+          apply Subtype.ext
+          simp only [a, δ, min_eq_left h]
+          ring
+        · refine ⟨j, hj, ?_⟩
+          rw [hzj]
+          apply Subtype.ext
+          simp only [b, δ, min_eq_right h]
+          ring
+      obtain ⟨k, hk, hky⟩ := hmatch
+      have hSum' : ∑ m ∈ s.erase k, (z m).val = ∑ m ∈ s.erase k, (y m).val := by
+        have hz := Finset.sum_erase_add s (fun m => (z m).val) hk
+        have hy := Finset.sum_erase_add s (fun m => (y m).val) hk
+        rw [hky] at hz
+        linarith
+      have hout' (m : I) (hm : m ∉ s.erase k) : z m = y m := by
+        by_cases hmk : m = k
+        · subst m
+          exact hky
+        · have hms : m ∉ s := fun h => hm (Finset.mem_erase.mpr ⟨hmk, h⟩)
+          have hmi : m ≠ i := fun h => hms (h ▸ hi)
+          have hmj : m ≠ j := fun h => hms (h ▸ hj)
+          exact (hzk m hmi hmj).trans (hout m hms)
+      exact hFz.symm.trans (ih (s.erase k) (Finset.erase_ssubset hk) z y hSum' hout')
+
+/-- On a finite interval product, two bundles with equal total scores have equal utility. -/
+theorem pairSumInvariant_eq_of_sum_eq [DecidableEq I] [Fintype I] [∀ i, Set.OrdConnected (S i)]
+    {F : (∀ i, S i) → ℝ} (hF : PairSumInvariant F) (x y : ∀ i, S i)
+    (hSum : ∑ i, (x i).val = ∑ i, (y i).val) : F x = F y :=
+  pairSumInvariant_eq_of_sum_eq_on hF Finset.univ x y hSum (by simp)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Calibrating overlapping additive charts
+
+Preparation for Kreps I, Proposition 2.14. The affine uniqueness theorem is
+transported from numerical score intervals back to arbitrary connected ordered
+coordinate domains. Fixing one nonzero increment in a companion coordinate
+then forces overlap transitions to be translations, synchronizing the units
+of the two coordinate scales.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Two strictly increasing coordinate scales represent the same coordinate order. -/
+theorem strictMono_coordinate_represents {A : Type*} [LinearOrder A]
+    {w v : A → ℝ} (hw : StrictMono w) (hv : StrictMono v) :
+    Represents v (UtilityPref w) := by
+  intro x y
+  exact hw.le_iff_le.trans hv.le_iff_le.symm
+
+/-- Equivalent additive charts on two connected ordered blocks have one positive affine slope. -/
+theorem pair_chart_positive_affine_unique {A B : Type*}
+    [LinearOrder A] [LinearOrder B] [TopologicalSpace A] [TopologicalSpace B]
+    [PreconnectedSpace A] [PreconnectedSpace B]
+    {w v : A → ℝ} {w' v' : B → ℝ}
+    (hw : Continuous w) (hv : Continuous v) (hw' : Continuous w') (hv' : Continuous v')
+    (hwm : StrictMono w) (hvm : StrictMono v) (hwm' : StrictMono w') (hvm' : StrictMono v')
+    (hp : ∀ x x' y y', w x + w' y = w x' + w' y' → v x + v' y = v x' + v' y')
+    {a b : A} {c d : B} (hab : a < b) (hcd : c < d) :
+    ∃ slope β γ : ℝ, 0 < slope ∧ (∀ x, v x = slope * w x + β) ∧
+      ∀ y, v' y = slope * w' y + γ := by
+  have hwr : Represents w (UtilityPref w) := fun _ _ => Iff.rfl
+  have hvr := strictMono_coordinate_represents hwm hvm
+  have hwr' : Represents w' (UtilityPref w') := fun _ _ => Iff.rfl
+  have hvr' := strictMono_coordinate_represents hwm' hvm'
+  have hpc : PreservesPairSumEquality (UtilityTransform w v) (UtilityTransform w' v')
+      (Set.range w) (Set.range w') := by
+    rintro _ ⟨x, rfl⟩ _ ⟨x', rfl⟩ _ ⟨y, rfl⟩ _ ⟨y', rfl⟩ he
+    simpa only [utilityTransform_apply hwr hvr, utilityTransform_apply hwr' hvr']
+      using hp x x' y y' he
+  have hfc : ContinuousOn (UtilityTransform w v) (Set.range w) :=
+    continuousOn_iff_continuous_domRestrict.mpr (utilityTransform_continuous_range hwr hvr hw hv)
+  have hgc : ContinuousOn (UtilityTransform w' v') (Set.range w') :=
+    continuousOn_iff_continuous_domRestrict.mpr
+      (utilityTransform_continuous_range hwr' hvr' hw' hv')
+  obtain ⟨slope, β, γ, hslope, hf, hg⟩ := pair_additive_positive_affine_unique hpc
+    (isPreconnected_range hw).ordConnected (isPreconnected_range hw').ordConnected hfc hgc
+    (utilityTransform_strictMonoOn hwr hvr) ⟨a, rfl⟩ ⟨b, rfl⟩ (hwm hab)
+    ⟨c, rfl⟩ ⟨d, rfl⟩ (hwm' hcd)
+  refine ⟨slope, β, γ, hslope, fun x => ?_, fun y => ?_⟩
+  · simpa only [utilityTransform_apply hwr hvr] using hf (w x) ⟨x, rfl⟩
+  · simpa only [utilityTransform_apply hwr' hvr'] using hg (w' y) ⟨y, rfl⟩
+
+/-- Equal companion increments force the common affine slope to be one. -/
+theorem common_affine_slope_eq_one {A B : Type*} {w v : A → ℝ} {w' v' : B → ℝ}
+    {slope β γ : ℝ} (hv : ∀ x, v x = slope * w x + β) (hv' : ∀ y, v' y = slope * w' y + γ)
+    {c d : B} (hcd : w' c < w' d) (hunit : v' d - v' c = w' d - w' c) :
+    slope = 1 ∧ (∀ x, v x = w x + β) ∧ ∀ y, v' y = w' y + γ := by
+  have hc := hv' c
+  have hd := hv' d
+  have hslope : slope = 1 := by nlinarith
+  exact ⟨hslope, fun x => by simpa only [hslope, one_mul] using hv x,
+    fun y => by simpa only [hslope, one_mul] using hv' y⟩
+
+/-- Calibrating one companion increment leaves only coordinate translations on an overlap. -/
+theorem pair_chart_translation_of_companion_increment {A B : Type*}
+    [LinearOrder A] [LinearOrder B] [TopologicalSpace A] [TopologicalSpace B]
+    [PreconnectedSpace A] [PreconnectedSpace B]
+    {w v : A → ℝ} {w' v' : B → ℝ}
+    (hw : Continuous w) (hv : Continuous v) (hw' : Continuous w') (hv' : Continuous v')
+    (hwm : StrictMono w) (hvm : StrictMono v) (hwm' : StrictMono w') (hvm' : StrictMono v')
+    (hp : ∀ x x' y y', w x + w' y = w x' + w' y' → v x + v' y = v x' + v' y')
+    {a b : A} {c d : B} (hab : a < b) (hcd : c < d)
+    (hunit : v' d - v' c = w' d - w' c) :
+    ∃ β γ : ℝ, (∀ x, v x = w x + β) ∧ ∀ y, v' y = w' y + γ := by
+  obtain ⟨slope, β, γ, _, hf, hg⟩ := pair_chart_positive_affine_unique hw hv hw' hv'
+    hwm hvm hwm' hvm' hp hab hcd
+  have h := common_affine_slope_eq_one hf hg (hwm' hcd) hunit
+  exact ⟨β, γ, h.2⟩
+
+/-- Matching a companion at two levels fixes its offset too; one target baseline fixes the rest. -/
+theorem pair_chart_identity_of_companion_and_baseline {A B : Type*}
+    [LinearOrder A] [LinearOrder B] [TopologicalSpace A] [TopologicalSpace B]
+    [PreconnectedSpace A] [PreconnectedSpace B]
+    {w v : A → ℝ} {w' v' : B → ℝ}
+    (hw : Continuous w) (hv : Continuous v) (hw' : Continuous w') (hv' : Continuous v')
+    (hwm : StrictMono w) (hvm : StrictMono v) (hwm' : StrictMono w') (hvm' : StrictMono v')
+    (hp : ∀ x x' y y', w x + w' y = w x' + w' y' → v x + v' y = v x' + v' y')
+    {a b : A} {c d : B} (hab : a < b) (hcd : c < d)
+    (hc : v' c = w' c) (hd : v' d = w' d) (ha : v a = w a) :
+    (∀ x, v x = w x) ∧ ∀ y, v' y = w' y := by
+  obtain ⟨β, γ, hf, hg⟩ := pair_chart_translation_of_companion_increment hw hv hw' hv'
+    hwm hvm hwm' hvm' hp hab hcd (by rw [hc, hd])
+  have hβ : β = 0 := by have h := hf a; linarith
+  have hγ : γ = 0 := by have h := hg c; linarith
+  exact ⟨fun x => by simpa only [hβ, add_zero] using hf x,
+    fun y => by simpa only [hγ, add_zero] using hg y⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Local affine coordinates on real intervals
+
+Supporting mathematics for the globalization of additive utility scales in Proposition 2.14.
+Affine coefficients that agree locally are constant on a connected interval. Strict increase
+provides uniqueness of the coefficients without imposing differentiability on the coordinates.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Set
+
+/-- Near every point of `S`, one coordinate is a positive affine function of another. -/
+def LocallyPositiveAffineOn (f g : ℝ → ℝ) (S : Set ℝ) : Prop :=
+  ∀ x ∈ S, ∃ U : Set ℝ, IsOpen U ∧ x ∈ U ∧ U ⊆ S ∧
+    ∃ A B : ℝ, 0 < A ∧ ∀ y ∈ U, f y = A * g y + B
+
+/-- Two affine expressions in an increasing coordinate agree only with equal coefficients. -/
+theorem affine_coefficients_unique {S U : Set ℝ} {g : ℝ → ℝ}
+    (hg : StrictMonoOn g S) (hU : IsOpen U) (hne : U.Nonempty) (hUS : U ⊆ S)
+    {A B C D : ℝ} (he : ∀ x ∈ U, A * g x + B = C * g x + D) :
+    A = C ∧ B = D := by
+  obtain ⟨a, b, hab, hsub⟩ := hU.exists_Ioo_subset hne
+  obtain ⟨c, hac, hcb⟩ := exists_between hab
+  obtain ⟨d, hcd, hdb⟩ := exists_between hcb
+  have hc : c ∈ U := hsub ⟨hac, hcb⟩
+  have hd : d ∈ U := hsub ⟨hac.trans hcd, hdb⟩
+  have hlt := hg (hUS hc) (hUS hd) hcd
+  have hec := he c hc
+  have hed := he d hd
+  have hAC : A = C := by nlinarith
+  exact ⟨hAC, by rw [hAC] at hec; linarith⟩
+
+/-- Positive affine coefficients that exist locally on a nonempty interval exist globally. -/
+theorem locallyPositiveAffineOn_global {S : Set ℝ} {f g : ℝ → ℝ}
+    (hS : IsPreconnected S) (hne : S.Nonempty) (hg : StrictMonoOn g S)
+    (h : LocallyPositiveAffineOn f g S) :
+    ∃ A B : ℝ, 0 < A ∧ ∀ x ∈ S, f x = A * g x + B := by
+  classical
+  choose U hU hxU hUS A B hA he using fun x : S => h x x.property
+  let c : S → ℝ × ℝ := fun x => (A x, B x)
+  have hlocal : IsLocallyConstant c := by
+    rw [IsLocallyConstant.iff_exists_open]
+    intro x
+    refine ⟨Subtype.val ⁻¹' U x, (hU x).preimage continuous_subtype_val, hxU x, ?_⟩
+    intro y hy
+    have hcoeff := affine_coefficients_unique hg ((hU x).inter (hU y))
+      ⟨y, hy, hxU y⟩ (fun _ hz => hUS x hz.1)
+      (fun z hz => (he x z hz.1).symm.trans (he y z hz.2))
+    exact Prod.ext hcoeff.1.symm hcoeff.2.symm
+  let : PreconnectedSpace S := isPreconnected_iff_preconnectedSpace.mp hS
+  obtain ⟨x, hx⟩ := hne
+  refine ⟨A ⟨x, hx⟩, B ⟨x, hx⟩, hA ⟨x, hx⟩, fun y hy => ?_⟩
+  have hc := hlocal.apply_eq_of_preconnectedSpace ⟨y, hy⟩ ⟨x, hx⟩
+  have hAy : A ⟨y, hy⟩ = A ⟨x, hx⟩ := congrArg Prod.fst hc
+  have hBy : B ⟨y, hy⟩ = B ⟨x, hx⟩ := congrArg Prod.snd hc
+  simpa only [hAy, hBy] using he ⟨y, hy⟩ y (hxU ⟨y, hy⟩)
+
+/-- On an open set, a fixed positive affine relation is in particular a local one. -/
+theorem locallyPositiveAffineOn_of_affine {S : Set ℝ} {f g : ℝ → ℝ}
+    (hS : IsOpen S) {A B : ℝ} (hA : 0 < A)
+    (he : ∀ x ∈ S, f x = A * g x + B) : LocallyPositiveAffineOn f g S :=
+  fun _ hx => ⟨S, hS, hx, Subset.rfl, A, B, hA, he⟩
+
+/-- Restricting a local affine relation to an open set preserves it. -/
+theorem locallyPositiveAffineOn_mono {S T : Set ℝ} {f g : ℝ → ℝ}
+    (h : LocallyPositiveAffineOn f g S) (hT : IsOpen T) (hTS : T ⊆ S) :
+    LocallyPositiveAffineOn f g T := by
+  intro x hx
+  obtain ⟨U, hU, hxU, _, A, B, hA, he⟩ := h x (hTS hx)
+  exact ⟨U ∩ T, hU.inter hT, ⟨hxU, hx⟩, inter_subset_right,
+    A, B, hA, fun _ hy => he _ hy.1⟩
+
+/-- Increasing functions on two intersecting intervals are increasing on their union. -/
+theorem strictMonoOn_union_intervals {S T : Set ℝ} {f : ℝ → ℝ}
+    (hS : S.OrdConnected) (hT : T.OrdConnected) (hne : (S ∩ T).Nonempty)
+    (hfS : StrictMonoOn f S) (hfT : StrictMonoOn f T) : StrictMonoOn f (S ∪ T) := by
+  obtain ⟨c, hcS, hcT⟩ := hne
+  have hcross : ∀ x ∈ S, ∀ y ∈ T, x < y → f x < f y := by
+    intro x hx y hy hxy
+    by_cases hxc : x < c
+    · by_cases hcy : c < y
+      · exact (hfS hx hcS hxc).trans (hfT hcT hy hcy)
+      · have hyS : y ∈ S := hS.out hx hcS ⟨hxy.le, le_of_not_gt hcy⟩
+        exact hfS hx hyS hxy
+    · have hxT : x ∈ T := hT.out hcT hy ⟨le_of_not_gt hxc, hxy.le⟩
+      exact hfT hxT hy hxy
+  intro x hx y hy hxy
+  rcases hx with hx | hx <;> rcases hy with hy | hy
+  · exact hfS hx hy hxy
+  · exact hcross x hx y hy hxy
+  · by_cases hxc : x < c
+    · by_cases hcy : c < y
+      · exact (hfT hx hcT hxc).trans (hfS hcS hy hcy)
+      · exact hfT hx (hT.out hx hcT ⟨hxy.le, le_of_not_gt hcy⟩) hxy
+    · exact hfS (hS.out hcS hy ⟨le_of_not_gt hxc, hxy.le⟩) hy hxy
+  · exact hfT hx hy hxy
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# One common pair operation on all normalized active axes
+
+Independence transports a one-axis indifference through a held-fixed second
+coordinate. With three active axes, repeated transports identify every ordered
+pair with a fixed anchor pair, including pairs that share an anchor coordinate.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*} {D : Type*}
+
+/-- Utility on two selected coordinates of one fixed surrounding bundle. -/
+def CoordinatePairUtility (V : (∀ i, B i) → ℝ) (z : ∀ i, B i)
+    (k : ∀ i, D → B i) (i j : I) (x y : D) : ℝ :=
+  V (Function.update (Function.update z i (k i x)) j (k j y))
+
+/-- All selected axes use the same normalized numerical scale. -/
+def NormalizedCoordinateAxes (V : (∀ i, B i) → ℝ) (z : ∀ i, B i)
+    (k : ∀ i, D → B i) (f : D → ℝ) (T : Set I) : Prop :=
+  ∀ i ∈ T, ∀ x, V (Function.update z i (k i x)) = f x
+
+/-- Changing a coordinate that is common to two bundles preserves utility equality. -/
+theorem stronglySeparable_common_update_utility_eq [Finite I] {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) {i : I} {x y : ∀ i, B i}
+    (hxy : x i = y i) (a : B i) :
+    V x = V y ↔ V (Function.update x i a) = V (Function.update y i a) := by
+  have h₁ := stronglySeparable_common_update_iff hs hxy a
+  have h₂ := stronglySeparable_common_update_iff hs hxy.symm a
+  change (V y ≤ V x ↔ _) at h₁
+  change (V x ≤ V y ↔ _) at h₂
+  constructor
+  · intro h
+    exact le_antisymm (h₂.mp h.le) (h₁.mp h.ge)
+  · intro h
+    exact le_antisymm (h₂.mpr h.le) (h₁.mpr h.ge)
+
+/-- The first occupied score can move to any coordinate distinct from the held second one. -/
+theorem coordinatePairUtility_move_first [Finite I] {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z : ∀ i, B i) (k : ∀ i, D → B i)
+    {f : D → ℝ} {i j p : I} (hji : j ≠ i) (hjp : j ≠ p)
+    (hi : ∀ x, V (Function.update z i (k i x)) = f x)
+    (hp : ∀ x, V (Function.update z p (k p x)) = f x) (x y : D) :
+    CoordinatePairUtility V z k i j x y = CoordinatePairUtility V z k p j x y := by
+  apply (stronglySeparable_common_update_utility_eq hs
+    (show Function.update z i (k i x) j = Function.update z p (k p x) j by
+      simp only [Function.update_of_ne hji, Function.update_of_ne hjp]) (k j y)).mp
+  exact (hi x).trans (hp x).symm
+
+/-- The second occupied score can move while the first coordinate is held fixed. -/
+theorem coordinatePairUtility_move_second [Finite I] {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z : ∀ i, B i) (k : ∀ i, D → B i)
+    {f : D → ℝ} {i j q : I} (hij : i ≠ j) (hiq : i ≠ q)
+    (hj : ∀ y, V (Function.update z j (k j y)) = f y)
+    (hq : ∀ y, V (Function.update z q (k q y)) = f y) (x y : D) :
+    CoordinatePairUtility V z k i j x y = CoordinatePairUtility V z k i q x y := by
+  unfold CoordinatePairUtility
+  rw [Function.update_comm hij, Function.update_comm hiq]
+  exact coordinatePairUtility_move_first hs z k hij hiq hj hq y x
+
+/-- Three distinct active indices provide a spare coordinate outside any occupied pair. -/
+theorem three_members_spare {K : Type*} {T : Set K}
+    (ht : ∃ a ∈ T, ∃ b ∈ T, ∃ c ∈ T, a ≠ b ∧ a ≠ c ∧ b ≠ c) (i j : K) :
+    ∃ k ∈ T, k ≠ i ∧ k ≠ j := by
+  classical
+  obtain ⟨a, ha, b, hb, c, hc, hab, hac, hbc⟩ := ht
+  by_cases ha' : a ≠ i ∧ a ≠ j
+  · exact ⟨a, ha, ha'⟩
+  by_cases hb' : b ≠ i ∧ b ≠ j
+  · exact ⟨b, hb, hb'⟩
+  refine ⟨c, hc, ?_⟩
+  aesop
+
+/-- All ordered pairs of distinct normalized active coordinates have the same pair utility. -/
+theorem coordinatePairUtility_same [Finite I] {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z : ∀ i, B i) (k : ∀ i, D → B i)
+    {f : D → ℝ} {T : Set I} (hn : NormalizedCoordinateAxes V z k f T)
+    (ht : ∃ a ∈ T, ∃ b ∈ T, ∃ c ∈ T, a ≠ b ∧ a ≠ c ∧ b ≠ c)
+    {i j p q : I} (hi : i ∈ T) (hj : j ∈ T) (hp : p ∈ T) (hq : q ∈ T)
+    (hij : i ≠ j) (hpq : p ≠ q) (x y : D) :
+    CoordinatePairUtility V z k i j x y = CoordinatePairUtility V z k p q x y := by
+  by_cases hjp : j ≠ p
+  · exact (coordinatePairUtility_move_first hs z k hij.symm hjp (hn i hi) (hn p hp) x y).trans
+      (coordinatePairUtility_move_second hs z k hjp.symm hpq (hn j hj) (hn q hq) x y)
+  · have hjp' : j = p := not_ne_iff.mp hjp
+    obtain ⟨l, hl, hli, hlj⟩ := three_members_spare ht i j
+    have hlp : l ≠ p := hjp' ▸ hlj
+    calc
+      CoordinatePairUtility V z k i j x y = CoordinatePairUtility V z k i l x y :=
+        coordinatePairUtility_move_second hs z k hij hli.symm (hn j hj) (hn l hl) x y
+      _ = CoordinatePairUtility V z k p l x y :=
+        coordinatePairUtility_move_first hs z k hli hlp (hn i hi) (hn p hp) x y
+      _ = CoordinatePairUtility V z k p q x y :=
+        coordinatePairUtility_move_second hs z k hlp.symm hpq (hn l hl) (hn q hq) x y
+
+/-- Replacing the selected pair of a two-coordinate bundle changes only its surrounding context. -/
+theorem piecewise_pair_updates (z t : ∀ i, B i) {i j : I} (hij : i ≠ j)
+    (a : B i) (b : B j) :
+    ({i, j} : Finset I).piecewise (Function.update (Function.update z i a) j b) t =
+      Function.update (Function.update t i a) j b := by
+  funext l
+  by_cases hli : l = i
+  · subst l
+    simp [hij, Finset.piecewise]
+  by_cases hlj : l = j
+  · subst l
+    simp [Finset.piecewise]
+  · simp [hli, hlj, Finset.piecewise]
+
+/-- Pair comparisons on the reference slice hold in every surrounding context. -/
+theorem coordinatePairUtility_context_iff {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z t : ∀ i, B i) (k : ∀ i, D → B i)
+    {i j : I} (hij : i ≠ j) (x y x' y' : D) :
+    CoordinatePairUtility V z k i j x y ≤ CoordinatePairUtility V z k i j x' y' ↔
+      CoordinatePairUtility V t k i j x y ≤ CoordinatePairUtility V t k i j x' y' := by
+  have h := hs {i, j}
+    (Function.update (Function.update z i (k i x')) j (k j y'))
+    (Function.update (Function.update z i (k i x)) j (k j y)) z t
+  simpa only [piecewise_pair_updates _ _ hij, UtilityPref, CoordinatePairUtility] using h
+
+/-- One anchor-pair additive scale represents every active pair in every surrounding context. -/
+theorem coordinatePairUtility_all_comparisons [Finite I] {V : (∀ i, B i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z : ∀ i, B i) (k : ∀ i, D → B i)
+    {f φ : D → ℝ} {T : Set I} (hn : NormalizedCoordinateAxes V z k f T)
+    (ht : ∃ a ∈ T, ∃ b ∈ T, ∃ c ∈ T, a ≠ b ∧ a ≠ c ∧ b ≠ c)
+    {p q : I} (hp : p ∈ T) (hq : q ∈ T) (hpq : p ≠ q)
+    (hφ : ∀ x y x' y', CoordinatePairUtility V z k p q x y ≤
+      CoordinatePairUtility V z k p q x' y' ↔ φ x + φ y ≤ φ x' + φ y')
+    (t : ∀ i, B i) {i j : I} (hi : i ∈ T) (hj : j ∈ T) (hij : i ≠ j)
+    (x y x' y' : D) :
+    CoordinatePairUtility V t k i j x y ≤ CoordinatePairUtility V t k i j x' y' ↔
+      φ x + φ y ≤ φ x' + φ y' := by
+  rw [← coordinatePairUtility_context_iff hs z t k hij,
+    coordinatePairUtility_same hs z k hn ht hi hj hp hq hij hpq x y,
+    coordinatePairUtility_same hs z k hn ht hi hj hp hq hij hpq x' y']
+  exact hφ x y x' y'
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Global order from local representations along paths
+
+Supporting the global assembly in Proposition 2.14. A finite subdivision of
+a path transports local comparisons from one endpoint to the other. This
+step does not assume global representability, differentiability, or a
+uniform radius for the local charts.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped unitInterval
+
+/-- Local comparisons transport along a monotone-score path, including indifference. -/
+theorem interval_order_of_local_comparisons {u v : I → ℝ} (hv : Monotone v)
+    (hl : ∀ x : I, ∃ U : Set I, IsOpen U ∧ x ∈ U ∧
+      ∀ y ∈ U, ∀ z ∈ U, u y ≤ u z ↔ v y ≤ v z) :
+    u 0 ≤ u 1 ∧ (u 0 = u 1 → v 0 = v 1) := by
+  classical
+  choose U hU hx hrel using hl
+  have hcover : Set.univ ⊆ ⋃ x, U x :=
+    fun x _ => Set.mem_iUnion.mpr ⟨x, hx x⟩
+  obtain ⟨t, ht0, htm, ⟨N, hN⟩, htU⟩ :=
+    exists_monotone_Icc_subset_open_cover_unitInterval hU hcover
+  have hstep (n : ℕ) : u (t n) ≤ u (t (n + 1)) := by
+    obtain ⟨i, hi⟩ := htU n
+    have hn := htm (Nat.le_succ n)
+    exact (hrel i _ (hi ⟨le_rfl, hn⟩) _ (hi ⟨hn, le_rfl⟩)).mpr (hv hn)
+  have hum : Monotone (fun n => u (t n)) := monotone_nat_of_le_succ hstep
+  have hle : u 0 ≤ u 1 := by
+    simpa only [ht0, hN N le_rfl] using hum (Nat.zero_le N)
+  refine ⟨hle, fun he => ?_⟩
+  have huconst (n : ℕ) : u (t n) = u 0 := by
+    apply le_antisymm
+    · calc
+        u (t n) ≤ u (t (max n N)) := hum (le_max_left _ _)
+        _ = u 1 := congrArg u (hN _ (le_max_right _ _))
+        _ = u 0 := he.symm
+    · simpa only [ht0] using hum (Nat.zero_le n)
+  have hvconst (n : ℕ) : v (t n) = v 0 := by
+    induction n with
+    | zero => rw [ht0]
+    | succ n ih =>
+      obtain ⟨i, hi⟩ := htU n
+      have hn := htm (Nat.le_succ n)
+      have hlmem := hi (show t n ∈ Set.Icc (t n) (t (n + 1)) from ⟨le_rfl, hn⟩)
+      have hrmem := hi (show t (n + 1) ∈ Set.Icc (t n) (t (n + 1)) from ⟨hn, le_rfl⟩)
+      have hvle : v (t (n + 1)) ≤ v (t n) :=
+        (hrel i _ hrmem _ hlmem).mp (by rw [huconst, huconst])
+      exact (le_antisymm hvle (hv hn)).trans ih
+  simpa only [hN N le_rfl] using (hvconst N).symm
+
+/-- A strict endpoint score difference is strict in the locally represented order as well. -/
+theorem interval_strict_order_of_local_comparisons {u v : I → ℝ} (hv : Monotone v)
+    (hl : ∀ x : I, ∃ U : Set I, IsOpen U ∧ x ∈ U ∧
+      ∀ y ∈ U, ∀ z ∈ U, u y ≤ u z ↔ v y ≤ v z) (hstrict : v 0 < v 1) :
+    u 0 < u 1 := by
+  obtain ⟨hle, he⟩ := interval_order_of_local_comparisons hv hl
+  exact lt_of_le_of_ne hle (fun h => (ne_of_lt hstrict) (he h))
+
+/-- Continuous paths carry a local comparison cover back to the compact unit interval. -/
+theorem path_order_of_local_comparisons {X : Type*} [TopologicalSpace X] {u v : X → ℝ}
+    (hl : ∀ x, ∃ U : Set X, IsOpen U ∧ x ∈ U ∧
+      ∀ y ∈ U, ∀ z ∈ U, u y ≤ u z ↔ v y ≤ v z)
+    {p : I → X} (hp : Continuous p) (hv : Monotone (v ∘ p)) :
+    u (p 0) ≤ u (p 1) ∧ (u (p 0) = u (p 1) → v (p 0) = v (p 1)) := by
+  apply interval_order_of_local_comparisons (u := u ∘ p) hv
+  intro t
+  obtain ⟨U, hU, ht, hrel⟩ := hl (p t)
+  exact ⟨p ⁻¹' U, hU.preimage hp, ht, fun _ hs _ hr => hrel _ hs _ hr⟩
+
+/-- Local representation is global when every ordered pair admits a monotone-score path. -/
+theorem global_order_of_local_comparisons {X : Type*} [TopologicalSpace X] {u v : X → ℝ}
+    (hl : ∀ x, ∃ U : Set X, IsOpen U ∧ x ∈ U ∧
+      ∀ y ∈ U, ∀ z ∈ U, u y ≤ u z ↔ v y ≤ v z)
+    (hp : ∀ x y, v x ≤ v y → ∃ p : I → X,
+      Continuous p ∧ p 0 = x ∧ p 1 = y ∧ Monotone (v ∘ p)) :
+    ∀ x y, u x ≤ u y ↔ v x ≤ v y := by
+  have hle (x y : X) (hxy : v x ≤ v y) :
+      u x ≤ u y ∧ (u x = u y → v x = v y) := by
+    obtain ⟨p, hpc, hp0, hp1, hpm⟩ := hp x y hxy
+    simpa only [hp0, hp1] using path_order_of_local_comparisons hl hpc hpm
+  intro x y
+  constructor
+  · intro hxy
+    by_contra hvxy
+    have hvyx : v y < v x := lt_of_not_ge hvxy
+    obtain ⟨huyx, he⟩ := hle y x hvyx.le
+    exact (ne_of_lt hvyx) (he (le_antisymm huyx hxy))
+  · intro hxy
+    exact (hle x y hxy).1
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Finite additive scales at attained endpoints
+
+Preparation for the boundary cases in Proposition 2.14. Continuity of the
+original pair utility and a strict comparison in a companion coordinate
+bound the interior additive scale at any attained least or greatest rank.
+No boundedness of the constructed cardinal scale is assumed.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A least attained rank and one strict companion comparison bound the additive scale below. -/
+theorem additive_scale_bddBelow_at_least {X Y : Type*} [Preorder X] [TopologicalSpace X]
+    {D : Set X} (hD : Dense D) {u : X × Y → ℝ}
+    {f : X → ℝ} {g : Y → ℝ} {a : X} (ha : ∀ x, a ≤ x) {b c : Y}
+    (hc : Continuous (fun x => u (x, b))) (hm : Monotone (fun x => u (x, c)))
+    (hbc : u (a, b) < u (a, c))
+    (hr : ∀ x ∈ D, ∀ y ∈ D,
+      u (x, b) ≤ u (y, c) ↔ f x + g b ≤ f y + g c) :
+    BddBelow (f '' D) := by
+  have hopen : IsOpen {x | u (x, b) < u (a, c)} := isOpen_lt hc continuous_const
+  obtain ⟨x, hx, hux⟩ := hD.exists_mem_open hopen ⟨a, hbc⟩
+  refine ⟨f x + g b - g c, ?_⟩
+  rintro _ ⟨y, hy, rfl⟩
+  have hu : u (x, b) ≤ u (y, c) := hux.le.trans (hm (ha y))
+  have := (hr x hx y hy).mp hu
+  linarith
+
+/-- A greatest attained rank and one strict companion comparison bound the scale above. -/
+theorem additive_scale_bddAbove_at_greatest {X Y : Type*} [Preorder X] [TopologicalSpace X]
+    {D : Set X} (hD : Dense D) {u : X × Y → ℝ}
+    {f : X → ℝ} {g : Y → ℝ} {a : X} (ha : ∀ x, x ≤ a) {b c : Y}
+    (hc : Continuous (fun x => u (x, c))) (hm : Monotone (fun x => u (x, b)))
+    (hbc : u (a, b) < u (a, c))
+    (hr : ∀ x ∈ D, ∀ y ∈ D,
+      u (x, b) ≤ u (y, c) ↔ f x + g b ≤ f y + g c) :
+    BddAbove (f '' D) := by
+  have hopen : IsOpen {x | u (a, b) < u (x, c)} := isOpen_lt continuous_const hc
+  obtain ⟨x, hx, hux⟩ := hD.exists_mem_open hopen ⟨a, hbc⟩
+  refine ⟨f x + g c - g b, ?_⟩
+  rintro _ ⟨y, hy, rfl⟩
+  have hu : u (y, b) ≤ u (x, c) := (hm (ha y)).trans hux.le
+  have := (hr y hy x hx).mp hu
+  linarith
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Extending interval scales to attained endpoints
+
+A continuous monotone scale on a dense subset extends continuously when the
+only missing points are least or greatest elements and the corresponding
+one-sided range is bounded. On a densely ordered domain, strict monotonicity
+is preserved. These lemmas supply the endpoint step for Proposition 2.14.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Filter
+open scoped Topology
+
+/-- Approaching a missing least element is cofinal in the dense domain's lower end. -/
+theorem tendsto_dense_comap_atBot {X : Type*} [LinearOrder X] [TopologicalSpace X]
+    [OrderTopology X] {D : Set X} {a : X} (ha : a ∉ D) (hmin : IsBot a) :
+    Tendsto (id : D → D) ((𝓝 a).comap ((↑) : D → X)) atBot := by
+  apply tendsto_atBot.mpr
+  intro b
+  have hab : a < (b : X) := lt_of_le_of_ne (hmin b) (fun h => ha (h ▸ b.property))
+  have hn : {x : D | (x : X) < (b : X)} ∈ (𝓝 a).comap ((↑) : D → X) :=
+    Filter.preimage_mem_comap (Iio_mem_nhds hab)
+  exact Filter.mem_of_superset hn (fun _ hx => hx.le)
+
+/-- Approaching a missing greatest element is cofinal in the dense domain's upper end. -/
+theorem tendsto_dense_comap_atTop {X : Type*} [LinearOrder X] [TopologicalSpace X]
+    [OrderTopology X] {D : Set X} {a : X} (ha : a ∉ D) (hmax : IsTop a) :
+    Tendsto (id : D → D) ((𝓝 a).comap ((↑) : D → X)) atTop := by
+  apply tendsto_atTop.mpr
+  intro b
+  have hab : (b : X) < a := lt_of_le_of_ne (hmax b) (fun h => ha (h ▸ b.property))
+  have hn : {x : D | (b : X) < (x : X)} ∈ (𝓝 a).comap ((↑) : D → X) :=
+    Filter.preimage_mem_comap (Ioi_mem_nhds hab)
+  exact Filter.mem_of_superset hn (fun _ hx => hx.le)
+
+/-- Finite one-sided bounds give a continuous extension across missing extreme points. -/
+theorem exists_continuous_endpoint_extension {X : Type*} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] {D : Set X} (hD : Dense D)
+    (hedge : ∀ x, x ∉ D → IsBot x ∨ IsTop x) {f : D → ℝ}
+    (hf : Continuous f) (hm : Monotone f)
+    (hlo : ∀ x, x ∉ D → IsBot x → BddBelow (Set.range f))
+    (hhi : ∀ x, x ∉ D → IsTop x → BddAbove (Set.range f)) :
+    ∃ g : X → ℝ, Continuous g ∧ ∀ x : D, g x = f x := by
+  have hlimit : ∀ x : X, ∃ y : ℝ,
+      Tendsto f ((𝓝 x).comap ((↑) : D → X)) (𝓝 y) := by
+    intro x
+    by_cases hx : x ∈ D
+    · refine ⟨f ⟨x, hx⟩, ?_⟩
+      rw [← hD.isDenseInducing_val.nhds_eq_comap ⟨x, hx⟩]
+      exact hf.continuousAt
+    · rcases hedge x hx with hmin | hmax
+      · exact ⟨⨅ d, f d, (tendsto_atBot_ciInf hm (hlo x hx hmin)).comp
+          (tendsto_dense_comap_atBot hx hmin)⟩
+      · exact ⟨⨆ d, f d, (tendsto_atTop_ciSup hm (hhi x hx hmax)).comp
+          (tendsto_dense_comap_atTop hx hmax)⟩
+  exact ⟨hD.extend f, hD.continuous_extend hlimit, hD.extend_eq hf⟩
+
+/-- A continuous extension of a dense monotone function is below every later dense value. -/
+theorem continuous_extension_le_dense {X : Type*} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] {D : Set X} (hD : Dense D)
+    {f : D → ℝ} (hm : Monotone f) {g : X → ℝ} (hg : Continuous g)
+    (heq : ∀ x : D, g x = f x) {x : X} {a : D} (hxa : x < (a : X)) :
+    g x ≤ f a := by
+  by_contra! h
+  have hopen : IsOpen {z : X | f a < g z ∧ z < (a : X)} :=
+    (isOpen_lt continuous_const hg).inter isOpen_Iio
+  obtain ⟨z, hz, hzg, hza⟩ := hD.exists_mem_open hopen ⟨x, h, hxa⟩
+  have hmono := hm (show (⟨z, hz⟩ : D) ≤ a from hza.le)
+  rw [← heq ⟨z, hz⟩] at hmono
+  exact (not_lt_of_ge hmono) hzg
+
+/-- A continuous extension of a dense monotone function is above every earlier dense value. -/
+theorem dense_le_continuous_extension {X : Type*} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] {D : Set X} (hD : Dense D)
+    {f : D → ℝ} (hm : Monotone f) {g : X → ℝ} (hg : Continuous g)
+    (heq : ∀ x : D, g x = f x) {x : X} {a : D} (hax : (a : X) < x) :
+    f a ≤ g x := by
+  by_contra! h
+  have hopen : IsOpen {z : X | g z < f a ∧ (a : X) < z} :=
+    (isOpen_lt hg continuous_const).inter isOpen_Ioi
+  obtain ⟨z, hz, hzg, haz⟩ := hD.exists_mem_open hopen ⟨x, h, hax⟩
+  have hmono := hm (show a ≤ (⟨z, hz⟩ : D) from haz.le)
+  rw [← heq ⟨z, hz⟩] at hmono
+  exact (not_lt_of_ge hmono) hzg
+
+/-- A continuous extension of a strictly increasing dense scale stays strictly increasing. -/
+theorem continuous_extension_strictMono {X : Type*} [LinearOrder X] [DenselyOrdered X]
+    [TopologicalSpace X] [OrderTopology X] {D : Set X} (hD : Dense D)
+    {f : D → ℝ} (hm : StrictMono f) {g : X → ℝ} (hg : Continuous g)
+    (heq : ∀ x : D, g x = f x) : StrictMono g := by
+  intro x y hxy
+  obtain ⟨a, ha, hxa, hay⟩ := hD.exists_between hxy
+  obtain ⟨b, hb, hab, hby⟩ := hD.exists_between hay
+  have hlo := continuous_extension_le_dense hD hm.monotone hg heq
+    (a := ⟨a, ha⟩) hxa
+  have hhi := dense_le_continuous_extension hD hm.monotone hg heq
+    (a := ⟨b, hb⟩) hby
+  exact hlo.trans_lt ((hm (show (⟨a, ha⟩ : D) < ⟨b, hb⟩ from hab)).trans_le hhi)
+
+/-- A dense strict scale extends continuously and strictly across bounded attained endpoints. -/
+theorem exists_continuous_strictMono_endpoint_extension {X : Type*} [LinearOrder X]
+    [DenselyOrdered X] [TopologicalSpace X] [OrderTopology X] {D : Set X} (hD : Dense D)
+    (hedge : ∀ x, x ∉ D → IsBot x ∨ IsTop x) {f : D → ℝ}
+    (hf : Continuous f) (hm : StrictMono f)
+    (hlo : ∀ x, x ∉ D → IsBot x → BddBelow (Set.range f))
+    (hhi : ∀ x, x ∉ D → IsTop x → BddAbove (Set.range f)) :
+    ∃ g : X → ℝ, Continuous g ∧ StrictMono g ∧ ∀ x : D, g x = f x := by
+  obtain ⟨g, hg, heq⟩ := exists_continuous_endpoint_extension hD hedge hf hm.monotone hlo hhi
+  exact ⟨g, hg, continuous_extension_strictMono hD hm hg heq, heq⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Extending utility comparisons from a dense product domain
+
+Continuous strictly increasing utilities on products of densely ordered blocks
+represent the same preference if they agree on a dense subset. The perturbation
+argument preserves strict comparisons at boundary bundles; continuity alone
+would only preserve their weak limits.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- Agreement on a dense set transports strict comparisons to weak comparisons everywhere. -/
+theorem dense_comparison_strict_implies_le {X : Type*} [TopologicalSpace X]
+    {D : Set X} (hD : Dense D) {u v : X → ℝ} (hu : Continuous u) (hv : Continuous v)
+    (hr : ∀ x ∈ D, ∀ y ∈ D, u x ≤ u y ↔ v x ≤ v y) {x y : X} (hxy : u x < u y) :
+    v x ≤ v y := by
+  by_contra! h
+  have hopen : IsOpen {p : X × X | u p.1 < u p.2 ∧ v p.2 < v p.1} :=
+    (isOpen_lt (hu.comp continuous_fst) (hu.comp continuous_snd)).inter
+      (isOpen_lt (hv.comp continuous_snd) (hv.comp continuous_fst))
+  obtain ⟨⟨a, b⟩, hab, hub, hvb⟩ := (hD.prod hD).exists_mem_open hopen ⟨(x, y), hxy, h⟩
+  exact (not_lt_of_ge ((hr a hab.1 b hab.2).mp hub.le)) hvb
+
+/-- There is room for a strict improvement below any higher continuous monotone utility level. -/
+theorem exists_product_improvement_below {I : Type*} {B : I → Type*}
+    [∀ i, LinearOrder (B i)] [∀ i, DenselyOrdered (B i)]
+    [∀ i, TopologicalSpace (B i)] [∀ i, OrderTopology (B i)]
+    {u v : (∀ i, B i) → ℝ} (hu : StrictMono u) (hv : Continuous v) (hvm : Monotone v)
+    {x y : ∀ i, B i} (hxy : v x < v y) :
+    ∃ z, u x < u z ∧ v z < v y := by
+  classical
+  have hnot : ¬ y ≤ x := fun h => (not_lt_of_ge (hvm h)) hxy
+  obtain ⟨i, hi⟩ := not_forall.mp hnot
+  have hxi : x i < y i := lt_of_not_ge hi
+  have hc : Continuous (fun a : B i => v (Function.update x i a)) :=
+    hv.comp (continuous_const.update i continuous_id)
+  have hn : {a : B i | v (Function.update x i a) < v y} ∈ 𝓝 (x i) :=
+    (isOpen_lt hc continuous_const).mem_nhds (by simpa using hxy)
+  obtain ⟨b, hb, hsub⟩ := exists_Ico_subset_of_mem_nhds hn ⟨y i, hxi⟩
+  obtain ⟨a, hxa, hab⟩ := exists_between hb
+  have hlt : x < Function.update x i a := by
+    refine lt_iff_le_not_ge.mpr ⟨?_, ?_⟩
+    · intro j
+      by_cases hj : j = i
+      · subst j
+        simpa using hxa.le
+      · simp only [Function.update_of_ne hj, le_refl]
+    · intro h
+      have hi' := h i
+      simp only [Function.update_self] at hi'
+      exact (not_le_of_gt hxa) hi'
+  exact ⟨Function.update x i a, hu hlt, hsub ⟨hxa.le, hab⟩⟩
+
+/-- Dense agreement preserves strict comparisons on products, including their endpoints. -/
+theorem dense_product_strict_comparison {I : Type*} {B : I → Type*}
+    [∀ i, LinearOrder (B i)] [∀ i, DenselyOrdered (B i)]
+    [∀ i, TopologicalSpace (B i)] [∀ i, OrderTopology (B i)]
+    {D : Set (∀ i, B i)} (hD : Dense D) {u v : (∀ i, B i) → ℝ}
+    (hu : Continuous u) (hv : Continuous v) (hum : StrictMono u) (hvm : Monotone v)
+    (hr : ∀ x ∈ D, ∀ y ∈ D, u x ≤ u y ↔ v x ≤ v y)
+    {x y : ∀ i, B i} (hxy : v x < v y) : u x < u y := by
+  have hr' : ∀ x ∈ D, ∀ y ∈ D, v x ≤ v y ↔ u x ≤ u y :=
+    fun x hx y hy => (hr x hx y hy).symm
+  have hle := dense_comparison_strict_implies_le hD hv hu hr' hxy
+  by_contra! hnot
+  have heq := le_antisymm hle hnot
+  obtain ⟨z, hzu, hzv⟩ := exists_product_improvement_below hum hv hvm hxy
+  have hle' := dense_comparison_strict_implies_le hD hv hu hr' hzv
+  exact (not_lt_of_ge (hle'.trans_eq heq.symm)) hzu
+
+/-- Continuous strictly increasing product utilities agreeing densely agree everywhere. -/
+theorem dense_product_comparison {I : Type*} {B : I → Type*}
+    [∀ i, LinearOrder (B i)] [∀ i, DenselyOrdered (B i)]
+    [∀ i, TopologicalSpace (B i)] [∀ i, OrderTopology (B i)]
+    {D : Set (∀ i, B i)} (hD : Dense D) {u v : (∀ i, B i) → ℝ}
+    (hu : Continuous u) (hv : Continuous v) (hum : StrictMono u) (hvm : StrictMono v)
+    (hr : ∀ x ∈ D, ∀ y ∈ D, u x ≤ u y ↔ v x ≤ v y) :
+    ∀ x y, u x ≤ u y ↔ v x ≤ v y := by
+  intro x y
+  constructor
+  · intro h
+    by_contra! hv'
+    exact (not_lt_of_ge h) (dense_product_strict_comparison hD hu hv hum hvm.monotone hr hv')
+  · intro h
+    by_contra! hu'
+    exact (not_lt_of_ge h) (dense_product_strict_comparison hD hv hu hvm hum.monotone
+      (fun x hx y hy => (hr x hx y hy).symm) hu')
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# From pair transfers to a finite additive representation
+
+Preparation for Kreps I, Proposition 2.14. A strictly increasing utility on a
+finite interval product is represented by the coordinate sum whenever its
+two-coordinate sum-preserving transfers leave utility unchanged. Convex
+interpolation supplies the comparison step after the finite transfer argument.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [Fintype I] {S : I → Set ℝ}
+variable [∀ i, Set.OrdConnected (S i)]
+
+/-- A smaller total score can be attained at a bundle coordinatewise below the larger one. -/
+theorem exists_le_bundle_with_sum (x y : ∀ i, S i)
+    (hxy : ∑ i, (x i).val ≤ ∑ i, (y i).val) :
+    ∃ z : ∀ i, S i, z ≤ y ∧ ∑ i, (z i).val = ∑ i, (x i).val := by
+  let m : ∀ i, S i := fun i => min (x i) (y i)
+  have hmx : ∑ i, (m i).val ≤ ∑ i, (x i).val :=
+    Finset.sum_le_sum (fun i _ => min_le_left _ _)
+  have hmy (i : I) : (m i).val ≤ (y i).val := min_le_right _ _
+  by_cases he : ∑ i, (y i).val = ∑ i, (m i).val
+  · exact ⟨y, le_rfl, le_antisymm (he ▸ hmx) hxy⟩
+  · have hpos : 0 < (∑ i, (y i).val) - ∑ i, (m i).val := by
+      have hle := Finset.sum_le_sum (fun i (_ : i ∈ Finset.univ) => hmy i)
+      exact sub_pos.mpr (lt_of_le_of_ne hle (Ne.symm he))
+    let θ := ((∑ i, (x i).val) - ∑ i, (m i).val) /
+      ((∑ i, (y i).val) - ∑ i, (m i).val)
+    have hθ0 : 0 ≤ θ := div_nonneg (sub_nonneg.mpr hmx) hpos.le
+    have hθ1 : θ ≤ 1 := (div_le_one hpos).mpr (by linarith)
+    let z : ∀ i, S i := fun i => ⟨(1 - θ) * (m i).val + θ * (y i).val,
+      (show Set.OrdConnected (S i) from inferInstance).out (m i).property (y i).property
+        ⟨by nlinarith [hmy i], by nlinarith [hmy i]⟩⟩
+    refine ⟨z, ?_, ?_⟩
+    · intro i
+      change (1 - θ) * (m i).val + θ * (y i).val ≤ (y i).val
+      nlinarith [hmy i]
+    · change (∑ i, ((1 - θ) * (m i).val + θ * (y i).val)) = _
+      rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]
+      have hmul : θ * ((∑ i, (y i).val) - ∑ i, (m i).val) =
+          (∑ i, (x i).val) - ∑ i, (m i).val := div_mul_cancel₀ _ hpos.ne'
+      nlinarith
+
+/-- Strict comparison of total scores gives strict utility comparison. -/
+theorem pairSumInvariant_lt_of_sum_lt [DecidableEq I] {F : (∀ i, S i) → ℝ}
+    (hF : PairSumInvariant F) (hm : StrictMono F) (x y : ∀ i, S i)
+    (hxy : ∑ i, (x i).val < ∑ i, (y i).val) : F x < F y := by
+  obtain ⟨z, hzy, hSum⟩ := exists_le_bundle_with_sum x y hxy.le
+  have hne : z ≠ y := by
+    intro h
+    rw [h] at hSum
+    exact hxy.ne hSum.symm
+  have he := pairSumInvariant_eq_of_sum_eq hF x z hSum.symm
+  rw [he]
+  exact hm (lt_of_le_of_ne hzy hne)
+
+/-- Every comparison is determined by the sum of the interval coordinates. -/
+theorem pairSumInvariant_comparison [DecidableEq I] {F : (∀ i, S i) → ℝ}
+    (hF : PairSumInvariant F) (hm : StrictMono F) (x y : ∀ i, S i) :
+    F x ≤ F y ↔ (∑ i, (x i).val) ≤ ∑ i, (y i).val := by
+  constructor
+  · intro h
+    by_contra hnot
+    exact (not_lt_of_ge h) (pairSumInvariant_lt_of_sum_lt hF hm y x (lt_of_not_ge hnot))
+  · intro h
+    rcases h.eq_or_lt with he | hl
+    · exact (pairSumInvariant_eq_of_sum_eq hF x y he).le
+    · exact (pairSumInvariant_lt_of_sum_lt hF hm x y hl).le
+
+/-- Pair-transfer invariance gives the finite additive utility representation. -/
+theorem pairSumInvariant_represents [DecidableEq I] {F : (∀ i, S i) → ℝ}
+    (hF : PairSumInvariant F) (hm : StrictMono F) :
+    Represents (AdditiveUtility (fun i (x : S i) => x.val)) (UtilityPref F) := by
+  intro x y
+  exact pairSumInvariant_comparison hF hm y x
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Affine calibration on real coordinate domains
+
+The chart calibration lemmas are expressed for ambient real functions on
+interval domains. This matches the coordinate atlas used to extend the local
+additive scales in Proposition 2.14.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A nonempty open real set contains a strictly ordered pair. -/
+theorem open_real_set_has_pair {S : Set ℝ} (hS : IsOpen S) {x : ℝ} (hx : x ∈ S) :
+    ∃ a ∈ S, ∃ b ∈ S, a < b := by
+  obtain ⟨b, hxb, hb⟩ := exists_Ico_subset_of_mem_nhds (hS.mem_nhds hx) (exists_gt x)
+  refine ⟨x, hx, (x + b) / 2, hb ⟨by linarith, by linarith⟩, by linarith⟩
+
+/-- Positive affine uniqueness for ambient scales restricted to two real intervals. -/
+theorem pair_chart_positive_affine_unique_on {S T : Set ℝ} (hS : S.OrdConnected)
+    (hT : T.OrdConnected) {w v w' v' : ℝ → ℝ}
+    (hw : ContinuousOn w S) (hv : ContinuousOn v S)
+    (hw' : ContinuousOn w' T) (hv' : ContinuousOn v' T)
+    (hwm : StrictMonoOn w S) (hvm : StrictMonoOn v S)
+    (hwm' : StrictMonoOn w' T) (hvm' : StrictMonoOn v' T)
+    (hp : ∀ x ∈ S, ∀ x' ∈ S, ∀ y ∈ T, ∀ y' ∈ T,
+      w x + w' y = w x' + w' y' → v x + v' y = v x' + v' y')
+    {a b c d : ℝ} (ha : a ∈ S) (hb : b ∈ S) (hab : a < b)
+    (hc : c ∈ T) (hd : d ∈ T) (hcd : c < d) :
+    ∃ slope β γ : ℝ, 0 < slope ∧ (∀ x ∈ S, v x = slope * w x + β) ∧
+      ∀ y ∈ T, v' y = slope * w' y + γ := by
+  let : PreconnectedSpace S := isPreconnected_iff_preconnectedSpace.mp hS.isPreconnected
+  let : PreconnectedSpace T := isPreconnected_iff_preconnectedSpace.mp hT.isPreconnected
+  obtain ⟨slope, β, γ, hpos, hf, hg⟩ := pair_chart_positive_affine_unique
+    (continuousOn_iff_continuous_domRestrict.mp hw) (continuousOn_iff_continuous_domRestrict.mp hv)
+    (continuousOn_iff_continuous_domRestrict.mp hw')
+    (continuousOn_iff_continuous_domRestrict.mp hv')
+    (fun x y hxy => hwm x.property y.property hxy)
+    (fun x y hxy => hvm x.property y.property hxy)
+    (fun x y hxy => hwm' x.property y.property hxy)
+    (fun x y hxy => hvm' x.property y.property hxy)
+    (fun x x' y y' => hp x.val x.property x'.val x'.property y.val y.property y'.val y'.property)
+    (show (⟨a, ha⟩ : S) < ⟨b, hb⟩ from hab) (show (⟨c, hc⟩ : T) < ⟨d, hd⟩ from hcd)
+  exact ⟨slope, β, γ, hpos, fun x hx => hf ⟨x, hx⟩, fun y hy => hg ⟨y, hy⟩⟩
+
+/-- Fixing a companion increment forces translation transitions on two real intervals. -/
+theorem pair_chart_translation_on {S T : Set ℝ} (hS : S.OrdConnected)
+    (hT : T.OrdConnected) {w v w' v' : ℝ → ℝ}
+    (hw : ContinuousOn w S) (hv : ContinuousOn v S)
+    (hw' : ContinuousOn w' T) (hv' : ContinuousOn v' T)
+    (hwm : StrictMonoOn w S) (hvm : StrictMonoOn v S)
+    (hwm' : StrictMonoOn w' T) (hvm' : StrictMonoOn v' T)
+    (hp : ∀ x ∈ S, ∀ x' ∈ S, ∀ y ∈ T, ∀ y' ∈ T,
+      w x + w' y = w x' + w' y' → v x + v' y = v x' + v' y')
+    {a b c d : ℝ} (ha : a ∈ S) (hb : b ∈ S) (hab : a < b)
+    (hc : c ∈ T) (hd : d ∈ T) (hcd : c < d)
+    (hunit : v' d - v' c = w' d - w' c) :
+    ∃ β γ : ℝ, (∀ x ∈ S, v x = w x + β) ∧ ∀ y ∈ T, v' y = w' y + γ := by
+  obtain ⟨slope, β, γ, _, hf, hg⟩ := pair_chart_positive_affine_unique_on hS hT hw hv hw' hv'
+    hwm hvm hwm' hvm' hp ha hb hab hc hd hcd
+  have hpc := hg c hc
+  have hpd := hg d hd
+  have hlt := hwm' hc hd hcd
+  have hscale : slope = 1 := by nlinarith
+  exact ⟨β, γ, fun x hx => by simpa only [hscale, one_mul] using hf x hx,
+    fun y hy => by simpa only [hscale, one_mul] using hg y hy⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Positive affine atlases on real intervals
+
+A local increasing coordinate system with positive affine transition maps can be continued
+uniquely from any seed chart. This supplies the one-dimensional gluing step for additive utility
+scales in Proposition 2.14. Compatibility is a hypothesis on every chart overlap; synchronizing
+the scales of distinct economic coordinates is a separate obligation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Set
+
+/-- An interval cover with increasing coordinates and positive affine changes of coordinate. -/
+structure PositiveAffineIntervalAtlas (ι : Type*) (S : Set ℝ) where
+  /-- The open domain of each chart. -/
+  domain : ι → Set ℝ
+  /-- Chart values, with values outside the chart domain immaterial. -/
+  coord : ι → ℝ → ℝ
+  /-- Chart domains are open in the real line. -/
+  isOpen : ∀ i, IsOpen (domain i)
+  /-- Chart domains are intervals. -/
+  interval : ∀ i, (domain i).OrdConnected
+  /-- Every chart stays in the underlying interval. -/
+  subset : ∀ i, domain i ⊆ S
+  /-- The charts cover the underlying interval. -/
+  cover : ∀ x ∈ S, ∃ i, x ∈ domain i
+  /-- Each coordinate is continuous on its domain. -/
+  continuous : ∀ i, ContinuousOn (coord i) (domain i)
+  /-- Each coordinate preserves orientation. -/
+  increasing : ∀ i, StrictMonoOn (coord i) (domain i)
+  /-- Changes of coordinate are positive affine on every overlap. -/
+  transition : ∀ i j, ∃ A B : ℝ, 0 < A ∧
+    ∀ x ∈ domain i ∩ domain j, coord i x = A * coord j x + B
+
+/-- A coordinate is locally compatible with all the charts that meet its domain. -/
+def PositiveAffineIntervalAtlas.Compatible {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (f : ℝ → ℝ) (D : Set ℝ) : Prop :=
+  ∀ i, LocallyPositiveAffineOn f (a.coord i) (D ∩ a.domain i)
+
+variable {ι : Type*} {S : Set ℝ}
+
+/-- A continuation of a seed chart to a larger open interval. -/
+structure AffineIntervalSection (a : PositiveAffineIntervalAtlas ι S) (seed : ι) where
+  /-- The interval on which this continuation is defined. -/
+  domain : Set ℝ
+  /-- The continuation domain is open. -/
+  isOpen : IsOpen domain
+  /-- The continuation domain is an interval. -/
+  interval : domain.OrdConnected
+  /-- The continuation stays in the underlying interval. -/
+  subset : domain ⊆ S
+  /-- The continued coordinate. -/
+  value : ℝ → ℝ
+  /-- Continuation preserves continuity. -/
+  continuous : ContinuousOn value domain
+  /-- Continuation preserves strict increase. -/
+  increasing : StrictMonoOn value domain
+  /-- The continuation respects the given local coordinate system. -/
+  compatible : a.Compatible value domain
+  /-- The seed chart remains inside the continuation domain. -/
+  seed_subset : a.domain seed ⊆ domain
+  /-- The scale agrees with the prescribed normalization on the seed chart. -/
+  seed_eq : ∀ x ∈ a.domain seed, value x = a.coord seed x
+
+/-- Every chart is compatible with the atlas. -/
+theorem PositiveAffineIntervalAtlas.compatible_chart {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (i : ι) : a.Compatible (a.coord i) (a.domain i) := by
+  intro j
+  obtain ⟨A, B, hA, he⟩ := a.transition i j
+  exact locallyPositiveAffineOn_of_affine ((a.isOpen i).inter (a.isOpen j)) hA he
+
+/-- The seed chart itself is a continuation with the prescribed normalization. -/
+def PositiveAffineIntervalAtlas.seedSection {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (seed : ι) : AffineIntervalSection a seed where
+  domain := a.domain seed
+  isOpen := a.isOpen seed
+  interval := a.interval seed
+  subset := a.subset seed
+  value := a.coord seed
+  continuous := a.continuous seed
+  increasing := a.increasing seed
+  compatible := a.compatible_chart seed
+  seed_subset := Subset.rfl
+  seed_eq := fun _ _ => rfl
+
+/-- Compatibility gives a single affine relation on each nonempty connected chart overlap. -/
+theorem PositiveAffineIntervalAtlas.Compatible.affine {ι : Type*} {S D : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {f : ℝ → ℝ} (h : a.Compatible f D)
+    (hD : D.OrdConnected) (i : ι) :
+    ∃ A B : ℝ, 0 < A ∧ ∀ x ∈ D ∩ a.domain i, f x = A * a.coord i x + B := by
+  by_cases hne : (D ∩ a.domain i).Nonempty
+  · exact locallyPositiveAffineOn_global (hD.inter (a.interval i)).isPreconnected hne
+      ((a.increasing i).mono inter_subset_right) (h i)
+  · exact ⟨1, 0, zero_lt_one, fun x hx => (hne ⟨x, hx⟩).elim⟩
+
+/-- Two compatible coordinates are locally positive affine functions of one another. -/
+theorem PositiveAffineIntervalAtlas.Compatible.local_relation {ι : Type*} {S D E : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {f g : ℝ → ℝ}
+    (hf : a.Compatible f D) (hg : a.Compatible g E) (hDS : D ⊆ S) :
+    LocallyPositiveAffineOn f g (D ∩ E) := by
+  intro x hx
+  obtain ⟨i, hxi⟩ := a.cover x (hDS hx.1)
+  obtain ⟨U, hU, hxU, hUD, A, B, hA, heF⟩ := hf i x ⟨hx.1, hxi⟩
+  obtain ⟨V, hV, hxV, hVE, C, F, hC, heG⟩ := hg i x ⟨hx.2, hxi⟩
+  refine ⟨U ∩ V, hU.inter hV, ⟨hxU, hxV⟩,
+    fun _ hz => ⟨(hUD hz.1).1, (hVE hz.2).1⟩,
+    A / C, B - A / C * F, div_pos hA hC, ?_⟩
+  intro y hy
+  rw [heF y hy.1, heG y hy.2]
+  field_simp
+  nlinarith [ne_of_gt hC]
+
+/-- Seed-normalized continuations agree on their entire overlap. -/
+theorem AffineIntervalSection.unique {ι : Type*} {S : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {seed : ι}
+    (hne : (a.domain seed).Nonempty) (p q : AffineIntervalSection a seed) :
+    EqOn p.value q.value (p.domain ∩ q.domain) := by
+  obtain ⟨x, hx⟩ := hne
+  have hdom : (p.domain ∩ q.domain).Nonempty := ⟨x, p.seed_subset hx, q.seed_subset hx⟩
+  obtain ⟨A, B, _, he⟩ := locallyPositiveAffineOn_global
+    (p.interval.inter q.interval).isPreconnected hdom
+    (q.increasing.mono inter_subset_right)
+    (p.compatible.local_relation q.compatible p.subset)
+  have hcoeff := affine_coefficients_unique (q.increasing.mono q.seed_subset)
+    (a.isOpen seed) ⟨x, hx⟩ Subset.rfl
+    (A := A) (B := B) (C := 1) (D := 0) (fun y hy => by
+      have hey := he y ⟨p.seed_subset hy, q.seed_subset hy⟩
+      rw [p.seed_eq y hy, ← q.seed_eq y hy] at hey
+      simpa only [one_mul, add_zero] using hey.symm)
+  intro y hy
+  simpa only [hcoeff.1, hcoeff.2, one_mul, add_zero] using he y hy
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A common interval for all active score coordinates
+
+Finite intersection gives one score neighborhood at every specified interior
+reference value. Its coordinate embeddings leave inactive coordinates at their
+reference values, so singleton score ranges impose no restriction on the interval.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} {S : I → Set ℝ}
+
+/-- Finitely many active score ranges have a common interval at any common interior value. -/
+theorem exists_all_active_score_interval [Finite I] {T : Set I} {c : ℝ}
+    (hc : ∀ i ∈ T, c ∈ interior (S i)) :
+    ∃ L R, c ∈ Set.Ioo L R ∧ ∀ i ∈ T, Set.Ioo L R ⊆ S i := by
+  classical
+  have hn : ∀ᶠ x in nhds c, ∀ i ∈ T, x ∈ S i := by
+    apply Filter.eventually_all.mpr
+    intro i
+    by_cases hi : i ∈ T
+    · exact Filter.mem_of_superset (mem_interior_iff_mem_nhds.mp (hc i hi))
+        (fun x hx _ => hx)
+    · exact Filter.Eventually.of_forall (fun _ h => (hi h).elim)
+  obtain ⟨L, R, hcLR, hLR⟩ := mem_nhds_iff_exists_Ioo_subset.mp hn
+  exact ⟨L, R, hcLR, fun i hi x hx => hLR hx i hi⟩
+
+/-- Embed a common score in each active coordinate and retain all inactive reference scores. -/
+noncomputable def CommonActiveScoreEmbedding (z : ∀ i, S i) (T : Set I)
+    {J : Set ℝ} (hJ : ∀ i ∈ T, J ⊆ S i) (i : I) (x : J) : S i := by
+  classical
+  exact if hi : i ∈ T then ⟨x.val, hJ i hi x.property⟩ else z i
+
+/-- On active coordinates the common embedding is the ordinary set inclusion. -/
+theorem commonActiveScoreEmbedding_active (z : ∀ i, S i) (T : Set I)
+    {J : Set ℝ} (hJ : ∀ i ∈ T, J ⊆ S i) {i : I} (hi : i ∈ T) (x : J) :
+    CommonActiveScoreEmbedding z T hJ i x = Set.inclusion (hJ i hi) x := by
+  simp only [CommonActiveScoreEmbedding, dite_eq_left hi]
+
+/-- On inactive coordinates the common embedding leaves the reference score fixed. -/
+theorem commonActiveScoreEmbedding_inactive (z : ∀ i, S i) (T : Set I)
+    {J : Set ℝ} (hJ : ∀ i ∈ T, J ⊆ S i) {i : I} (hi : i ∉ T) (x : J) :
+    CommonActiveScoreEmbedding z T hJ i x = z i := by
+  simp only [CommonActiveScoreEmbedding, dite_eq_right hi]
+
+/-- The common embedding is continuous in every coordinate. -/
+theorem commonActiveScoreEmbedding_continuous (z : ∀ i, S i) (T : Set I)
+    {J : Set ℝ} (hJ : ∀ i ∈ T, J ⊆ S i) (i : I) :
+    Continuous (CommonActiveScoreEmbedding z T hJ i) := by
+  classical
+  by_cases hi : i ∈ T
+  · have he : CommonActiveScoreEmbedding z T hJ i = Set.inclusion (hJ i hi) :=
+      funext (commonActiveScoreEmbedding_active z T hJ hi)
+    rw [he]
+    exact continuous_inclusion _
+  · have he : CommonActiveScoreEmbedding z T hJ i = fun _ => z i :=
+      funext (commonActiveScoreEmbedding_inactive z T hJ hi)
+    rw [he]
+    exact continuous_const
+
+/-- Numerical axis normalization survives restriction to the common active interval. -/
+theorem commonActiveScoreEmbedding_axes [DecidableEq I] {V : (∀ i, S i) → ℝ} (z : ∀ i, S i)
+    (hv : ∀ i (q : S i), V (Function.update z i q) = q.val) (T : Set I)
+    {J : Set ℝ} (hJ : ∀ i ∈ T, J ⊆ S i) :
+    NormalizedCoordinateAxes V z (CommonActiveScoreEmbedding z T hJ) Subtype.val T := by
+  intro i hi x
+  rw [hv, commonActiveScoreEmbedding_active z T hJ hi]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Globalizing aligned local additive representations
+
+Supporting Proposition 2.14. Straight paths inside products of real intervals
+make their total score monotone between ordered endpoints. Consequently local
+representation by one aligned sum is a global representation. Constructing
+and aligning those coordinate scales is a separate, explicit obligation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped unitInterval BigOperators
+
+/-- Coordinatewise straight interpolation stays in a product of real intervals. -/
+def intervalProductPath {K : Type*} {S : K → Set ℝ} (hS : ∀ i, (S i).OrdConnected)
+    (x y : ∀ i, S i) (t : I) (i : K) : S i :=
+  ⟨(1 - t.val) * (x i).val + t.val * (y i).val, by
+    simpa only [smul_eq_mul] using (hS i).convex (x i).property (y i).property
+      (sub_nonneg.mpr t.property.2) t.property.1 (by ring)⟩
+
+/-- Straight interpolation is continuous in the product's relative topology. -/
+theorem intervalProductPath_continuous {K : Type*} {S : K → Set ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (x y : ∀ i, S i) :
+    Continuous (intervalProductPath hS x y) := by
+  apply continuous_pi
+  intro i
+  exact (((continuous_const.sub continuous_subtype_val).mul continuous_const).add
+    (continuous_subtype_val.mul continuous_const)).subtype_mk _
+
+/-- Straight interpolation has the prescribed endpoints. -/
+theorem intervalProductPath_endpoints {K : Type*} {S : K → Set ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (x y : ∀ i, S i) :
+    intervalProductPath hS x y 0 = x ∧ intervalProductPath hS x y 1 = y := by
+  constructor <;> funext i <;> apply Subtype.ext <;> simp [intervalProductPath]
+
+/-- Total score increases along the straight path whenever its endpoint scores are ordered. -/
+theorem intervalProductPath_sum_monotone {K : Type*} [Fintype K] {S : K → Set ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (x y : ∀ i, S i)
+    (hxy : ∑ i, (x i).val ≤ ∑ i, (y i).val) :
+    Monotone (fun t : I => ∑ i, (intervalProductPath hS x y t i).val) := by
+  have hs (t : I) : (∑ i, (intervalProductPath hS x y t i).val) =
+      (1 - t.val) * (∑ i, (x i).val) + t.val * (∑ i, (y i).val) := by
+    simp [intervalProductPath, Finset.sum_add_distrib, Finset.mul_sum]
+  intro a b hab
+  change a.val ≤ b.val at hab
+  change (∑ i, (intervalProductPath hS x y a i).val) ≤
+    ∑ i, (intervalProductPath hS x y b i).val
+  rw [hs, hs]
+  have := mul_nonneg (sub_nonneg.mpr hxy) (sub_nonneg.mpr hab)
+  nlinarith
+
+/-- Local representation by one aligned sum is global on any finite product of real intervals. -/
+theorem sum_represents_of_locally_represents {K : Type*} [Fintype K] {S : K → Set ℝ}
+    (hS : ∀ i, (S i).OrdConnected) {u : (∀ i, S i) → ℝ}
+    (hl : ∀ x, ∃ U : Set (∀ i, S i), IsOpen U ∧ x ∈ U ∧
+      ∀ y ∈ U, ∀ z ∈ U, u y ≤ u z ↔ ∑ i, (y i).val ≤ ∑ i, (z i).val) :
+    Represents (fun x : ∀ i, S i => ∑ i, (x i).val) (UtilityPref u) := by
+  have h := global_order_of_local_comparisons hl (fun x y hxy =>
+    ⟨intervalProductPath hS x y, intervalProductPath_continuous hS x y,
+      (intervalProductPath_endpoints hS x y).1, (intervalProductPath_endpoints hS x y).2,
+      intervalProductPath_sum_monotone hS x y hxy⟩)
+  intro x y
+  exact h y x
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Endpoint extensions on real score intervals
+
+A nonempty interior is dense in a real interval. Points of the interval outside
+that interior can only be attained least or greatest elements. Consequently,
+continuous strict interior scales with finite attained endpoint limits extend
+to the full score interval.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The real interior is dense relative to a nondegenerate interval. -/
+theorem interval_interior_dense {S : Set ℝ} (hS : S.OrdConnected)
+    (hn : (interior S).Nonempty) : Dense {x : S | x.val ∈ interior S} := by
+  rw [Subtype.dense_iff]
+  have he : ((↑) : S → ℝ) '' {x : S | x.val ∈ interior S} = interior S := by
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact hy
+    · intro hx
+      exact ⟨⟨x, interior_subset hx⟩, hx, rfl⟩
+  rw [he, (convex_iff_ordConnected.mpr hS).closure_interior_eq_closure_of_nonempty_interior hn]
+  exact subset_closure
+
+/-- A point of a real interval outside its interior is a least or greatest element. -/
+theorem interval_outside_interior_extreme {S : Set ℝ} (hS : S.OrdConnected)
+    (x : S) (hx : x.val ∉ interior S) : IsBot x ∨ IsTop x := by
+  by_contra! h
+  obtain ⟨a, ha⟩ := not_forall.mp h.1
+  obtain ⟨b, hb⟩ := not_forall.mp h.2
+  have hax : a.val < x.val := lt_of_not_ge ha
+  have hxb : x.val < b.val := lt_of_not_ge hb
+  apply hx
+  exact mem_interior_iff_mem_nhds.mpr
+    (Filter.mem_of_superset (Ioo_mem_nhds hax hxb) (fun _ hy =>
+      hS.out a.property b.property ⟨hy.1.le, hy.2.le⟩))
+
+/-- A continuous strict scale extends from an interval interior to its bounded attained ends. -/
+theorem interval_exists_continuous_strictMono_extension {S : Set ℝ} (hS : S.OrdConnected)
+    (hn : (interior S).Nonempty) {f : interior S → ℝ}
+    (hf : Continuous f) (hm : StrictMono f)
+    (hlo : ∀ x : S, x.val ∉ interior S → IsBot x → BddBelow (Set.range f))
+    (hhi : ∀ x : S, x.val ∉ interior S → IsTop x → BddAbove (Set.range f)) :
+    ∃ g : S → ℝ, Continuous g ∧ StrictMono g ∧
+      ∀ x : interior S, g (Set.inclusion interior_subset x) = f x := by
+  let : Fact S.OrdConnected := ⟨hS⟩
+  let D : Set S := {x | x.val ∈ interior S}
+  let inc : D → interior S := fun x => ⟨x.val.val, x.property⟩
+  let f' : D → ℝ := f ∘ inc
+  have hc : Continuous inc :=
+    (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
+  have hm' : StrictMono f' := fun _ _ h => hm h
+  have hr : Set.range f' = Set.range f := by
+    ext y
+    constructor
+    · rintro ⟨x, rfl⟩
+      exact ⟨inc x, rfl⟩
+    · rintro ⟨x, rfl⟩
+      exact ⟨⟨⟨x.val, interior_subset x.property⟩, x.property⟩, rfl⟩
+  obtain ⟨g, hg, hgm, heq⟩ := exists_continuous_strictMono_endpoint_extension
+    (interval_interior_dense hS hn) (interval_outside_interior_extreme hS)
+    (hf.comp hc) hm' (fun x hx he => hr ▸ hlo x hx he)
+    (fun x hx he => hr ▸ hhi x hx he)
+  exact ⟨g, hg, hgm, fun x => heq ⟨Set.inclusion interior_subset x, x.property⟩⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Additive representation after a change of coordinate scales
+
+Preparation for Kreps I, Proposition 2.14. Continuous strictly increasing
+coordinate scales on connected ordered blocks have interval ranges. The
+finite transfer theorem therefore applies directly to pair comparisons stated
+in those scales, and yields their sum as an actual utility representation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} {B C : I → Type*}
+
+/-- Applying coordinate maps commutes with replacing one coordinate. -/
+theorem coordinateMap_update [DecidableEq I] (f : ∀ i, B i → C i) (x : ∀ i, B i)
+    (i : I) (a : B i) :
+    (fun j => f j (Function.update x i a j)) =
+      Function.update (fun j => f j (x j)) i (f i a) := by
+  funext j
+  by_cases hji : j = i
+  · subst j
+    simp only [Function.update_self]
+  · simp only [Function.update_of_ne hji]
+
+/-- Pair transfers stated in continuous increasing scales determine the full additive utility. -/
+theorem represents_additive_of_pair_scale_invariance [DecidableEq I] [Fintype I]
+    [∀ i, LinearOrder (B i)] [∀ i, TopologicalSpace (B i)]
+    [∀ i, PreconnectedSpace (B i)] {F : (∀ i, B i) → ℝ} (hm : StrictMono F)
+    (w : ∀ i, B i → ℝ) (hwc : ∀ i, Continuous (w i)) (hwm : ∀ i, StrictMono (w i))
+    (hp : ∀ (x : ∀ i, B i) (i j : I) (a : B i) (b : B j), i ≠ j →
+      w i a + w j b = w i (x i) + w j (x j) →
+        F (Function.update (Function.update x i a) j b) = F x) :
+    Represents (AdditiveUtility w) (UtilityPref F) := by
+  let : ∀ i, Set.OrdConnected (Set.range (w i)) :=
+    fun i => (isPreconnected_range (hwc i)).ordConnected
+  let e (i : I) : B i ≃o Set.range (w i) := (hwm i).orderIso (w i)
+  let E : (∀ i, B i) ≃o (∀ i, Set.range (w i)) :=
+    { toEquiv := Equiv.piCongrRight (fun i => (e i).toEquiv)
+      map_rel_iff' := by
+        intro x y
+        exact forall_congr' (fun i => (e i).le_iff_le) }
+  let G : (∀ i, Set.range (w i)) → ℝ := fun q => F (E.symm q)
+  have hEi (i : I) (q : Set.range (w i)) : w i ((e i).symm q) = q.val :=
+    congrArg Subtype.val ((e i).apply_symm_apply q)
+  have hGp : PairSumInvariant G := by
+    intro q i j a b hij hab
+    have hnum : w i ((e i).symm a) + w j ((e j).symm b) =
+        w i ((E.symm q) i) + w j ((E.symm q) j) := by
+      change w i ((e i).symm a) + w j ((e j).symm b) =
+        w i ((e i).symm (q i)) + w j ((e j).symm (q j))
+      simpa only [hEi] using hab
+    have hh := hp (E.symm q) i j ((e i).symm a) ((e j).symm b) hij hnum
+    change F (fun k => (e k).symm (Function.update (Function.update q i a) j b k)) = _
+    rw [coordinateMap_update, coordinateMap_update]
+    exact hh
+  have hGm : StrictMono G := hm.comp E.symm.strictMono
+  intro x y
+  have hcmp := pairSumInvariant_comparison hGp hGm (E y) (E x)
+  change F (E.symm (E y)) ≤ F (E.symm (E x)) ↔ _ at hcmp
+  rw [E.symm_apply_apply, E.symm_apply_apply] at hcmp
+  exact hcmp
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Fixed-companion calibration of coordinate charts
+
+Preparation for Kreps I, Proposition 2.14. Along a varying target coordinate,
+keep two other essential coordinates at fixed reference values. Their chart
+domains always overlap the seed companions. Pair uniqueness fixes a positive
+scale for every chart; after dividing by it, all target-coordinate overlap
+transitions are translations. The fixed companions synchronize cardinal units.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A target-coordinate chart family with two fixed essential companion coordinates. -/
+structure CompanionChartFamily (K : Type*) where
+  domain : K → Fin 3 → Set ℝ
+  coord : K → Fin 3 → ℝ → ℝ
+  open_domain : ∀ k i, IsOpen (domain k i)
+  interval : ∀ k i, (domain k i).OrdConnected
+  continuous : ∀ k i, ContinuousOn (coord k i) (domain k i)
+  increasing : ∀ k i, StrictMonoOn (coord k i) (domain k i)
+  firstReference : ℝ
+  secondReference : ℝ
+  first_mem : ∀ k, firstReference ∈ domain k 1
+  second_mem : ∀ k, secondReference ∈ domain k 2
+  pair_compatible : ∀ k l i j, i ≠ j →
+    ∀ x ∈ domain k i ∩ domain l i, ∀ x' ∈ domain k i ∩ domain l i,
+    ∀ y ∈ domain k j ∩ domain l j, ∀ y' ∈ domain k j ∩ domain l j,
+      coord k i x + coord k j y = coord k i x' + coord k j y' →
+        coord l i x + coord l j y = coord l i x' + coord l j y'
+
+variable {K : Type*}
+
+/-- Comparing the two fixed companions with a seed chart calibrates every chart's common unit. -/
+theorem CompanionChartFamily.exists_calibration (F : CompanionChartFamily K) (seed : K) :
+    ∃ slope firstOffset secondOffset : K → ℝ,
+      (∀ k, 0 < slope k) ∧ slope seed = 1 ∧
+      (∀ k x, x ∈ F.domain seed 1 ∩ F.domain k 1 →
+        F.coord k 1 x = slope k * F.coord seed 1 x + firstOffset k) ∧
+      ∀ k x, x ∈ F.domain seed 2 ∩ F.domain k 2 →
+        F.coord k 2 x = slope k * F.coord seed 2 x + secondOffset k := by
+  classical
+  have hcal (k : K) : ∃ slope firstOffset secondOffset : ℝ,
+      0 < slope ∧ (k = seed → slope = 1) ∧
+      (∀ x ∈ F.domain seed 1 ∩ F.domain k 1,
+        F.coord k 1 x = slope * F.coord seed 1 x + firstOffset) ∧
+      ∀ x ∈ F.domain seed 2 ∩ F.domain k 2,
+        F.coord k 2 x = slope * F.coord seed 2 x + secondOffset := by
+    by_cases hk : k = seed
+    · subst k
+      exact ⟨1, 0, 0, by norm_num, fun _ => rfl, by simp, by simp⟩
+    · obtain ⟨a, ha, b, hb, hab⟩ := open_real_set_has_pair
+        ((F.open_domain seed 1).inter (F.open_domain k 1)) ⟨F.first_mem seed, F.first_mem k⟩
+      obtain ⟨c, hc, d, hd, hcd⟩ := open_real_set_has_pair
+        ((F.open_domain seed 2).inter (F.open_domain k 2)) ⟨F.second_mem seed, F.second_mem k⟩
+      obtain ⟨slope, β, γ, hpos, hf, hg⟩ := pair_chart_positive_affine_unique_on
+        ((F.interval seed 1).inter (F.interval k 1))
+        ((F.interval seed 2).inter (F.interval k 2))
+        ((F.continuous seed 1).mono Set.inter_subset_left)
+        ((F.continuous k 1).mono Set.inter_subset_right)
+        ((F.continuous seed 2).mono Set.inter_subset_left)
+        ((F.continuous k 2).mono Set.inter_subset_right)
+        ((F.increasing seed 1).mono Set.inter_subset_left)
+        ((F.increasing k 1).mono Set.inter_subset_right)
+        ((F.increasing seed 2).mono Set.inter_subset_left)
+        ((F.increasing k 2).mono Set.inter_subset_right)
+        (F.pair_compatible seed k 1 2 (by decide)) ha hb hab hc hd hcd
+      exact ⟨slope, β, γ, hpos, fun h => (hk h).elim, hf, hg⟩
+  choose slope β γ hpos hseed hf hg using hcal
+  exact ⟨slope, β, γ, hpos, hseed seed rfl, hf, hg⟩
+
+/-- Calibrated companion scores agree with the seed up to translations. -/
+theorem CompanionChartFamily.calibrated_companion (F : CompanionChartFamily K) (seed : K)
+    {slope offset : K → ℝ} (hpos : ∀ k, 0 < slope k)
+    (hc : ∀ k x, x ∈ F.domain seed 1 ∩ F.domain k 1 →
+      F.coord k 1 x = slope k * F.coord seed 1 x + offset k)
+    (k : K) (x : ℝ) (hx : x ∈ F.domain seed 1 ∩ F.domain k 1) :
+    F.coord k 1 x / slope k = F.coord seed 1 x + offset k / slope k := by
+  rw [hc k x hx, add_div]
+  congr 1
+  field_simp [(hpos k).ne']
+
+/-- Once companions fix the units, every target overlap has a translation transition. -/
+theorem CompanionChartFamily.calibrated_target_transition
+    (F : CompanionChartFamily K) (seed : K) {slope offset : K → ℝ}
+    (hpos : ∀ k, 0 < slope k)
+    (hc : ∀ k x, x ∈ F.domain seed 1 ∩ F.domain k 1 →
+      F.coord k 1 x = slope k * F.coord seed 1 x + offset k) (k l : K) :
+    ∃ β : ℝ, ∀ x ∈ F.domain k 0 ∩ F.domain l 0,
+      F.coord k 0 x / slope k = F.coord l 0 x / slope l + β := by
+  classical
+  by_cases hne : (F.domain k 0 ∩ F.domain l 0).Nonempty
+  · obtain ⟨x₀, hx₀⟩ := hne
+    obtain ⟨a, ha, b, hb, hab⟩ := open_real_set_has_pair
+      ((F.open_domain k 0).inter (F.open_domain l 0)) hx₀
+    let T := (F.domain seed 1 ∩ F.domain k 1) ∩ F.domain l 1
+    have hTo : IsOpen T := ((F.open_domain seed 1).inter (F.open_domain k 1)).inter
+      (F.open_domain l 1)
+    have hTi : T.OrdConnected := ((F.interval seed 1).inter (F.interval k 1)).inter
+      (F.interval l 1)
+    obtain ⟨c, hcm, d, hdm, hcd⟩ := open_real_set_has_pair hTo
+      ⟨⟨F.first_mem seed, F.first_mem k⟩, F.first_mem l⟩
+    have hcf (r : K) (i : Fin 3) :
+        ContinuousOn (fun x => F.coord r i x / slope r) (F.domain r i) :=
+      (F.continuous r i).div_const _
+    have hmf (r : K) (i : Fin 3) :
+        StrictMonoOn (fun x => F.coord r i x / slope r) (F.domain r i) := by
+      intro x hx y hy hxy
+      exact (div_lt_div_iff_of_pos_right (hpos r)).mpr (F.increasing r i hx hy hxy)
+    have hunit : F.coord k 1 d / slope k - F.coord k 1 c / slope k =
+        F.coord l 1 d / slope l - F.coord l 1 c / slope l := by
+      rw [F.calibrated_companion seed hpos hc k d hdm.1,
+        F.calibrated_companion seed hpos hc k c hcm.1,
+        F.calibrated_companion seed hpos hc l d ⟨hdm.1.1, hdm.2⟩,
+        F.calibrated_companion seed hpos hc l c ⟨hcm.1.1, hcm.2⟩]
+      ring
+    have hp : ∀ x ∈ F.domain k 0 ∩ F.domain l 0,
+        ∀ x' ∈ F.domain k 0 ∩ F.domain l 0, ∀ y ∈ T, ∀ y' ∈ T,
+        F.coord l 0 x / slope l + F.coord l 1 y / slope l =
+          F.coord l 0 x' / slope l + F.coord l 1 y' / slope l →
+        F.coord k 0 x / slope k + F.coord k 1 y / slope k =
+          F.coord k 0 x' / slope k + F.coord k 1 y' / slope k := by
+      intro x hx x' hx' y hy y' hy' he
+      rw [← add_div, ← add_div] at he
+      have hraw := (div_left_inj' (hpos l).ne').mp he
+      have h := F.pair_compatible l k 0 1 (by decide) x ⟨hx.2, hx.1⟩ x' ⟨hx'.2, hx'.1⟩
+        y ⟨hy.2, hy.1.2⟩ y' ⟨hy'.2, hy'.1.2⟩ hraw
+      rw [← add_div, ← add_div, h]
+    obtain ⟨β, _, hβ, _⟩ := pair_chart_translation_on
+      ((F.interval k 0).inter (F.interval l 0)) hTi
+      ((hcf l 0).mono Set.inter_subset_right) ((hcf k 0).mono Set.inter_subset_left)
+      ((hcf l 1).mono (fun _ hx => hx.2)) ((hcf k 1).mono (fun _ hx => hx.1.2))
+      ((hmf l 0).mono Set.inter_subset_right) ((hmf k 0).mono Set.inter_subset_left)
+      ((hmf l 1).mono (fun _ hx => hx.2)) ((hmf k 1).mono (fun _ hx => hx.1.2))
+      hp ha hb hab hcm hdm hcd hunit
+    exact ⟨β, hβ⟩
+  · exact ⟨0, fun x hx => (hne ⟨x, hx⟩).elim⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuation of affine interval coordinates
+
+Compatible coordinates can be glued across overlapping intervals. Taking all continuations of
+a seed chart gives a maximal domain; local charts extend it through any boundary point inside
+the underlying interval. The construction uses agreement on overlaps rather than a maximality
+principle.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Set
+open scoped Topology
+
+/-- Compatibility is unchanged when a coordinate is replaced by an equal one on its domain. -/
+theorem PositiveAffineIntervalAtlas.Compatible.congr {ι : Type*} {S D : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {f g : ℝ → ℝ}
+    (h : a.Compatible f D) (he : EqOn g f D) : a.Compatible g D := by
+  intro i x hx
+  obtain ⟨U, hU, hxU, hsub, A, B, hA, hEq⟩ := h i x hx
+  exact ⟨U, hU, hxU, hsub, A, B, hA, fun y hy => (he (hsub hy).1).trans (hEq y hy)⟩
+
+/-- Locally compatible coordinates remain compatible on the union of their domains. -/
+theorem PositiveAffineIntervalAtlas.Compatible.union {ι : Type*} {S D E : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {f : ℝ → ℝ}
+    (hD : a.Compatible f D) (hE : a.Compatible f E) : a.Compatible f (D ∪ E) := by
+  intro i x hx
+  rcases hx.1 with hxD | hxE
+  · obtain ⟨U, hU, hxU, hsub, A, B, hA, he⟩ := hD i x ⟨hxD, hx.2⟩
+    exact ⟨U, hU, hxU, fun _ hy => ⟨Or.inl (hsub hy).1, (hsub hy).2⟩, A, B, hA, he⟩
+  · obtain ⟨U, hU, hxU, hsub, A, B, hA, he⟩ := hE i x ⟨hxE, hx.2⟩
+    exact ⟨U, hU, hxU, fun _ hy => ⟨Or.inr (hsub hy).1, (hsub hy).2⟩, A, B, hA, he⟩
+
+/-- A positive affine rescaling preserves compatibility with the atlas. -/
+theorem PositiveAffineIntervalAtlas.Compatible.positive_affine {ι : Type*} {S D : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {f : ℝ → ℝ}
+    (h : a.Compatible f D) {A B : ℝ} (hA : 0 < A) :
+    a.Compatible (fun x => A * f x + B) D := by
+  intro i x hx
+  obtain ⟨U, hU, hxU, hsub, C, F, hC, he⟩ := h i x hx
+  refine ⟨U, hU, hxU, hsub, A * C, A * F + B, mul_pos hA hC, ?_⟩
+  intro y hy
+  change A * f y + B = _
+  rw [he y hy]
+  ring
+
+/-- A continuation extends over every chart whose domain meets it. -/
+theorem AffineIntervalSection.extend {ι : Type*} {S : Set ℝ}
+    {a : PositiveAffineIntervalAtlas ι S} {seed : ι}
+    (p : AffineIntervalSection a seed) (i : ι)
+    (hne : (p.domain ∩ a.domain i).Nonempty) :
+    ∃ q : AffineIntervalSection a seed, q.domain = p.domain ∪ a.domain i ∧
+      EqOn q.value p.value p.domain := by
+  classical
+  obtain ⟨A, B, hA, he⟩ := p.compatible.affine p.interval i
+  let g : ℝ → ℝ := fun x => A * a.coord i x + B
+  let f : ℝ → ℝ := p.domain.piecewise p.value g
+  have hfD : EqOn f p.value p.domain := fun x hx => by simp [f, hx]
+  have hfU : EqOn f g (a.domain i) := by
+    intro x hx
+    by_cases hxD : x ∈ p.domain
+    · simpa [f, hxD, g] using he x ⟨hxD, hx⟩
+    · simp [f, hxD]
+  have hg : ContinuousOn g (a.domain i) :=
+    (continuousOn_const.mul (a.continuous i)).add continuousOn_const
+  have hgm : StrictMonoOn g (a.domain i) := by
+    intro x hx y hy hxy
+    dsimp [g]
+    nlinarith [a.increasing i hx hy hxy]
+  have hfDc := p.continuous.congr hfD
+  have hfUc := hg.congr hfU
+  have hfDm : StrictMonoOn f p.domain := by
+    intro x hx y hy hxy
+    rw [hfD hx, hfD hy]
+    exact p.increasing hx hy hxy
+  have hfUm : StrictMonoOn f (a.domain i) := by
+    intro x hx y hy hxy
+    rw [hfU hx, hfU hy]
+    exact hgm hx hy hxy
+  obtain ⟨x, hxD, hxU⟩ := hne
+  let q : AffineIntervalSection a seed := {
+    domain := p.domain ∪ a.domain i
+    isOpen := p.isOpen.union (a.isOpen i)
+    interval := (p.interval.isPreconnected.union x hxD hxU
+      (a.interval i).isPreconnected).ordConnected
+    subset := union_subset p.subset (a.subset i)
+    value := f
+    continuous := hfDc.union_of_isOpen hfUc p.isOpen (a.isOpen i)
+    increasing := strictMonoOn_union_intervals p.interval (a.interval i)
+      ⟨x, hxD, hxU⟩ hfDm hfUm
+    compatible := (p.compatible.congr hfD).union
+      (((a.compatible_chart i).positive_affine hA).congr hfU)
+    seed_subset := fun _ hx => Or.inl (p.seed_subset hx)
+    seed_eq := fun y hy => (hfD (p.seed_subset hy)).trans (p.seed_eq y hy) }
+  exact ⟨q, rfl, hfD⟩
+
+/-- Seed-normalized continuations reach every point of the underlying interval. -/
+theorem PositiveAffineIntervalAtlas.sections_cover {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (hS : S.OrdConnected) (seed : ι)
+    (hne : (a.domain seed).Nonempty) :
+    ∀ x ∈ S, ∃ p : AffineIntervalSection a seed, x ∈ p.domain := by
+  let U : Set ℝ := ⋃ p : AffineIntervalSection a seed, p.domain
+  have hU : IsOpen U := isOpen_iUnion fun p => p.isOpen
+  have hSU : (S ∩ U).Nonempty := by
+    obtain ⟨x, hx⟩ := hne
+    exact ⟨x, a.subset seed hx, mem_iUnion.mpr ⟨a.seedSection seed, hx⟩⟩
+  have hclosed : closure U ∩ S ⊆ U := by
+    intro x hx
+    obtain ⟨i, hxi⟩ := a.cover x hx.2
+    obtain ⟨y, hyi, hyU⟩ := mem_closure_iff.mp hx.1 (a.domain i) (a.isOpen i) hxi
+    obtain ⟨p, hyp⟩ := mem_iUnion.mp hyU
+    obtain ⟨q, hq, _⟩ := p.extend i ⟨y, hyp, hyi⟩
+    exact mem_iUnion.mpr ⟨q, hq ▸ Or.inr hxi⟩
+  have hfull := hS.isPreconnected.subset_of_closure_inter_subset hU hSU hclosed
+  exact fun x hx => mem_iUnion.mp (hfull hx)
+
+/-- An oriented affine atlas on an open real interval has a global seed-normalized coordinate. -/
+theorem PositiveAffineIntervalAtlas.exists_global_section {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (hS : S.OrdConnected) (seed : ι)
+    (hne : (a.domain seed).Nonempty) :
+    ∃ p : AffineIntervalSection a seed, p.domain = S := by
+  classical
+  choose p hp using fun x : S => a.sections_cover hS seed hne x x.property
+  let f : ℝ → ℝ := fun x => if hx : x ∈ S then (p ⟨x, hx⟩).value x else 0
+  have he (q : AffineIntervalSection a seed) : EqOn f q.value q.domain := by
+    intro x hx
+    have hxS := q.subset hx
+    simp only [f, dite_eq_left hxS]
+    exact AffineIntervalSection.unique hne (p ⟨x, hxS⟩) q ⟨hp ⟨x, hxS⟩, hx⟩
+  have hm (q : AffineIntervalSection a seed) : StrictMonoOn f q.domain := by
+    intro x hx y hy hxy
+    rw [he q hx, he q hy]
+    exact q.increasing hx hy hxy
+  have hSo : IsOpen S := isOpen_iff_forall_mem_open.mpr fun x hx => by
+    obtain ⟨i, hxi⟩ := a.cover x hx
+    exact ⟨a.domain i, a.subset i, a.isOpen i, hxi⟩
+  have hc : ContinuousOn f S := by
+    apply continuousOn_of_locally_continuousOn
+    intro x hx
+    exact ⟨(p ⟨x, hx⟩).domain, (p ⟨x, hx⟩).isOpen, hp ⟨x, hx⟩,
+      ((p ⟨x, hx⟩).continuous.congr (he (p ⟨x, hx⟩))).mono inter_subset_right⟩
+  have hmono : StrictMonoOn f S := by
+    obtain ⟨z, hz⟩ := hne
+    intro x hx y hy hxy
+    let q := p ⟨x, hx⟩
+    let r := p ⟨y, hy⟩
+    exact strictMonoOn_union_intervals q.interval r.interval
+      ⟨z, q.seed_subset hz, r.seed_subset hz⟩ (hm q) (hm r)
+      (Or.inl (hp ⟨x, hx⟩)) (Or.inr (hp ⟨y, hy⟩)) hxy
+  have hcomp : a.Compatible f S := by
+    intro i x hx
+    let q := p ⟨x, hx.1⟩
+    obtain ⟨U, hU, hxU, hsub, A, B, hA, hEq⟩ := q.compatible i x ⟨hp ⟨x, hx.1⟩, hx.2⟩
+    exact ⟨U, hU, hxU, fun _ hy => ⟨q.subset (hsub hy).1, (hsub hy).2⟩,
+      A, B, hA, fun y hy => (he q (hsub hy).1).trans (hEq y hy)⟩
+  refine ⟨{
+    domain := S
+    isOpen := hSo
+    interval := hS
+    subset := Subset.rfl
+    value := f
+    continuous := hc
+    increasing := hmono
+    compatible := hcomp
+    seed_subset := a.subset seed
+    seed_eq := fun x hx => he (a.seedSection seed) hx }, rfl⟩
+
+/-- A global scale is continuous and increasing, with explicit positive affine chart changes. -/
+theorem PositiveAffineIntervalAtlas.globalize {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (hS : S.OrdConnected) (seed : ι)
+    (hne : (a.domain seed).Nonempty) :
+    ∃ f : ℝ → ℝ, ContinuousOn f S ∧ StrictMonoOn f S ∧
+      (∀ x ∈ a.domain seed, f x = a.coord seed x) ∧
+      ∀ i, ∃ A B : ℝ, 0 < A ∧ ∀ x ∈ a.domain i, f x = A * a.coord i x + B := by
+  obtain ⟨p, hp⟩ := a.exists_global_section hS seed hne
+  refine ⟨p.value, ?_, ?_, p.seed_eq, fun i => ?_⟩
+  · simpa only [hp] using p.continuous
+  · simpa only [hp] using p.increasing
+  · obtain ⟨A, B, hA, he⟩ := p.compatible.affine p.interval i
+    refine ⟨A, B, hA, fun x hx => he x ⟨?_, hx⟩⟩
+    simpa only [hp] using a.subset i hx
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# One local cardinal scale for every active pair
+
+At each specified interior reference value, one compact common score interval
+has one continuous strict cardinal scale. Every pair of active coordinates
+uses that scale, and independence extends its comparisons to every context.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {S : I → Set ℝ}
+
+/-- A common normalized local scale represents all active pairs in all contexts. -/
+def HasAllPairsLocalScale (V : (∀ i, S i) → ℝ) (z : ∀ i, S i) (T : Set I) (c : ℝ) : Prop :=
+  ∃ (a b : ℝ) (hab : a < b) (hsub : ∀ i ∈ T, Set.Icc a b ⊆ S i)
+    (φ : Set.Icc a b → ℝ), a < c ∧ c < b ∧ Continuous φ ∧ StrictMono φ ∧
+      φ ⟨a, le_rfl, hab.le⟩ = 0 ∧ φ ⟨b, hab.le, le_rfl⟩ = 1 ∧
+      ∀ (t : ∀ i, S i) (i : I), i ∈ T → ∀ j, j ∈ T → i ≠ j →
+        ∀ x y x' y' : Set.Icc a b,
+          CoordinatePairUtility V t (CommonActiveScoreEmbedding z T hsub) i j x y ≤
+            CoordinatePairUtility V t (CommonActiveScoreEmbedding z T hsub) i j x' y' ↔
+            φ x + φ y ≤ φ x' + φ y'
+
+/-- Every specified interior reference admits one cardinal chart for all active coordinate pairs. -/
+theorem exists_all_pairs_local_scale [Finite I] {V : (∀ i, S i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (hm : StrictMono V) (hc : Continuous V)
+    (z : ∀ i, S i) (hv : ∀ i (q : S i), V (Function.update z i q) = q.val)
+    {T : Set I} {c : ℝ} (hz : ∀ i, (z i).val = c)
+    (hint : ∀ i ∈ T, c ∈ interior (S i))
+    (ht : ∃ p ∈ T, ∃ q ∈ T, ∃ l ∈ T, p ≠ q ∧ p ≠ l ∧ q ≠ l) :
+    HasAllPairsLocalScale V z T c := by
+  obtain ⟨p, hp, q, hq, l, hl, hpq, hpl, hql⟩ := ht
+  obtain ⟨L, R, hcLR, hJ⟩ := exists_all_active_score_interval hint
+  let e : Set.Ioo L R := ⟨c, hcLR⟩
+  let v := CommonThreeScoreUtility V z p q l (hJ p hp) (hJ q hq) (hJ l hl)
+  have hvc : Continuous v := commonThreeScoreUtility_continuous hc z p q l _ _ _
+  have hvi : ThreeFactorIndependent (UtilityPref v) :=
+    commonThreeScoreUtility_independent hs z hpq hpl hql _ _ _
+  have hvn : NormalizedThreeAxes v Subtype.val e :=
+    commonThreeScoreUtility_axes z hv hpq hpl hql _ _ _ e hz
+  have hvl : ∀ y, StrictMono (fun x => v (x, y, e)) :=
+    fun y => commonThreeScoreUtility_first_strictMono hm z hpq hpl _ _ _ y e
+  have hvr : ∀ x, StrictMono (fun y => v (x, y, e)) :=
+    fun x => commonThreeScoreUtility_second_strictMono hm z hql _ _ _ x e
+  obtain ⟨a, b, hab, habJ, φ, hae, heb, hφc, hφm, hφa, hφb, hφpair⟩ :=
+    normalizedThreeAxes_local_pair_scale isOpen_Ioo hvc hvi hvn hvl hvr
+  have hsub : ∀ i ∈ T, Set.Icc a b ⊆ S i := fun i hi => (habJ.trans (hJ i hi))
+  let k := CommonActiveScoreEmbedding z T hsub
+  have hpair (x y : Set.Icc a b) : CoordinatePairUtility V z k p q x y =
+      v (Set.inclusion habJ x, Set.inclusion habJ y, e) := by
+    have hkp : k p x = Set.inclusion (hJ p hp) (Set.inclusion habJ x) := by
+      exact commonActiveScoreEmbedding_active z T hsub hp x
+    have hkq : k q y = Set.inclusion (hJ q hq) (Set.inclusion habJ y) := by
+      exact commonActiveScoreEmbedding_active z T hsub hq y
+    have hel : Set.inclusion (hJ l hl) e = z l := Subtype.ext (hz l).symm
+    change V (Function.update (Function.update z p (k p x)) q (k q y)) =
+      V (ThreeCoordinateBundle z p q l _ _ _)
+    rw [hkp, hkq]
+    unfold ThreeCoordinateBundle
+    rw [hel]
+    have heval :
+        Function.update (Function.update z p (Set.inclusion (hJ p hp) (Set.inclusion habJ x)))
+          q (Set.inclusion (hJ q hq) (Set.inclusion habJ y)) l = z l := by
+      simp only [Function.update_of_ne hql.symm, Function.update_of_ne hpl.symm]
+    rw [← heval, Function.update_eq_self]
+  have hanchor : ∀ x y x' y', CoordinatePairUtility V z k p q x y ≤
+      CoordinatePairUtility V z k p q x' y' ↔ φ x + φ y ≤ φ x' + φ y' := by
+    intro x y x' y'
+    rw [hpair, hpair]
+    exact hφpair x y x' y'
+  refine ⟨a, b, hab, hsub, φ, hae, heb, hφc, hφm, hφa, hφb, ?_⟩
+  intro t i hi j hj hij x y x' y'
+  exact coordinatePairUtility_all_comparisons hs z k
+    (commonActiveScoreEmbedding_axes z hv T hsub)
+    ⟨p, hp, q, hq, l, hl, hpq, hpl, hql⟩ hp hq hpq hanchor t hi hj hij x y x' y'
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Additive representation on full interval products
+
+The interior of each nondegenerate score interval is dense. Continuous strictly
+increasing extensions of the interior coordinate scales therefore represent the
+original utility on the full product, including attained endpoints.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A finite sum of strictly increasing coordinate scales is strictly increasing. -/
+theorem additiveUtility_strictMono {I : Type*} [Fintype I] {B : I → Type*}
+    [∀ i, LinearOrder (B i)] {g : ∀ i, B i → ℝ} (hg : ∀ i, StrictMono (g i)) :
+    StrictMono (AdditiveUtility g) := by
+  intro x y hxy
+  obtain ⟨i, hi⟩ := not_forall.mp (not_le_of_gt hxy)
+  apply Finset.sum_lt_sum
+  · intro j _
+    exact (hg j).monotone (hxy.le j)
+  · exact ⟨i, Finset.mem_univ i, hg i (lt_of_not_ge hi)⟩
+
+/-- Interior additive comparisons extend to all endpoints once the scales are continuous. -/
+theorem additive_comparison_of_interior {I : Type*} [Fintype I] {S : I → Set ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (hn : ∀ i, (interior (S i)).Nonempty)
+    {u : (∀ i, S i) → ℝ} (hu : Continuous u) (hum : StrictMono u)
+    {g : ∀ i, S i → ℝ} (hg : ∀ i, Continuous (g i)) (hgm : ∀ i, StrictMono (g i))
+    (hr : ∀ x y : ∀ i, interior (S i),
+      u (fun i => Set.inclusion interior_subset (x i)) ≤
+        u (fun i => Set.inclusion interior_subset (y i)) ↔
+      (∑ i, g i (Set.inclusion interior_subset (x i))) ≤
+        ∑ i, g i (Set.inclusion interior_subset (y i))) :
+    Represents (AdditiveUtility g) (UtilityPref u) := by
+  let : ∀ i, Fact (S i).OrdConnected := fun i => ⟨hS i⟩
+  let D : Set (∀ i, S i) := Set.pi Set.univ (fun i => {x : S i | x.val ∈ interior (S i)})
+  have hD : Dense D := dense_pi Set.univ (fun i _ => interval_interior_dense (hS i) (hn i))
+  have hlocal : ∀ x ∈ D, ∀ y ∈ D, u x ≤ u y ↔ AdditiveUtility g x ≤ AdditiveUtility g y := by
+    intro x hx y hy
+    exact hr (fun i => ⟨(x i).val, hx i (Set.mem_univ i)⟩)
+      (fun i => ⟨(y i).val, hy i (Set.mem_univ i)⟩)
+  have hglobal := dense_product_comparison hD hu (additiveUtility_continuous hg)
+    hum (additiveUtility_strictMono hgm) hlocal
+  intro x y
+  exact hglobal y x
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Gluing interval coordinates in fixed cardinal units
+
+If every chart transition is a translation, a global scale normalized on a seed chart uses
+the same unit in every chart. This specialization preserves the common units obtained by
+calibrating additive utility charts against fixed companion coordinates.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Set
+
+/-- Constants attached to an open cover of a connected set agree when they agree on overlaps. -/
+theorem open_cover_constants_eq {X ι Y : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : IsPreconnected S) (U : ι → Set X) (hU : ∀ i, IsOpen (U i))
+    (hUS : ∀ i, U i ⊆ S) (hcover : ∀ x ∈ S, ∃ i, x ∈ U i)
+    (v : ι → Y) (he : ∀ i j, (U i ∩ U j).Nonempty → v i = v j)
+    {seed : ι} (hne : (U seed).Nonempty) :
+    ∀ i, (U i).Nonempty → v i = v seed := by
+  classical
+  choose c hc using fun x : S => hcover x x.property
+  let f : S → Y := fun x => v (c x)
+  have hlocal : IsLocallyConstant f := by
+    rw [IsLocallyConstant.iff_exists_open]
+    intro x
+    refine ⟨Subtype.val ⁻¹' U (c x), (hU (c x)).preimage continuous_subtype_val, hc x, ?_⟩
+    intro y hy
+    exact he (c y) (c x) ⟨y, hc y, hy⟩
+  let : PreconnectedSpace S := isPreconnected_iff_preconnectedSpace.mp hS
+  obtain ⟨z, hz⟩ := hne
+  intro i hi
+  obtain ⟨x, hx⟩ := hi
+  calc
+    v i = f ⟨x, hUS i hx⟩ := he i (c ⟨x, hUS i hx⟩) ⟨x, hx, hc ⟨x, hUS i hx⟩⟩
+    _ = f ⟨z, hUS seed hz⟩ := hlocal.apply_eq_of_preconnectedSpace _ _
+    _ = v seed := he (c ⟨z, hUS seed hz⟩) seed ⟨z, hc ⟨z, hUS seed hz⟩, hz⟩
+
+/-- Translation transitions force all affine chart slopes to equal the normalized seed slope. -/
+theorem PositiveAffineIntervalAtlas.slopes_eq_one {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (hS : S.OrdConnected) {seed : ι}
+    (hne : (a.domain seed).Nonempty)
+    (ht : ∀ i j, ∃ B : ℝ, ∀ x ∈ a.domain i ∩ a.domain j,
+      a.coord i x = a.coord j x + B)
+    {f : ℝ → ℝ} (hseed : ∀ x ∈ a.domain seed, f x = a.coord seed x)
+    {A B : ι → ℝ} (he : ∀ i x, x ∈ a.domain i → f x = A i * a.coord i x + B i) :
+    ∀ i, (a.domain i).Nonempty → A i = 1 := by
+  have hsame : ∀ i j, (a.domain i ∩ a.domain j).Nonempty → A i = A j := by
+    intro i j hij
+    obtain ⟨C, hC⟩ := ht i j
+    have hcoeff := affine_coefficients_unique (a.increasing j)
+      ((a.isOpen i).inter (a.isOpen j)) hij inter_subset_right
+      (A := A i) (B := A i * C + B i) (C := A j) (D := B j) (fun x hx => by
+        have hfi := he i x hx.1
+        have hfj := he j x hx.2
+        rw [hC x hx] at hfi
+        nlinarith)
+    exact hcoeff.1
+  have hunit : A seed = 1 := by
+    have hcoeff := affine_coefficients_unique (a.increasing seed) (a.isOpen seed)
+      hne Subset.rfl (A := A seed) (B := B seed) (C := 1) (D := 0) (fun x hx => by
+        have hfx := he seed x hx
+        rw [hseed x hx] at hfx
+        simpa only [one_mul, add_zero] using hfx.symm)
+    exact hcoeff.1
+  intro i hi
+  exact (open_cover_constants_eq hS.isPreconnected a.domain a.isOpen a.subset a.cover
+    A hsame hne i hi).trans hunit
+
+/-- An atlas with translation transitions glues without changing any chart's cardinal unit. -/
+theorem PositiveAffineIntervalAtlas.globalize_translations {ι : Type*} {S : Set ℝ}
+    (a : PositiveAffineIntervalAtlas ι S) (hS : S.OrdConnected) (seed : ι)
+    (hne : (a.domain seed).Nonempty)
+    (ht : ∀ i j, ∃ B : ℝ, ∀ x ∈ a.domain i ∩ a.domain j,
+      a.coord i x = a.coord j x + B) :
+    ∃ f : ℝ → ℝ, ContinuousOn f S ∧ StrictMonoOn f S ∧
+      (∀ x ∈ a.domain seed, f x = a.coord seed x) ∧
+      ∀ i, ∃ B : ℝ, ∀ x ∈ a.domain i, f x = a.coord i x + B := by
+  classical
+  obtain ⟨f, hc, hm, hseed, hf⟩ := a.globalize hS seed hne
+  choose A B _ he using hf
+  have hA := a.slopes_eq_one hS hne ht hseed he
+  refine ⟨f, hc, hm, hseed, fun i => ⟨B i, fun x hx => ?_⟩⟩
+  simpa only [hA i ⟨x, hx⟩, one_mul] using he i x hx
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Local additive charts in the original scalar coordinates
+
+Renormalizing at a specified interior bundle gives a common cardinal scale.
+Pulling it back through the baseline coordinate utilities produces open interval
+neighborhoods in the original coordinates and a full finite additive chart.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- An order-connected subset of a real interval is preconnected in its subtype topology. -/
+theorem ordConnected_subtype_preconnected {S : Set ℝ} (hS : S.OrdConnected)
+    {U : Set S} (hU : U.OrdConnected) : IsPreconnected U := by
+  have himage : (Subtype.val '' U).OrdConnected := by
+    constructor
+    rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ z hz
+    let q : S := ⟨z, hS.out x.property y.property hz⟩
+    exact ⟨q, hU.out hx hy hz, rfl⟩
+  exact Topology.IsInducing.subtypeVal.isPreconnected_image.mp himage.isPreconnected
+
+variable {I : Type*} [DecidableEq I] {S : I → Set ℝ}
+
+/-- A local additive chart has open interval coordinate domains containing the reference bundle. -/
+def HasLocalScalarAdditiveChart [Fintype I] (V : (∀ i, S i) → ℝ) (z : ∀ i, S i) : Prop :=
+  ∃ U : ∀ i, Set (S i), (∀ i, IsOpen (U i) ∧ z i ∈ U i ∧ (U i).OrdConnected) ∧
+    ∃ ψ : ∀ i, U i → ℝ, (∀ i, Continuous (ψ i) ∧ StrictMono (ψ i)) ∧
+      Represents (AdditiveUtility ψ) (UtilityPref (fun x => V (fun i => (x i).val)))
+
+/-- An interior reference bundle has a full local additive chart
+in the original scalar coordinates. -/
+theorem exists_local_scalar_additive_chart [Fintype I] {V : (∀ i, S i) → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (hs : StronglySeparable (UtilityPref V))
+    (hm : StrictMono V) (hc : Continuous V) (z : ∀ i, S i)
+    (hint : ∀ i, V z ∈ interior (Set.range (BaselineScores V z i)))
+    (hthree : ∃ i j l : I, i ≠ j ∧ i ≠ l ∧ j ≠ l) :
+    HasLocalScalarAdditiveChart V z := by
+  let : ∀ i, PreconnectedSpace (S i) :=
+    fun i => isPreconnected_iff_preconnectedSpace.mp (hS i).isPreconnected
+  have hu : Represents V (UtilityPref V) := fun _ _ => Iff.rfl
+  let w := BaselineScores V z
+  let A := ScoreAggregator V z
+  let q₀ := BlockScores w z
+  have ht : ∃ i ∈ (Set.univ : Set I), ∃ j ∈ Set.univ, ∃ l ∈ Set.univ,
+      i ≠ j ∧ i ≠ l ∧ j ≠ l := by
+    obtain ⟨i, j, l, hij, hil, hjl⟩ := hthree
+    exact ⟨i, Set.mem_univ i, j, Set.mem_univ j, l, Set.mem_univ l, hij, hil, hjl⟩
+  have hlocal := exists_all_pairs_local_scale
+    (scoreAggregator_stronglySeparable hu hs z) (scoreAggregator_strictMono hu hs z)
+    (scoreAggregator_continuous hu hs hc z) q₀ (scoreAggregator_reference_axis hu hs z)
+    (baselineScores_reference V z) (fun i _ => hint i) ht
+  obtain ⟨a, b, hab, hsub, φ, hac, hcb, hφc, hφm, _, _, hpair⟩ := hlocal
+  let U (i : I) : Set (S i) := (w i) ⁻¹' Set.Ioo a b
+  have hwc (i : I) : Continuous (w i) := baselineScores_continuous hc z i
+  have hwm (i : I) : StrictMono (w i) := by
+    intro x y hxy
+    exact hm (Function.update_strictMono hxy)
+  have hUo (i : I) : IsOpen (U i) := isOpen_Ioo.preimage (hwc i)
+  have hzU (i : I) : z i ∈ U i := by
+    change BaselineScores V z i (z i) ∈ Set.Ioo a b
+    rw [baselineScores_reference]
+    exact ⟨hac, hcb⟩
+  have hUc (i : I) : (U i).OrdConnected := Set.ordConnected_Ioo.preimage_mono (hwm i).monotone
+  let : ∀ i, PreconnectedSpace (U i) := fun i =>
+    isPreconnected_iff_preconnectedSpace.mp (ordConnected_subtype_preconnected (hS i) (hUc i))
+  let s (i : I) (x : U i) : Set.Icc a b :=
+    ⟨w i x.val, x.property.1.le, x.property.2.le⟩
+  let ψ (i : I) (x : U i) : ℝ := φ (s i x)
+  have hψc (i : I) : Continuous (ψ i) :=
+    hφc.comp (((hwc i).comp continuous_subtype_val).subtype_mk _)
+  have hψm (i : I) : StrictMono (ψ i) := by
+    intro x y hxy
+    exact hφm (hwm i hxy)
+  let F (x : ∀ i, U i) : ℝ := V (fun i => (x i).val)
+  have hFm : StrictMono F := by
+    intro x y hxy
+    apply hm
+    exact ⟨fun i => hxy.le i, fun h => hxy.not_ge (fun i => h i)⟩
+  have hp : ∀ (x : ∀ i, U i) (i j : I) (u : U i) (v : U j), i ≠ j →
+      ψ i u + ψ j v = ψ i (x i) + ψ j (x j) →
+        F (Function.update (Function.update x i u) j v) = F x := by
+    intro x i j u v hij he
+    let y : ∀ i, S i := fun i => (x i).val
+    let Q := BlockScores w y
+    let k := CommonActiveScoreEmbedding q₀ Set.univ hsub
+    have hki (t : U i) : k i (s i t) =
+        (⟨w i t.val, t.val, rfl⟩ : Set.range (w i)) := by
+      exact commonActiveScoreEmbedding_active q₀ Set.univ hsub (Set.mem_univ i) (s i t)
+    have hkj (t : U j) : k j (s j t) =
+        (⟨w j t.val, t.val, rfl⟩ : Set.range (w j)) := by
+      exact commonActiveScoreEmbedding_active q₀ Set.univ hsub (Set.mem_univ j) (s j t)
+    have hle := (hpair Q i (Set.mem_univ i) j (Set.mem_univ j) hij
+      (s i u) (s j v) (s i (x i)) (s j (x j))).2 he.le
+    have hge := (hpair Q i (Set.mem_univ i) j (Set.mem_univ j) hij
+      (s i (x i)) (s j (x j)) (s i u) (s j v)).2 he.ge
+    have heq := le_antisymm hle hge
+    change CoordinatePairUtility A Q k i j (s i u) (s j v) =
+      CoordinatePairUtility A Q k i j (s i (x i)) (s j (x j)) at heq
+    unfold CoordinatePairUtility at heq
+    rw [hki, hkj, hki, hkj] at heq
+    have hqi : (⟨w i (x i).val, (x i).val, rfl⟩ : Set.range (w i)) = Q i := rfl
+    have hqj : (⟨w j (x j).val, (x j).val, rfl⟩ : Set.range (w j)) = Q j := rfl
+    rw [hqi, Function.update_eq_self, hqj, Function.update_eq_self] at heq
+    change V (fun l => (Function.update (Function.update x i u) j v l).val) = V y
+    rw [coordinateMap_update, coordinateMap_update]
+    rw [scoreAggregator_factors hu hs z, scoreAggregator_factors hu hs z]
+    rw [blockScores_update, blockScores_update]
+    exact heq
+  exact ⟨U, fun i => ⟨hUo i, hzU i, hUc i⟩, ψ, fun i => ⟨hψc i, hψm i⟩,
+    represents_additive_of_pair_scale_invariance hFm ψ hψc hψm hp⟩
+
+/-- At a point of an open interval product, every strictly increasing baseline score is interior. -/
+theorem baselineScores_interior_of_open_strictMono {V : (∀ i, S i) → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (ho : ∀ i, IsOpen (S i))
+    (hm : StrictMono V) (hc : Continuous V) (z : ∀ i, S i) (i : I) :
+    V z ∈ interior (Set.range (BaselineScores V z i)) := by
+  let : PreconnectedSpace (S i) :=
+    isPreconnected_iff_preconnectedSpace.mp (hS i).isPreconnected
+  obtain ⟨L, R, hzLR, hLR⟩ := mem_nhds_iff_exists_Ioo_subset.mp
+    ((ho i).mem_nhds (z i).property)
+  obtain ⟨lo, hLlo, hloz⟩ := exists_between hzLR.1
+  obtain ⟨up, hzup, hupR⟩ := exists_between hzLR.2
+  let low : S i := ⟨lo, hLR ⟨hLlo, hloz.trans hzLR.2⟩⟩
+  let high : S i := ⟨up, hLR ⟨hzLR.1.trans hzup, hupR⟩⟩
+  have hlow : BaselineScores V z i low < BaselineScores V z i (z i) :=
+    hm (Function.update_strictMono hloz)
+  have hhigh : BaselineScores V z i (z i) < BaselineScores V z i high :=
+    hm (Function.update_strictMono hzup)
+  rw [baselineScores_reference] at hlow hhigh
+  apply mem_interior_iff_mem_nhds.mpr
+  apply Filter.mem_of_superset (Ioo_mem_nhds hlow hhigh)
+  intro x hx
+  exact (baselineScores_ordConnected hc z i).out ⟨low, rfl⟩ ⟨high, rfl⟩
+    ⟨hx.1.le, hx.2.le⟩
+
+/-- Every point of an open interval product has an open local additive chart. -/
+theorem exists_local_scalar_additive_chart_of_open [Fintype I] {V : (∀ i, S i) → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (ho : ∀ i, IsOpen (S i))
+    (hs : StronglySeparable (UtilityPref V)) (hm : StrictMono V) (hc : Continuous V)
+    (z : ∀ i, S i) (hthree : ∃ i j l : I, i ≠ j ∧ i ≠ l ∧ j ≠ l) :
+    HasLocalScalarAdditiveChart V z :=
+  exists_local_scalar_additive_chart hS hs hm hc z
+    (baselineScores_interior_of_open_strictMono hS ho hm hc z) hthree
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Global coordinates from companion-calibrated charts
+
+For Proposition 2.14, two fixed essential companion coordinates determine cardinal units for
+all local charts along a target interval. Translation-atlas gluing then gives a continuous
+increasing target scale using those units throughout the interval.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A fixed companion calibration glues all target charts without changing their units. -/
+theorem CompanionChartFamily.globalize_target_of_calibration {K : Type*}
+    (F : CompanionChartFamily K) {S : Set ℝ} (hS : S.OrdConnected)
+    (hsub : ∀ k, F.domain k 0 ⊆ S) (hcover : ∀ x ∈ S, ∃ k, x ∈ F.domain k 0)
+    (seed : K) (hne : (F.domain seed 0).Nonempty) {slope offset : K → ℝ}
+    (hpos : ∀ k, 0 < slope k) (hunit : slope seed = 1)
+    (hc : ∀ k x, x ∈ F.domain seed 1 ∩ F.domain k 1 →
+      F.coord k 1 x = slope k * F.coord seed 1 x + offset k) :
+    ∃ f : ℝ → ℝ, ContinuousOn f S ∧ StrictMonoOn f S ∧
+      (∀ x ∈ F.domain seed 0, f x = F.coord seed 0 x) ∧
+      ∀ k, ∃ B : ℝ, ∀ x ∈ F.domain k 0, f x = F.coord k 0 x / slope k + B := by
+  have ht := F.calibrated_target_transition seed hpos hc
+  let a : PositiveAffineIntervalAtlas K S := {
+    domain := fun k => F.domain k 0
+    coord := fun k x => F.coord k 0 x / slope k
+    isOpen := fun k => F.open_domain k 0
+    interval := fun k => F.interval k 0
+    subset := hsub
+    cover := hcover
+    continuous := fun k => (F.continuous k 0).div_const _
+    increasing := fun k _ hx _ hy hxy =>
+      (div_lt_div_iff_of_pos_right (hpos k)).mpr (F.increasing k 0 hx hy hxy)
+    transition := fun k l => by
+      obtain ⟨B, hB⟩ := ht k l
+      exact ⟨1, B, zero_lt_one, fun x hx => by simpa only [one_mul] using hB x hx⟩ }
+  obtain ⟨f, hfc, hfm, hseed, hf⟩ := a.globalize_translations hS seed hne ht
+  refine ⟨f, hfc, hfm, ?_, hf⟩
+  intro x hx
+  simpa only [a, hunit, div_one] using hseed x hx
+
+/-- Two fixed companions provide both the calibration and a global increasing target scale. -/
+theorem CompanionChartFamily.exists_global_target {K : Type*}
+    (F : CompanionChartFamily K) {S : Set ℝ} (hS : S.OrdConnected)
+    (hsub : ∀ k, F.domain k 0 ⊆ S) (hcover : ∀ x ∈ S, ∃ k, x ∈ F.domain k 0)
+    (seed : K) (hne : (F.domain seed 0).Nonempty) :
+    ∃ (slope : K → ℝ) (f : ℝ → ℝ), (∀ k, 0 < slope k) ∧ slope seed = 1 ∧
+      ContinuousOn f S ∧ StrictMonoOn f S ∧
+      (∀ x ∈ F.domain seed 0, f x = F.coord seed 0 x) ∧
+      ∀ k, ∃ B : ℝ, ∀ x ∈ F.domain k 0, f x = F.coord k 0 x / slope k + B := by
+  obtain ⟨slope, offset, _, hpos, hunit, hc, _⟩ := F.exists_calibration seed
+  obtain ⟨f, hfc, hfm, hseed, hf⟩ :=
+    F.globalize_target_of_calibration hS hsub hcover seed hne hpos hunit hc
+  exact ⟨slope, f, hpos, hunit, hfc, hfm, hseed, hf⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Additive charts with ambient real coordinate functions
+
+Open subtype neighborhoods become real interval domains. Their cardinal
+functions extend arbitrarily outside those domains, while retaining continuity,
+strict increase and the represented preference wherever the chart applies.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [Fintype I] {S : I → Set ℝ}
+
+/-- An additive coordinate chart on an open interval box of the scalar commodity domain. -/
+structure ScalarAdditiveChart (V : (∀ i, S i) → ℝ) where
+  domain : I → Set ℝ
+  coord : I → ℝ → ℝ
+  open_domain : ∀ i, IsOpen (domain i)
+  interval : ∀ i, (domain i).OrdConnected
+  subset : ∀ i, domain i ⊆ S i
+  continuous : ∀ i, ContinuousOn (coord i) (domain i)
+  increasing : ∀ i, StrictMonoOn (coord i) (domain i)
+  represents : Represents (AdditiveUtility (fun i (x : domain i) => coord i x.val))
+    (UtilityPref (fun x => V (fun i => Set.inclusion (subset i) (x i))))
+
+/-- Every subtype additive chart gives a chart with ambient real domains
+and coordinate functions. -/
+theorem localScalarChart_to_scalarAdditiveChart {V : (∀ i, S i) → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (ho : ∀ i, IsOpen (S i)) (z : ∀ i, S i)
+    (h : HasLocalScalarAdditiveChart V z) :
+    ∃ C : ScalarAdditiveChart V, ∀ i, (z i).val ∈ C.domain i := by
+  classical
+  obtain ⟨U, hU, ψ, hψ, hrep⟩ := h
+  let D (i : I) : Set ℝ := Subtype.val '' U i
+  let f (i : I) (x : U i) : ℝ := x.val.val
+  have hfi (i : I) : Function.Injective (f i) :=
+    Subtype.val_injective.comp Subtype.val_injective
+  let w (i : I) : ℝ → ℝ := Function.extend (f i) (ψ i) (fun _ => 0)
+  have hwe (i : I) (x : U i) : w i (f i x) = ψ i x :=
+    (hfi i).extend_apply (ψ i) (fun _ => 0) x
+  have hDo (i : I) : IsOpen (D i) := (ho i).isOpenMap_subtype_val _ (hU i).1
+  have hDi (i : I) : (D i).OrdConnected := by
+    constructor
+    rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ r hr
+    let q : S i := ⟨r, (hS i).out x.property y.property hr⟩
+    exact ⟨q, (hU i).2.2.out hx hy hr, rfl⟩
+  have hDs (i : I) : D i ⊆ S i := by
+    rintro r ⟨x, _, rfl⟩
+    exact x.property
+  have hwi (i : I) : StrictMonoOn (w i) (D i) := by
+    rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ hxy
+    have hxw := hwe i ⟨x, hx⟩
+    have hyw := hwe i ⟨y, hy⟩
+    change w i x.val = _ at hxw
+    change w i y.val = _ at hyw
+    rw [hxw, hyw]
+    exact (hψ i).2 hxy
+  have hwc (i : I) : ContinuousOn (w i) (D i) := by
+    have hfind : Topology.IsInducing (f i) :=
+      Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal
+    have hrange : f i '' Set.univ = D i := by
+      ext r
+      constructor
+      · rintro ⟨x, _, rfl⟩
+        exact ⟨x.val, x.property, rfl⟩
+      · rintro ⟨x, hx, rfl⟩
+        exact ⟨⟨x, hx⟩, Set.mem_univ _, rfl⟩
+    rw [← hrange]
+    apply hfind.continuousOn_image_iff.mpr
+    have he : w i ∘ f i = ψ i := funext (hwe i)
+    rw [he]
+    exact (hψ i).1.continuousOn
+  let lift (i : I) (x : D i) : U i := ⟨x.property.choose, x.property.choose_spec.1⟩
+  have hlift (i : I) (x : D i) : f i (lift i x) = x.val := x.property.choose_spec.2
+  have hwL (i : I) (x : D i) : w i x.val = ψ i (lift i x) := by
+    rw [← hlift i x]
+    exact hwe i (lift i x)
+  have hV (x : ∀ i, D i) : (fun i => (lift i (x i)).val) =
+      (fun i => Set.inclusion (hDs i) (x i)) := by
+    funext i
+    exact Subtype.ext (hlift i (x i))
+  have hwrep : Represents (AdditiveUtility (fun i (x : D i) => w i x.val))
+      (UtilityPref (fun x => V (fun i => Set.inclusion (hDs i) (x i)))) := by
+    intro x y
+    have hh := hrep (fun i => lift i (x i)) (fun i => lift i (y i))
+    simp only [UtilityPref, AdditiveUtility] at hh ⊢
+    rw [hV x, hV y] at hh
+    simpa only [hwL] using hh
+  exact ⟨⟨D, w, hDo, hDi, hDs, hwc, hwi, hwrep⟩,
+    fun i => ⟨z i, (hU i).2.1, rfl⟩⟩
+
+/-- Continuous strongly separable utility on open intervals has an additive chart at every point. -/
+theorem exists_scalarAdditiveChart_at_of_open [DecidableEq I] {V : (∀ i, S i) → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (ho : ∀ i, IsOpen (S i))
+    (hs : StronglySeparable (UtilityPref V)) (hm : StrictMono V) (hc : Continuous V)
+    (z : ∀ i, S i) (hthree : ∃ i j l : I, i ≠ j ∧ i ≠ l ∧ j ≠ l) :
+    ∃ C : ScalarAdditiveChart V, ∀ i, (z i).val ∈ C.domain i :=
+  localScalarChart_to_scalarAdditiveChart hS ho z
+    (exists_local_scalar_additive_chart_of_open hS ho hs hm hc z hthree)
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -13888,3 +16233,148 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.pair_additive_positive_affine_unique
 #print axioms Kreps.PreferenceProperties.family_additive_positive_affine_unique
 #print axioms Kreps.PreferenceProperties.normalized_additive_scales_unique
+#print axioms Kreps.PreferenceProperties.intervalValues_update
+#print axioms Kreps.PreferenceProperties.sum_interval_update
+#print axioms Kreps.PreferenceProperties.finite_sum_opposite_coordinates
+#print axioms Kreps.PreferenceProperties.PairSumInvariant
+#print axioms Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq_on
+#print axioms Kreps.PreferenceProperties.pairSumInvariant_eq_of_sum_eq
+#print axioms Kreps.PreferenceProperties.strictMono_coordinate_represents
+#print axioms Kreps.PreferenceProperties.pair_chart_positive_affine_unique
+#print axioms Kreps.PreferenceProperties.common_affine_slope_eq_one
+#print axioms Kreps.PreferenceProperties.pair_chart_translation_of_companion_increment
+#print axioms Kreps.PreferenceProperties.pair_chart_identity_of_companion_and_baseline
+#print axioms Kreps.PreferenceProperties.LocallyPositiveAffineOn
+#print axioms Kreps.PreferenceProperties.affine_coefficients_unique
+#print axioms Kreps.PreferenceProperties.locallyPositiveAffineOn_global
+#print axioms Kreps.PreferenceProperties.locallyPositiveAffineOn_of_affine
+#print axioms Kreps.PreferenceProperties.locallyPositiveAffineOn_mono
+#print axioms Kreps.PreferenceProperties.strictMonoOn_union_intervals
+#print axioms Kreps.PreferenceProperties.CoordinatePairUtility
+#print axioms Kreps.PreferenceProperties.NormalizedCoordinateAxes
+#print axioms Kreps.PreferenceProperties.stronglySeparable_common_update_utility_eq
+#print axioms Kreps.PreferenceProperties.coordinatePairUtility_move_first
+#print axioms Kreps.PreferenceProperties.coordinatePairUtility_move_second
+#print axioms Kreps.PreferenceProperties.three_members_spare
+#print axioms Kreps.PreferenceProperties.coordinatePairUtility_same
+#print axioms Kreps.PreferenceProperties.piecewise_pair_updates
+#print axioms Kreps.PreferenceProperties.coordinatePairUtility_context_iff
+#print axioms Kreps.PreferenceProperties.coordinatePairUtility_all_comparisons
+#print axioms Kreps.PreferenceProperties.interval_order_of_local_comparisons
+#print axioms Kreps.PreferenceProperties.interval_strict_order_of_local_comparisons
+#print axioms Kreps.PreferenceProperties.path_order_of_local_comparisons
+#print axioms Kreps.PreferenceProperties.global_order_of_local_comparisons
+#print axioms Kreps.PreferenceProperties.additive_scale_bddBelow_at_least
+#print axioms Kreps.PreferenceProperties.additive_scale_bddAbove_at_greatest
+#print axioms Kreps.PreferenceProperties.tendsto_dense_comap_atBot
+#print axioms Kreps.PreferenceProperties.tendsto_dense_comap_atTop
+#print axioms Kreps.PreferenceProperties.exists_continuous_endpoint_extension
+#print axioms Kreps.PreferenceProperties.continuous_extension_le_dense
+#print axioms Kreps.PreferenceProperties.dense_le_continuous_extension
+#print axioms Kreps.PreferenceProperties.continuous_extension_strictMono
+#print axioms Kreps.PreferenceProperties.exists_continuous_strictMono_endpoint_extension
+#print axioms Kreps.PreferenceProperties.dense_comparison_strict_implies_le
+#print axioms Kreps.PreferenceProperties.exists_product_improvement_below
+#print axioms Kreps.PreferenceProperties.dense_product_strict_comparison
+#print axioms Kreps.PreferenceProperties.dense_product_comparison
+#print axioms Kreps.PreferenceProperties.exists_le_bundle_with_sum
+#print axioms Kreps.PreferenceProperties.pairSumInvariant_lt_of_sum_lt
+#print axioms Kreps.PreferenceProperties.pairSumInvariant_comparison
+#print axioms Kreps.PreferenceProperties.pairSumInvariant_represents
+#print axioms Kreps.PreferenceProperties.open_real_set_has_pair
+#print axioms Kreps.PreferenceProperties.pair_chart_positive_affine_unique_on
+#print axioms Kreps.PreferenceProperties.pair_chart_translation_on
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.mk
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.domain
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.coord
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.isOpen
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.interval
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.subset
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.cover
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.continuous
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.increasing
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.transition
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.mk
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.domain
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.isOpen
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.interval
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.subset
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.value
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.continuous
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.increasing
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.compatible
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.seed_subset
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.seed_eq
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.compatible_chart
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.seedSection
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.affine
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.local_relation
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.unique
+#print axioms Kreps.PreferenceProperties.exists_all_active_score_interval
+#print axioms Kreps.PreferenceProperties.CommonActiveScoreEmbedding
+#print axioms Kreps.PreferenceProperties.commonActiveScoreEmbedding_active
+#print axioms Kreps.PreferenceProperties.commonActiveScoreEmbedding_inactive
+#print axioms Kreps.PreferenceProperties.commonActiveScoreEmbedding_continuous
+#print axioms Kreps.PreferenceProperties.commonActiveScoreEmbedding_axes
+#print axioms Kreps.PreferenceProperties.intervalProductPath
+#print axioms Kreps.PreferenceProperties.intervalProductPath_continuous
+#print axioms Kreps.PreferenceProperties.intervalProductPath_endpoints
+#print axioms Kreps.PreferenceProperties.intervalProductPath_sum_monotone
+#print axioms Kreps.PreferenceProperties.sum_represents_of_locally_represents
+#print axioms Kreps.PreferenceProperties.interval_interior_dense
+#print axioms Kreps.PreferenceProperties.interval_outside_interior_extreme
+#print axioms Kreps.PreferenceProperties.interval_exists_continuous_strictMono_extension
+#print axioms Kreps.PreferenceProperties.coordinateMap_update
+#print axioms Kreps.PreferenceProperties.represents_additive_of_pair_scale_invariance
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.mk
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.domain
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.coord
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.open_domain
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.interval
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.continuous
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.increasing
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.firstReference
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.secondReference
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.first_mem
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.second_mem
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.pair_compatible
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.exists_calibration
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.calibrated_companion
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.calibrated_target_transition
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.congr
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.union
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.Compatible.positive_affine
+#print axioms Kreps.PreferenceProperties.AffineIntervalSection.extend
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.sections_cover
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.exists_global_section
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize
+#print axioms Kreps.PreferenceProperties.HasAllPairsLocalScale
+#print axioms Kreps.PreferenceProperties.exists_all_pairs_local_scale
+#print axioms Kreps.PreferenceProperties.additiveUtility_strictMono
+#print axioms Kreps.PreferenceProperties.additive_comparison_of_interior
+#print axioms Kreps.PreferenceProperties.open_cover_constants_eq
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.slopes_eq_one
+#print axioms Kreps.PreferenceProperties.PositiveAffineIntervalAtlas.globalize_translations
+#print axioms Kreps.PreferenceProperties.ordConnected_subtype_preconnected
+#print axioms Kreps.PreferenceProperties.HasLocalScalarAdditiveChart
+#print axioms Kreps.PreferenceProperties.exists_local_scalar_additive_chart
+#print axioms Kreps.PreferenceProperties.baselineScores_interior_of_open_strictMono
+#print axioms Kreps.PreferenceProperties.exists_local_scalar_additive_chart_of_open
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.globalize_target_of_calibration
+#print axioms Kreps.PreferenceProperties.CompanionChartFamily.exists_global_target
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.mk
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.domain
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.coord
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.open_domain
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.interval
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.subset
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.continuous
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.increasing
+#print axioms Kreps.PreferenceProperties.ScalarAdditiveChart.represents
+#print axioms Kreps.PreferenceProperties.localScalarChart_to_scalarAdditiveChart
+#print axioms Kreps.PreferenceProperties.exists_scalarAdditiveChart_at_of_open

@@ -25,7 +25,7 @@ DynamicProgramming pins and its stricter no-placeholder verifier where the refer
 differ; do not copy the other repository’s model-specific scope or local machine setup.
 
 Status: active implementation goal, 2026-10-21. Chapter 1 and Appendix 1 are complete
-(213 theorems, 322 audited declarations); Chapter 2 is active with 782 new chapter/appendix theorems audited.
+(213 theorems, 322 audited declarations); Chapter 2 is active with 871 new chapter/appendix theorems audited.
 The current authorized goal ends after Chapters 1–2 and their required foundations are
 complete, audited and pushed to the public `LeanEconomics/KrepsFoundations` repository.
 Create that repository if needed when this checkpoint is ready. Then end this goal;
@@ -395,7 +395,8 @@ required. README theorem counts do not measure textbook completeness by themselv
 **Volume completion** requires sixteen passing independent packages, complete chapter and
 appendix source inventories, documented corrections and nonmathematical exclusions,
 consistent dependency pins and provenance, and a final root index reporting only verified
-coverage. There are no completed proofs or verification results to report at this stage.
+coverage. The current chapter-level completion and verification status is recorded at the start of
+this proposal and in the root library index.
 
 ---
 
