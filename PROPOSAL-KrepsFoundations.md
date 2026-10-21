@@ -16,8 +16,16 @@ Follow its proposal format, independent chapter packages, Lean conventions, docu
 dependency versions, verification scripts, and CI structure. The reference files are listed
 in section 8.
 
+**Additional convention reference.**
+[LeanEconomics/LeanEconomics](https://github.com/LeanEconomics/LeanEconomics/tree/8295256bbd64ab488c8cb436d68e7064db560dfc),
+inspected at commit `8295256bbd64ab488c8cb436d68e7064db560dfc`, informs reusable
+mathematics, explicit assumptions, provenance and upstream-candidate tracking.
+[PROVENANCE.md](PROVENANCE.md) records the detailed comparison. Preserve the stable
+DynamicProgramming pins and its stricter no-placeholder verifier where the references
+differ; do not copy the other repository’s model-specific scope or local machine setup.
+
 Status: active implementation goal, 2026-10-21. Chapter 1 and Appendix 1 are complete
-(213 theorems, 322 audited declarations); Chapter 2 is active with 681 new chapter/appendix theorems audited.
+(213 theorems, 322 audited declarations); Chapter 2 is active with 782 new chapter/appendix theorems audited.
 The current authorized goal ends after Chapters 1–2 and their required foundations are
 complete, audited and pushed to the public `LeanEconomics/KrepsFoundations` repository.
 Create that repository if needed when this checkpoint is ready. Then end this goal;
@@ -31,6 +39,9 @@ Source maps and audit records track actual progress.
 ```text
 KrepsFoundations/
 ├── README.md                     index: project | chapter | checked results | start here
+├── AGENTS.md / CLAUDE.md          contributor and agent working guidance
+├── PROVENANCE.md                 inspected references and convention choices
+├── UPSTREAM.md                   evidence-based reusable mathematics inventory
 ├── LICENSE                       Apache 2.0
 ├── .gitignore                    build output, Python caches, local textbook PDF
 ├── .gitattributes                * text=auto eol=lf

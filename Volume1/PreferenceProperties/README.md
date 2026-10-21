@@ -99,10 +99,26 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [AppendixTopologyExamples](PreferenceProperties/AppendixTopologyExamples.lean) | 7 | Half-open intervals, infinite open intersections, relative closure and pointwise Lipschitz rules |
 | [AppendixEuclideanNorms](PreferenceProperties/AppendixEuclideanNorms.lean) | 10 | Orthants, equivalent norms, coordinate bounds and the exact three-distance example |
 | [AppendixSequenceExamples](PreferenceProperties/AppendixSequenceExamples.lean) | 9 | The exact multiples-of-ten and alternating decimal examples, including all accumulation points |
+| [BisymmetricMeanRanks](PreferenceProperties/BisymmetricMeanRanks.lean) | 8 | Consistent and strictly ordered dyadic ranks on the generated mean grid |
+| [BisymmetricArithmeticMean](PreferenceProperties/BisymmetricArithmeticMean.lean) | 3 | Arithmetic reference mean and density of unit-interval dyadic fractions |
+| [BisymmetricMeanScale](PreferenceProperties/BisymmetricMeanScale.lean) | 5 | Supremum-cut construction of a continuous strict cardinal scale preserving means |
+| [NormalizedThreeFactorUtility](PreferenceProperties/NormalizedThreeFactorUtility.lean) | 13 | Symmetry, partial associativity and medial identities derived from independence |
+| [DiagonalUtilityMean](PreferenceProperties/DiagonalUtilityMean.lean) | 10 | A continuous bisymmetric mean obtained by inverting the utility diagonal |
+| [LocalPairAdditiveScale](PreferenceProperties/LocalPairAdditiveScale.lean) | 2 | Continuous additive pair scales from the derived partial medial law |
+| [CommonScoreRestriction](PreferenceProperties/CommonScoreRestriction.lean) | 7 | Restriction of the scalar aggregator to a common three-block interval |
+| [CommonScoreInterval](PreferenceProperties/CommonScoreInterval.lean) | 2 | A common open score interval around an interior reference rank |
+| [SmallPairInterval](PreferenceProperties/SmallPairInterval.lean) | 2 | A compact neighborhood whose pair utilities remain on the common axis |
+| [CommonLocalAdditiveScale](PreferenceProperties/CommonLocalAdditiveScale.lean) | 2 | Local additive pair scales derived from the original preference assumptions |
+| [AppendixConvexSets](PreferenceProperties/AppendixConvexSets.lean) | 9 | Appendix 3: convex combinations, intersections, hulls, Carathéodory and closure |
+| [AppendixConvexHullCompact](PreferenceProperties/AppendixConvexHullCompact.lean) | 5 | Appendix 3: compactness of finite-dimensional convex hulls via finite mixtures |
+| [AppendixConvexFunctions](PreferenceProperties/AppendixConvexFunctions.lean) | 14 | Appendix 3: concavity operations, local maxima, uniqueness and interior continuity |
+| [AppendixConvexQuasiConcavity](PreferenceProperties/AppendixConvexQuasiConcavity.lean) | 9 | Appendix 3: quasi-concavity, monotone rescaling, maximizers and hypographs |
+| [LocalAffineUniqueness](PreferenceProperties/LocalAffineUniqueness.lean) | 3 | A compact maximum proof that uniform local midpoint identities force an affine scale |
+| [AdditiveScaleUniqueness](PreferenceProperties/AdditiveScaleUniqueness.lean) | 7 | Common positive affine uniqueness and normalized overlap identity, including trivial blocks |
 
-The current subset passes the full fresh-source audit: **779 theorems** and
-**977 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **681 new chapter and appendix theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **880 theorems** and
+**1093 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **782 new chapter and appendix theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
@@ -121,6 +137,8 @@ Problem 2.8 is complete for all three exact displayed utilities. Problem 2.1 ret
 the additive-existence dependency; the book's excluded ???? cell is unclaimed.
 The [Appendix 2 inventory](docs/appendix2-source-map.md) maps every statement and
 mathematical example, including the signed-series diagnostic correction.
+The [Appendix 3 inventory](docs/appendix3-source-map.md) maps the convexity foundations
+proved here and identifies its later-use material explicitly.
 Problem 2.15 is complete under its stated measure assumptions. Indifference classes
 of zero measure suffice for continuity; atoms can prevent it even under strict monotonicity.
 This is not a completed-chapter claim.

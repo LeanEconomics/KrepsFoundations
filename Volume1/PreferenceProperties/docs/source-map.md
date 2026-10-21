@@ -71,6 +71,14 @@ freshly audited again in this project. Their theorem counts are prerequisite cou
 not new Chapter 2 results.
 
 The [Appendix 2 source map](appendix2-source-map.md) inventories pp. 441–451 and
-records completed explicit bridges for every mathematical entry. The relevant Appendix 3 material on
-pp. 452–468 still needs its complete inventory. Importing Mathlib does not itself
-complete an appendix; the volume proposal records later ownership of Appendix 3.
+records completed explicit bridges for every mathematical entry. The
+[Appendix 3 source map](appendix3-source-map.md) inventories pp. 452–468. Its convexity
+definitions and propositions A3.1–7 and A3.16–23 have explicit bridges here. The
+p. 456 illustration and later separation, support-function and calculus material are
+identified separately; this does not claim completion of the entire appendix.
+
+The additive-existence construction now has a proved continuous bisymmetric-mean
+cardinal scale, a local additive pair scale derived from the original preference
+hypotheses, and common positive affine uniqueness on overlaps, including trivial
+blocks. These are construction steps; the full Proposition 2.14 converse remains
+pending until global extension and finite-coordinate assembly are proved.

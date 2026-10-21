@@ -56,6 +56,14 @@ import Mathlib.Topology.Order.MonotoneConvergence
 import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 import Mathlib.Topology.Order.DenselyOrdered
 import Mathlib.Topology.MetricSpace.Pseudo.Pi
+import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.Order.Hom.Set
+import Mathlib.Analysis.Convex.Caratheodory
+import Mathlib.Analysis.Convex.Topology
+import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.FunProp
+import Mathlib.Analysis.Convex.Continuous
 set_option autoImplicit false
 
 /-
@@ -11132,6 +11140,1660 @@ theorem appendix2_alternating_no_limit :
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Cardinal ranks on the dyadic mean grid
+
+An index `k` at subdivision level `n` receives rank `k / 2 ^ n`. The strict
+ordering of every common refinement makes this assignment independent of the
+chosen subdivision level. Suprema of lower ranks then extend it to all points.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {α : Type*} [LinearOrder α]
+
+/-- The numerical rank of an index in a dyadic grid. -/
+noncomputable def MeanDyadicRank (n k : ℕ) : ℝ := (k : ℝ) / (2 : ℝ) ^ n
+
+/-- Valid grid indices have ranks between zero and one. -/
+theorem meanDyadicRank_mem (n k : ℕ) (hk : k ≤ 2 ^ n) :
+    MeanDyadicRank n k ∈ Set.Icc (0 : ℝ) 1 := by
+  constructor
+  · exact div_nonneg (Nat.cast_nonneg k) (by positivity)
+  · apply (div_le_one (by positivity : (0 : ℝ) < 2 ^ n)).2
+    exact_mod_cast hk
+
+/-- Cross-level grid comparisons coincide exactly with comparisons of their dyadic ranks. -/
+theorem meanDyadicGrid_le_iff_rank (M : OrderedBisymmetricMean α) {a b : α}
+    (hab : a < b) (n m i j : ℕ) (hi : i ≤ 2 ^ n) (hj : j ≤ 2 ^ m) :
+    MeanDyadicGrid M.mean a b n i ≤ MeanDyadicGrid M.mean a b m j ↔
+      MeanDyadicRank n i ≤ MeanDyadicRank m j := by
+  have hi' : i * 2 ^ m ≤ 2 ^ (n + m) := by
+    rw [pow_add]
+    exact Nat.mul_le_mul_right _ hi
+  have hj' : j * 2 ^ n ≤ 2 ^ (n + m) := by
+    rw [Nat.add_comm n m, pow_add]
+    exact Nat.mul_le_mul_right _ hj
+  have hleft := meanDyadicGrid_refine M a b n m i
+  have hright := meanDyadicGrid_refine M a b m n j
+  rw [Nat.add_comm m n] at hright
+  rw [← hleft, ← hright,
+    (meanDyadicGrid_strictMonoOn M hab (n + m)).le_iff_le hi' hj']
+  unfold MeanDyadicRank
+  rw [div_le_div_iff₀ (by positivity) (by positivity)]
+  norm_cast
+
+/-- The lower numerical ranks at an arbitrary point. -/
+def MeanRankCut (M : OrderedBisymmetricMean α) (a b x : α) : Set ℝ :=
+  {q | ∃ n k, k ≤ 2 ^ n ∧ q = MeanDyadicRank n k ∧ MeanDyadicGrid M.mean a b n k ≤ x}
+
+/-- The left endpoint's rank ensures each cut is nonempty. -/
+theorem meanRankCut_nonempty (M : OrderedBisymmetricMean α) (a b x : α) (hax : a ≤ x) :
+    (MeanRankCut M a b x).Nonempty := by
+  refine ⟨0, 0, 0, by norm_num, by simp [MeanDyadicRank], ?_⟩
+  simpa only [meanDyadicGrid_left] using hax
+
+/-- One bounds every lower dyadic cut. -/
+theorem meanRankCut_bddAbove (M : OrderedBisymmetricMean α) (a b x : α) :
+    BddAbove (MeanRankCut M a b x) := by
+  refine ⟨1, ?_⟩
+  rintro q ⟨n, k, hk, rfl, _⟩
+  exact (meanDyadicRank_mem n k hk).2
+
+/-- Extending the prescribed dyadic ranks by their lower-cut suprema. -/
+noncomputable def MeanCardinalScale (M : OrderedBisymmetricMean α) (a b x : α) : ℝ :=
+  sSup (MeanRankCut M a b x)
+
+/-- The completed scale stays in the unit interval. -/
+theorem meanCardinalScale_mem (M : OrderedBisymmetricMean α) (a b x : α) (hax : a ≤ x) :
+    MeanCardinalScale M a b x ∈ Set.Icc (0 : ℝ) 1 := by
+  constructor
+  · apply le_csSup (meanRankCut_bddAbove M a b x)
+    refine ⟨0, 0, by norm_num, by simp [MeanDyadicRank], ?_⟩
+    simpa only [meanDyadicGrid_left] using hax
+  · apply csSup_le (meanRankCut_nonempty M a b x hax)
+    rintro q ⟨n, k, hk, rfl, _⟩
+    exact (meanDyadicRank_mem n k hk).2
+
+/-- Inclusion of lower cuts makes the scale monotone. -/
+theorem meanCardinalScale_mono (M : OrderedBisymmetricMean α) (a b : α)
+    (ha : ∀ x, a ≤ x) : Monotone (MeanCardinalScale M a b) := by
+  intro x y hxy
+  apply csSup_le (meanRankCut_nonempty M a b x (ha x))
+  rintro q ⟨n, k, hk, rfl, hx⟩
+  exact le_csSup (meanRankCut_bddAbove M a b y) ⟨n, k, hk, rfl, hx.trans hxy⟩
+
+/-- The supremum extension agrees with every original grid rank. -/
+theorem meanCardinalScale_grid (M : OrderedBisymmetricMean α) {a b : α}
+    (hab : a < b) (ha : ∀ x, a ≤ x) (n k : ℕ) (hk : k ≤ 2 ^ n) :
+    MeanCardinalScale M a b (MeanDyadicGrid M.mean a b n k) = MeanDyadicRank n k := by
+  apply le_antisymm
+  · apply csSup_le (meanRankCut_nonempty M a b _ (ha _))
+    rintro q ⟨m, i, hi, rfl, hle⟩
+    exact (meanDyadicGrid_le_iff_rank M hab m n i k hi hk).1 hle
+  · exact le_csSup (meanRankCut_bddAbove M a b _) ⟨n, k, hk, rfl, le_rfl⟩
+
+/-- Density of the grid makes the completed scale strictly increasing. -/
+theorem meanCardinalScale_strictMono [TopologicalSpace α] [OrderTopology α]
+    [DenselyOrdered α] (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b)
+    (ha : ∀ x, a ≤ x) (hd : Dense (MeanDyadicPoints M a b)) :
+    StrictMono (MeanCardinalScale M a b) := by
+  intro x y hxy
+  obtain ⟨u, hu, hxu, huy⟩ := hd.exists_between hxy
+  obtain ⟨v, hv, huv, hvy⟩ := hd.exists_between huy
+  obtain ⟨n, i, hi, rfl⟩ := hu
+  obtain ⟨m, j, hj, rfl⟩ := hv
+  have hlt : MeanDyadicRank n i < MeanDyadicRank m j := by
+    apply lt_of_not_ge
+    intro h
+    exact (not_le_of_gt huv) ((meanDyadicGrid_le_iff_rank M hab m n j i hj hi).2 h)
+  calc
+    MeanCardinalScale M a b x ≤ MeanDyadicRank n i := by
+      rw [← meanCardinalScale_grid M hab ha n i hi]
+      exact meanCardinalScale_mono M a b ha hxu.le
+    _ < MeanDyadicRank m j := hlt
+    _ ≤ MeanCardinalScale M a b y := by
+      rw [← meanCardinalScale_grid M hab ha m j hj]
+      exact meanCardinalScale_mono M a b ha hvy.le
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The arithmetic reference mean
+
+Applying the abstract density result to the ordinary arithmetic mean proves
+density of dyadic numerical ranks in the unit interval. This avoids assuming
+any cardinal representation for the original preference-induced mean.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The usual arithmetic mean, restricted to the closed unit interval. -/
+noncomputable def UnitArithmeticMean : OrderedBisymmetricMean (Set.Icc (0 : ℝ) 1) where
+  mean x y := ⟨(x.val + y.val) / 2, by
+    constructor <;> linarith [x.property.1, x.property.2, y.property.1, y.property.2]⟩
+  reflexive x := by apply Subtype.ext; simp
+  symmetric x y := by apply Subtype.ext; simp [add_comm]
+  bisymmetric x y z w := by apply Subtype.ext; dsimp; ring
+  strictMono_left y := by
+    intro x z hxz
+    change (x.val + y.val) / 2 < (z.val + y.val) / 2
+    change x.val < z.val at hxz
+    linarith
+  strictMono_right x := by
+    intro y z hyz
+    change (x.val + y.val) / 2 < (x.val + z.val) / 2
+    change y.val < z.val at hyz
+    linarith
+
+/-- The reference mean is jointly continuous. -/
+theorem unitArithmeticMean_continuous : Continuous
+    (fun p : Set.Icc (0 : ℝ) 1 × Set.Icc (0 : ℝ) 1 => UnitArithmeticMean.mean p.1 p.2) :=
+  ((continuous_subtype_val.comp continuous_fst).add
+    (continuous_subtype_val.comp continuous_snd)).div_const 2 |>.subtype_mk _
+
+/-- The reference grid realizes the usual dyadic fractions. -/
+theorem unitArithmeticMean_grid (n k : ℕ) (hk : k ≤ 2 ^ n) :
+    (MeanDyadicGrid UnitArithmeticMean.mean ⟨0, by norm_num⟩ ⟨1, by norm_num⟩ n k).val =
+      MeanDyadicRank n k := by
+  induction n generalizing k with
+  | zero =>
+    norm_num at hk
+    interval_cases k <;> simp [MeanDyadicGrid, MeanDyadicRank]
+  | succ n ih =>
+    have hp : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ, Nat.mul_comm]
+    have h₀ : k / 2 ≤ 2 ^ n := by omega
+    have h₁ : (k + 1) / 2 ≤ 2 ^ n := by omega
+    change ((MeanDyadicGrid UnitArithmeticMean.mean _ _ n (k / 2)).val +
+      (MeanDyadicGrid UnitArithmeticMean.mean _ _ n ((k + 1) / 2)).val) / 2 = _
+    rw [ih _ h₀, ih _ h₁]
+    unfold MeanDyadicRank
+    have hsum : ((k / 2 : ℕ) : ℝ) + (((k + 1) / 2 : ℕ) : ℝ) = (k : ℝ) := by
+      exact_mod_cast (show k / 2 + (k + 1) / 2 = k by omega)
+    rw [← add_div, hsum, pow_succ, div_mul_eq_div_div]
+
+/-- The usual unit-interval dyadic points are dense. -/
+theorem unitArithmeticMean_dense :
+    Dense (MeanDyadicPoints UnitArithmeticMean ⟨0, by norm_num⟩ ⟨1, by norm_num⟩) :=
+  meanDyadicPoints_dense UnitArithmeticMean _ _ (fun x => x.property.1)
+    (fun x => x.property.2) unitArithmeticMean_continuous
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuous cardinal scales for strict bisymmetric means
+
+The lower-cut scale is continuous because its range contains all dyadic ranks.
+Density of the original mean grid makes the scale strict, and continuity
+extends the grid midpoint identity to every pair of points.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {α : Type*} [LinearOrder α]
+
+/-- The completed scale with its unit-interval codomain made explicit. -/
+noncomputable def MeanUnitScale (M : OrderedBisymmetricMean α) (a b : α)
+    (ha : ∀ x, a ≤ x) (x : α) : Set.Icc (0 : ℝ) 1 :=
+  ⟨MeanCardinalScale M a b x, meanCardinalScale_mem M a b x (ha x)⟩
+
+/-- The completed scale has dense range, since it attains every dyadic rank. -/
+theorem meanUnitScale_denseRange (M : OrderedBisymmetricMean α) {a b : α}
+    (hab : a < b) (ha : ∀ x, a ≤ x) : DenseRange (MeanUnitScale M a b ha) := by
+  apply unitArithmeticMean_dense.mono
+  rintro q ⟨n, k, hk, rfl⟩
+  refine ⟨MeanDyadicGrid M.mean a b n k, ?_⟩
+  apply Subtype.ext
+  exact (meanCardinalScale_grid M hab ha n k hk).trans
+    (unitArithmeticMean_grid n k hk).symm
+
+/-- Monotonicity and dense numerical range make the completed scale continuous. -/
+theorem meanCardinalScale_continuous [TopologicalSpace α] [OrderTopology α]
+    (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b) (ha : ∀ x, a ≤ x) :
+    Continuous (MeanCardinalScale M a b) := by
+  have hm : Monotone (MeanUnitScale M a b ha) := meanCardinalScale_mono M a b ha
+  exact continuous_subtype_val.comp
+    (hm.continuous_of_denseRange (meanUnitScale_denseRange M hab ha))
+
+/-- The completed scale preserves means of arbitrary dyadic grid points. -/
+theorem meanCardinalScale_grid_mean (M : OrderedBisymmetricMean α) {a b : α}
+    (hab : a < b) (ha : ∀ x, a ≤ x) (n m i j : ℕ)
+    (hi : i ≤ 2 ^ n) (hj : j ≤ 2 ^ m) :
+    MeanCardinalScale M a b
+      (M.mean (MeanDyadicGrid M.mean a b n i) (MeanDyadicGrid M.mean a b m j)) =
+      (MeanCardinalScale M a b (MeanDyadicGrid M.mean a b n i) +
+        MeanCardinalScale M a b (MeanDyadicGrid M.mean a b m j)) / 2 := by
+  have hi' : i * 2 ^ m ≤ 2 ^ (n + m) := by
+    rw [pow_add]
+    exact Nat.mul_le_mul_right _ hi
+  have hj' : j * 2 ^ n ≤ 2 ^ (n + m) := by
+    rw [Nat.add_comm n m, pow_add]
+    exact Nat.mul_le_mul_right _ hj
+  have hsum : i * 2 ^ m + j * 2 ^ n ≤ 2 ^ (n + m + 1) := by
+    rw [pow_succ]
+    omega
+  have hleft := meanDyadicGrid_refine M a b n m i
+  have hright := meanDyadicGrid_refine M a b m n j
+  rw [Nat.add_comm m n] at hright
+  have hmean : M.mean (MeanDyadicGrid M.mean a b n i) (MeanDyadicGrid M.mean a b m j) =
+      MeanDyadicGrid M.mean a b (n + m + 1) (i * 2 ^ m + j * 2 ^ n) := by
+    rw [← hleft, ← hright]
+    exact meanDyadicGrid_midpoint M a b (n + m) _ _ hi' hj'
+  rw [hmean, meanCardinalScale_grid M hab ha _ _ hsum,
+    meanCardinalScale_grid M hab ha _ _ hi, meanCardinalScale_grid M hab ha _ _ hj]
+  simp only [MeanDyadicRank, Nat.cast_add, Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat,
+    pow_succ, pow_add]
+  field_simp
+
+/-- Continuity extends the midpoint identity from the dense grid to all points. -/
+theorem meanCardinalScale_mean [TopologicalSpace α] [OrderTopology α]
+    (M : OrderedBisymmetricMean α) {a b : α} (hab : a < b) (ha : ∀ x, a ≤ x)
+    (hd : Dense (MeanDyadicPoints M a b))
+    (hc : Continuous (fun p : α × α => M.mean p.1 p.2)) (x y : α) :
+    MeanCardinalScale M a b (M.mean x y) =
+      (MeanCardinalScale M a b x + MeanCardinalScale M a b y) / 2 := by
+  have hs := meanCardinalScale_continuous M hab ha
+  have hclosed : IsClosed {p : α × α | MeanCardinalScale M a b (M.mean p.1 p.2) =
+      (MeanCardinalScale M a b p.1 + MeanCardinalScale M a b p.2) / 2} :=
+    isClosed_eq (hs.comp hc) ((hs.comp continuous_fst).add
+      (hs.comp continuous_snd) |>.div_const 2)
+  have hsub : MeanDyadicPoints M a b ×ˢ MeanDyadicPoints M a b ⊆
+      {p : α × α | MeanCardinalScale M a b (M.mean p.1 p.2) =
+        (MeanCardinalScale M a b p.1 + MeanCardinalScale M a b p.2) / 2} := by
+    rintro ⟨u, v⟩ ⟨⟨n, i, hi, rfl⟩, ⟨m, j, hj, rfl⟩⟩
+    exact meanCardinalScale_grid_mean M hab ha n m i j hi hj
+  have hxy : (x, y) ∈ closure (MeanDyadicPoints M a b ×ˢ MeanDyadicPoints M a b) := by
+    rw [closure_prod_eq]
+    exact ⟨hd x, hd y⟩
+  exact closure_minimal hsub hclosed hxy
+
+/-- A compact interval's continuous strict bisymmetric mean admits a continuous cardinal scale. -/
+theorem exists_continuous_bisymmetricMean_scale [TopologicalSpace α] [OrderTopology α]
+    [CompactSpace α] [DenselyOrdered α] (M : OrderedBisymmetricMean α) {a b : α}
+    (hab : a < b) (ha : ∀ x, a ≤ x) (hb : ∀ x, x ≤ b)
+    (hc : Continuous (fun p : α × α => M.mean p.1 p.2)) :
+    ∃ φ : α → ℝ, Continuous φ ∧ StrictMono φ ∧ φ a = 0 ∧ φ b = 1 ∧
+      ∀ x y, φ (M.mean x y) = (φ x + φ y) / 2 := by
+  have hd := meanDyadicPoints_dense M a b ha hb hc
+  refine ⟨MeanCardinalScale M a b, meanCardinalScale_continuous M hab ha,
+    meanCardinalScale_strictMono M hab ha hd, ?_, ?_, meanCardinalScale_mean M hab ha hd hc⟩
+  · simpa only [meanDyadicGrid_left, MeanDyadicRank, Nat.cast_zero, zero_div] using
+      meanCardinalScale_grid M hab ha 0 0 (by norm_num)
+  · simpa [MeanDyadicGrid, MeanDyadicRank] using
+      meanCardinalScale_grid M hab ha 0 1 (by norm_num)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Algebra of three normalized independent utility factors
+
+Preparation for Kreps I, Proposition 2.14. If the three baseline axes have the
+same numerical scale, independence makes the induced two-factor operation
+symmetric. Pair substitutions give associativity and the medial identity
+whenever the pair values are attained on the common axis. These are derived
+identities of the original utility, rather than additional representation axioms.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {A B C : Type*} {u : A × B × C → ℝ}
+
+/-- First-factor independence transports utility equalities. -/
+theorem threeFactor_first_utility_eq (hi : ThreeFactorIndependent (UtilityPref u))
+    (a a' : A) (b b' : B) (c c' : C) :
+    u (a, b, c) = u (a, b', c') ↔ u (a', b, c) = u (a', b', c') := by
+  have h := threeFactor_first_indifferent hi a a' b b' c c'
+  simpa only [indifferent_iff_utility_eq (show Represents u (UtilityPref u) from
+    fun _ _ => Iff.rfl)] using h
+
+/-- Second-factor independence transports utility equalities. -/
+theorem threeFactor_second_utility_eq (hi : ThreeFactorIndependent (UtilityPref u))
+    (b b' : B) (a a' : A) (c c' : C) :
+    u (a, b, c) = u (a', b, c') ↔ u (a, b', c) = u (a', b', c') := by
+  have h := threeFactor_second_indifferent hi b b' a a' c c'
+  simpa only [indifferent_iff_utility_eq (show Represents u (UtilityPref u) from
+    fun _ _ => Iff.rfl)] using h
+
+/-- Third-factor independence transports utility equalities. -/
+theorem threeFactor_third_utility_eq (hi : ThreeFactorIndependent (UtilityPref u))
+    (c c' : C) (a a' : A) (b b' : B) :
+    u (a, b, c) = u (a', b', c) ↔ u (a, b, c') = u (a', b', c') := by
+  have h := threeFactor_third_indifferent hi c c' a a' b b'
+  simpa only [indifferent_iff_utility_eq (show Represents u (UtilityPref u) from
+    fun _ _ => Iff.rfl)] using h
+
+variable {D : Type*} {v : D × D × D → ℝ} {f : D → ℝ} {e : D}
+
+/-- The baseline axes agree with one common numerical scale. -/
+def NormalizedThreeAxes (v : D × D × D → ℝ) (f : D → ℝ) (e : D) : Prop :=
+  (∀ a, v (a, e, e) = f a) ∧ (∀ a, v (e, a, e) = f a) ∧
+    ∀ a, v (e, e, a) = f a
+
+/-- A score can move from the second axis to the third at any fixed first coordinate. -/
+theorem normalized_threeFactor_second_third
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b : D) : v (a, b, e) = v (a, e, b) :=
+  (threeFactor_first_utility_eq hi e a b e e b).mp ((hn.2.1 b).trans (hn.2.2 b).symm)
+
+/-- A score can move from the first axis to the second at any fixed third coordinate. -/
+theorem normalized_threeFactor_first_second
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a c : D) : v (a, e, c) = v (e, a, c) :=
+  (threeFactor_third_utility_eq hi e c a e e a).mp ((hn.1 a).trans (hn.2.1 a).symm)
+
+/-- A score can move from the first axis to the third at any fixed second coordinate. -/
+theorem normalized_threeFactor_first_third
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b : D) : v (a, b, e) = v (e, b, a) :=
+  (threeFactor_second_utility_eq hi e b a e e a).mp ((hn.1 a).trans (hn.2.2 a).symm)
+
+/-- The binary operation on the reference slice is symmetric. -/
+theorem normalized_threeFactor_pair_symmetric
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b : D) : v (a, b, e) = v (b, a, e) := by
+  calc
+    v (a, b, e) = v (a, e, b) := normalized_threeFactor_second_third hi hn a b
+    _ = v (e, a, b) := normalized_threeFactor_first_second hi hn a b
+    _ = v (b, a, e) := (normalized_threeFactor_first_third hi hn b a).symm
+
+/-- Symmetry of two factors persists at every value of the third factor. -/
+theorem normalized_threeFactor_swap_first_two
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b c : D) : v (a, b, c) = v (b, a, c) :=
+  (threeFactor_third_utility_eq hi e c a b b a).mp
+    (normalized_threeFactor_pair_symmetric hi hn a b)
+
+/-- The last two factors use the same binary operation as the first two. -/
+theorem normalized_threeFactor_first_base
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (b c : D) : v (e, b, c) = v (b, c, e) :=
+  (normalized_threeFactor_first_third hi hn c b).symm.trans
+    (normalized_threeFactor_pair_symmetric hi hn c b)
+
+/-- An attained pair value can replace its first two coordinates at any third coordinate. -/
+theorem normalized_threeFactor_merge_first
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b c p : D) (hp : v (a, b, e) = f p) : v (a, b, c) = v (p, e, c) :=
+  (threeFactor_third_utility_eq hi e c a p b e).mp (hp.trans (hn.1 p).symm)
+
+/-- An attained pair value can replace the last two coordinates at any first coordinate. -/
+theorem normalized_threeFactor_merge_last
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b c q : D) (hq : v (b, c, e) = f q) : v (a, b, c) = v (a, q, e) :=
+  (threeFactor_first_utility_eq hi e a b q c e).mp
+    ((normalized_threeFactor_first_base hi hn b c).trans (hq.trans (hn.2.1 q).symm))
+
+/-- The binary operation is associative whenever its two intermediate values are attained. -/
+theorem normalized_threeFactor_pair_associative
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b c p q : D) (hp : v (a, b, e) = f p) (hq : v (b, c, e) = f q) :
+    v (p, c, e) = v (a, q, e) := by
+  calc
+    v (p, c, e) = v (p, e, c) := normalized_threeFactor_second_third hi hn p c
+    _ = v (a, b, c) := (normalized_threeFactor_merge_first hi hn a b c p hp).symm
+    _ = v (a, q, e) := normalized_threeFactor_merge_last hi hn a b c q hq
+
+/-- The medial identity needs only the four pair values to be attained on the common axis. -/
+theorem normalized_threeFactor_pair_medial
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v f e)
+    (a b c d p q s t : D)
+    (hp : v (a, b, e) = f p) (hq : v (c, d, e) = f q)
+    (hs : v (a, c, e) = f s) (ht : v (b, d, e) = f t) :
+    v (p, q, e) = v (s, t, e) := by
+  have hzero : v (e, b, q) = v (e, c, t) := by
+    calc
+      v (e, b, q) = v (b, q, e) := normalized_threeFactor_first_base hi hn b q
+      _ = v (b, c, d) := (normalized_threeFactor_merge_last hi hn b c d q hq).symm
+      _ = v (c, b, d) := normalized_threeFactor_swap_first_two hi hn b c d
+      _ = v (c, t, e) := normalized_threeFactor_merge_last hi hn c b d t ht
+      _ = v (e, c, t) := (normalized_threeFactor_first_base hi hn c t).symm
+  calc
+    v (p, q, e) = v (p, e, q) := normalized_threeFactor_second_third hi hn p q
+    _ = v (a, b, q) := (normalized_threeFactor_merge_first hi hn a b q p hp).symm
+    _ = v (a, c, t) := (threeFactor_first_utility_eq hi e a b c q t).mp hzero
+    _ = v (s, e, t) := normalized_threeFactor_merge_first hi hn a c t s hs
+    _ = v (s, t, e) := (normalized_threeFactor_second_third hi hn s t).symm
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The diagonal-inverse utility mean
+
+Preparation for Kreps I, Proposition 2.14. A continuous utility that increases
+strictly in both coordinates defines a unique mean: its diagonal value equals
+the utility of the two inputs. The mean is continuous and strictly increasing.
+A partial medial identity for the surrounding utility operation makes the
+mean bisymmetric, without assuming a cardinal representation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {A : Type*} {F : A → A → ℝ}
+
+/-- A utility strictly increasing in both coordinates has a strictly increasing diagonal. -/
+theorem utilityDiagonal_strictMono [LinearOrder A] (hl : ∀ y, StrictMono (fun x => F x y))
+    (hr : ∀ x, StrictMono (F x)) : StrictMono (fun x => F x x) := by
+  intro x y hxy
+  exact (hl x hxy).trans (hr y hxy)
+
+/-- Connectedness makes every pair's utility value attainable on the diagonal. -/
+theorem utilityDiagonal_attains_pair [LinearOrder A] [TopologicalSpace A] [PreconnectedSpace A]
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x))
+    (hc : Continuous (fun x => F x x)) (x y : A) : ∃ z, F z z = F x y := by
+  have hI := (isPreconnected_range hc).ordConnected
+  rcases le_total x y with hxy | hyx
+  · exact hI.out ⟨x, rfl⟩ ⟨y, rfl⟩ ⟨(hr x).monotone hxy, (hl y).monotone hxy⟩
+  · exact hI.out ⟨y, rfl⟩ ⟨x, rfl⟩ ⟨(hl y).monotone hyx, (hr x).monotone hyx⟩
+
+/-- The unique equal-coordinate bundle with the same utility as the input pair. -/
+noncomputable def DiagonalUtilityMean (F : A → A → ℝ)
+    (he : ∀ x y, ∃ z, F z z = F x y) (x y : A) : A := Classical.choose (he x y)
+
+/-- The defining indifference equation for the diagonal mean. -/
+theorem diagonalUtilityMean_spec (he : ∀ x y, ∃ z, F z z = F x y) (x y : A) :
+    F (DiagonalUtilityMean F he x y) (DiagonalUtilityMean F he x y) = F x y :=
+  Classical.choose_spec (he x y)
+
+/-- Equal inputs are fixed by the diagonal mean. -/
+theorem diagonalUtilityMean_reflexive (he : ∀ x y, ∃ z, F z z = F x y)
+    (hd : Function.Injective (fun x => F x x)) (x : A) :
+    DiagonalUtilityMean F he x x = x := hd (diagonalUtilityMean_spec he x x)
+
+/-- A symmetric pair utility induces a symmetric diagonal mean. -/
+theorem diagonalUtilityMean_symmetric (he : ∀ x y, ∃ z, F z z = F x y)
+    (hd : Function.Injective (fun x => F x x)) (hs : ∀ x y, F x y = F y x) (x y : A) :
+    DiagonalUtilityMean F he x y = DiagonalUtilityMean F he y x := by
+  apply hd
+  change F (DiagonalUtilityMean F he x y) (DiagonalUtilityMean F he x y) =
+    F (DiagonalUtilityMean F he y x) (DiagonalUtilityMean F he y x)
+  rw [diagonalUtilityMean_spec he x y, diagonalUtilityMean_spec he y x, hs]
+
+/-- The mean is strictly increasing in its first coordinate. -/
+theorem diagonalUtilityMean_strictMono_left [LinearOrder A] (he : ∀ x y, ∃ z, F z z = F x y)
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x)) (y : A) :
+    StrictMono (fun x => DiagonalUtilityMean F he x y) := by
+  intro x z hxz
+  apply (utilityDiagonal_strictMono hl hr).lt_iff_lt.mp
+  simpa only [diagonalUtilityMean_spec] using hl y hxz
+
+/-- The mean is strictly increasing in its second coordinate. -/
+theorem diagonalUtilityMean_strictMono_right [LinearOrder A] (he : ∀ x y, ∃ z, F z z = F x y)
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x)) (x : A) :
+    StrictMono (DiagonalUtilityMean F he x) := by
+  intro y z hyz
+  apply (utilityDiagonal_strictMono hl hr).lt_iff_lt.mp
+  simpa only [diagonalUtilityMean_spec] using hr x hyz
+
+/-- Comparing pair utilities is equivalent to comparing their diagonal means. -/
+theorem diagonalUtilityMean_comparison [LinearOrder A] (he : ∀ x y, ∃ z, F z z = F x y)
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x))
+    (a b c d : A) :
+    F a b ≤ F c d ↔ DiagonalUtilityMean F he a b ≤ DiagonalUtilityMean F he c d := by
+  rw [← diagonalUtilityMean_spec he a b, ← diagonalUtilityMean_spec he c d]
+  exact (utilityDiagonal_strictMono hl hr).le_iff_le
+
+/-- The inverse diagonal is continuous on its attained interval, so the mean is continuous. -/
+theorem diagonalUtilityMean_continuous [LinearOrder A] [TopologicalSpace A] [OrderTopology A]
+    [PreconnectedSpace A] (he : ∀ x y, ∃ z, F z z = F x y)
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x))
+    (hc : Continuous (fun p : A × A => F p.1 p.2)) :
+    Continuous (fun p : A × A => DiagonalUtilityMean F he p.1 p.2) := by
+  have hd := utilityDiagonal_strictMono hl hr
+  have hdc : Continuous (fun x => F x x) := hc.comp (continuous_id.prodMk continuous_id)
+  let : Set.OrdConnected (Set.range (fun x => F x x)) := (isPreconnected_range hdc).ordConnected
+  let e : A ≃o Set.range (fun x => F x x) := hd.orderIso (fun x => F x x)
+  have hg : Continuous (fun p : A × A =>
+      (⟨F p.1 p.2, he p.1 p.2⟩ : Set.range (fun x => F x x))) := hc.subtype_mk _
+  convert e.symm.continuous.comp hg using 1
+  funext p
+  apply e.injective
+  change e (DiagonalUtilityMean F he p.1 p.2) =
+    e (e.symm ⟨F p.1 p.2, by exact he p.1 p.2⟩)
+  rw [e.apply_symm_apply]
+  apply Subtype.ext
+  exact diagonalUtilityMean_spec he p.1 p.2
+
+/-- A numerical operation has the medial identity wherever its four intermediate values exist. -/
+def PartialUtilityMedial {B : Type*} (G : B → B → ℝ) (f : B → ℝ) : Prop :=
+  ∀ a b c d p q s t, G a b = f p → G c d = f q → G a c = f s → G b d = f t →
+    G p q = G s t
+
+/-- The partial medial identity of the surrounding operation gives a bisymmetric diagonal mean. -/
+theorem diagonalUtilityMean_bisymmetric {B : Type*} (G : B → B → ℝ) (f : B → ℝ)
+    (k : A → B) (he : ∀ x y, ∃ z, F z z = F x y)
+    (hF : ∀ x y, F x y = G (k x) (k y))
+    (hsmall : ∀ x y, ∃ p, G (k x) (k y) = f p)
+    (hmed : PartialUtilityMedial G f) (hd : Function.Injective (fun p => G p p))
+    (hdF : Function.Injective (fun x => F x x)) (a b c d : A) :
+    DiagonalUtilityMean F he (DiagonalUtilityMean F he a b) (DiagonalUtilityMean F he c d) =
+      DiagonalUtilityMean F he (DiagonalUtilityMean F he a c) (DiagonalUtilityMean F he b d) := by
+  let M := DiagonalUtilityMean F he
+  obtain ⟨p, hp⟩ := hsmall a b
+  obtain ⟨q, hq⟩ := hsmall c d
+  obtain ⟨s, hs⟩ := hsmall a c
+  obtain ⟨t, ht⟩ := hsmall b d
+  obtain ⟨v, hv⟩ := hsmall (M a b) (M c d)
+  obtain ⟨w, hw⟩ := hsmall (M a c) (M b d)
+  have hdiag (x y : A) : G (k (M x y)) (k (M x y)) = G (k x) (k y) := by
+    rw [← hF, ← hF]
+    exact diagonalUtilityMean_spec he x y
+  have hvw : v = w := by
+    apply hd
+    calc
+      G v v = G p q := hmed (k (M a b)) (k (M c d)) (k (M a b)) (k (M c d))
+        v v p q hv hv ((hdiag a b).trans hp) ((hdiag c d).trans hq)
+      _ = G s t := hmed (k a) (k b) (k c) (k d) p q s t hp hq hs ht
+      _ = G w w := (hmed (k (M a c)) (k (M b d)) (k (M a c)) (k (M b d))
+        w w s t hw hw ((hdiag a c).trans hs) ((hdiag b d).trans ht)).symm
+  apply hdF
+  change F (M (M a b) (M c d)) (M (M a b) (M c d)) =
+    F (M (M a c) (M b d)) (M (M a c) (M b d))
+  rw [diagonalUtilityMean_spec he (M a b) (M c d),
+    diagonalUtilityMean_spec he (M a c) (M b d), hF, hF, hv, hw, hvw]
+
+/-- Package the derived diagonal mean for the dyadic cardinal-scale construction. -/
+noncomputable def OrderedUtilityMean [LinearOrder A] {B : Type*} (G : B → B → ℝ) (f : B → ℝ)
+    (k : A → B) (he : ∀ x y, ∃ z, F z z = F x y)
+    (hl : ∀ y, StrictMono (fun x => F x y)) (hr : ∀ x, StrictMono (F x))
+    (hs : ∀ x y, F x y = F y x) (hF : ∀ x y, F x y = G (k x) (k y))
+    (hsmall : ∀ x y, ∃ p, G (k x) (k y) = f p)
+    (hmed : PartialUtilityMedial G f) (hd : Function.Injective (fun p => G p p)) :
+    OrderedBisymmetricMean A where
+  mean := DiagonalUtilityMean F he
+  reflexive := diagonalUtilityMean_reflexive he (utilityDiagonal_strictMono hl hr).injective
+  symmetric := diagonalUtilityMean_symmetric he (utilityDiagonal_strictMono hl hr).injective hs
+  bisymmetric := diagonalUtilityMean_bisymmetric G f k he hF hsmall hmed hd
+    (utilityDiagonal_strictMono hl hr).injective
+  strictMono_left := diagonalUtilityMean_strictMono_left he hl hr
+  strictMono_right := diagonalUtilityMean_strictMono_right he hl hr
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Local additive scales from independent utility factors
+
+Preparation for Kreps I, Proposition 2.14. The diagonal-inverse mean and its
+dyadic cardinal scale give an actual additive representation on a compact
+pair domain. The surrounding partial medial identity is enough; its proof
+from normalized independent utility factors is supplied separately.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The partial medial identity yields a continuous additive scale for pair comparisons. -/
+theorem exists_pair_additive_scale_of_partialMedial
+    {A B : Type*} [LinearOrder A] [TopologicalSpace A] [OrderTopology A]
+    [CompactSpace A] [DenselyOrdered A] [PreconnectedSpace A]
+    (G : B → B → ℝ) (f : B → ℝ) (k : A → B) {lo hi : A}
+    (hlohi : lo < hi) (hlo : ∀ x, lo ≤ x) (hhi : ∀ x, x ≤ hi)
+    (hl : ∀ y, StrictMono (fun x => G (k x) (k y)))
+    (hr : ∀ x, StrictMono (fun y => G (k x) (k y)))
+    (hc : Continuous (fun p : A × A => G (k p.1) (k p.2)))
+    (hs : ∀ x y, G (k x) (k y) = G (k y) (k x))
+    (hsmall : ∀ x y, ∃ p, G (k x) (k y) = f p)
+    (hmed : PartialUtilityMedial G f) (hd : Function.Injective (fun p => G p p)) :
+    ∃ φ : A → ℝ, Continuous φ ∧ StrictMono φ ∧ φ lo = 0 ∧ φ hi = 1 ∧
+      ∀ a b c d, G (k a) (k b) ≤ G (k c) (k d) ↔ φ a + φ b ≤ φ c + φ d := by
+  let F : A → A → ℝ := fun x y => G (k x) (k y)
+  have he : ∀ x y, ∃ z, F z z = F x y :=
+    utilityDiagonal_attains_pair hl hr (hc.comp (continuous_id.prodMk continuous_id))
+  let M := OrderedUtilityMean G f k he hl hr hs (fun _ _ => rfl) hsmall hmed hd
+  have hmc : Continuous (fun p : A × A => M.mean p.1 p.2) :=
+    diagonalUtilityMean_continuous he hl hr hc
+  obtain ⟨φ, hφc, hφm, hφlo, hφhi, hφmean⟩ :=
+    exists_continuous_bisymmetricMean_scale M hlohi hlo hhi hmc
+  refine ⟨φ, hφc, hφm, hφlo, hφhi, ?_⟩
+  intro a b c d
+  calc
+    G (k a) (k b) ≤ G (k c) (k d) ↔ M.mean a b ≤ M.mean c d :=
+      diagonalUtilityMean_comparison he hl hr a b c d
+    _ ↔ φ (M.mean a b) ≤ φ (M.mean c d) := hφm.le_iff_le.symm
+    _ ↔ φ a + φ b ≤ φ c + φ d := by
+      rw [hφmean, hφmean]
+      exact div_le_div_iff_of_pos_right (by norm_num)
+
+/-- Normalized independent factors supply the partial medial premise used above. -/
+theorem normalized_threeFactor_partialMedial {B : Type*} {v : B × B × B → ℝ}
+    {f : B → ℝ} {e : B} (hi : ThreeFactorIndependent (UtilityPref v))
+    (hn : NormalizedThreeAxes v f e) :
+    PartialUtilityMedial (fun x y => v (x, y, e)) f := by
+  intro a b c d p q s t hp hq hs ht
+  exact normalized_threeFactor_pair_medial hi hn a b c d p q s t hp hq hs ht
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Restriction to three common scalar-score axes
+
+A common subset of three score ranges defines a scalar three-factor utility.
+The restriction inherits independence, continuity and strict coordinate
+monotonicity. Baseline normalization gives the same numerical scale on all axes.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {S : I → Set ℝ}
+
+/-- The scalar aggregator restricted to three axes with a common score domain. -/
+def CommonThreeScoreUtility (V : (∀ i, S i) → ℝ) (z : ∀ i, S i) (i j l : I)
+    {J : Set ℝ} (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) (p : J × J × J) : ℝ :=
+  V (ThreeCoordinateBundle z i j l (Set.inclusion hi p.1)
+    (Set.inclusion hj p.2.1) (Set.inclusion hl p.2.2))
+
+/-- Three-factor independence is preserved by restricting each factor through a map. -/
+theorem threeFactorIndependent_pullback {A B C D E F : Type*}
+    {r : (A × B × C) → (A × B × C) → Prop} (hr : ThreeFactorIndependent r)
+    (f : D → A) (g : E → B) (h : F → C) :
+    ThreeFactorIndependent (fun p q : D × E × F =>
+      r (f p.1, g p.2.1, h p.2.2) (f q.1, g q.2.1, h q.2.2)) := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro a a' b b' c c'
+    exact hr.1 (f a) (f a') (g b) (g b') (h c) (h c')
+  · intro b b' a a' c c'
+    exact hr.2.1 (g b) (g b') (f a) (f a') (h c) (h c')
+  · intro c c' a a' b b'
+    exact hr.2.2 (h c) (h c') (f a) (f a') (g b) (g b')
+
+/-- A common score restriction inherits three-factor independence. -/
+theorem commonThreeScoreUtility_independent [Finite I] {V : (∀ i, S i) → ℝ}
+    (hs : StronglySeparable (UtilityPref V)) (z : ∀ i, S i) {i j l : I}
+    (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l) {J : Set ℝ}
+    (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) :
+    ThreeFactorIndependent (UtilityPref (CommonThreeScoreUtility V z i j l hi hj hl)) :=
+  threeFactorIndependent_pullback (stronglySeparable_threeFactor hs z hij hil hjl)
+    (Set.inclusion hi) (Set.inclusion hj) (Set.inclusion hl)
+
+/-- Restricting a continuous scalar aggregator to the three common axes is continuous. -/
+theorem commonThreeScoreUtility_continuous {V : (∀ i, S i) → ℝ} (hc : Continuous V)
+    (z : ∀ i, S i) (i j l : I) {J : Set ℝ}
+    (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) :
+    Continuous (CommonThreeScoreUtility V z i j l hi hj hl) :=
+  hc.comp ((threeCoordinateBundle_continuous z i j l).comp
+    ((continuous_inclusion hi).prodMap
+      ((continuous_inclusion hj).prodMap (continuous_inclusion hl))))
+
+/-- The first restricted coordinate remains strictly increasing. -/
+theorem commonThreeScoreUtility_first_strictMono {V : (∀ i, S i) → ℝ}
+    (hm : StrictMono V) (z : ∀ i, S i) {i j l : I} (hij : i ≠ j) (hil : i ≠ l)
+    {J : Set ℝ} (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) (b c : J) :
+    StrictMono (fun a : J => CommonThreeScoreUtility V z i j l hi hj hl (a, b, c)) := by
+  intro x y hxy
+  apply hm
+  have hx := threeCoordinateBundle_update_first z hij hil
+    (Set.inclusion hi x) (Set.inclusion hi x) (Set.inclusion hj b) (Set.inclusion hl c)
+  have hy := threeCoordinateBundle_update_first z hij hil
+    (Set.inclusion hi x) (Set.inclusion hi y) (Set.inclusion hj b) (Set.inclusion hl c)
+  rw [← hx, ← hy]
+  exact Function.update_strictMono hxy
+
+/-- The second restricted coordinate remains strictly increasing. -/
+theorem commonThreeScoreUtility_second_strictMono {V : (∀ i, S i) → ℝ}
+    (hm : StrictMono V) (z : ∀ i, S i) {i j l : I} (hjl : j ≠ l)
+    {J : Set ℝ} (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) (a c : J) :
+    StrictMono (fun b : J => CommonThreeScoreUtility V z i j l hi hj hl (a, b, c)) := by
+  intro x y hxy
+  apply hm
+  have hx := threeCoordinateBundle_update_second z hjl
+    (Set.inclusion hi a) (Set.inclusion hj x) (Set.inclusion hj x) (Set.inclusion hl c)
+  have hy := threeCoordinateBundle_update_second z hjl
+    (Set.inclusion hi a) (Set.inclusion hj x) (Set.inclusion hj y) (Set.inclusion hl c)
+  rw [← hx, ← hy]
+  exact Function.update_strictMono hxy
+
+/-- The third restricted coordinate remains strictly increasing. -/
+theorem commonThreeScoreUtility_third_strictMono {V : (∀ i, S i) → ℝ}
+    (hm : StrictMono V) (z : ∀ i, S i) (i j l : I)
+    {J : Set ℝ} (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) (a b : J) :
+    StrictMono (fun c : J => CommonThreeScoreUtility V z i j l hi hj hl (a, b, c)) := by
+  intro x y hxy
+  apply hm
+  exact Function.update_strictMono hxy
+
+/-- A reference-normalized aggregator has the same numerical scale on all common axes. -/
+theorem commonThreeScoreUtility_axes {V : (∀ i, S i) → ℝ} (z : ∀ i, S i)
+    (hv : ∀ k (q : S k), V (Function.update z k q) = q.val) {i j l : I}
+    (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l) {J : Set ℝ}
+    (hi : J ⊆ S i) (hj : J ⊆ S j) (hl : J ⊆ S l) (e : J)
+    (he : ∀ k, (z k).val = e.val) :
+    NormalizedThreeAxes (CommonThreeScoreUtility V z i j l hi hj hl) Subtype.val e := by
+  have hei : Set.inclusion hi e = z i := Subtype.ext (he i).symm
+  have hej : Set.inclusion hj e = z j := Subtype.ext (he j).symm
+  have hel : Set.inclusion hl e = z l := Subtype.ext (he l).symm
+  refine ⟨?_, ?_, ?_⟩
+  · intro a
+    unfold CommonThreeScoreUtility
+    rw [hej, hel]
+    have h := threeCoordinateBundle_update_first z hij hil (z i)
+      (Set.inclusion hi a) (z j) (z l)
+    simp only [ThreeCoordinateBundle, Function.update_eq_self] at h ⊢
+    rw [← h, hv]
+  · intro a
+    unfold CommonThreeScoreUtility
+    rw [hei, hel]
+    have h := threeCoordinateBundle_update_second z hjl (z i) (z j)
+      (Set.inclusion hj a) (z l)
+    simp only [ThreeCoordinateBundle, Function.update_eq_self] at h ⊢
+    rw [← h, hv]
+  · intro a
+    unfold CommonThreeScoreUtility
+    rw [hei, hej]
+    simp only [ThreeCoordinateBundle, Function.update_eq_self, hv]
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A common interval for three nontrivial score blocks
+
+The original preference hypotheses supply an interior reference bundle and
+an open numerical interval shared by the three selected block-score ranges.
+The scalar restriction has normalized axes on precisely that common scale.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*}
+variable {r : (∀ i, B i) → (∀ i, B i) → Prop} {u : (∀ i, B i) → ℝ}
+
+/-- Three nontrivial blocks admit a common open interval around one reference utility. -/
+theorem exists_common_baseline_score_interval [∀ i, TopologicalSpace (B i)]
+    [∀ i, PreconnectedSpace (B i)] (hr : Rational r) (hu : Represents u r)
+    (hs : StronglySeparable r) (hc : Continuous u) (z : ∀ i, B i) (i j l : I)
+    (hi : NontrivialBlock r i) (hj : NontrivialBlock r j) (hl : NontrivialBlock r l) :
+    ∃ (t : ∀ i, B i) (L R : ℝ), u t ∈ Set.Ioo L R ∧
+      Set.Ioo L R ⊆ Set.range (BaselineScores u t i) ∧
+      Set.Ioo L R ⊆ Set.range (BaselineScores u t j) ∧
+      Set.Ioo L R ⊆ Set.range (BaselineScores u t l) := by
+  obtain ⟨t, ht⟩ := exists_interior_baseline_scores hr hu hs hc z
+  have hni := mem_interior_iff_mem_nhds.mp (ht i hi)
+  have hnj := mem_interior_iff_mem_nhds.mp (ht j hj)
+  have hnl := mem_interior_iff_mem_nhds.mp (ht l hl)
+  obtain ⟨L, R, hLR, hsub⟩ := mem_nhds_iff_exists_Ioo_subset.mp
+    (Filter.inter_mem hni (Filter.inter_mem hnj hnl))
+  exact ⟨t, L, R, hLR, fun x hx => (hsub hx).1,
+    fun x hx => (hsub hx).2.1, fun x hx => (hsub hx).2.2⟩
+
+/-- The original scalar-score construction supplies normalized common axes. -/
+theorem scoreAggregator_commonThree_axes [Finite I] (hu : Represents u r)
+    (hs : StronglySeparable r) (z : ∀ i, B i) {i j l : I}
+    (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l) {J : Set ℝ}
+    (hi : J ⊆ Set.range (BaselineScores u z i))
+    (hj : J ⊆ Set.range (BaselineScores u z j))
+    (hl : J ⊆ Set.range (BaselineScores u z l)) (e : J) (he : e.val = u z) :
+    NormalizedThreeAxes
+      (CommonThreeScoreUtility (ScoreAggregator u z) (BlockScores (BaselineScores u z) z)
+        i j l hi hj hl) Subtype.val e := by
+  apply commonThreeScoreUtility_axes _ (scoreAggregator_reference_axis hu hs z)
+    hij hil hjl hi hj hl e
+  intro k
+  exact (baselineScores_reference u z k).trans he.symm
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A compact interval with attainable pair values
+
+Continuity at an interior normalized baseline supplies a smaller closed
+interval whose two-factor utility values remain in the common open score
+domain. The midpoint construction can therefore use the derived medial law.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Close enough to the normalized baseline, all pair values stay in the common score domain. -/
+theorem exists_small_pair_interval {J : Set ℝ} (hJ : IsOpen J)
+    {v : J × J × J → ℝ} (hc : Continuous v) (e : J) (he : v (e, e, e) = e.val) :
+    ∃ a b : ℝ, a < e.val ∧ e.val < b ∧ Set.Icc a b ⊆ J ∧
+      ∀ x y : J, x.val ∈ Set.Icc a b → y.val ∈ Set.Icc a b → v (x, y, e) ∈ J := by
+  have hpc : Continuous (fun p : J × J => v (p.1, p.2, e)) :=
+    hc.comp (continuous_fst.prodMk (continuous_snd.prodMk continuous_const))
+  have hmem : v (e, e, e) ∈ J := by rw [he]; exact e.property
+  have hn := (hJ.preimage hpc).mem_nhds
+    (show (e, e) ∈ (fun p : J × J => v (p.1, p.2, e)) ⁻¹' J from hmem)
+  obtain ⟨U, hU, V, hV, hUV⟩ := mem_nhds_prod_iff.mp hn
+  obtain ⟨W, hW, hWsub⟩ := (mem_nhds_subtype J e (U ∩ V)).mp (Filter.inter_mem hU hV)
+  obtain ⟨L, R, heLR, hLR⟩ := mem_nhds_iff_exists_Ioo_subset.mp
+    (Filter.inter_mem hW (hJ.mem_nhds e.property))
+  let a := (L + e.val) / 2
+  let b := (e.val + R) / 2
+  have hal : L < a := by dsimp [a]; linarith [heLR.1]
+  have hae : a < e.val := by dsimp [a]; linarith [heLR.1]
+  have heb : e.val < b := by dsimp [b]; linarith [heLR.2]
+  have hbr : b < R := by dsimp [b]; linarith [heLR.2]
+  have hab : Set.Icc a b ⊆ Set.Ioo L R :=
+    fun _ hx => ⟨hal.trans_le hx.1, hx.2.trans_lt hbr⟩
+  refine ⟨a, b, hae, heb, fun x hx => (hLR (hab hx)).2, ?_⟩
+  intro x y hx hy
+  have hxu : x ∈ U := (hWsub (show x.val ∈ W from (hLR (hab hx)).1)).1
+  have hyv : y ∈ V := (hWsub (show y.val ∈ W from (hLR (hab hy)).1)).2
+  exact hUV (show (x, y) ∈ U ×ˢ V from ⟨hxu, hyv⟩)
+
+/-- Normalized axes give the baseline identity needed for the compact-interval construction. -/
+theorem normalizedThreeAxes_small_pair_interval {J : Set ℝ} (hJ : IsOpen J)
+    {v : J × J × J → ℝ} (hc : Continuous v) {e : J}
+    (hn : NormalizedThreeAxes v Subtype.val e) :
+    ∃ a b : ℝ, a < e.val ∧ e.val < b ∧ Set.Icc a b ⊆ J ∧
+      ∀ x y : J, x.val ∈ Set.Icc a b → y.val ∈ Set.Icc a b → v (x, y, e) ∈ J :=
+  exists_small_pair_interval hJ hc e (hn.1 e)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Local additive scales from the original preference assumptions
+
+The common-score restriction, attainable compact pair domain and explicit
+bisymmetric cardinal construction combine to give a continuous additive scale
+for local pair comparisons. No cancellation or representation premise is added.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A normalized continuous additive scale on a compact interval around the reference score. -/
+def HasLocalCommonPairScale {J : Set ℝ} (v : J × J × J → ℝ) (e : J) : Prop :=
+  ∃ (a b : ℝ) (hab : a < b) (hsub : Set.Icc a b ⊆ J) (φ : Set.Icc a b → ℝ),
+    a < e.val ∧ e.val < b ∧ Continuous φ ∧ StrictMono φ ∧
+      φ ⟨a, le_rfl, hab.le⟩ = 0 ∧ φ ⟨b, hab.le, le_rfl⟩ = 1 ∧
+      ∀ x y z w : Set.Icc a b,
+        v (Set.inclusion hsub x, Set.inclusion hsub y, e) ≤
+          v (Set.inclusion hsub z, Set.inclusion hsub w, e) ↔
+          φ x + φ y ≤ φ z + φ w
+
+/-- Normalized continuous independent factors have an actual local additive pair scale. -/
+theorem normalizedThreeAxes_local_pair_scale {J : Set ℝ} (hJ : IsOpen J)
+    {v : J × J × J → ℝ} (hc : Continuous v) {e : J}
+    (hi : ThreeFactorIndependent (UtilityPref v)) (hn : NormalizedThreeAxes v Subtype.val e)
+    (hleft : ∀ y, StrictMono (fun x => v (x, y, e)))
+    (hright : ∀ x, StrictMono (fun y => v (x, y, e))) :
+    HasLocalCommonPairScale v e := by
+  obtain ⟨a, b, hae, heb, hsub, hsmall⟩ := normalizedThreeAxes_small_pair_interval hJ hc hn
+  have hab : a < b := hae.trans heb
+  let : PreconnectedSpace (Set.Icc a b) :=
+    isPreconnected_iff_preconnectedSpace.mp isPreconnected_Icc
+  let lo : Set.Icc a b := ⟨a, le_rfl, hab.le⟩
+  let up : Set.Icc a b := ⟨b, hab.le, le_rfl⟩
+  let k : Set.Icc a b → J := Set.inclusion hsub
+  have hk : StrictMono k := fun _ _ h => h
+  have hl : ∀ y, StrictMono (fun x => v (k x, k y, e)) :=
+    fun y => (hleft (k y)).comp hk
+  have hr : ∀ x, StrictMono (fun y => v (k x, k y, e)) :=
+    fun x => (hright (k x)).comp hk
+  have hkc : Continuous k := continuous_inclusion hsub
+  have hpc : Continuous (fun p : Set.Icc a b × Set.Icc a b => v (k p.1, k p.2, e)) :=
+    hc.comp ((hkc.comp continuous_fst).prodMk
+      ((hkc.comp continuous_snd).prodMk continuous_const))
+  have hdiag : StrictMono (fun p : J => v (p, p, e)) := by
+    intro x y hxy
+    exact (hleft x hxy).trans (hright y hxy)
+  have hpair : ∀ x y, ∃ p : J, v (k x, k y, e) = p.val := by
+    intro x y
+    exact ⟨⟨v (k x, k y, e), hsmall (k x) (k y) x.property y.property⟩, rfl⟩
+  obtain ⟨φ, hφc, hφm, hφlo, hφup, hφpair⟩ :=
+    exists_pair_additive_scale_of_partialMedial (fun x y => v (x, y, e)) Subtype.val k
+      (lo := lo) (hi := up) hab (fun x => x.property.1) (fun x => x.property.2)
+      hl hr hpc (fun x y => normalized_threeFactor_pair_symmetric hi hn (k x) (k y))
+      hpair (normalized_threeFactor_partialMedial hi hn) hdiag.injective
+  exact ⟨a, b, hab, hsub, φ, hae, heb, hφc, hφm, hφlo, hφup, hφpair⟩
+
+variable {I : Type*} [DecidableEq I] [Finite I] {B : I → Type*}
+variable [∀ i, TopologicalSpace (B i)] [∀ i, PreconnectedSpace (B i)]
+variable {r : (∀ i, B i) → (∀ i, B i) → Prop} {u : (∀ i, B i) → ℝ}
+
+/-- The original preference assumptions imply a common local additive pair representation. -/
+theorem exists_common_local_pair_scale (hr : Rational r) (hu : Represents u r)
+    (hs : StronglySeparable r) (hc : Continuous u) (z : ∀ i, B i) {i j l : I}
+    (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l)
+    (hi : NontrivialBlock r i) (hj : NontrivialBlock r j) (hl : NontrivialBlock r l) :
+    ∃ (t : ∀ i, B i) (L R : ℝ)
+      (hsi : Set.Ioo L R ⊆ Set.range (BaselineScores u t i))
+      (hsj : Set.Ioo L R ⊆ Set.range (BaselineScores u t j))
+      (hsl : Set.Ioo L R ⊆ Set.range (BaselineScores u t l)) (e : Set.Ioo L R),
+      e.val = u t ∧ HasLocalCommonPairScale
+        (CommonThreeScoreUtility (ScoreAggregator u t) (BlockScores (BaselineScores u t) t)
+          i j l hsi hsj hsl) e := by
+  obtain ⟨t, L, R, he, hsi, hsj, hsl⟩ :=
+    exists_common_baseline_score_interval hr hu hs hc z i j l hi hj hl
+  let e : Set.Ioo L R := ⟨u t, he⟩
+  let q := BlockScores (BaselineScores u t) t
+  refine ⟨t, L, R, hsi, hsj, hsl, e, rfl, ?_⟩
+  apply normalizedThreeAxes_local_pair_scale isOpen_Ioo
+    (commonThreeScoreUtility_continuous (scoreAggregator_continuous hu hs hc t)
+      q i j l hsi hsj hsl)
+    (commonThreeScoreUtility_independent (scoreAggregator_stronglySeparable hu hs t)
+      q hij hil hjl hsi hsj hsl)
+    (scoreAggregator_commonThree_axes hu hs t hij hil hjl hsi hsj hsl e rfl)
+  · intro y
+    exact commonThreeScoreUtility_first_strictMono (scoreAggregator_strictMono hu hs t)
+      q hij hil hsi hsj hsl y e
+  · intro x
+    exact commonThreeScoreUtility_second_strictMono (scoreAggregator_strictMono hu hs t)
+      q hjl hsi hsj hsl x e
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 3: convex sets and their hulls
+
+Kreps I, Definition A3.1, Propositions A3.2–A3.5 and A3.7, pp. 452–456.
+These interfaces use Mathlib's convexity and hull constructions. Finite combinations
+include an explicit nonnegative weight vector with total weight one. Carathéodory's
+theorem bounds the number of points by the dimension plus one.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped BigOperators
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E] {S : Set E}
+
+/-- **Definition A3.1:** closure under the book's two-point convex combinations. -/
+theorem definition_A3_1 : Convex ℝ S ↔
+    ∀ x ∈ S, ∀ y ∈ S, ∀ a ∈ Set.Icc (0 : ℝ) 1, a • x + (1 - a) • y ∈ S := by
+  constructor
+  · intro h x hx y hy a ha
+    exact h hx hy ha.1 (sub_nonneg.mpr ha.2) (by linarith)
+  · intro h x hx y hy a b ha hb hab
+    have he : b = 1 - a := by linarith
+    subst b
+    exact h x hx y hy a ⟨ha, by linarith⟩
+
+/-- **Proposition A3.2:** any finite convex combination remains in the set. -/
+theorem proposition_A3_2 {ι : Type*} (t : Finset ι) (w : ι → ℝ) (z : ι → E)
+    (hS : Convex ℝ S) (hw : ∀ i ∈ t, 0 ≤ w i) (h1 : ∑ i ∈ t, w i = 1)
+    (hz : ∀ i ∈ t, z i ∈ S) : ∑ i ∈ t, w i • z i ∈ S :=
+  hS.sum_mem hw h1 hz
+
+/-- **Proposition A3.3:** arbitrary intersections of convex sets are convex. -/
+theorem proposition_A3_3 {C : Set (Set E)} (hC : ∀ s ∈ C, Convex ℝ s) :
+    Convex ℝ (⋂₀ C) := convex_sInter hC
+
+/-- **Definition A3.4:** the convex hull is the smallest convex superset. -/
+theorem definition_A3_4_convexHull : S ⊆ convexHull ℝ S ∧ Convex ℝ (convexHull ℝ S) ∧
+    ∀ T, S ⊆ T → Convex ℝ T → convexHull ℝ S ⊆ T :=
+  ⟨subset_convexHull ℝ S, convex_convexHull ℝ S, fun _ h hc => convexHull_min h hc⟩
+
+/-- **Proposition A3.4:** hull membership means being a finite convex combination. -/
+theorem proposition_A3_4 {x : E} : x ∈ convexHull ℝ S ↔
+    ∃ (ι : Type) (_ : Fintype ι) (w : ι → ℝ) (z : ι → E),
+      (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1 ∧ (∀ i, z i ∈ S) ∧ ∑ i, w i • z i = x :=
+  mem_convexHull_iff_exists_fintype
+
+/-- **Proposition A3.5 (Carathéodory):** at most dimension plus one points suffice. -/
+theorem proposition_A3_5 [FiniteDimensional ℝ E] {x : E} (hx : x ∈ convexHull ℝ S) :
+    ∃ t : Finset E, (↑t : Set E) ⊆ S ∧ t.card ≤ Module.finrank ℝ E + 1 ∧
+      x ∈ convexHull ℝ (↑t : Set E) := by
+  classical
+  let t := Caratheodory.minCardFinsetOfMemConvexHull hx
+  refine ⟨t, Caratheodory.minCardFinsetOfMemConvexHull_subseteq hx, ?_,
+    Caratheodory.mem_minCardFinsetOfMemConvexHull hx⟩
+  have h := AffineIndependent.card_le_finrank_succ
+    (Caratheodory.affineIndependent_minCardFinsetOfMemConvexHull hx)
+  have hcard : t.card ≤ Module.finrank ℝ
+      (vectorSpan ℝ (Set.range ((↑) : t → E))) + 1 := by
+    simpa only [Fintype.card_coe] using h
+  exact hcard.trans (Nat.add_le_add_right (Submodule.finrank_le _) 1)
+
+variable [TopologicalSpace E]
+
+/-- **Definition A3.4:** the closed convex hull has the closed-and-convex universal property. -/
+theorem definition_A3_4_closedConvexHull : S ⊆ closedConvexHull ℝ S ∧
+    Convex ℝ (closedConvexHull ℝ S) ∧ IsClosed (closedConvexHull ℝ S) ∧
+      ∀ T, S ⊆ T → Convex ℝ T → IsClosed T → closedConvexHull ℝ S ⊆ T :=
+  ⟨subset_closedConvexHull, convex_closedConvexHull, isClosed_closedConvexHull,
+    fun _ h hc ht => closedConvexHull_min h hc ht⟩
+
+/-- **Proposition A3.7**, first assertion: closure preserves convexity. -/
+theorem proposition_A3_7_closure [IsTopologicalAddGroup E] [ContinuousSMul ℝ E]
+    (hS : Convex ℝ S) : Convex ℝ (closure S) := hS.closure
+
+/-- **Proposition A3.7**, second assertion: close the convex hull to get the closed convex hull. -/
+theorem proposition_A3_7_closedHull [IsTopologicalAddGroup E] [ContinuousSMul ℝ E] :
+    closure (convexHull ℝ S) = closedConvexHull ℝ S :=
+  closedConvexHull_eq_closure_convexHull.symm
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 3: compactness of convex hulls
+
+Kreps I, Proposition A3.6, p. 455. Carathéodory reduces the convex hull to a
+finite union of sets of mixtures with a bounded number of terms. Each such set is
+the continuous image of a compact set of weights and a finite product of the
+original compact set. The proof includes the empty-set case.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped BigOperators
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E]
+
+/-- Convex combinations of exactly `n` listed points; zero weights are allowed. -/
+def FiniteMixtureSet (S : Set E) (n : ℕ) : Set E :=
+  {x | ∃ (w : Fin n → ℝ) (z : Fin n → E), (∀ i, 0 ≤ w i) ∧
+    ∑ i, w i = 1 ∧ (∀ i, z i ∈ S) ∧ ∑ i, w i • z i = x}
+
+/-- Every finite mixture belongs to the convex hull. -/
+theorem finiteMixtureSet_subset_convexHull (S : Set E) (n : ℕ) :
+    FiniteMixtureSet S n ⊆ convexHull ℝ S := by
+  rintro x ⟨w, z, hw, h1, hz, hx⟩
+  exact mem_convexHull_of_exists_fintype w z hw h1 hz hx
+
+/-- Reindex a mixture on a finset by a finite interval of natural numbers. -/
+theorem mem_finiteMixtureSet_of_mem_finset_hull {S : Set E} (t : Finset E)
+    (ht : (↑t : Set E) ⊆ S) {x : E} (hx : x ∈ convexHull ℝ (↑t : Set E)) :
+    x ∈ FiniteMixtureSet S t.card := by
+  classical
+  obtain ⟨w, hw, h1, hx⟩ := Finset.mem_convexHull'.mp hx
+  let e : t ≃ Fin t.card := Fintype.equivFinOfCardEq (Fintype.card_coe t)
+  refine ⟨fun i => w (e.symm i), fun i => (e.symm i).val,
+    fun i => hw _ (e.symm i).property, ?_, fun i => ht (e.symm i).property, ?_⟩
+  · calc
+      ∑ i : Fin t.card, w (e.symm i) = ∑ i : t, w i :=
+        Equiv.sum_comp e.symm (fun i : t => w i)
+      _ = ∑ i ∈ t, w i := Finset.sum_attach t w
+      _ = 1 := h1
+  · calc
+      ∑ i : Fin t.card, w (e.symm i) • (e.symm i).val =
+          ∑ i : t, w i • i.val := Equiv.sum_comp e.symm (fun i : t => w i • i.val)
+      _ = ∑ i ∈ t, w i • i := Finset.sum_attach t (fun i => w i • i)
+      _ = x := hx
+
+/-- Carathéodory expresses the hull as finitely many fixed-length mixture sets. -/
+theorem convexHull_eq_finite_mixture_union [FiniteDimensional ℝ E] (S : Set E) :
+    convexHull ℝ S = ⋃ n : Fin (Module.finrank ℝ E + 2), FiniteMixtureSet S n.val := by
+  ext x
+  constructor
+  · intro hx
+    obtain ⟨t, ht, hcard, hxt⟩ := proposition_A3_5 hx
+    exact Set.mem_iUnion.mpr ⟨⟨t.card, Nat.lt_add_one_iff.mpr hcard⟩,
+      mem_finiteMixtureSet_of_mem_finset_hull t ht hxt⟩
+  · intro hx
+    obtain ⟨n, hn⟩ := Set.mem_iUnion.mp hx
+    exact finiteMixtureSet_subset_convexHull S n.val hn
+
+/-- Mixtures with a fixed finite number of terms form a compact set. -/
+theorem finiteMixtureSet_isCompact {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+    {S : Set G} (hS : IsCompact S) (n : ℕ) : IsCompact (FiniteMixtureSet S n) := by
+  let W : Set (Fin n → ℝ) := Set.Icc 0 1 ∩ {w | ∑ i, w i = 1}
+  let Z : Set (Fin n → G) := {z | ∀ i, z i ∈ S}
+  let mix : (Fin n → ℝ) × (Fin n → G) → G := fun p => ∑ i, p.1 i • p.2 i
+  have hW : IsCompact W := isCompact_Icc.inter_right
+    (isClosed_eq (by fun_prop) continuous_const)
+  have hZ : IsCompact Z := isCompact_pi_infinite fun _ => hS
+  have hm : Continuous mix := by fun_prop
+  have he : FiniteMixtureSet S n = mix '' (W ×ˢ Z) := by
+    ext x
+    constructor
+    · rintro ⟨w, z, hw, h1, hz, hx⟩
+      refine ⟨(w, z), ⟨⟨⟨hw, ?_⟩, h1⟩, hz⟩, hx⟩
+      intro i
+      have hi := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => hw j)
+        (Finset.mem_univ i)
+      change w i ≤ (1 : ℝ)
+      simpa only [h1] using hi
+    · rintro ⟨⟨w, z⟩, ⟨hw, hz⟩, hx⟩
+      exact ⟨w, z, hw.1.1, hw.2, hz, hx⟩
+  rw [he]
+  exact (hW.prod hZ).image hm
+
+/-- **Proposition A3.6:** in finite-dimensional Euclidean space, compact hulls stay compact. -/
+theorem proposition_A3_6 {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [FiniteDimensional ℝ G] {S : Set G} (hS : IsCompact S) :
+    IsCompact (convexHull ℝ S) := by
+  rw [convexHull_eq_finite_mixture_union]
+  exact isCompact_iUnion fun n => finiteMixtureSet_isCompact hS n.val
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 3: concave and convex functions
+
+Kreps I, Definition A3.16, Proposition A3.17 and Proposition A3.23, pp. 461–466.
+The weighted affine-composition statements explicitly require the affine arguments
+to remain in the original domain. This makes the book's implicit domain convention
+precise. Continuity is asserted on the interior, as in the text.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped BigOperators
+
+variable {E F ι : Type*} [AddCommGroup E] [Module ℝ E]
+  [AddCommGroup F] [Module ℝ F] {S : Set E} {T : Set F} {f : E → ℝ}
+
+/-- **Proposition A3.17a:** an affine function is convex and concave. -/
+theorem proposition_A3_17a (hS : Convex ℝ S) (g : E →ᵃ[ℝ] ℝ) :
+    ConvexOn ℝ S g ∧ ConcaveOn ℝ S g := by
+  constructor
+  · exact ⟨hS, fun _ _ _ _ _ _ _ _ hab => (Convex.combo_affine_apply hab).le⟩
+  · exact ⟨hS, fun _ _ _ _ _ _ _ _ hab => (Convex.combo_affine_apply hab).ge⟩
+
+/-- **Proposition A3.17b:** the pointwise minimum of a finite nonempty family is concave. -/
+theorem proposition_A3_17b_min (t : Finset ι) (ht : t.Nonempty) (g : ι → E → ℝ)
+    (hg : ∀ i ∈ t, ConcaveOn ℝ S (g i)) : ConcaveOn ℝ S (t.inf' ht g) :=
+  Finset.inf'_induction ht g (fun _ hf _ hh => hf.inf hh) hg
+
+/-- **Proposition A3.17c:** the pointwise maximum of a finite nonempty family is convex. -/
+theorem proposition_A3_17c_max (t : Finset ι) (ht : t.Nonempty) (g : ι → E → ℝ)
+    (hg : ∀ i ∈ t, ConvexOn ℝ S (g i)) : ConvexOn ℝ S (t.sup' ht g) :=
+  Finset.sup'_induction ht g (fun _ hf _ hh => hf.sup hh) hg
+
+/-- Finite sums of concave functions are concave, including the empty sum. -/
+theorem concaveOn_finite_sum (hS : Convex ℝ S) (t : Finset ι) (g : ι → E → ℝ)
+    (hg : ∀ i ∈ t, ConcaveOn ℝ S (g i)) : ConcaveOn ℝ S (fun x => ∑ i ∈ t, g i x) := by
+  classical
+  induction t using Finset.induction_on with
+  | empty => simpa only [Finset.sum_empty] using concaveOn_const (0 : ℝ) hS
+  | @insert i t hi ih =>
+      have hgi := hg i (Finset.mem_insert_self i t)
+      have hgt := ih (fun j hj => hg j (Finset.mem_insert_of_mem hj))
+      convert hgi.add hgt using 1
+      ext x
+      exact Finset.sum_insert hi
+
+/-- Finite sums of convex functions are convex, including the empty sum. -/
+theorem convexOn_finite_sum (hS : Convex ℝ S) (t : Finset ι) (g : ι → E → ℝ)
+    (hg : ∀ i ∈ t, ConvexOn ℝ S (g i)) : ConvexOn ℝ S (fun x => ∑ i ∈ t, g i x) := by
+  classical
+  induction t using Finset.induction_on with
+  | empty => simpa only [Finset.sum_empty] using convexOn_const (0 : ℝ) hS
+  | @insert i t hi ih =>
+      have hgi := hg i (Finset.mem_insert_self i t)
+      have hgt := ih (fun j hj => hg j (Finset.mem_insert_of_mem hj))
+      convert hgi.add hgt using 1
+      ext x
+      exact Finset.sum_insert hi
+
+/-- **Proposition A3.17b:** nonnegative weighted sums after affine changes of argument. -/
+theorem proposition_A3_17b_sum (hS : Convex ℝ S) (t : Finset ι) (w : ι → ℝ)
+    (g : ι → F → ℝ) (A : ι → E →ᵃ[ℝ] F) (hw : ∀ i ∈ t, 0 ≤ w i)
+    (hg : ∀ i ∈ t, ConcaveOn ℝ T (g i)) (hA : ∀ i ∈ t, Set.MapsTo (A i) S T) :
+    ConcaveOn ℝ S (fun x => ∑ i ∈ t, w i * g i (A i x)) := by
+  apply concaveOn_finite_sum hS t
+  intro i hi
+  exact (((hg i hi).comp_affineMap (A i)).subset (hA i hi) hS).smul (hw i hi)
+
+/-- **Proposition A3.17c:** the corresponding convex weighted affine-composition rule. -/
+theorem proposition_A3_17c_sum (hS : Convex ℝ S) (t : Finset ι) (w : ι → ℝ)
+    (g : ι → F → ℝ) (A : ι → E →ᵃ[ℝ] F) (hw : ∀ i ∈ t, 0 ≤ w i)
+    (hg : ∀ i ∈ t, ConvexOn ℝ T (g i)) (hA : ∀ i ∈ t, Set.MapsTo (A i) S T) :
+    ConvexOn ℝ S (fun x => ∑ i ∈ t, w i * g i (A i x)) := by
+  apply convexOn_finite_sum hS t
+  intro i hi
+  exact (((hg i hi).comp_affineMap (A i)).subset (hA i hi) hS).smul (hw i hi)
+
+/-- **Proposition A3.17d:** upper contour sets of a concave function are convex. -/
+theorem proposition_A3_17d (hf : ConcaveOn ℝ S f) (r : ℝ) :
+    Convex ℝ {x ∈ S | r ≤ f x} := hf.convex_ge r
+
+/-- **Proposition A3.17e:** lower contour sets of a convex function are convex. -/
+theorem proposition_A3_17e (hf : ConvexOn ℝ S f) (r : ℝ) :
+    Convex ℝ {x ∈ S | f x ≤ r} := hf.convex_le r
+
+/-- **Proposition A3.17f:** concavity is convexity of the negative. -/
+theorem proposition_A3_17f : ConcaveOn ℝ S f ↔ ConvexOn ℝ S (-f) :=
+  neg_convexOn_iff.symm
+
+/-- **Proposition A3.23:** concavity is equivalent to convexity of the hypograph. -/
+theorem proposition_A3_23 : ConcaveOn ℝ S f ↔
+    Convex ℝ {p : E × ℝ | p.1 ∈ S ∧ p.2 ≤ f p.1} := concaveOn_iff_convex_hypograph
+
+/-- The epigraph version mentioned following Proposition A3.25. -/
+theorem convexOn_iff_convex_epigraph_appendix : ConvexOn ℝ S f ↔
+    Convex ℝ {p : E × ℝ | p.1 ∈ S ∧ f p.1 ≤ p.2} := convexOn_iff_convex_epigraph
+
+/-- **Proposition A3.17g:** finite-dimensional concavity implies continuity on the interior. -/
+theorem proposition_A3_17g_concave {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [FiniteDimensional ℝ G] {D : Set G} {g : G → ℝ} (hg : ConcaveOn ℝ D g) :
+    ContinuousOn g (interior D) := hg.continuousOn_interior
+
+/-- **Proposition A3.17g:** the corresponding continuity statement for convex functions. -/
+theorem proposition_A3_17g_convex {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [FiniteDimensional ℝ G] {D : Set G} {g : G → ℝ} (hg : ConvexOn ℝ D g) :
+    ContinuousOn g (interior D) := hg.continuousOn_interior
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 3: quasi-concavity and maximizers
+
+Kreps I, Definition A3.18 and Propositions A3.19–A3.22, pp. 464–465.
+The utility definitions are shared with Chapter 2. Maximizers are expressed using
+universal comparisons, which handles empty sets and unbounded utilities without
+assigning a real-valued supremum to an unbounded set.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E] {S : Set E}
+
+/-- **Definition A3.18d:** a mixture does not exceed the larger endpoint utility. -/
+def QuasiConvexUtility (hS : Convex ℝ S) (u : S → ℝ) : Prop :=
+  ∀ x y a, ∀ ha : a ∈ Set.Icc 0 1, u (Mix hS x y a ha) ≤ max (u x) (u y)
+
+/-- **Definition A3.18e:** distinct ordered endpoints give a strict decrease. -/
+def StrictlyQuasiConvexUtility (hS : Convex ℝ S) (u : S → ℝ) : Prop :=
+  ∀ x y, x ≠ y → u y ≤ u x → ∀ a, ∀ ha : a ∈ Set.Ioo 0 1,
+    u (Mix hS x y a ⟨ha.1.le, ha.2.le⟩) < u x
+
+/-- **Proposition A3.19:** quasi-concavity is convexity of every upper contour. -/
+theorem proposition_A3_19 (hS : Convex ℝ S) (f : E → ℝ) :
+    QuasiConcaveUtility hS (fun x => f x.val) ↔ ∀ r, Convex ℝ {x ∈ S | r ≤ f x} :=
+  quasiConcaveUtility_iff_quasiconcaveOn hS f
+
+/-- **Proposition A3.19**, footnote: quasi-convexity is convexity of every lower contour. -/
+theorem proposition_A3_19_quasiConvex (hS : Convex ℝ S) (f : E → ℝ) :
+    QuasiConvexUtility hS (fun x => f x.val) ↔ ∀ r, Convex ℝ {x ∈ S | f x ≤ r} := by
+  change QuasiConvexUtility hS (fun x => f x.val) ↔ QuasiconvexOn ℝ S f
+  rw [quasiconvexOn_iff_le_max]
+  constructor
+  · intro h
+    refine ⟨hS, fun x hx y hy a b ha hb hab => ?_⟩
+    have he : b = 1 - a := by linarith
+    subst b
+    exact h ⟨x, hx⟩ ⟨y, hy⟩ a ⟨ha, by linarith⟩
+  · intro h x y a ha
+    exact h.2 x.property y.property ha.1 (sub_nonneg.mpr ha.2) (by ring)
+
+/-- **Proposition A3.20:** every nondecreasing transformation preserves quasi-concavity. -/
+theorem proposition_A3_20 {hS : Convex ℝ S} {u : S → ℝ} {g : ℝ → ℝ}
+    (hu : QuasiConcaveUtility hS u) (hg : Monotone g) :
+    QuasiConcaveUtility hS (g ∘ u) := by
+  intro x y a ha
+  change min (g (u x)) (g (u y)) ≤ g (u (Mix hS x y a ha))
+  rw [← hg.map_min]
+  exact hg (hu x y a ha)
+
+/-- **Proposition A3.20:** strictly increasing transformations preserve strict quasi-concavity. -/
+theorem proposition_A3_20_strict {hS : Convex ℝ S} {u : S → ℝ} {g : ℝ → ℝ}
+    (hu : StrictlyQuasiConcaveUtility hS u) (hg : StrictMono g) :
+    StrictlyQuasiConcaveUtility hS (g ∘ u) := by
+  intro x y hne hyx a ha
+  exact hg (hu x y hne (hg.le_iff_le.mp hyx) a ha)
+
+/-- **Proposition A3.21:** the maximizers on a convex menu form a convex set. -/
+theorem proposition_A3_21 {hS : Convex ℝ S} {u : S → ℝ}
+    (hu : QuasiConcaveUtility hS u) {A : Set S} (hA : ConvexMenu hS A) :
+    ConvexMenu hS (UtilityChoice u A) := by
+  intro x hx y hy a ha
+  refine ⟨hA x hx.1 y hy.1 a ha, fun z hz => ?_⟩
+  exact (le_min (hx.2 z hz) (hy.2 z hz)).trans (hu x y a ha)
+
+/-- **Proposition A3.21:** strict quasi-concavity gives at most one maximizer. -/
+theorem proposition_A3_21_unique {hS : Convex ℝ S} {u : S → ℝ}
+    (hu : StrictlyQuasiConcaveUtility hS u) {A : Set S} (hA : ConvexMenu hS A) :
+    (UtilityChoice u A).Subsingleton := by
+  intro x hx y hy
+  by_contra hne
+  have hm := hu x y hne (hx.2 y hy.1) (1 / 2) (by constructor <;> norm_num)
+  exact (not_lt_of_ge (hy.2 _
+    (hA x hx.1 y hy.1 (1 / 2) (by constructor <;> norm_num)))) hm
+
+/-- The maximizer convexity assertion in the ambient-vector-space formulation. -/
+theorem proposition_A3_21_ambient {hS : Convex ℝ S} {u : S → ℝ}
+    (hu : QuasiConcaveUtility hS u) {A : Set S} (hA : ConvexMenu hS A) :
+    Convex ℝ (Subtype.val '' UtilityChoice u A) :=
+  (convexMenu_iff hS _).mp (proposition_A3_21 hu hA)
+
+/-- **Proposition A3.22:** concavity implies semi-strict quasi-concavity. -/
+theorem proposition_A3_22_concave {hS : Convex ℝ S} {u : S → ℝ}
+    (hu : ConcaveUtility hS u) : SemiStrictlyQuasiConcaveUtility hS u :=
+  concaveUtility_semiStrict hu
+
+/-- **Proposition A3.22:** strict concavity implies strict quasi-concavity. -/
+theorem proposition_A3_22_strict {hS : Convex ℝ S} {u : S → ℝ}
+    (hu : StrictlyConcaveUtility hS u) : StrictlyQuasiConcaveUtility hS u :=
+  strictlyConcaveUtility_strictQuasi hu
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Local midpoint identities and affine uniqueness
+
+Supporting the overlap argument for Proposition 2.14. A continuous function
+on an interval satisfying the midpoint identity for all sufficiently small
+steps is affine. The proof uses a compact maximum argument, including the
+endpoints, rather than assuming differentiability of utility.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A local midpoint identity propagates nonpositive endpoint bounds over a compact interval. -/
+theorem local_midpoint_nonpos {f : ℝ → ℝ} {a b δ : ℝ} (hab : a ≤ b)
+    (hc : ContinuousOn f (Set.Icc a b)) (ha : f a ≤ 0) (hb : f b ≤ 0) (hδ : 0 < δ)
+    (hm : ∀ x h, 0 < h → h < δ → a ≤ x - h → x + h ≤ b →
+      f x = (f (x - h) + f (x + h)) / 2) :
+    ∀ x ∈ Set.Icc a b, f x ≤ 0 := by
+  let : Nonempty (Set.Icc a b) := ⟨⟨a, le_rfl, hab⟩⟩
+  let F : Set.Icc a b → ℝ := fun x => f x.val
+  have hF : Continuous F := continuousOn_iff_continuous_domRestrict.mp hc
+  obtain ⟨m, _, hmax⟩ := isCompact_univ.exists_isMaxOn Set.univ_nonempty hF.continuousOn
+  have hK : IsCompact {x : Set.Icc a b | F x = F m} :=
+    (isClosed_eq hF continuous_const).isCompact
+  obtain ⟨z, hz⟩ := hK.exists_isLeast ⟨m, rfl⟩
+  have hzM : f z.val = f m.val := hz.1
+  have hM : f m.val ≤ 0 := by
+    by_contra h
+    have hpos : 0 < f z.val := by linarith
+    have hza : a < z.val := lt_of_le_of_ne z.property.1 (by
+      intro he; have : f z.val = f a := congrArg f he.symm; linarith)
+    have hzb : z.val < b := lt_of_le_of_ne z.property.2 (by
+      intro he; have : f z.val = f b := congrArg f he; linarith)
+    let d := min δ (min (z.val - a) (b - z.val))
+    have hd : 0 < d := lt_min hδ (lt_min (sub_pos.mpr hza) (sub_pos.mpr hzb))
+    have hdδ : d ≤ δ := min_le_left _ _
+    have hda : d ≤ z.val - a := (min_le_right _ _).trans (min_le_left _ _)
+    have hdb : d ≤ b - z.val := (min_le_right _ _).trans (min_le_right _ _)
+    let u : Set.Icc a b := ⟨z.val - d / 2, by constructor <;> linarith⟩
+    let v : Set.Icc a b := ⟨z.val + d / 2, by constructor <;> linarith⟩
+    have hu : f u.val ≤ f m.val := hmax (Set.mem_univ u)
+    have hv : f v.val ≤ f m.val := hmax (Set.mem_univ v)
+    have hmid := hm z.val (d / 2) (by linarith) (by linarith) u.property.1 v.property.2
+    have he : F u = F m := by dsimp [F, u, v] at *; linarith
+    have hzle : z ≤ u := hz.2 he
+    change z.val ≤ z.val - d / 2 at hzle
+    linarith
+  intro x hx
+  exact (hmax (Set.mem_univ (⟨x, hx⟩ : Set.Icc a b))).trans hM
+
+/-- A uniform local midpoint identity makes a continuous function affine on a compact interval. -/
+theorem local_midpoint_affine_Icc {f : ℝ → ℝ} {a b δ : ℝ} (hab : a < b)
+    (hc : ContinuousOn f (Set.Icc a b)) (hδ : 0 < δ)
+    (hm : ∀ x h, 0 < h → h < δ → a ≤ x - h → x + h ≤ b →
+      f x = (f (x - h) + f (x + h)) / 2) :
+    ∃ A B : ℝ, ∀ x ∈ Set.Icc a b, f x = A * x + B := by
+  let A := (f b - f a) / (b - a)
+  let g := fun x => f x - (A * (x - a) + f a)
+  have hga : g a = 0 := by dsimp [g]; ring
+  have hgb : g b = 0 := by
+    dsimp [g, A]
+    field_simp [sub_ne_zero.mpr hab.ne']
+    ring
+  have hcg : ContinuousOn g (Set.Icc a b) := hc.sub
+    (((continuous_const.mul (continuous_id.sub continuous_const)).add
+      continuous_const).continuousOn)
+  have hgm : ∀ x h, 0 < h → h < δ → a ≤ x - h → x + h ≤ b →
+      g x = (g (x - h) + g (x + h)) / 2 := by
+    intro x h hh hhδ hxa hxb
+    have := hm x h hh hhδ hxa hxb
+    dsimp [g]
+    linarith
+  have hle := local_midpoint_nonpos hab.le hcg hga.le hgb.le hδ hgm
+  have hge := local_midpoint_nonpos hab.le hcg.neg (by simp [hga]) (by simp [hgb]) hδ
+    (fun x h hh hhδ hxa hxb => by
+      have := hgm x h hh hhδ hxa hxb
+      dsimp
+      linarith)
+  refine ⟨A, f a - A * a, fun x hx => ?_⟩
+  have h₁ := hle x hx
+  have h₂ := hge x hx
+  dsimp [g] at h₁ h₂
+  linarith
+
+/-- Local midpoint identities with a common positive radius give one affine scale on an interval. -/
+theorem local_midpoint_affine_interval {f : ℝ → ℝ} {S : Set ℝ} (hS : S.OrdConnected)
+    (hc : ContinuousOn f S) {a b δ : ℝ} (ha : a ∈ S) (hb : b ∈ S)
+    (hab : a < b) (hδ : 0 < δ)
+    (hm : ∀ x h, 0 < h → h < δ → x - h ∈ S → x + h ∈ S →
+      f x = (f (x - h) + f (x + h)) / 2) :
+    ∃ A B : ℝ, ∀ x ∈ S, f x = A * x + B := by
+  refine ⟨(f b - f a) / (b - a), f a - (f b - f a) / (b - a) * a, ?_⟩
+  intro x hx
+  have hL : min a x ∈ S := by
+    by_cases h : a ≤ x
+    · simpa only [min_eq_left h] using ha
+    · simpa only [min_eq_right (le_of_not_ge h)] using hx
+  have hR : max b x ∈ S := by
+    by_cases h : b ≤ x
+    · simpa only [max_eq_right h] using hx
+    · simpa only [max_eq_left (le_of_not_ge h)] using hb
+  have hLR : min a x < max b x := (min_le_left _ _).trans_lt
+    (hab.trans_le (le_max_left _ _))
+  have hsub : Set.Icc (min a x) (max b x) ⊆ S := hS.out hL hR
+  obtain ⟨A, B, h⟩ := local_midpoint_affine_Icc hLR (hc.mono hsub) hδ
+    (fun y t ht htδ hlo hhi => hm y t ht htδ
+      (hsub ⟨hlo, by linarith⟩) (hsub ⟨by linarith, hhi⟩))
+  have hfa := h a ⟨min_le_left _ _, hab.le.trans (le_max_left _ _)⟩
+  have hfb := h b ⟨(min_le_left _ _).trans hab.le, le_max_left _ _⟩
+  have hfx := h x ⟨min_le_right _ _, le_max_right _ _⟩
+  have hA : A = (f b - f a) / (b - a) :=
+    (eq_div_iff (sub_ne_zero.mpr hab.ne')).mpr (by linarith)
+  rw [← hA]
+  linarith
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Uniqueness of additive scales on interval rectangles
+
+Preparation for Proposition 2.14. Preserving the indifferences of an additive
+representation on two nontrivial intervals forces a common affine scale.
+Strict increase makes its slope positive. No smoothness assumption is used.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Transformed coordinate scores preserve equal sums on a rectangle. -/
+def PreservesPairSumEquality (f g : ℝ → ℝ) (S T : Set ℝ) : Prop :=
+  ∀ x ∈ S, ∀ x' ∈ S, ∀ y ∈ T, ∀ y' ∈ T,
+    x + y = x' + y' → f x + g y = f x' + g y'
+
+/-- The equal-sum condition is symmetric in its two coordinates. -/
+theorem preservesPairSumEquality_symm {f g : ℝ → ℝ} {S T : Set ℝ}
+    (h : PreservesPairSumEquality f g S T) : PreservesPairSumEquality g f T S := by
+  intro y hy y' hy' x hx x' hx' he
+  have := h x hx x' hx' y hy y' hy' (by linarith)
+  linarith
+
+/-- Short compensating changes in the second coordinate give a local midpoint law in the first. -/
+theorem preservesPairSumEquality_midpoint {f g : ℝ → ℝ} {S T : Set ℝ}
+    (h : PreservesPairSumEquality f g S T) (hS : S.OrdConnected) (hT : T.OrdConnected)
+    {a b : ℝ} (ha : a ∈ T) (hb : b ∈ T) (x t : ℝ) (ht : 0 < t) (htb : t < b - a)
+    (hlo : x - t ∈ S) (hhi : x + t ∈ S) :
+    f x = (f (x - t) + f (x + t)) / 2 := by
+  have hx : x ∈ S := hS.out hlo hhi ⟨by linarith, by linarith⟩
+  have hat : a + t ∈ T := hT.out ha hb ⟨by linarith, by linarith⟩
+  have h₁ := h (x - t) hlo x hx (a + t) hat a ha (by ring)
+  have h₂ := h x hx (x + t) hhi (a + t) hat a ha (by ring)
+  linarith
+
+/-- Equal-sum preservation makes the first coordinate transformation affine. -/
+theorem preservesPairSumEquality_affine_left {f g : ℝ → ℝ} {S T : Set ℝ}
+    (h : PreservesPairSumEquality f g S T) (hS : S.OrdConnected) (hT : T.OrdConnected)
+    (hc : ContinuousOn f S) {a b c d : ℝ}
+    (ha : a ∈ S) (hb : b ∈ S) (hab : a < b)
+    (hcT : c ∈ T) (hd : d ∈ T) (hcd : c < d) :
+    ∃ A B : ℝ, ∀ x ∈ S, f x = A * x + B :=
+  local_midpoint_affine_interval hS hc ha hb hab (sub_pos.mpr hcd)
+    (fun x t ht htd hlo hhi => preservesPairSumEquality_midpoint h hS hT hcT hd
+      x t ht htd hlo hhi)
+
+/-- Two continuous additive scales on nontrivial intervals differ by one common affine slope. -/
+theorem pair_additive_affine_unique {f g : ℝ → ℝ} {S T : Set ℝ}
+    (h : PreservesPairSumEquality f g S T) (hS : S.OrdConnected) (hT : T.OrdConnected)
+    (hf : ContinuousOn f S) (hg : ContinuousOn g T) {a b c d : ℝ}
+    (ha : a ∈ S) (hb : b ∈ S) (hab : a < b)
+    (hc : c ∈ T) (hd : d ∈ T) (hcd : c < d) :
+    ∃ A B C : ℝ, (∀ x ∈ S, f x = A * x + B) ∧ (∀ y ∈ T, g y = A * y + C) := by
+  obtain ⟨A, B, hA⟩ := preservesPairSumEquality_affine_left h hS hT hf ha hb hab hc hd hcd
+  obtain ⟨A', C, hA'⟩ := preservesPairSumEquality_affine_left
+    (preservesPairSumEquality_symm h) hT hS hg hc hd hcd ha hb hab
+  let t := min (b - a) (d - c)
+  have ht : 0 < t := lt_min (sub_pos.mpr hab) (sub_pos.mpr hcd)
+  have htS : t ≤ b - a := min_le_left _ _
+  have htT : t ≤ d - c := min_le_right _ _
+  have hat : a + t ∈ S := hS.out ha hb ⟨by linarith, by linarith⟩
+  have hct : c + t ∈ T := hT.out hc hd ⟨by linarith, by linarith⟩
+  have he := h (a + t) hat a ha c hc (c + t) hct (by ring)
+  rw [hA _ hat, hA _ ha, hA' _ hc, hA' _ hct] at he
+  have hAA : A = A' := by nlinarith
+  exact ⟨A, B, C, hA, hAA ▸ hA'⟩
+
+/-- Strict increase makes the common affine scale positive. -/
+theorem pair_additive_positive_affine_unique {f g : ℝ → ℝ} {S T : Set ℝ}
+    (h : PreservesPairSumEquality f g S T) (hS : S.OrdConnected) (hT : T.OrdConnected)
+    (hf : ContinuousOn f S) (hg : ContinuousOn g T) (hmono : StrictMonoOn f S)
+    {a b c d : ℝ} (ha : a ∈ S) (hb : b ∈ S) (hab : a < b)
+    (hc : c ∈ T) (hd : d ∈ T) (hcd : c < d) :
+    ∃ A B C : ℝ, 0 < A ∧ (∀ x ∈ S, f x = A * x + B) ∧
+      (∀ y ∈ T, g y = A * y + C) := by
+  obtain ⟨A, B, C, hA, hC⟩ := pair_additive_affine_unique h hS hT hf hg ha hb hab hc hd hcd
+  have hlt := hmono ha hb hab
+  rw [hA _ ha, hA _ hb] at hlt
+  exact ⟨A, B, C, by nlinarith, hA, hC⟩
+
+/-- Two nontrivial coordinates fix one positive affine slope for an entire family of intervals. -/
+theorem family_additive_positive_affine_unique {I : Type*} {S : I → Set ℝ}
+    {f : I → ℝ → ℝ} (hS : ∀ i, (S i).OrdConnected) (hf : ∀ i, ContinuousOn (f i) (S i))
+    (hp : ∀ i j, i ≠ j → PreservesPairSumEquality (f i) (f j) (S i) (S j))
+    (z : I → ℝ) (hz : ∀ i, z i ∈ S i) {i₀ j₀ : I} (hij : i₀ ≠ j₀)
+    (hmono : StrictMonoOn (f i₀) (S i₀)) {a b c d : ℝ}
+    (ha : a ∈ S i₀) (hb : b ∈ S i₀) (hab : a < b)
+    (hc : c ∈ S j₀) (hd : d ∈ S j₀) (hcd : c < d) :
+    ∃ A : ℝ, 0 < A ∧ ∀ i x, x ∈ S i →
+      f i x = A * x + (f i (z i) - A * z i) := by
+  classical
+  obtain ⟨A, B, _, hpos, hA, _⟩ := pair_additive_positive_affine_unique (hp i₀ j₀ hij)
+    (hS i₀) (hS j₀) (hf i₀) (hf j₀) hmono ha hb hab hc hd hcd
+  refine ⟨A, hpos, fun i x hx => ?_⟩
+  by_cases hi : i = i₀
+  · subst i
+    have hxA := hA x hx
+    have hzA := hA (z i₀) (hz i₀)
+    linarith
+  · by_cases hnt : (S i).Nontrivial
+    · obtain ⟨c', hc', d', hd', hcd'⟩ := hnt.exists_lt
+      obtain ⟨A', B', C', hA', hC'⟩ := pair_additive_affine_unique
+        (hp i₀ i (Ne.symm hi)) (hS i₀) (hS i) (hf i₀) (hf i) ha hb hab hc' hd' hcd'
+      have hAa := hA a ha
+      have hAb := hA b hb
+      have hA'a := hA' a ha
+      have hA'b := hA' b hb
+      have he : A = A' := by nlinarith
+      have hxA := hC' x hx
+      have hzA := hC' (z i) (hz i)
+      rw [← he] at hxA hzA
+      linarith
+    · have he : x = z i := by
+        by_contra hne
+        exact hnt ⟨x, hx, z i, hz i, hne⟩
+      rw [he]
+      ring
+
+/-- Fixing every baseline and one unit increment removes all affine freedom on an overlap. -/
+theorem normalized_additive_scales_unique {I : Type*} {S : I → Set ℝ} {f : I → ℝ → ℝ}
+    (hS : ∀ i, (S i).OrdConnected) (hf : ∀ i, ContinuousOn (f i) (S i))
+    (hp : ∀ i j, i ≠ j → PreservesPairSumEquality (f i) (f j) (S i) (S j))
+    (hz : ∀ i, (0 : ℝ) ∈ S i) (hzero : ∀ i, f i 0 = 0)
+    {i₀ j₀ : I} (hij : i₀ ≠ j₀) (hmono : StrictMonoOn (f i₀) (S i₀))
+    (hunit : (1 : ℝ) ∈ S i₀) (hone : f i₀ 1 = 1) {c d : ℝ}
+    (hc : c ∈ S j₀) (hd : d ∈ S j₀) (hcd : c < d) :
+    ∀ i x, x ∈ S i → f i x = x := by
+  obtain ⟨A, _, hA⟩ := family_additive_positive_affine_unique hS hf hp (fun _ => 0) hz hij
+    hmono (hz i₀) hunit zero_lt_one hc hd hcd
+  have hAu := hA i₀ 1 hunit
+  have hAone : A = 1 := by simpa only [hone, hzero, mul_one, mul_zero, sub_zero, add_zero]
+    using hAu.symm
+  intro i x hx
+  simpa only [hAone, one_mul, hzero, mul_zero, sub_zero, add_zero] using hA i x hx
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -12110,3 +13772,119 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.alternatingDecimal_subsequence_limits
 #print axioms Kreps.PreferenceProperties.appendix2_alternating_accumulation
 #print axioms Kreps.PreferenceProperties.appendix2_alternating_no_limit
+#print axioms Kreps.PreferenceProperties.MeanDyadicRank
+#print axioms Kreps.PreferenceProperties.meanDyadicRank_mem
+#print axioms Kreps.PreferenceProperties.meanDyadicGrid_le_iff_rank
+#print axioms Kreps.PreferenceProperties.MeanRankCut
+#print axioms Kreps.PreferenceProperties.meanRankCut_nonempty
+#print axioms Kreps.PreferenceProperties.meanRankCut_bddAbove
+#print axioms Kreps.PreferenceProperties.MeanCardinalScale
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_mem
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_mono
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_grid
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_strictMono
+#print axioms Kreps.PreferenceProperties.UnitArithmeticMean
+#print axioms Kreps.PreferenceProperties.unitArithmeticMean_continuous
+#print axioms Kreps.PreferenceProperties.unitArithmeticMean_grid
+#print axioms Kreps.PreferenceProperties.unitArithmeticMean_dense
+#print axioms Kreps.PreferenceProperties.MeanUnitScale
+#print axioms Kreps.PreferenceProperties.meanUnitScale_denseRange
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_continuous
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_grid_mean
+#print axioms Kreps.PreferenceProperties.meanCardinalScale_mean
+#print axioms Kreps.PreferenceProperties.exists_continuous_bisymmetricMean_scale
+#print axioms Kreps.PreferenceProperties.threeFactor_first_utility_eq
+#print axioms Kreps.PreferenceProperties.threeFactor_second_utility_eq
+#print axioms Kreps.PreferenceProperties.threeFactor_third_utility_eq
+#print axioms Kreps.PreferenceProperties.NormalizedThreeAxes
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_second_third
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_first_second
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_first_third
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_pair_symmetric
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_swap_first_two
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_first_base
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_merge_first
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_merge_last
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_pair_associative
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_pair_medial
+#print axioms Kreps.PreferenceProperties.utilityDiagonal_strictMono
+#print axioms Kreps.PreferenceProperties.utilityDiagonal_attains_pair
+#print axioms Kreps.PreferenceProperties.DiagonalUtilityMean
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_spec
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_reflexive
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_symmetric
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_strictMono_left
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_strictMono_right
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_comparison
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_continuous
+#print axioms Kreps.PreferenceProperties.PartialUtilityMedial
+#print axioms Kreps.PreferenceProperties.diagonalUtilityMean_bisymmetric
+#print axioms Kreps.PreferenceProperties.OrderedUtilityMean
+#print axioms Kreps.PreferenceProperties.exists_pair_additive_scale_of_partialMedial
+#print axioms Kreps.PreferenceProperties.normalized_threeFactor_partialMedial
+#print axioms Kreps.PreferenceProperties.CommonThreeScoreUtility
+#print axioms Kreps.PreferenceProperties.threeFactorIndependent_pullback
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_independent
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_continuous
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_first_strictMono
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_second_strictMono
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_third_strictMono
+#print axioms Kreps.PreferenceProperties.commonThreeScoreUtility_axes
+#print axioms Kreps.PreferenceProperties.exists_common_baseline_score_interval
+#print axioms Kreps.PreferenceProperties.scoreAggregator_commonThree_axes
+#print axioms Kreps.PreferenceProperties.exists_small_pair_interval
+#print axioms Kreps.PreferenceProperties.normalizedThreeAxes_small_pair_interval
+#print axioms Kreps.PreferenceProperties.HasLocalCommonPairScale
+#print axioms Kreps.PreferenceProperties.normalizedThreeAxes_local_pair_scale
+#print axioms Kreps.PreferenceProperties.exists_common_local_pair_scale
+#print axioms Kreps.PreferenceProperties.definition_A3_1
+#print axioms Kreps.PreferenceProperties.proposition_A3_2
+#print axioms Kreps.PreferenceProperties.proposition_A3_3
+#print axioms Kreps.PreferenceProperties.definition_A3_4_convexHull
+#print axioms Kreps.PreferenceProperties.proposition_A3_4
+#print axioms Kreps.PreferenceProperties.proposition_A3_5
+#print axioms Kreps.PreferenceProperties.definition_A3_4_closedConvexHull
+#print axioms Kreps.PreferenceProperties.proposition_A3_7_closure
+#print axioms Kreps.PreferenceProperties.proposition_A3_7_closedHull
+#print axioms Kreps.PreferenceProperties.FiniteMixtureSet
+#print axioms Kreps.PreferenceProperties.finiteMixtureSet_subset_convexHull
+#print axioms Kreps.PreferenceProperties.mem_finiteMixtureSet_of_mem_finset_hull
+#print axioms Kreps.PreferenceProperties.convexHull_eq_finite_mixture_union
+#print axioms Kreps.PreferenceProperties.finiteMixtureSet_isCompact
+#print axioms Kreps.PreferenceProperties.proposition_A3_6
+#print axioms Kreps.PreferenceProperties.proposition_A3_17a
+#print axioms Kreps.PreferenceProperties.proposition_A3_17b_min
+#print axioms Kreps.PreferenceProperties.proposition_A3_17c_max
+#print axioms Kreps.PreferenceProperties.concaveOn_finite_sum
+#print axioms Kreps.PreferenceProperties.convexOn_finite_sum
+#print axioms Kreps.PreferenceProperties.proposition_A3_17b_sum
+#print axioms Kreps.PreferenceProperties.proposition_A3_17c_sum
+#print axioms Kreps.PreferenceProperties.proposition_A3_17d
+#print axioms Kreps.PreferenceProperties.proposition_A3_17e
+#print axioms Kreps.PreferenceProperties.proposition_A3_17f
+#print axioms Kreps.PreferenceProperties.proposition_A3_23
+#print axioms Kreps.PreferenceProperties.convexOn_iff_convex_epigraph_appendix
+#print axioms Kreps.PreferenceProperties.proposition_A3_17g_concave
+#print axioms Kreps.PreferenceProperties.proposition_A3_17g_convex
+#print axioms Kreps.PreferenceProperties.QuasiConvexUtility
+#print axioms Kreps.PreferenceProperties.StrictlyQuasiConvexUtility
+#print axioms Kreps.PreferenceProperties.proposition_A3_19
+#print axioms Kreps.PreferenceProperties.proposition_A3_19_quasiConvex
+#print axioms Kreps.PreferenceProperties.proposition_A3_20
+#print axioms Kreps.PreferenceProperties.proposition_A3_20_strict
+#print axioms Kreps.PreferenceProperties.proposition_A3_21
+#print axioms Kreps.PreferenceProperties.proposition_A3_21_unique
+#print axioms Kreps.PreferenceProperties.proposition_A3_21_ambient
+#print axioms Kreps.PreferenceProperties.proposition_A3_22_concave
+#print axioms Kreps.PreferenceProperties.proposition_A3_22_strict
+#print axioms Kreps.PreferenceProperties.local_midpoint_nonpos
+#print axioms Kreps.PreferenceProperties.local_midpoint_affine_Icc
+#print axioms Kreps.PreferenceProperties.local_midpoint_affine_interval
+#print axioms Kreps.PreferenceProperties.PreservesPairSumEquality
+#print axioms Kreps.PreferenceProperties.preservesPairSumEquality_symm
+#print axioms Kreps.PreferenceProperties.preservesPairSumEquality_midpoint
+#print axioms Kreps.PreferenceProperties.preservesPairSumEquality_affine_left
+#print axioms Kreps.PreferenceProperties.pair_additive_affine_unique
+#print axioms Kreps.PreferenceProperties.pair_additive_positive_affine_unique
+#print axioms Kreps.PreferenceProperties.family_additive_positive_affine_unique
+#print axioms Kreps.PreferenceProperties.normalized_additive_scales_unique
