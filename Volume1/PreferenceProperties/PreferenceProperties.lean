@@ -47,3 +47,6 @@ import PreferenceProperties.LinearPreference
 import PreferenceProperties.MinimumUtility
 import PreferenceProperties.LeontiefPreference
 import PreferenceProperties.CobbDouglasMonotonicity
+import PreferenceProperties.IntervalNonattainment
+import PreferenceProperties.UpperSemicontinuousSeries
+import PreferenceProperties.WeightedUtilitySemicontinuity

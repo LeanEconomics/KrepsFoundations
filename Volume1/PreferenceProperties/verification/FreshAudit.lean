@@ -21,6 +21,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
+import Mathlib.Topology.Semicontinuity.Basic
+import Mathlib.Analysis.Normed.Group.FunctionSeries
 set_option autoImplicit false
 
 /-
@@ -5536,6 +5538,275 @@ theorem cobbDouglasUtility_example (hk : 2 ≤ k) {α : Fin k → ℝ} (hα : �
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The open and unbounded menu examples
+
+Kreps I, introductory examples in Problem 2.2, p. 46. Strictly monotone preference
+on the nonnegative half-line has no best point on `(1,5)` or `(3,∞)`, although both
+menus are nonempty and convex. The compact-menu counterexample is proved separately
+in `ConvexityExamples`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- A relatively open bounded interval in the one-good consumption domain. -/
+def OpenIntervalMenu (a b : ℝ) : Set OneGood := {x | a < x.val ∧ x.val < b}
+
+/-- An open upper ray in the one-good consumption domain. -/
+def UpperRayMenu (a : ℝ) : Set OneGood := {x | a < x.val}
+
+/-- The bounded interval menu is convex, including when it is empty. -/
+theorem openIntervalMenu_convex (a b : ℝ) :
+    ConvexMenu (convex_Ici (0 : ℝ)) (OpenIntervalMenu a b) := by
+  intro x hx y hy t ht
+  exact (convex_Ioo a b) hx hy ht.1 (sub_nonneg.mpr ht.2) (by ring)
+
+/-- The upper-ray menu is convex. -/
+theorem upperRayMenu_convex (a : ℝ) :
+    ConvexMenu (convex_Ici (0 : ℝ)) (UpperRayMenu a) := by
+  intro x hx y hy t ht
+  exact (convex_Ioi a) hx hy ht.1 (sub_nonneg.mpr ht.2) (by ring)
+
+/-- Moving halfway toward the excluded upper endpoint beats every point of an open interval. -/
+theorem strictlyMonotone_openInterval_empty {r : OneGood → OneGood → Prop}
+    (hm : StrictlyMonotonePreference r) (a b : ℝ) : PrefChoice r (OpenIntervalMenu a b) = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro x hx
+  have hxb : x.val < b := hx.1.2
+  have hx0 : 0 ≤ x.val := x.property
+  let y : OneGood := ⟨(x.val + b) / 2, show 0 ≤ (x.val + b) / 2 from by linarith⟩
+  have hyx : x < y := by change x.val < (x.val + b) / 2; linarith
+  have hy : y ∈ OpenIntervalMenu a b := by
+    change a < (x.val + b) / 2 ∧ (x.val + b) / 2 < b
+    have hax : a < x.val := hx.1.1
+    constructor <;> linarith
+  exact (hm y x hyx.le (ne_of_gt hyx)).2 (hx.2 y hy)
+
+/-- Adding one unit beats every point of the unbounded upper-ray menu. -/
+theorem strictlyMonotone_upperRay_empty {r : OneGood → OneGood → Prop}
+    (hm : StrictlyMonotonePreference r) (a : ℝ) : PrefChoice r (UpperRayMenu a) = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro x hx
+  have hx0 : 0 ≤ x.val := x.property
+  let y : OneGood := ⟨x.val + 1, show 0 ≤ x.val + 1 from by linarith⟩
+  have hyx : x < y := by change x.val < x.val + 1; linarith
+  have hy : y ∈ UpperRayMenu a := by
+    change a < x.val + 1
+    have hax : a < x.val := hx.1
+    linarith
+  exact (hm y x hyx.le (ne_of_gt hyx)).2 (hx.2 y hy)
+
+/-- **Problem 2.2**, introductory examples: both nonempty convex menus have empty best sets. -/
+theorem problem_2_2_intervals {r : OneGood → OneGood → Prop}
+    (hm : StrictlyMonotonePreference r) :
+    (OpenIntervalMenu 1 5).Nonempty ∧ ConvexMenu (convex_Ici (0 : ℝ)) (OpenIntervalMenu 1 5) ∧
+      PrefChoice r (OpenIntervalMenu 1 5) = ∅ ∧ (UpperRayMenu 3).Nonempty ∧
+      ConvexMenu (convex_Ici (0 : ℝ)) (UpperRayMenu 3) ∧ PrefChoice r (UpperRayMenu 3) = ∅ := by
+  refine ⟨⟨⟨3, by norm_num⟩, by norm_num [OpenIntervalMenu]⟩,
+    openIntervalMenu_convex 1 5, strictlyMonotone_openInterval_empty hm 1 5,
+    ⟨⟨4, by norm_num⟩, by norm_num [UpperRayMenu]⟩,
+    upperRayMenu_convex 3, strictlyMonotone_upperRay_empty hm 3⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Upper semicontinuity of uniformly controlled series
+
+Analytic support for Kreps I, Problem 2.10. Uniform limits preserve upper
+semicontinuity, so a series of upper semicontinuous real functions with a
+summable bound on the absolute values is upper semicontinuous.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- A uniform limit of upper semicontinuous real functions is upper semicontinuous. -/
+theorem upperSemicontinuous_of_tendstoUniformly {I X : Type*} [TopologicalSpace X]
+    {l : Filter I} [l.NeBot] {f : I → X → ℝ} {g : X → ℝ}
+    (hlim : TendstoUniformly f g l) (hf : ∀ i, UpperSemicontinuous (f i)) :
+    UpperSemicontinuous g := by
+  intro x b hb
+  let ε := (b - g x) / 3
+  have hε : 0 < ε := by dsimp [ε]; linarith
+  have he : 3 * ε = b - g x := by dsimp [ε]; ring
+  obtain ⟨i, hi⟩ := ((Metric.tendstoUniformly_iff.mp hlim) ε hε).exists
+  have hx := hi x
+  rw [Real.dist_eq] at hx
+  have hx' : f i x < g x + 2 * ε := by linarith [(abs_lt.mp hx).1]
+  filter_upwards [hf i x (g x + 2 * ε) hx'] with y hy
+  have hy' := hi y
+  rw [Real.dist_eq] at hy'
+  linarith [(abs_lt.mp hy').2]
+
+/-- Summably bounded upper semicontinuous summands have an upper semicontinuous sum. -/
+theorem upperSemicontinuous_tsum_of_norm_le {I X : Type*} [TopologicalSpace X]
+    {f : I → X → ℝ} {w : I → ℝ} (hw : Summable w)
+    (hf : ∀ i, UpperSemicontinuous (f i)) (hbound : ∀ i x, ‖f i x‖ ≤ w i) :
+    UpperSemicontinuous (fun x => ∑' i, f i x) :=
+  upperSemicontinuous_of_tendstoUniformly (tendstoUniformly_tsum hw hbound)
+    (fun _ => upperSemicontinuous_sum (fun i _ => hf i))
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Upper semicontinuity of weighted lower-contour utility
+
+Kreps I, Problem 2.10, p. 47. Nonnegative summable weights give an upper
+semicontinuous utility sum for any sequence of reference points. Strictly
+positive weights represent preference when the references separate strict ranks.
+The dyadic weights are exactly `1 / 2^(n+1)`, with zero-based enumeration of the
+book's points `q¹,q²,...`. Density of their range suffices for representation.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X I : Type*} {r : X → X → Prop}
+
+/-- Sum the weights of enumerated reference points no better than the given alternative. -/
+noncomputable def SampledWeightedUtility (r : X → X → Prop) (q : I → X)
+    (w : I → ℝ) (x : X) : ℝ := ∑' i, {j | r x (q j)}.indicator w i
+
+/-- Closed weak upper contours make each nonnegative weighted indicator upper semicontinuous. -/
+theorem sampledWeightedTerm_upperSemicontinuous [TopologicalSpace X]
+    (hr : Rational r) (hc : ContinuousPreference r) (q : I → X) {w : I → ℝ}
+    (hw : ∀ i, 0 ≤ w i) (i : I) :
+    UpperSemicontinuous (fun x => {j | r x (q j)}.indicator w i) := by
+  change UpperSemicontinuous ((NoWorseThan r (q i)).indicator (fun _ => w i))
+  exact (((proposition_1_14c hr).mp hc) (q i)).2.upperSemicontinuous_indicator (hw i)
+
+/-- Summability supplies a uniform tail bound, preserving upper semicontinuity of the series. -/
+theorem sampledWeightedUtility_upperSemicontinuous [TopologicalSpace X]
+    (hr : Rational r) (hc : ContinuousPreference r) (q : I → X) {w : I → ℝ}
+    (hw : ∀ i, 0 ≤ w i) (hs : Summable w) :
+    UpperSemicontinuous (SampledWeightedUtility r q w) := by
+  apply upperSemicontinuous_tsum_of_norm_le hs (sampledWeightedTerm_upperSemicontinuous hr hc q hw)
+  intro i x
+  classical
+  change ‖if r x (q i) then w i else 0‖ ≤ w i
+  split_ifs
+  · simp only [Real.norm_eq_abs, abs_of_nonneg (hw i), le_refl]
+  · simpa only [norm_zero] using hw i
+
+/-- The set-indexed weighted utility from Chapter 1 satisfies the same conclusion. -/
+theorem weightedUtility_upperSemicontinuous [TopologicalSpace X]
+    (hr : Rational r) (hc : ContinuousPreference r) {D : Set X} {w : D → ℝ}
+    (hw : ∀ z, 0 ≤ w z) (hs : Summable w) : UpperSemicontinuous (WeightedUtility r D w) :=
+  sampledWeightedUtility_upperSemicontinuous hr hc Subtype.val hw hs
+
+/-- Weak preference increases every sampled weighted term. -/
+theorem sampledWeightedTerm_mono (q : I → X) {w : I → ℝ} (hw : ∀ i, 0 ≤ w i)
+    (ht : TransitivePref r) {x y : X} (hxy : r x y) (i : I) :
+    {j | r y (q j)}.indicator w i ≤ {j | r x (q j)}.indicator w i := by
+  classical
+  change (if r y (q i) then w i else 0) ≤ if r x (q i) then w i else 0
+  by_cases hy : r y (q i)
+  · simp [hy, ht x y (q i) hxy hy]
+  · simp only [hy, ite_false]
+    split_ifs
+    · exact hw i
+    · exact le_rfl
+
+/-- Weak preference increases the sampled weighted sum. -/
+theorem sampledWeightedUtility_mono (q : I → X) {w : I → ℝ} (hw : ∀ i, 0 ≤ w i)
+    (hs : Summable w) (ht : TransitivePref r) {x y : X} (hxy : r x y) :
+    SampledWeightedUtility r q w y ≤ SampledWeightedUtility r q w x :=
+  Summable.tsum_le_tsum (sampledWeightedTerm_mono q hw ht hxy)
+    (hs.indicator _) (hs.indicator _)
+
+/-- A sampled separating point contributes a strictly positive increase. -/
+theorem sampledWeightedUtility_strict (q : I → X) {w : I → ℝ} (hw : ∀ i, 0 < w i)
+    (hs : Summable w) (ht : TransitivePref r) (hq : OrderSeparating r (Set.range q))
+    {x y : X} (hxy : Strict r x y) :
+    SampledWeightedUtility r q w y < SampledWeightedUtility r q w x := by
+  classical
+  obtain ⟨z, ⟨i, rfl⟩, hxz, hzy⟩ := hq x y hxy
+  have hi : {j | r y (q j)}.indicator w i < {j | r x (q j)}.indicator w i := by
+    change (if r y (q i) then w i else 0) < if r x (q i) then w i else 0
+    simpa only [hzy.2, hxz, ite_false, ite_true] using hw i
+  exact Summable.tsum_lt_tsum (sampledWeightedTerm_mono q (fun j => (hw j).le) ht hxy.1)
+    hi (hs.indicator _) (hs.indicator _)
+
+/-- Positive summable weights on any separating enumeration represent preference. -/
+theorem sampledWeightedUtility_represents (q : I → X) {w : I → ℝ} (hw : ∀ i, 0 < w i)
+    (hs : Summable w) (hr : Rational r) (hq : OrderSeparating r (Set.range q)) :
+    Represents (SampledWeightedUtility r q w) r := by
+  intro x y
+  constructor
+  · exact sampledWeightedUtility_mono q (fun i => (hw i).le) hs hr.2
+  · intro h
+    by_contra hxy
+    have hyx : Strict r y x := ⟨(hr.1 x y).resolve_left hxy, hxy⟩
+    exact not_lt_of_ge h (sampledWeightedUtility_strict q hw hs hr.2 hq hyx)
+
+/-- The book's geometric weights, with the first enumerated point indexed by zero. -/
+noncomputable def DyadicWeight (n : ℕ) : ℝ := (1 / 2 : ℝ) ^ (n + 1)
+
+/-- These are exactly the displayed reciprocal powers of two. -/
+theorem dyadicWeight_formula (n : ℕ) : DyadicWeight n = 1 / (2 : ℝ) ^ (n + 1) := by
+  simp [DyadicWeight]
+
+/-- Every enumerated point has strictly positive weight. -/
+theorem dyadicWeight_pos (n : ℕ) : 0 < DyadicWeight n := pow_pos (by norm_num) _
+
+/-- The geometric sequence is summable. -/
+theorem dyadicWeight_summable : Summable DyadicWeight := by
+  have hs : Summable (fun n : ℕ => (1 / 2 : ℝ) ^ n) :=
+    summable_geometric_of_lt_one (by norm_num) (by norm_num)
+  change Summable (fun n : ℕ => (1 / 2 : ℝ) ^ (n + 1))
+  simp only [pow_succ]
+  exact hs.mul_right (1 / 2)
+
+/-- The sampled dyadic sum is the formula displayed in Problem 2.10. -/
+theorem sampledDyadicUtility_formula [DecidableRel r] (q : ℕ → X) (x : X) :
+    SampledWeightedUtility r q DyadicWeight x =
+      ∑' n, if r x (q n) then 1 / (2 : ℝ) ^ (n + 1) else 0 := by
+  apply tsum_congr
+  intro n
+  classical
+  by_cases h : r x (q n)
+  · simp [h, dyadicWeight_formula]
+  · simp [h]
+
+/-- **Problem 2.10:** the displayed utility is upper semicontinuous for any enumeration. -/
+theorem problem_2_10 {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (q : ℕ → NonnegativeOrthant k) :
+    UpperSemicontinuous (SampledWeightedUtility r q DyadicWeight) :=
+  sampledWeightedUtility_upperSemicontinuous hr hc q (fun n => (dyadicWeight_pos n).le)
+    dyadicWeight_summable
+
+/-- For an enumeration with dense range, the same formula also represents preference. -/
+theorem problem_2_10_representation {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (q : ℕ → NonnegativeOrthant k) (hq : Dense (Set.range q)) :
+    Represents (SampledWeightedUtility r q DyadicWeight) r := by
+  let : PreconnectedSpace (NonnegativeOrthant k) :=
+    isPreconnected_iff_preconnectedSpace.mp
+      (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)).isPreconnected
+  exact sampledWeightedUtility_represents q dyadicWeight_pos dyadicWeight_summable hr
+    (dense_orderSeparating hr hc hq)
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -6039,3 +6310,27 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.cobbDouglasPreference_strictAllIncrease
 #print axioms Kreps.PreferenceProperties.cobbDouglasPreference_not_strictlyMonotone
 #print axioms Kreps.PreferenceProperties.cobbDouglasUtility_example
+#print axioms Kreps.PreferenceProperties.OpenIntervalMenu
+#print axioms Kreps.PreferenceProperties.UpperRayMenu
+#print axioms Kreps.PreferenceProperties.openIntervalMenu_convex
+#print axioms Kreps.PreferenceProperties.upperRayMenu_convex
+#print axioms Kreps.PreferenceProperties.strictlyMonotone_openInterval_empty
+#print axioms Kreps.PreferenceProperties.strictlyMonotone_upperRay_empty
+#print axioms Kreps.PreferenceProperties.problem_2_2_intervals
+#print axioms Kreps.PreferenceProperties.upperSemicontinuous_of_tendstoUniformly
+#print axioms Kreps.PreferenceProperties.upperSemicontinuous_tsum_of_norm_le
+#print axioms Kreps.PreferenceProperties.SampledWeightedUtility
+#print axioms Kreps.PreferenceProperties.sampledWeightedTerm_upperSemicontinuous
+#print axioms Kreps.PreferenceProperties.sampledWeightedUtility_upperSemicontinuous
+#print axioms Kreps.PreferenceProperties.weightedUtility_upperSemicontinuous
+#print axioms Kreps.PreferenceProperties.sampledWeightedTerm_mono
+#print axioms Kreps.PreferenceProperties.sampledWeightedUtility_mono
+#print axioms Kreps.PreferenceProperties.sampledWeightedUtility_strict
+#print axioms Kreps.PreferenceProperties.sampledWeightedUtility_represents
+#print axioms Kreps.PreferenceProperties.DyadicWeight
+#print axioms Kreps.PreferenceProperties.dyadicWeight_formula
+#print axioms Kreps.PreferenceProperties.dyadicWeight_pos
+#print axioms Kreps.PreferenceProperties.dyadicWeight_summable
+#print axioms Kreps.PreferenceProperties.sampledDyadicUtility_formula
+#print axioms Kreps.PreferenceProperties.problem_2_10
+#print axioms Kreps.PreferenceProperties.problem_2_10_representation

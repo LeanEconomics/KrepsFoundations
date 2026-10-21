@@ -56,10 +56,13 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [MinimumUtility](PreferenceProperties/MinimumUtility.lean) | 6 | Page 32: finite minimum, strict all-coordinate increase and failure of strict monotonicity |
 | [LeontiefPreference](PreferenceProperties/LeontiefPreference.lean) | 10 | Problem 2.9b: all seven properties and the exact two-ray indifference curves |
 | [CobbDouglasMonotonicity](PreferenceProperties/CobbDouglasMonotonicity.lean) | 10 | Page 32: boundary failures, strict all-coordinate increase and interior strict monotonicity |
+| [IntervalNonattainment](PreferenceProperties/IntervalNonattainment.lean) | 5 | Problem 2.2: the nonempty convex menus `(1,5)` and `(3,∞)` have no best point |
+| [UpperSemicontinuousSeries](PreferenceProperties/UpperSemicontinuousSeries.lean) | 2 | Upper semicontinuity under uniform limits and summably bounded series |
+| [WeightedUtilitySemicontinuity](PreferenceProperties/WeightedUtilitySemicontinuity.lean) | 13 | Problem 2.10: exact dyadic weights, upper semicontinuity and dense-enumeration representation |
 
-The current subset passes the full fresh-source audit: **378 theorems** and
-**502 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **280 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **398 theorems** and
+**526 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **300 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.

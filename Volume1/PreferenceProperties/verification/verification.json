@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T14:24:47.194275+00:00",
-  "theorems": 378,
+  "checked_at_utc": "2026-10-21T14:31:56.410625+00:00",
+  "theorems": 398,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -45,9 +45,12 @@
     "PreferenceProperties/LinearPreference.lean": 8,
     "PreferenceProperties/MinimumUtility.lean": 6,
     "PreferenceProperties/LeontiefPreference.lean": 10,
-    "PreferenceProperties/CobbDouglasMonotonicity.lean": 10
+    "PreferenceProperties/CobbDouglasMonotonicity.lean": 10,
+    "PreferenceProperties/IntervalNonattainment.lean": 5,
+    "PreferenceProperties/UpperSemicontinuousSeries.lean": 2,
+    "PreferenceProperties/WeightedUtilitySemicontinuity.lean": 13
   },
-  "audited_declarations": 502,
+  "audited_declarations": 526,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -2558,6 +2561,126 @@
       "name": "Kreps.PreferenceProperties.cobbDouglasUtility_example",
       "kind": "theorem",
       "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.OpenIntervalMenu",
+      "kind": "def",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.UpperRayMenu",
+      "kind": "def",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.openIntervalMenu_convex",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.upperRayMenu_convex",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.strictlyMonotone_openInterval_empty",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.strictlyMonotone_upperRay_empty",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_2_intervals",
+      "kind": "theorem",
+      "module": "PreferenceProperties/IntervalNonattainment.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.upperSemicontinuous_of_tendstoUniformly",
+      "kind": "theorem",
+      "module": "PreferenceProperties/UpperSemicontinuousSeries.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.upperSemicontinuous_tsum_of_norm_le",
+      "kind": "theorem",
+      "module": "PreferenceProperties/UpperSemicontinuousSeries.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.SampledWeightedUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedTerm_upperSemicontinuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedUtility_upperSemicontinuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.weightedUtility_upperSemicontinuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedTerm_mono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedUtility_mono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedUtility_strict",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledWeightedUtility_represents",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.DyadicWeight",
+      "kind": "def",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dyadicWeight_formula",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dyadicWeight_pos",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.dyadicWeight_summable",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.sampledDyadicUtility_formula",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_10",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_10_representation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
     }
   ],
   "full_build": "passed",
@@ -4864,6 +4987,126 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.OpenIntervalMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.UpperRayMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.openIntervalMenu_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.upperRayMenu_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.strictlyMonotone_openInterval_empty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.strictlyMonotone_upperRay_empty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_2_intervals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.upperSemicontinuous_of_tendstoUniformly": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.upperSemicontinuous_tsum_of_norm_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.SampledWeightedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedTerm_upperSemicontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedUtility_upperSemicontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.weightedUtility_upperSemicontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedTerm_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedUtility_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedUtility_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledWeightedUtility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.DyadicWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dyadicWeight_formula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dyadicWeight_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.dyadicWeight_summable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.sampledDyadicUtility_formula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_10_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -4911,16 +5154,19 @@
     "PreferenceProperties/MinimumUtility.lean": "1544125129a98adaf5464c0449d95fbee82805f07285b5a7b51f1b863415cb43",
     "PreferenceProperties/LeontiefPreference.lean": "7970053f6fb661cd1c083a879d3c02d0210cc552b0545da16755e50e0298ef60",
     "PreferenceProperties/CobbDouglasMonotonicity.lean": "d21ad6918abb29395c4406b86f32637869d5fc82c9c3afbf31d4ecc002f08b63",
-    "PreferenceProperties.lean": "db008d3a8ec5b90336ffbf90e44ef9a3bdd7da73ee13224c341d7310877c272f",
+    "PreferenceProperties/IntervalNonattainment.lean": "d5e27fb799eef0c5d474a3ae97bb9488a3e3f6c1a1376fb752e2d0700d3f2de4",
+    "PreferenceProperties/UpperSemicontinuousSeries.lean": "223f60174e615e9806054077a286fb9a7fbebaf190b679251c0e68711851ca17",
+    "PreferenceProperties/WeightedUtilitySemicontinuity.lean": "28f2c057eb1c4666b3438d8794707b334e99473567b67e0059a8cb022f258d2a",
+    "PreferenceProperties.lean": "f29950121e476d0f61d1fcbaff1207a806b8da2dbc9caa8b155b7acf0c35a966",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "7d96240b209f7c397a51061d0d0761ed28fd29cab5bc56043addf99fa4be7513",
+    "proof-manifest.json": "d74c2317475449436ba40a1bcec0c96c95283d3c27fa5ac1430558205b1b4a61",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "5f01b51dbcabd0419b6aa4d684728edd97114c4a0e33164f43e638a172b5c2c5",
+  "fresh_audit_sha256": "c4d11216bacc110fbc85f3109a3e5b51beacbbdff34eaca4553e57cb7eeb4252",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.9, 2.11, full 2.12, 2.13 and 2.14c, except the introductory intervals in 2.2. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.9-2.13 and 2.14c. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }
