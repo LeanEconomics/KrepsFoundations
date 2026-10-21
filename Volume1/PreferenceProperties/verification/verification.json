@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T14:15:44.395490+00:00",
-  "theorems": 344,
+  "checked_at_utc": "2026-10-21T14:24:47.194275+00:00",
+  "theorems": 378,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -41,9 +41,13 @@
     "PreferenceProperties/SignedHomotheticRepresentation.lean": 11,
     "PreferenceProperties/HomotheticIdentification.lean": 5,
     "PreferenceProperties/QuasiLinearIdentification.lean": 8,
-    "PreferenceProperties/QuasiLinearIdentificationExample.lean": 6
+    "PreferenceProperties/QuasiLinearIdentificationExample.lean": 6,
+    "PreferenceProperties/LinearPreference.lean": 8,
+    "PreferenceProperties/MinimumUtility.lean": 6,
+    "PreferenceProperties/LeontiefPreference.lean": 10,
+    "PreferenceProperties/CobbDouglasMonotonicity.lean": 10
   },
-  "audited_declarations": 464,
+  "audited_declarations": 502,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -2364,6 +2368,196 @@
       "name": "Kreps.PreferenceProperties.problem_2_13_quasiLinear_nonidentification",
       "kind": "theorem",
       "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.TwoGoodLinearUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearUtility_mix",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearUtility_concave",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearUtility_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearUtility_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearPreference_not_strictlyConvex",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinearUtility_homogeneous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.twoGoodLinear_indifference_curve",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_9a",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LinearPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.MinimumUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumUtility_le_component",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumUtility_exists_index",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumUtility_monotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumPreference_strictAllIncrease",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumPreference_not_strictlyMonotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.minimumUtility_example",
+      "kind": "theorem",
+      "module": "PreferenceProperties/MinimumUtility.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.LeontiefUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefUtility_monotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefPreference_strictAllIncrease",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefUtility_concave",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefUtility_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefUtility_first_axis",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefPreference_not_strictlyMonotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefPreference_not_strictlyConvex",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontiefUtility_homogeneous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.leontief_indifference_curve",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_9b",
+      "kind": "theorem",
+      "module": "PreferenceProperties/LeontiefPreference.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CobbDouglasUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_nonneg",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_pos",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_zero_coordinate",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_origin",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_monotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_strict_of_positive",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_strictMonoOn_positive",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasPreference_strictAllIncrease",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasPreference_not_strictlyMonotone",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.cobbDouglasUtility_example",
+      "kind": "theorem",
+      "module": "PreferenceProperties/CobbDouglasMonotonicity.lean"
     }
   ],
   "full_build": "passed",
@@ -4480,6 +4674,196 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.TwoGoodLinearUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearUtility_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearUtility_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearPreference_not_strictlyConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinearUtility_homogeneous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.twoGoodLinear_indifference_curve": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_9a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.MinimumUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumUtility_le_component": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumUtility_exists_index": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumUtility_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumPreference_strictAllIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumPreference_not_strictlyMonotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.minimumUtility_example": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.LeontiefUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefUtility_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefPreference_strictAllIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefUtility_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefUtility_first_axis": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefPreference_not_strictlyMonotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefPreference_not_strictlyConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontiefUtility_homogeneous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.leontief_indifference_curve": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_9b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CobbDouglasUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_zero_coordinate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_origin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_strict_of_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_strictMonoOn_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasPreference_strictAllIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasPreference_not_strictlyMonotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.cobbDouglasUtility_example": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -4523,16 +4907,20 @@
     "PreferenceProperties/HomotheticIdentification.lean": "ad88bf6139d75cd8c3d26ad242ce09e98d9d5360c3bc6e56b1618c5d8f80f9c1",
     "PreferenceProperties/QuasiLinearIdentification.lean": "db2901a1e8144576d23d7daf969f31f6bbb9969b2e79c0f78785d549b12a6f66",
     "PreferenceProperties/QuasiLinearIdentificationExample.lean": "ab28ffbcc2b11cfdd1031ebc94f88c90921abf30a38d7bafb1c9ee919eaf0381",
-    "PreferenceProperties.lean": "7f3e12c7b63aeed5c2063564e91e4cecb14b228e10ce951d05c31f64f58567c0",
+    "PreferenceProperties/LinearPreference.lean": "32709f4d1a2c9fbf0727c4f7f040f147d9303bd4bd49a59c01e394c59adb3363",
+    "PreferenceProperties/MinimumUtility.lean": "1544125129a98adaf5464c0449d95fbee82805f07285b5a7b51f1b863415cb43",
+    "PreferenceProperties/LeontiefPreference.lean": "7970053f6fb661cd1c083a879d3c02d0210cc552b0545da16755e50e0298ef60",
+    "PreferenceProperties/CobbDouglasMonotonicity.lean": "d21ad6918abb29395c4406b86f32637869d5fc82c9c3afbf31d4ecc002f08b63",
+    "PreferenceProperties.lean": "db008d3a8ec5b90336ffbf90e44ef9a3bdd7da73ee13224c341d7310877c272f",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "a709e252abe8c68efa76c582b0c55dc541fcaf13c331e8061934bbb8e50201f7",
+    "proof-manifest.json": "7d96240b209f7c397a51061d0d0761ed28fd29cab5bc56043addf99fa4be7513",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "07146ae1e4d2209b450cfcdb7b4c9bbbbc3cbab1b3156c9bb9659a818d8753a6",
+  "fresh_audit_sha256": "5f01b51dbcabd0419b6aa4d684728edd97114c4a0e33164f43e638a172b5c2c5",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12, 2.13 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.9, 2.11, full 2.12, 2.13 and 2.14c, except the introductory intervals in 2.2. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

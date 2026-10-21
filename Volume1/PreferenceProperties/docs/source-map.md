@@ -9,7 +9,7 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Source | Claim | Lean / status |
 | --- | --- | --- |
 | Definition 2.1; Proposition 2.2, p. 31 | Monotone/strictly monotone preferences and every representing utility | `MonotonePreference`, `StrictlyMonotonePreference`, `proposition_2_2_monotone`, `proposition_2_2_strict`; verified |
-| Section 2.1, p. 32 | Strict increase in all components; minimum utility and Cobb-Douglas examples, including axes | `StrictAllIncreasePreference`; minimum and Cobb-Douglas examples pending |
+| Section 2.1, p. 32 | Strict increase in all components; minimum utility and Cobb-Douglas examples, including axes | `MinimumUtility`, `minimumUtility_example`, `CobbDouglasUtility`, `cobbDouglasUtility_example`; strictly increasing component utilities on `NNReal`, positive real Cobb-Douglas exponents, strict all-coordinate increase and boundary failures for at least two goods. `cobbDouglasUtility_strictMonoOn_positive` gives strict monotonicity on the positive orthant. |
 | Definition 2.3, p. 32 | Global/local insatiability and numerical restatements | `GloballyInsatiable`, `LocallyInsatiable`, `locallyInsatiable_iff_open`, `locallyInsatiable_global`, numerical equivalences; verified |
 | Definition 2.4, p. 33 | Convex, strictly convex and semi-strictly convex preferences | `Mix`, `ConvexMenu`, `convexMenu_iff`, `ConvexPreference`, `StrictlyConvexPreference`, `SemiStrictlyConvexPreference` |
 | Proposition 2.5, p. 33 | Convex preference iff every upper weak contour is convex | `proposition_2_5`, `convexPreference_iff_contours` |
@@ -45,8 +45,8 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.7, p. 46 | Continuous, locally insatiable preference can fail the coordinatewise path-crossing assertion without monotonicity | `NetUtility`, `AvoidingPath`, `problem_2_7`, `netPreference_not_monotone` |
 | Problem 2.8a, pp. 46-47 | The two displayed product-based utilities: convexity, lack of any concave representation, semi-strictness and continuity | Pending; exact piecewise formulas were checked against page images |
 | Problem 2.8b, p. 47 | The displayed continuous semi-strictly convex preference has no concave representation | Pending; the difficult nonexistence conclusion is required |
-| Problem 2.9a, p. 47 | Positive linear utility: indifference curves and all seven listed preference properties | Pending |
-| Problem 2.9b, p. 47 | Leontief utility: indifference curves and all seven listed preference properties | Pending |
+| Problem 2.9a, p. 47 | Positive linear utility: indifference curves and all seven listed preference properties | `TwoGoodLinearUtility`, `twoGoodLinear_indifference_curve`, `problem_2_9a`; monotone, strictly monotone, locally insatiable, convex, semi-strictly convex and continuous, but not strictly convex. The exact feasible line equation gives slope `-α/β`. |
+| Problem 2.9b, p. 47 | Leontief utility: indifference curves and all seven listed preference properties | `LeontiefUtility`, `leontief_indifference_curve`, `problem_2_9b`; monotone, locally insatiable, convex, semi-strictly convex and continuous, but neither strictly monotone nor strictly convex. Each level is exactly the union of the horizontal and vertical rays meeting at `(αc,βc)`. |
 | Problem 2.10, p. 47 | The rational-weight construction is upper semicontinuous | Pending |
 | Problem 2.11, p. 48 | Full quasi-linear characterization, including the compensating-money construction | `quasiLinear_of_money_properties`, `problem_2_11`; subutility is receipt minus payment relative to a fixed reference bundle |
 | Problem 2.12, p. 48 | Homogeneous representation | `problem_2_12`; no optional strict-monotonicity assumption is used |

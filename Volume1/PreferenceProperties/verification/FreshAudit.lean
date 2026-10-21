@@ -19,6 +19,8 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Topology.Instances.NNReal.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Order.IntermediateValue
+import Mathlib.Data.Finset.Lattice.Fold
+import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 set_option autoImplicit false
 
 /-
@@ -5004,6 +5006,536 @@ theorem problem_2_13_quasiLinear_nonidentification :
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Positive linear utility on two goods
+
+Kreps I, Problem 2.9a, p. 47. Positive coefficients give monotone, strictly monotone,
+locally insatiable, convex, semi-strictly convex and continuous preferences, but
+not strictly convex preferences. Indifference curves are the feasible portions
+of straight lines with slope `-α/β`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+/-- The two-good linear utility in Problem 2.9a. -/
+def TwoGoodLinearUtility (α β : ℝ) (x : NonnegativeOrthant 2) : ℝ :=
+  α * x.val 0 + β * x.val 1
+
+/-- Utility of a mixture is the mixture of utilities. -/
+theorem twoGoodLinearUtility_mix (α β : ℝ) (x y : NonnegativeOrthant 2)
+    (a : ℝ) (ha : a ∈ Set.Icc 0 1) :
+    TwoGoodLinearUtility α β (Mix (convex_Ici (0 : Fin 2 → ℝ)) x y a ha) =
+      a * TwoGoodLinearUtility α β x + (1 - a) * TwoGoodLinearUtility α β y := by
+  change α * (a * x.val 0 + (1 - a) * y.val 0) +
+    β * (a * x.val 1 + (1 - a) * y.val 1) =
+    a * (α * x.val 0 + β * x.val 1) + (1 - a) * (α * y.val 0 + β * y.val 1)
+  ring
+
+/-- Linear utility is concave, with equality in Jensen's inequality. -/
+theorem twoGoodLinearUtility_concave (α β : ℝ) :
+    ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) (TwoGoodLinearUtility α β) :=
+  fun x y a ha => (twoGoodLinearUtility_mix α β x y a ha).ge
+
+/-- Linear utility is continuous on the entire closed orthant. -/
+theorem twoGoodLinearUtility_continuous (α β : ℝ) : Continuous (TwoGoodLinearUtility α β) :=
+  (continuous_const.mul ((continuous_apply 0).comp continuous_subtype_val)).add
+    (continuous_const.mul ((continuous_apply 1).comp continuous_subtype_val))
+
+/-- Positive coefficients make every nontrivial coordinatewise increase strictly beneficial. -/
+theorem twoGoodLinearUtility_strictMono {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    StrictMono (TwoGoodLinearUtility α β) := by
+  intro x y hxy
+  have h0 := mul_le_mul_of_nonneg_left (hxy.le 0) hα.le
+  have h1 := mul_le_mul_of_nonneg_left (hxy.le 1) hβ.le
+  by_contra h
+  have hsum : α * y.val 0 + β * y.val 1 ≤ α * x.val 0 + β * x.val 1 := le_of_not_gt h
+  have he0 : α * x.val 0 = α * y.val 0 := by linarith
+  have he1 : β * x.val 1 = β * y.val 1 := by linarith
+  apply hxy.ne
+  apply Subtype.ext
+  funext j
+  fin_cases j
+  · exact mul_left_cancel₀ (ne_of_gt hα) he0
+  · exact mul_left_cancel₀ (ne_of_gt hβ) he1
+
+/-- Two distinct bundles on the same line refute strict convexity. -/
+theorem twoGoodLinearPreference_not_strictlyConvex {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    ¬StrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref (TwoGoodLinearUtility α β)) := by
+  let x := PairBundle β 0 hβ.le le_rfl
+  let y := PairBundle 0 α le_rfl hα.le
+  have hne : x ≠ y := by
+    intro h
+    have he := congrArg (fun z : NonnegativeOrthant 2 => z.val 0) h
+    have hβ0 : β = 0 := by simpa [x, y, PairBundle] using he
+    exact (ne_of_gt hβ) hβ0
+  have hx : TwoGoodLinearUtility α β x = α * β := by
+    simp [x, TwoGoodLinearUtility, PairBundle]
+  have hy : TwoGoodLinearUtility α β y = α * β := by
+    simp [y, TwoGoodLinearUtility, PairBundle, mul_comm]
+  have hxy : UtilityPref (TwoGoodLinearUtility α β) x y := by
+    change TwoGoodLinearUtility α β y ≤ TwoGoodLinearUtility α β x
+    rw [hx, hy]
+  intro h
+  have hs := h x y hne hxy (1 / 2) (by constructor <;> norm_num)
+  have hu : Represents (TwoGoodLinearUtility α β) (UtilityPref (TwoGoodLinearUtility α β)) :=
+    fun _ _ => Iff.rfl
+  have hm := (strict_iff_utility_lt hu _ _).mp hs
+  norm_num [TwoGoodLinearUtility, Mix, x, y, PairBundle, smul_eq_mul] at hm
+  nlinarith
+
+/-- Linear utility is degree-one homogeneous, including at the origin. -/
+theorem twoGoodLinearUtility_homogeneous (α β : ℝ) :
+    HomogeneousUtility (TwoGoodLinearUtility α β) := by
+  intro t x
+  change α * ((t : ℝ) * x.val 0) + β * ((t : ℝ) * x.val 1) =
+    (t : ℝ) * (α * x.val 0 + β * x.val 1)
+  ring
+
+/-- Each indifference curve is a straight line intersected with the nonnegative orthant. -/
+theorem twoGoodLinear_indifference_curve (α : ℝ) {β : ℝ} (hβ : β ≠ 0)
+    (p x : NonnegativeOrthant 2) :
+    Indifferent (UtilityPref (TwoGoodLinearUtility α β)) x p ↔
+      x.val 1 = (TwoGoodLinearUtility α β p - α * x.val 0) / β := by
+  have hu : Represents (TwoGoodLinearUtility α β) (UtilityPref (TwoGoodLinearUtility α β)) :=
+    fun _ _ => Iff.rfl
+  rw [indifferent_iff_utility_eq hu, eq_div_iff hβ]
+  unfold TwoGoodLinearUtility
+  constructor <;> intro h <;> nlinarith
+
+/-- **Problem 2.9a:** all seven properties, including failure of strict convexity. -/
+theorem problem_2_9a {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    MonotonePreference (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    StrictlyMonotonePreference (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    LocallyInsatiable (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    ¬StrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref (TwoGoodLinearUtility α β)) ∧
+    ContinuousPreference (UtilityPref (TwoGoodLinearUtility α β)) := by
+  have hu : Represents (TwoGoodLinearUtility α β) (UtilityPref (TwoGoodLinearUtility α β)) :=
+    fun _ _ => Iff.rfl
+  have hs := (proposition_2_2_strict hu).mpr (twoGoodLinearUtility_strictMono hα hβ)
+  have hc := twoGoodLinearUtility_concave α β
+  exact ⟨strictlyMonotone_monotone (proposition_1_3a _).1 hs, hs,
+    strictAllIncrease_locallyInsatiable (strictlyMonotone_strictAllIncrease (by decide) hs),
+    proposition_2_8a_concave hu hc, twoGoodLinearPreference_not_strictlyConvex hα hβ,
+    (proposition_2_8b_semiStrict hu).mp (concaveUtility_semiStrict hc),
+    proposition_2_9_forward hu (twoGoodLinearUtility_continuous α β)⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Minimum utility and the two forms of strict monotonicity
+
+Kreps I, p. 32. A finite minimum of strictly increasing component utilities
+strictly increases when every commodity increases. With at least two goods it
+is never strictly monotone in the stronger, coordinatewise product-order sense.
+The component utilities have the book's nonnegative one-good domain.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {k : ℕ} [NeZero k]
+
+/-- The minimum of the component utilities in the p. 32 example. -/
+noncomputable def MinimumUtility (u : Fin k → ℝ≥0 → ℝ) (x : NonnegativeOrthant k) : ℝ :=
+  Finset.univ.inf' Finset.univ_nonempty (fun j => u j (.mk (x.val j) (x.property j)))
+
+/-- Minimum utility is bounded by each component utility. -/
+theorem minimumUtility_le_component (u : Fin k → ℝ≥0 → ℝ)
+    (x : NonnegativeOrthant k) (j : Fin k) :
+    MinimumUtility u x ≤ u j (.mk (x.val j) (x.property j)) :=
+  Finset.inf'_le _ (Finset.mem_univ j)
+
+/-- A component attains the finite minimum. -/
+theorem minimumUtility_exists_index (u : Fin k → ℝ≥0 → ℝ) (x : NonnegativeOrthant k) :
+    ∃ j, MinimumUtility u x = u j (.mk (x.val j) (x.property j)) := by
+  obtain ⟨j, _, hj⟩ := Finset.exists_mem_eq_inf' (s := Finset.univ) Finset.univ_nonempty
+    (fun j => u j (.mk (x.val j) (x.property j)))
+  exact ⟨j, hj⟩
+
+/-- Nondecreasing components give nondecreasing minimum utility. -/
+theorem minimumUtility_monotone {u : Fin k → ℝ≥0 → ℝ} (hu : ∀ j, Monotone (u j)) :
+    Monotone (MinimumUtility u) := by
+  intro x y hxy
+  obtain ⟨j, hj⟩ := minimumUtility_exists_index u y
+  rw [hj]
+  exact (minimumUtility_le_component u x j).trans (hu j (hxy j))
+
+/-- Strictly increasing components give strict preference improvement when all goods increase. -/
+theorem minimumPreference_strictAllIncrease {u : Fin k → ℝ≥0 → ℝ}
+    (hu : ∀ j, StrictMono (u j)) :
+    StrictAllIncreasePreference (UtilityPref (MinimumUtility u)) := by
+  intro x y hxy
+  have hr : Represents (MinimumUtility u) (UtilityPref (MinimumUtility u)) := fun _ _ => Iff.rfl
+  apply (strict_iff_utility_lt hr _ _).mpr
+  obtain ⟨j, hj⟩ := minimumUtility_exists_index u x
+  exact (minimumUtility_le_component u y j).trans_lt ((hu j (hxy j)).trans_eq hj.symm)
+
+/-- Increasing a coordinate other than a minimizing one cannot strictly raise the minimum. -/
+theorem minimumPreference_not_strictlyMonotone (hk : 2 ≤ k) (u : Fin k → ℝ≥0 → ℝ) :
+    ¬StrictlyMonotonePreference (UtilityPref (MinimumUtility u)) := by
+  let : Nontrivial (Fin k) := Fin.nontrivial_iff_two_le.mpr hk
+  obtain ⟨j, hj⟩ := minimumUtility_exists_index u (OrthantZero k)
+  obtain ⟨i, hij⟩ := exists_ne j
+  let y : NonnegativeOrthant k :=
+    ⟨Function.update (0 : Fin k → ℝ) i 1, fun a => by
+      simp only [Function.update_apply]
+      split_ifs <;> norm_num⟩
+  have hne : y ≠ OrthantZero k := by
+    intro h
+    have he := congrArg (fun z : NonnegativeOrthant k => z.val i) h
+    simp [y, OrthantZero] at he
+  have hyj : (NNReal.mk (y.val j) (y.property j) : ℝ≥0) = 0 := by
+    apply NNReal.coe_injective
+    change (Function.update (0 : Fin k → ℝ) i 1) j = 0
+    simp [Function.update_of_ne hij.symm]
+  have hj0 : MinimumUtility u (OrthantZero k) = u j 0 := hj
+  have hle : MinimumUtility u y ≤ MinimumUtility u (OrthantZero k) := by
+    calc
+      MinimumUtility u y ≤ u j (.mk (y.val j) (y.property j)) :=
+        minimumUtility_le_component u y j
+      _ = u j 0 := congrArg (u j) hyj
+      _ = MinimumUtility u (OrthantZero k) := hj0.symm
+  intro h
+  exact (h y (OrthantZero k) y.property hne).2 hle
+
+/-- The p. 32 example separates all-coordinate increase from strict monotonicity. -/
+theorem minimumUtility_example (hk : 2 ≤ k) {u : Fin k → ℝ≥0 → ℝ}
+    (hu : ∀ j, StrictMono (u j)) :
+    MonotonePreference (UtilityPref (MinimumUtility u)) ∧
+      StrictAllIncreasePreference (UtilityPref (MinimumUtility u)) ∧
+      LocallyInsatiable (UtilityPref (MinimumUtility u)) ∧
+      ¬StrictlyMonotonePreference (UtilityPref (MinimumUtility u)) := by
+  have hr : Represents (MinimumUtility u) (UtilityPref (MinimumUtility u)) := fun _ _ => Iff.rfl
+  have hs := minimumPreference_strictAllIncrease hu
+  exact ⟨(proposition_2_2_monotone hr).mpr (minimumUtility_monotone (fun j => (hu j).monotone)),
+    hs, strictAllIncrease_locallyInsatiable hs, minimumPreference_not_strictlyMonotone hk u⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Leontief utility on two goods
+
+Kreps I, Problem 2.9b, p. 47. For positive α and β, `min (x₁/α) (x₂/β)`
+gives monotone, locally insatiable, convex, semi-strictly convex and continuous
+preferences. Neither strict monotonicity nor strict convexity holds. The two
+rays describing each indifference curve are stated as an exact set condition.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+/-- The fixed-proportions utility in Problem 2.9b. -/
+noncomputable def LeontiefUtility (α β : ℝ) (x : NonnegativeOrthant 2) : ℝ :=
+  min (x.val 0 / α) (x.val 1 / β)
+
+/-- Positive scale parameters give nondecreasing Leontief utility. -/
+theorem leontiefUtility_monotone {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    Monotone (LeontiefUtility α β) := by
+  intro x y hxy
+  exact min_le_min (div_le_div_of_nonneg_right (hxy 0) hα.le)
+    (div_le_div_of_nonneg_right (hxy 1) hβ.le)
+
+/-- Increasing both goods strictly raises the minimum of their normalized quantities. -/
+theorem leontiefPreference_strictAllIncrease {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    StrictAllIncreasePreference (UtilityPref (LeontiefUtility α β)) := by
+  intro x y hxy
+  have hu : Represents (LeontiefUtility α β) (UtilityPref (LeontiefUtility α β)) :=
+    fun _ _ => Iff.rfl
+  apply (strict_iff_utility_lt hu _ _).mpr
+  exact lt_min ((min_le_left _ _).trans_lt (div_lt_div_of_pos_right (hxy 0) hα))
+    ((min_le_right _ _).trans_lt (div_lt_div_of_pos_right (hxy 1) hβ))
+
+/-- The minimum of these two affine functions satisfies Jensen's concavity inequality. -/
+theorem leontiefUtility_concave (α β : ℝ) :
+    ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) (LeontiefUtility α β) := by
+  intro x y a ha
+  change a * min (x.val 0 / α) (x.val 1 / β) +
+    (1 - a) * min (y.val 0 / α) (y.val 1 / β) ≤
+    min ((a * x.val 0 + (1 - a) * y.val 0) / α)
+      ((a * x.val 1 + (1 - a) * y.val 1) / β)
+  apply le_min
+  · calc
+      _ ≤ a * (x.val 0 / α) + (1 - a) * (y.val 0 / α) := add_le_add
+        (mul_le_mul_of_nonneg_left (min_le_left _ _) ha.1)
+        (mul_le_mul_of_nonneg_left (min_le_left _ _) (sub_nonneg.mpr ha.2))
+      _ = _ := by ring
+  · calc
+      _ ≤ a * (x.val 1 / β) + (1 - a) * (y.val 1 / β) := add_le_add
+        (mul_le_mul_of_nonneg_left (min_le_right _ _) ha.1)
+        (mul_le_mul_of_nonneg_left (min_le_right _ _) (sub_nonneg.mpr ha.2))
+      _ = _ := by ring
+
+/-- The minimum is continuous, including at its corner and on the coordinate axes. -/
+theorem leontiefUtility_continuous (α β : ℝ) : Continuous (LeontiefUtility α β) := by
+  have h0 : Continuous (fun x : NonnegativeOrthant 2 => x.val 0) :=
+    (continuous_apply 0).comp continuous_subtype_val
+  have h1 : Continuous (fun x : NonnegativeOrthant 2 => x.val 1) :=
+    (continuous_apply 1).comp continuous_subtype_val
+  exact (h0.div_const α).min (h1.div_const β)
+
+/-- No amount of the first good raises utility when the second good is absent. -/
+theorem leontiefUtility_first_axis {α : ℝ} (hα : 0 < α) (β : ℝ)
+    {x : NonnegativeOrthant 2} (hx : x.val 1 = 0) : LeontiefUtility α β x = 0 := by
+  unfold LeontiefUtility
+  rw [hx, zero_div, min_eq_right (div_nonneg (x.property 0) hα.le)]
+
+/-- The first coordinate axis refutes strict monotonicity. -/
+theorem leontiefPreference_not_strictlyMonotone {α : ℝ} (hα : 0 < α) (β : ℝ) :
+    ¬StrictlyMonotonePreference (UtilityPref (LeontiefUtility α β)) := by
+  let y := PairBundle 1 0 (by norm_num) le_rfl
+  have hy : LeontiefUtility α β y = 0 :=
+    leontiefUtility_first_axis hα β (by simp [y, PairBundle])
+  have hz : LeontiefUtility α β (OrthantZero 2) = 0 := leontiefUtility_first_axis hα β rfl
+  have hne : y ≠ OrthantZero 2 := by
+    intro h
+    have he := congrArg (fun x : NonnegativeOrthant 2 => x.val 0) h
+    simp [y, PairBundle, OrthantZero] at he
+  intro h
+  apply (h y (OrthantZero 2) y.property hne).2
+  change LeontiefUtility α β y ≤ LeontiefUtility α β (OrthantZero 2)
+  rw [hy, hz]
+
+/-- Mixing two distinct points on the first axis leaves utility zero, refuting strict convexity. -/
+theorem leontiefPreference_not_strictlyConvex {α : ℝ} (hα : 0 < α) (β : ℝ) :
+    ¬StrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref (LeontiefUtility α β)) := by
+  let y := PairBundle 1 0 (by norm_num) le_rfl
+  have hy : LeontiefUtility α β y = 0 :=
+    leontiefUtility_first_axis hα β (by simp [y, PairBundle])
+  have hz : LeontiefUtility α β (OrthantZero 2) = 0 := leontiefUtility_first_axis hα β rfl
+  have hne : y ≠ OrthantZero 2 := by
+    intro h
+    have he := congrArg (fun x : NonnegativeOrthant 2 => x.val 0) h
+    simp [y, PairBundle, OrthantZero] at he
+  have hp : UtilityPref (LeontiefUtility α β) y (OrthantZero 2) := by
+    change LeontiefUtility α β (OrthantZero 2) ≤ LeontiefUtility α β y
+    rw [hy, hz]
+  intro h
+  have hs := h y (OrthantZero 2) hne hp (1 / 2) (by constructor <;> norm_num)
+  have hu : Represents (LeontiefUtility α β) (UtilityPref (LeontiefUtility α β)) :=
+    fun _ _ => Iff.rfl
+  have hgt := (strict_iff_utility_lt hu _ _).mp hs
+  have hm : LeontiefUtility α β
+      (Mix (convex_Ici (0 : Fin 2 → ℝ)) y (OrthantZero 2) (1 / 2)
+        (by constructor <;> norm_num)) = 0 :=
+    leontiefUtility_first_axis hα β (by simp [Mix, y, PairBundle, OrthantZero])
+  exact not_lt_of_ge hz.ge (hgt.trans_eq hm)
+
+/-- Leontief utility is degree-one homogeneous. -/
+theorem leontiefUtility_homogeneous (α β : ℝ) : HomogeneousUtility (LeontiefUtility α β) := by
+  intro t x
+  change min (((t : ℝ) * x.val 0) / α) (((t : ℝ) * x.val 1) / β) =
+    (t : ℝ) * min (x.val 0 / α) (x.val 1 / β)
+  rw [mul_min_of_nonneg (a := (t : ℝ)) _ _ t.property]
+  congr 1 <;> ring
+
+/-- A level curve consists of a vertical ray and a horizontal ray meeting at `(αc,βc)`. -/
+theorem leontief_indifference_curve {α β : ℝ} (hα : 0 < α) (hβ : 0 < β)
+    (p x : NonnegativeOrthant 2) :
+    Indifferent (UtilityPref (LeontiefUtility α β)) x p ↔
+      (x.val 0 = α * LeontiefUtility α β p ∧ β * LeontiefUtility α β p ≤ x.val 1) ∨
+      (x.val 1 = β * LeontiefUtility α β p ∧ α * LeontiefUtility α β p ≤ x.val 0) := by
+  have hu : Represents (LeontiefUtility α β) (UtilityPref (LeontiefUtility α β)) :=
+    fun _ _ => Iff.rfl
+  rw [indifferent_iff_utility_eq hu]
+  change min (x.val 0 / α) (x.val 1 / β) = LeontiefUtility α β p ↔ _
+  constructor
+  · intro h
+    rcases min_eq_iff.mp h with ⟨he, hle⟩ | ⟨he, hle⟩
+    · rw [he] at hle
+      exact Or.inl ⟨by simpa [mul_comm] using (div_eq_iff (ne_of_gt hα)).mp he,
+        by simpa [mul_comm] using (le_div_iff₀ hβ).mp hle⟩
+    · rw [he] at hle
+      exact Or.inr ⟨by simpa [mul_comm] using (div_eq_iff (ne_of_gt hβ)).mp he,
+        by simpa [mul_comm] using (le_div_iff₀ hα).mp hle⟩
+  · rintro (⟨he, hle⟩ | ⟨he, hle⟩)
+    · have hd : x.val 0 / α = LeontiefUtility α β p :=
+        (div_eq_iff (ne_of_gt hα)).mpr (by simpa [mul_comm] using he)
+      rw [hd]
+      exact min_eq_left ((le_div_iff₀ hβ).mpr (by simpa [mul_comm] using hle))
+    · have hd : x.val 1 / β = LeontiefUtility α β p :=
+        (div_eq_iff (ne_of_gt hβ)).mpr (by simpa [mul_comm] using he)
+      rw [hd]
+      exact min_eq_right ((le_div_iff₀ hα).mpr (by simpa [mul_comm] using hle))
+
+/-- **Problem 2.9b:** all seven requested preference properties. -/
+theorem problem_2_9b {α β : ℝ} (hα : 0 < α) (hβ : 0 < β) :
+    MonotonePreference (UtilityPref (LeontiefUtility α β)) ∧
+    ¬StrictlyMonotonePreference (UtilityPref (LeontiefUtility α β)) ∧
+    LocallyInsatiable (UtilityPref (LeontiefUtility α β)) ∧
+    ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref (LeontiefUtility α β)) ∧
+    ¬StrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref (LeontiefUtility α β)) ∧
+    SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref (LeontiefUtility α β)) ∧
+    ContinuousPreference (UtilityPref (LeontiefUtility α β)) := by
+  have hu : Represents (LeontiefUtility α β) (UtilityPref (LeontiefUtility α β)) :=
+    fun _ _ => Iff.rfl
+  have hc := leontiefUtility_concave α β
+  exact ⟨(proposition_2_2_monotone hu).mpr (leontiefUtility_monotone hα hβ),
+    leontiefPreference_not_strictlyMonotone hα β,
+    strictAllIncrease_locallyInsatiable (leontiefPreference_strictAllIncrease hα hβ),
+    proposition_2_8a_concave hu hc, leontiefPreference_not_strictlyConvex hα β,
+    (proposition_2_8b_semiStrict hu).mp (concaveUtility_semiStrict hc),
+    proposition_2_9_forward hu (leontiefUtility_continuous α β)⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Cobb-Douglas monotonicity and boundary failures
+
+Kreps I, p. 32. Positive exponents give strict improvement when all coordinates
+increase, and strict product-order monotonicity on the positive orthant. With
+at least two goods, points on a coordinate axis give a counterexample to strict
+monotonicity on the whole nonnegative orthant.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {k : ℕ}
+
+/-- The finite-dimensional Cobb-Douglas utility in the p. 32 example. -/
+noncomputable def CobbDouglasUtility (α : Fin k → ℝ) (x : NonnegativeOrthant k) : ℝ :=
+  ∏ j, (x.val j) ^ (α j)
+
+/-- Every factor, and hence the product, is nonnegative on the orthant. -/
+theorem cobbDouglasUtility_nonneg (α : Fin k → ℝ) (x : NonnegativeOrthant k) :
+    0 ≤ CobbDouglasUtility α x :=
+  Finset.prod_nonneg (fun j _ => Real.rpow_nonneg (x.property j) _)
+
+/-- Positive consumption of every good makes the product strictly positive. -/
+theorem cobbDouglasUtility_pos (α : Fin k → ℝ) {x : NonnegativeOrthant k}
+    (hx : ∀ j, 0 < x.val j) : 0 < CobbDouglasUtility α x :=
+  Finset.prod_pos (fun j _ => Real.rpow_pos_of_pos (hx j) _)
+
+/-- A zero coordinate with nonzero exponent makes the entire product zero. -/
+theorem cobbDouglasUtility_zero_coordinate {α : Fin k → ℝ} {x : NonnegativeOrthant k}
+    {j : Fin k} (hα : α j ≠ 0) (hx : x.val j = 0) : CobbDouglasUtility α x = 0 := by
+  unfold CobbDouglasUtility
+  apply Finset.prod_eq_zero (Finset.mem_univ j)
+  rw [hx, Real.zero_rpow hα]
+
+/-- With a positive number of goods and positive exponents, utility at the origin is zero. -/
+theorem cobbDouglasUtility_origin [NeZero k] {α : Fin k → ℝ} (hα : ∀ j, 0 < α j) :
+    CobbDouglasUtility α (OrthantZero k) = 0 :=
+  cobbDouglasUtility_zero_coordinate (j := 0) (ne_of_gt (hα 0)) rfl
+
+/-- Nonnegative exponents give weak product-order monotonicity. -/
+theorem cobbDouglasUtility_monotone {α : Fin k → ℝ} (hα : ∀ j, 0 ≤ α j) :
+    Monotone (CobbDouglasUtility α) := by
+  intro x y hxy
+  exact Finset.prod_le_prod₀ (fun j _ => Real.rpow_nonneg (x.property j) _)
+    (fun j _ => Real.rpow_le_rpow (x.property j) (hxy j) (hα j))
+
+/-- A nontrivial coordinatewise increase from a positive bundle strictly increases utility. -/
+theorem cobbDouglasUtility_strict_of_positive {α : Fin k → ℝ} (hα : ∀ j, 0 < α j)
+    {x y : NonnegativeOrthant k} (hx : ∀ j, 0 < x.val j) (hxy : x < y) :
+    CobbDouglasUtility α x < CobbDouglasUtility α y := by
+  have hex : ∃ j, x.val j < y.val j := by
+    by_contra hn
+    push Not at hn
+    exact hxy.ne (Subtype.ext (funext (fun j => le_antisymm (hxy.le j) (hn j))))
+  obtain ⟨j, hj⟩ := hex
+  exact Finset.prod_lt_prod₀ (fun i _ => Real.rpow_pos_of_pos (hx i) _)
+    (fun i _ => Real.rpow_le_rpow (x.property i) (hxy.le i) (hα i).le)
+    ⟨j, Finset.mem_univ j, Real.rpow_lt_rpow (x.property j) hj (hα j)⟩
+
+/-- This gives strict monotonicity away from all coordinate axes. -/
+theorem cobbDouglasUtility_strictMonoOn_positive {α : Fin k → ℝ} (hα : ∀ j, 0 < α j) :
+    StrictMonoOn (CobbDouglasUtility α) {x : NonnegativeOrthant k | ∀ j, 0 < x.val j} :=
+  fun _ hx _ _ hxy => cobbDouglasUtility_strict_of_positive hα hx hxy
+
+/-- Strict increases in every commodity improve preference, including from boundary bundles. -/
+theorem cobbDouglasPreference_strictAllIncrease [NeZero k] {α : Fin k → ℝ}
+    (hα : ∀ j, 0 < α j) : StrictAllIncreasePreference (UtilityPref (CobbDouglasUtility α)) := by
+  intro x y hxy
+  have hu : Represents (CobbDouglasUtility α) (UtilityPref (CobbDouglasUtility α)) :=
+    fun _ _ => Iff.rfl
+  apply (strict_iff_utility_lt hu _ _).mpr
+  by_cases hy : ∀ j, 0 < y.val j
+  · apply cobbDouglasUtility_strict_of_positive hα hy
+    apply lt_of_le_of_ne (fun j => (hxy j).le)
+    intro he
+    exact (ne_of_lt (hxy 0)) (congrArg (fun z : NonnegativeOrthant k => z.val 0) he)
+  · push Not at hy
+    obtain ⟨j, hj⟩ := hy
+    rw [cobbDouglasUtility_zero_coordinate (ne_of_gt (hα j))
+      (le_antisymm hj (y.property j))]
+    exact cobbDouglasUtility_pos α (fun i => (y.property i).trans_lt (hxy i))
+
+/-- With at least two goods, increasing one coordinate on an axis leaves utility zero. -/
+theorem cobbDouglasPreference_not_strictlyMonotone (hk : 2 ≤ k) {α : Fin k → ℝ}
+    (hα : ∀ j, 0 < α j) : ¬StrictlyMonotonePreference (UtilityPref (CobbDouglasUtility α)) := by
+  let i : Fin k := ⟨0, by omega⟩
+  let j : Fin k := ⟨1, by omega⟩
+  let y : NonnegativeOrthant k :=
+    ⟨Function.update (0 : Fin k → ℝ) i 1, fun a => by
+      simp only [Function.update_apply]
+      split_ifs <;> norm_num⟩
+  have hyj : y.val j = 0 := by simp [y, i, j]
+  have hy : CobbDouglasUtility α y = 0 :=
+    cobbDouglasUtility_zero_coordinate (ne_of_gt (hα j)) hyj
+  have hz : CobbDouglasUtility α (OrthantZero k) = 0 :=
+    cobbDouglasUtility_zero_coordinate (j := j) (ne_of_gt (hα j)) rfl
+  have hne : y ≠ OrthantZero k := by
+    intro h
+    have he := congrArg (fun z : NonnegativeOrthant k => z.val i) h
+    simp [y, OrthantZero] at he
+  intro h
+  apply (h y (OrthantZero k) y.property hne).2
+  change CobbDouglasUtility α y ≤ CobbDouglasUtility α (OrthantZero k)
+  rw [hy, hz]
+
+/-- The p. 32 Cobb-Douglas example, with the dimension needed for its boundary counterexample. -/
+theorem cobbDouglasUtility_example (hk : 2 ≤ k) {α : Fin k → ℝ} (hα : ∀ j, 0 < α j) :
+    MonotonePreference (UtilityPref (CobbDouglasUtility α)) ∧
+      StrictAllIncreasePreference (UtilityPref (CobbDouglasUtility α)) ∧
+      LocallyInsatiable (UtilityPref (CobbDouglasUtility α)) ∧
+      ¬StrictlyMonotonePreference (UtilityPref (CobbDouglasUtility α)) ∧
+      StrictMonoOn (CobbDouglasUtility α) {x : NonnegativeOrthant k | ∀ j, 0 < x.val j} := by
+  let : NeZero k := ⟨by omega⟩
+  have hu : Represents (CobbDouglasUtility α) (UtilityPref (CobbDouglasUtility α)) :=
+    fun _ _ => Iff.rfl
+  have hs := cobbDouglasPreference_strictAllIncrease hα
+  exact ⟨(proposition_2_2_monotone hu).mpr (cobbDouglasUtility_monotone (fun j => (hα j).le)),
+    hs, strictAllIncrease_locallyInsatiable hs,
+    cobbDouglasPreference_not_strictlyMonotone hk hα,
+    cobbDouglasUtility_strictMonoOn_positive hα⟩
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -5469,3 +6001,41 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.linear_warped_same_curve
 #print axioms Kreps.PreferenceProperties.linear_curve_goods
 #print axioms Kreps.PreferenceProperties.problem_2_13_quasiLinear_nonidentification
+#print axioms Kreps.PreferenceProperties.TwoGoodLinearUtility
+#print axioms Kreps.PreferenceProperties.twoGoodLinearUtility_mix
+#print axioms Kreps.PreferenceProperties.twoGoodLinearUtility_concave
+#print axioms Kreps.PreferenceProperties.twoGoodLinearUtility_continuous
+#print axioms Kreps.PreferenceProperties.twoGoodLinearUtility_strictMono
+#print axioms Kreps.PreferenceProperties.twoGoodLinearPreference_not_strictlyConvex
+#print axioms Kreps.PreferenceProperties.twoGoodLinearUtility_homogeneous
+#print axioms Kreps.PreferenceProperties.twoGoodLinear_indifference_curve
+#print axioms Kreps.PreferenceProperties.problem_2_9a
+#print axioms Kreps.PreferenceProperties.MinimumUtility
+#print axioms Kreps.PreferenceProperties.minimumUtility_le_component
+#print axioms Kreps.PreferenceProperties.minimumUtility_exists_index
+#print axioms Kreps.PreferenceProperties.minimumUtility_monotone
+#print axioms Kreps.PreferenceProperties.minimumPreference_strictAllIncrease
+#print axioms Kreps.PreferenceProperties.minimumPreference_not_strictlyMonotone
+#print axioms Kreps.PreferenceProperties.minimumUtility_example
+#print axioms Kreps.PreferenceProperties.LeontiefUtility
+#print axioms Kreps.PreferenceProperties.leontiefUtility_monotone
+#print axioms Kreps.PreferenceProperties.leontiefPreference_strictAllIncrease
+#print axioms Kreps.PreferenceProperties.leontiefUtility_concave
+#print axioms Kreps.PreferenceProperties.leontiefUtility_continuous
+#print axioms Kreps.PreferenceProperties.leontiefUtility_first_axis
+#print axioms Kreps.PreferenceProperties.leontiefPreference_not_strictlyMonotone
+#print axioms Kreps.PreferenceProperties.leontiefPreference_not_strictlyConvex
+#print axioms Kreps.PreferenceProperties.leontiefUtility_homogeneous
+#print axioms Kreps.PreferenceProperties.leontief_indifference_curve
+#print axioms Kreps.PreferenceProperties.problem_2_9b
+#print axioms Kreps.PreferenceProperties.CobbDouglasUtility
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_nonneg
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_pos
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_zero_coordinate
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_origin
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_monotone
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_strict_of_positive
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_strictMonoOn_positive
+#print axioms Kreps.PreferenceProperties.cobbDouglasPreference_strictAllIncrease
+#print axioms Kreps.PreferenceProperties.cobbDouglasPreference_not_strictlyMonotone
+#print axioms Kreps.PreferenceProperties.cobbDouglasUtility_example

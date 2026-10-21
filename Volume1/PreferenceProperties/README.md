@@ -52,10 +52,14 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [HomotheticIdentification](PreferenceProperties/HomotheticIdentification.lean) | 5 | Problem 2.13: one nonzero class identifies the full homothetic preference |
 | [QuasiLinearIdentification](PreferenceProperties/QuasiLinearIdentification.lean) | 8 | Identified goods projection, subutility calibration and all money levels |
 | [QuasiLinearIdentificationExample](PreferenceProperties/QuasiLinearIdentificationExample.lean) | 6 | Continuous strictly monotone preferences with the same curve and different rankings |
+| [LinearPreference](PreferenceProperties/LinearPreference.lean) | 8 | Problem 2.9a: all seven properties and straight-line indifference curves |
+| [MinimumUtility](PreferenceProperties/MinimumUtility.lean) | 6 | Page 32: finite minimum, strict all-coordinate increase and failure of strict monotonicity |
+| [LeontiefPreference](PreferenceProperties/LeontiefPreference.lean) | 10 | Problem 2.9b: all seven properties and the exact two-ray indifference curves |
+| [CobbDouglasMonotonicity](PreferenceProperties/CobbDouglasMonotonicity.lean) | 10 | Page 32: boundary failures, strict all-coordinate increase and interior strict monotonicity |
 
-The current subset passes the full fresh-source audit: **344 theorems** and
-**464 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **246 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **378 theorems** and
+**502 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **280 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
