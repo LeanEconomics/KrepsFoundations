@@ -4675,6 +4675,335 @@ theorem problem_2_12 (hr : Rational r) (hc : ContinuousPreference r)
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Recovering homothetic preference from one indifference curve
+
+Kreps I, Problem 2.13, p. 48. Under continuity, strict monotonicity and
+homotheticity, the indifference class of any nonzero bundle determines every
+comparison. The origin's singleton class is a degenerate exception. The result
+is stated in any finite dimension, hence includes the book's two-good case.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+/-- A representation identifies indifference with equality of utility values. -/
+theorem indifferent_iff_utility_eq {X : Type*} {r : X → X → Prop} {u : X → ℝ}
+    (hu : Represents u r) (x y : X) : Indifferent r x y ↔ u x = u y := by
+  constructor
+  · intro h
+    exact le_antisymm ((hu y x).mp h.2) ((hu x y).mp h.1)
+  · intro h
+    exact ⟨(hu x y).mpr h.ge, (hu y x).mpr h.le⟩
+
+/-- Positive homogeneous functions agreeing on their unit class agree everywhere. -/
+theorem homogeneous_unit_class_unique {k : ℕ} {u v : NonnegativeOrthant k → ℝ}
+    (hu : HomogeneousUtility u) (hv : HomogeneousUtility v)
+    (hpos : ∀ x, x ≠ OrthantZero k → 0 < u x)
+    (hclass : ∀ x, u x = 1 ↔ v x = 1) : u = v := by
+  funext x
+  by_cases hx : x = OrthantZero k
+  · subst x
+    rw [homogeneousUtility_origin hu, homogeneousUtility_origin hv]
+  · have hux := hpos x hx
+    let t : ℝ≥0 := .mk (u x)⁻¹ (inv_nonneg.mpr hux.le)
+    have hut : u (ScaleBundle t x) = 1 := by
+      rw [hu]
+      exact inv_mul_cancel₀ (ne_of_gt hux)
+    have hvt := (hclass (ScaleBundle t x)).mp hut
+    rw [hv] at hvt
+    change (u x)⁻¹ * v x = 1 at hvt
+    calc
+      u x = u x * ((u x)⁻¹ * v x) := by rw [hvt, mul_one]
+      _ = v x := by rw [← mul_assoc, mul_inv_cancel₀ (ne_of_gt hux), one_mul]
+
+/-- Normalize a homogeneous representation so that a specified nonzero bundle has value one. -/
+theorem normalized_homogeneous_representation {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hh : HomotheticPreference r)
+    (hm : StrictlyMonotonePreference r) {p : NonnegativeOrthant k} (hp : p ≠ OrthantZero k) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u ∧ HomogeneousUtility u ∧
+      u p = 1 ∧ ∀ x, x ≠ OrthantZero k → 0 < u x := by
+  obtain ⟨u, hu, huc, huh⟩ := problem_2_12 hr hc hh
+  have hup : 0 < u p := by
+    have h := (strict_iff_utility_lt hu _ _).mp (hm p (OrthantZero k) p.property hp)
+    simpa only [homogeneousUtility_origin huh] using h
+  have hrep : Represents (fun x => u x / u p) r := by
+    intro x y
+    exact (hu x y).trans (div_le_div_iff_of_pos_right hup).symm
+  have hhom : HomogeneousUtility (fun x => u x / u p) := by
+    intro t x
+    change u (ScaleBundle t x) / u p = (t : ℝ) * (u x / u p)
+    rw [huh]
+    ring
+  refine ⟨fun x => u x / u p, hrep, huc.div_const _, hhom, div_self (ne_of_gt hup), ?_⟩
+  intro x hx
+  have h := (strict_iff_utility_lt hrep _ _).mp (hm x (OrthantZero k) x.property hx)
+  simpa only [homogeneousUtility_origin hhom] using h
+
+/-- **Problem 2.13, homothetic case:** one nonzero indifference class identifies all preferences. -/
+theorem problem_2_13_homothetic {k : ℕ}
+    {r s : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hr : Rational r) (hs : Rational s)
+    (hrc : ContinuousPreference r) (hsc : ContinuousPreference s)
+    (hrh : HomotheticPreference r) (hsh : HomotheticPreference s)
+    (hrm : StrictlyMonotonePreference r) (hsm : StrictlyMonotonePreference s)
+    {p : NonnegativeOrthant k} (hp : p ≠ OrthantZero k)
+    (hclass : IndifferenceClass r p = IndifferenceClass s p) : r = s := by
+  obtain ⟨u, hu, _, huh, hup, hupos⟩ := normalized_homogeneous_representation hr hrc hrh hrm hp
+  obtain ⟨v, hv, _, hvh, hvp, _⟩ := normalized_homogeneous_representation hs hsc hsh hsm hp
+  have huv : u = v := by
+    apply homogeneous_unit_class_unique huh hvh hupos
+    intro x
+    have h : Indifferent r x p ↔ Indifferent s x p := Set.ext_iff.mp hclass x
+    rw [indifferent_iff_utility_eq hu, indifferent_iff_utility_eq hv, hup, hvp] at h
+    exact h
+  funext x y
+  exact propext ((hu x y).trans (huv ▸ (hv x y).symm))
+
+/-- The origin's class is always a singleton under strict monotonicity, so it is exceptional. -/
+theorem strictlyMonotone_origin_class {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hc : Complete r) (hm : StrictlyMonotonePreference r) :
+    IndifferenceClass r (OrthantZero k) = {OrthantZero k} := by
+  ext x
+  change Indifferent r x (OrthantZero k) ↔ x = OrthantZero k
+  constructor
+  · intro hx
+    by_contra hne
+    exact (hm x (OrthantZero k) x.property hne).2 hx.2
+  · intro hx
+    subst x
+    exact ⟨complete_refl hc _, complete_refl hc _⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The region identified by a quasi-linear indifference curve
+
+Kreps I, Problem 2.13, p. 48. With nonnegative money, an indifference curve need
+not intersect every goods fiber. It identifies all comparisons between bundles
+whose goods occur somewhere on that curve, at arbitrary nonnegative money levels.
+The curve's projection is exactly a subutility sublevel set.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+variable {X : Type*} {r s : (X × ℝ≥0) → (X × ℝ≥0) → Prop}
+
+/-- Goods bundles that appear on the specified indifference curve at some feasible balance. -/
+def CurveGoods (r : (X × ℝ≥0) → (X × ℝ≥0) → Prop) (p : X × ℝ≥0) : Set X :=
+  {x | ∃ m : ℝ≥0, Indifferent r (x, m) p}
+
+/-- A quasi-linear indifference curve is the graph of the compensating money balance. -/
+theorem quasiLinear_class_iff {u : X → ℝ} (hu : Represents (QuasiLinearUtility u) r)
+    (p q : X × ℝ≥0) :
+    Indifferent r q p ↔ (q.2 : ℝ) = QuasiLinearUtility u p - u q.1 := by
+  rw [indifferent_iff_utility_eq hu]
+  unfold QuasiLinearUtility
+  constructor <;> intro h <;> linarith
+
+/-- Nonnegative money restricts the curve's goods projection to a subutility sublevel set. -/
+theorem curveGoods_iff_subutility_le {u : X → ℝ}
+    (hu : Represents (QuasiLinearUtility u) r) (p : X × ℝ≥0) (x : X) :
+    x ∈ CurveGoods r p ↔ u x ≤ QuasiLinearUtility u p := by
+  constructor
+  · rintro ⟨m, hm⟩
+    have he := (quasiLinear_class_iff hu p (x, m)).mp hm
+    have hn : 0 ≤ (m : ℝ) := m.property
+    change (m : ℝ) = QuasiLinearUtility u p - u x at he
+    linarith
+  · intro hx
+    let m : ℝ≥0 := .mk (QuasiLinearUtility u p - u x) (sub_nonneg.mpr hx)
+    exact ⟨m, (quasiLinear_class_iff hu p (x, m)).mpr rfl⟩
+
+/-- Equal curves calibrate both subutilities up to one constant on their goods projection. -/
+theorem quasiLinear_class_offset {u v : X → ℝ}
+    (hu : Represents (QuasiLinearUtility u) r) (hv : Represents (QuasiLinearUtility v) s)
+    (p : X × ℝ≥0) (hclass : IndifferenceClass r p = IndifferenceClass s p)
+    {x : X} (hx : x ∈ CurveGoods r p) : v x - u x = v p.1 - u p.1 := by
+  obtain ⟨m, hm⟩ := hx
+  have hs : Indifferent s (x, m) p := (Set.ext_iff.mp hclass (x, m)).mp hm
+  have he := (indifferent_iff_utility_eq hu (x, m) p).mp hm
+  have hf := (indifferent_iff_utility_eq hv (x, m) p).mp hs
+  change u x + (m : ℝ) = u p.1 + p.2 at he
+  change v x + (m : ℝ) = v p.1 + p.2 at hf
+  linarith
+
+/-- **Problem 2.13:** the curve identifies all money levels over its goods projection. -/
+theorem problem_2_13_quasiLinear_identified {u v : X → ℝ}
+    (hu : Represents (QuasiLinearUtility u) r) (hv : Represents (QuasiLinearUtility v) s)
+    (p : X × ℝ≥0) (hclass : IndifferenceClass r p = IndifferenceClass s p)
+    {x y : X} (hx : x ∈ CurveGoods r p) (hy : y ∈ CurveGoods r p) (m n : ℝ≥0) :
+    r (x, m) (y, n) ↔ s (x, m) (y, n) := by
+  have hdx := quasiLinear_class_offset hu hv p hclass hx
+  have hdy := quasiLinear_class_offset hu hv p hclass hy
+  rw [hu, hv]
+  change u y + (n : ℝ) ≤ u x + m ↔ v y + (n : ℝ) ≤ v x + m
+  constructor <;> intro h <;> linarith
+
+/-- If the curve intersects every goods fiber, it identifies the entire quasi-linear preference. -/
+theorem quasiLinear_identified_of_full_projection {u v : X → ℝ}
+    (hu : Represents (QuasiLinearUtility u) r) (hv : Represents (QuasiLinearUtility v) s)
+    (p : X × ℝ≥0) (hclass : IndifferenceClass r p = IndifferenceClass s p)
+    (hfull : ∀ x, x ∈ CurveGoods r p) : r = s := by
+  funext a b
+  exact propext (problem_2_13_quasiLinear_identified hu hv p hclass (hfull a.1) (hfull b.1)
+    a.2 b.2)
+
+/-- Goods outside the projection give bundles strictly above the curve at every feasible balance. -/
+theorem quasiLinear_outside_projection {u : X → ℝ}
+    (hu : Represents (QuasiLinearUtility u) r) (p : X × ℝ≥0)
+    {x : X} (hx : x ∉ CurveGoods r p) (m : ℝ≥0) : Strict r (x, m) p := by
+  have hg : QuasiLinearUtility u p < u x :=
+    lt_of_not_ge (fun h => hx ((curveGoods_iff_subutility_le hu p x).mpr h))
+  apply (strict_iff_utility_lt hu _ _).mpr
+  change QuasiLinearUtility u p < u x + (m : ℝ)
+  exact hg.trans_le (le_add_of_nonneg_right m.property)
+
+/-- Continuous subutility gives continuous quasi-linear utility on goods and nonnegative money. -/
+theorem quasiLinearUtility_continuous [TopologicalSpace X] {u : X → ℝ}
+    (hu : Continuous u) : Continuous (QuasiLinearUtility u) :=
+  (hu.comp continuous_fst).add (NNReal.continuous_coe.comp continuous_snd)
+
+/-- Strictly increasing subutility gives strict monotonicity in the product order. -/
+theorem quasiLinearUtility_strictMono [PartialOrder X] {u : X → ℝ}
+    (hu : StrictMono u) : StrictMono (QuasiLinearUtility u) := by
+  intro a b hab
+  have hg : u a.1 ≤ u b.1 := hu.monotone hab.le.1
+  have hm : (a.2 : ℝ) ≤ b.2 := NNReal.coe_le_coe.mpr hab.le.2
+  by_contra hn
+  have hn' : u b.1 + (b.2 : ℝ) ≤ u a.1 + a.2 := le_of_not_gt hn
+  have hge : u a.1 = u b.1 := by linarith
+  have hme : (a.2 : ℝ) = b.2 := by linarith
+  have hgoods : a.1 = b.1 := by
+    by_contra hne
+    exact (ne_of_lt (hu (lt_of_le_of_ne hab.le.1 hne))) hge
+  exact hab.ne (Prod.ext hgoods (NNReal.coe_injective hme))
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# One quasi-linear curve need not identify the whole preference
+
+Kreps I, Problem 2.13, p. 48. On two nonnegative goods, `x + m` and
+`max x (2*x - 1) + m` give continuous, strictly monotone, quasi-linear preferences.
+Their indifference curves through `(0,1)` agree. Their rankings of `(2,0)` and
+`(0,5/2)` differ. The observed goods projection is precisely `[0,1]`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped NNReal
+
+/-- The piecewise linear transformation is the maximum of its two affine branches. -/
+theorem convexWarp_eq_max (t : ℝ) : ConvexWarp t = max t (2 * t - 1) := by
+  unfold ConvexWarp
+  split_ifs with h
+  · exact (max_eq_left (by linarith)).symm
+  · exact (max_eq_right (by linarith)).symm
+
+/-- The branches meet continuously at one. -/
+theorem convexWarp_continuous : Continuous ConvexWarp := by
+  have he : ConvexWarp = fun t : ℝ => max t (2 * t - 1) := funext convexWarp_eq_max
+  rw [he]
+  exact continuous_id.max ((continuous_const.mul continuous_id).sub continuous_const)
+
+/-- Linear utility in the non-money good and money. -/
+def LinearMoneyUtility : (ℝ≥0 × ℝ≥0) → ℝ := QuasiLinearUtility (fun x : ℝ≥0 => (x : ℝ))
+
+/-- The marginal value of the first good rises at one, while money's coefficient stays one. -/
+noncomputable def WarpedMoneyUtility : (ℝ≥0 × ℝ≥0) → ℝ :=
+  QuasiLinearUtility (fun x : ℝ≥0 => ConvexWarp (x : ℝ))
+
+/-- Both utility functions satisfy continuity and strict product-order monotonicity. -/
+theorem linear_warped_utilities_regular :
+    Continuous LinearMoneyUtility ∧ StrictMono LinearMoneyUtility ∧
+      Continuous WarpedMoneyUtility ∧ StrictMono WarpedMoneyUtility := by
+  have hcoe : StrictMono (fun x : ℝ≥0 => (x : ℝ)) := fun _ _ h => NNReal.coe_lt_coe.mpr h
+  exact ⟨quasiLinearUtility_continuous NNReal.continuous_coe,
+    quasiLinearUtility_strictMono hcoe,
+    quasiLinearUtility_continuous (convexWarp_continuous.comp NNReal.continuous_coe),
+    quasiLinearUtility_strictMono (convexWarp_strictMono.comp hcoe)⟩
+
+/-- The two preferences have exactly the same indifference curve through `(0,1)`. -/
+theorem linear_warped_same_curve :
+    IndifferenceClass (UtilityPref LinearMoneyUtility) (0, 1) =
+      IndifferenceClass (UtilityPref WarpedMoneyUtility) (0, 1) := by
+  have hu : Represents LinearMoneyUtility (UtilityPref LinearMoneyUtility) := fun _ _ => Iff.rfl
+  have hv : Represents WarpedMoneyUtility (UtilityPref WarpedMoneyUtility) := fun _ _ => Iff.rfl
+  ext q
+  change Indifferent (UtilityPref LinearMoneyUtility) q (0, 1) ↔
+    Indifferent (UtilityPref WarpedMoneyUtility) q (0, 1)
+  rw [indifferent_iff_utility_eq hu, indifferent_iff_utility_eq hv]
+  change (q.1 : ℝ) + (q.2 : ℝ) = 0 + 1 ↔
+    ConvexWarp (q.1 : ℝ) + (q.2 : ℝ) = ConvexWarp 0 + 1
+  have hv0 : ConvexWarp 0 = 0 := by norm_num [ConvexWarp]
+  rw [hv0, zero_add]
+  have hm : 0 ≤ (q.2 : ℝ) := q.2.property
+  constructor
+  · intro h
+    have hx : (q.1 : ℝ) ≤ 1 := by linarith
+    simpa only [ConvexWarp, ite_eq_left hx] using h
+  · intro h
+    have hg : (q.1 : ℝ) ≤ ConvexWarp (q.1 : ℝ) := by
+      rw [convexWarp_eq_max]
+      exact le_max_left _ _
+    have hx : (q.1 : ℝ) ≤ 1 := by linarith
+    simpa only [ConvexWarp, ite_eq_left hx] using h
+
+/-- The observed goods range ends at one because money cannot be negative. -/
+theorem linear_curve_goods :
+    CurveGoods (UtilityPref LinearMoneyUtility) (0, 1) = Set.Iic (1 : ℝ≥0) := by
+  have hu : Represents (QuasiLinearUtility (fun x : ℝ≥0 => (x : ℝ)))
+      (UtilityPref LinearMoneyUtility) := fun _ _ => Iff.rfl
+  ext x
+  rw [curveGoods_iff_subutility_le hu]
+  change (x : ℝ) ≤ (0 : ℝ) + 1 ↔ x ≤ 1
+  simpa only [zero_add, NNReal.coe_one] using
+    (show (x : ℝ) ≤ ((1 : ℝ≥0) : ℝ) ↔ x ≤ 1 from NNReal.coe_le_coe)
+
+/-- **Problem 2.13:** even continuous, strictly monotone quasi-linear preferences
+can share a nonzero indifference curve and disagree on other comparisons. -/
+theorem problem_2_13_quasiLinear_nonidentification :
+    ∃ r s : (ℝ≥0 × ℝ≥0) → (ℝ≥0 × ℝ≥0) → Prop,
+      Rational r ∧ Rational s ∧ ContinuousPreference r ∧ ContinuousPreference s ∧
+      StrictlyMonotonePreference r ∧ StrictlyMonotonePreference s ∧
+      QuasiLinear r ∧ QuasiLinear s ∧ IndifferenceClass r (0, 1) = IndifferenceClass s (0, 1) ∧
+      ¬r (2, 0) (0, 5 / 2) ∧ s (2, 0) (0, 5 / 2) := by
+  have hu : Represents LinearMoneyUtility (UtilityPref LinearMoneyUtility) := fun _ _ => Iff.rfl
+  have hv : Represents WarpedMoneyUtility (UtilityPref WarpedMoneyUtility) := fun _ _ => Iff.rfl
+  obtain ⟨huc, hum, hvc, hvm⟩ := linear_warped_utilities_regular
+  refine ⟨UtilityPref LinearMoneyUtility, UtilityPref WarpedMoneyUtility,
+    proposition_1_3a _, proposition_1_3a _, proposition_2_9_forward hu huc,
+    proposition_2_9_forward hv hvc, (proposition_2_2_strict hu).mpr hum,
+    (proposition_2_2_strict hv).mpr hvm, ⟨_, hu⟩, ⟨_, hv⟩, linear_warped_same_curve, ?_, ?_⟩
+  · norm_num [UtilityPref, LinearMoneyUtility, QuasiLinearUtility]
+  · norm_num [UtilityPref, WarpedMoneyUtility, QuasiLinearUtility, ConvexWarp]
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -5118,3 +5447,25 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.homogeneous_representation_both_sides
 #print axioms Kreps.PreferenceProperties.proposition_2_19
 #print axioms Kreps.PreferenceProperties.problem_2_12
+#print axioms Kreps.PreferenceProperties.indifferent_iff_utility_eq
+#print axioms Kreps.PreferenceProperties.homogeneous_unit_class_unique
+#print axioms Kreps.PreferenceProperties.normalized_homogeneous_representation
+#print axioms Kreps.PreferenceProperties.problem_2_13_homothetic
+#print axioms Kreps.PreferenceProperties.strictlyMonotone_origin_class
+#print axioms Kreps.PreferenceProperties.CurveGoods
+#print axioms Kreps.PreferenceProperties.quasiLinear_class_iff
+#print axioms Kreps.PreferenceProperties.curveGoods_iff_subutility_le
+#print axioms Kreps.PreferenceProperties.quasiLinear_class_offset
+#print axioms Kreps.PreferenceProperties.problem_2_13_quasiLinear_identified
+#print axioms Kreps.PreferenceProperties.quasiLinear_identified_of_full_projection
+#print axioms Kreps.PreferenceProperties.quasiLinear_outside_projection
+#print axioms Kreps.PreferenceProperties.quasiLinearUtility_continuous
+#print axioms Kreps.PreferenceProperties.quasiLinearUtility_strictMono
+#print axioms Kreps.PreferenceProperties.convexWarp_eq_max
+#print axioms Kreps.PreferenceProperties.convexWarp_continuous
+#print axioms Kreps.PreferenceProperties.LinearMoneyUtility
+#print axioms Kreps.PreferenceProperties.WarpedMoneyUtility
+#print axioms Kreps.PreferenceProperties.linear_warped_utilities_regular
+#print axioms Kreps.PreferenceProperties.linear_warped_same_curve
+#print axioms Kreps.PreferenceProperties.linear_curve_goods
+#print axioms Kreps.PreferenceProperties.problem_2_13_quasiLinear_nonidentification

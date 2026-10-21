@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-21T14:09:20.568297+00:00",
-  "theorems": 325,
+  "checked_at_utc": "2026-10-21T14:15:44.395490+00:00",
+  "theorems": 344,
   "module_theorems": {
     "PreferenceProperties/Basic.lean": 5,
     "PreferenceProperties/Rationalization.lean": 12,
@@ -38,9 +38,12 @@
     "PreferenceProperties/HomotheticRays.lean": 13,
     "PreferenceProperties/RepresentationExtension.lean": 6,
     "PreferenceProperties/HomogeneousExtension.lean": 10,
-    "PreferenceProperties/SignedHomotheticRepresentation.lean": 11
+    "PreferenceProperties/SignedHomotheticRepresentation.lean": 11,
+    "PreferenceProperties/HomotheticIdentification.lean": 5,
+    "PreferenceProperties/QuasiLinearIdentification.lean": 8,
+    "PreferenceProperties/QuasiLinearIdentificationExample.lean": 6
   },
-  "audited_declarations": 442,
+  "audited_declarations": 464,
   "declarations": [
     {
       "name": "Kreps.PreferenceProperties.FullMenus",
@@ -2251,6 +2254,116 @@
       "name": "Kreps.PreferenceProperties.problem_2_12",
       "kind": "theorem",
       "module": "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.indifferent_iff_utility_eq",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.homogeneous_unit_class_unique",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.normalized_homogeneous_representation",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_13_homothetic",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.strictlyMonotone_origin_class",
+      "kind": "theorem",
+      "module": "PreferenceProperties/HomotheticIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.CurveGoods",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_class_iff",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.curveGoods_iff_subutility_le",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_class_offset",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_13_quasiLinear_identified",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_identified_of_full_projection",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinear_outside_projection",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinearUtility_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.quasiLinearUtility_strictMono",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentification.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.convexWarp_eq_max",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.convexWarp_continuous",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.LinearMoneyUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.WarpedMoneyUtility",
+      "kind": "def",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.linear_warped_utilities_regular",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.linear_warped_same_curve",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.linear_curve_goods",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
+    },
+    {
+      "name": "Kreps.PreferenceProperties.problem_2_13_quasiLinear_nonidentification",
+      "kind": "theorem",
+      "module": "PreferenceProperties/QuasiLinearIdentificationExample.lean"
     }
   ],
   "full_build": "passed",
@@ -4257,6 +4370,116 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.indifferent_iff_utility_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.homogeneous_unit_class_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.normalized_homogeneous_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_13_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.strictlyMonotone_origin_class": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.CurveGoods": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_class_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.curveGoods_iff_subutility_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_class_offset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_13_quasiLinear_identified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_identified_of_full_projection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinear_outside_projection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinearUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.quasiLinearUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.convexWarp_eq_max": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.convexWarp_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.LinearMoneyUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.WarpedMoneyUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.linear_warped_utilities_regular": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.linear_warped_same_curve": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.linear_curve_goods": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.PreferenceProperties.problem_2_13_quasiLinear_nonidentification": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "source_sha256": {
@@ -4297,16 +4520,19 @@
     "PreferenceProperties/RepresentationExtension.lean": "3e00236a1fc6fe0b48f70043908b1ab392dba85d14ee40b37efb896ea01edcf9",
     "PreferenceProperties/HomogeneousExtension.lean": "57a57114a5d603c459f3a73e2b6207fd792675ca59dbfddb9cd5f2e007f0620a",
     "PreferenceProperties/SignedHomotheticRepresentation.lean": "eeb007e156c81898194c2bea568074ca37610094536b073ce32146c3e603e4ee",
-    "PreferenceProperties.lean": "c3792b7c91eecc08964bff1c2659bd552d60c74acaed6a6b9802ee4a33d0f42d",
+    "PreferenceProperties/HomotheticIdentification.lean": "ad88bf6139d75cd8c3d26ad242ce09e98d9d5360c3bc6e56b1618c5d8f80f9c1",
+    "PreferenceProperties/QuasiLinearIdentification.lean": "db2901a1e8144576d23d7daf969f31f6bbb9969b2e79c0f78785d549b12a6f66",
+    "PreferenceProperties/QuasiLinearIdentificationExample.lean": "ab28ffbcc2b11cfdd1031ebc94f88c90921abf30a38d7bafb1c9ee919eaf0381",
+    "PreferenceProperties.lean": "7f3e12c7b63aeed5c2063564e91e4cecb14b228e10ce951d05c31f64f58567c0",
     "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "lakefile.toml": "0e6490ddf823b39d58d9315a1050fd220ebea4818cde6702c5bb703cf5bd66c1",
     "lake-manifest.json": "d33e4187b22678f021009d3f30ab6c8f338072bf857ab010121465a6f064878f",
-    "proof-manifest.json": "41628b787b1a657cdb861577c59240b1b118b47c70e4d310f6d8108ed068af32",
+    "proof-manifest.json": "a709e252abe8c68efa76c582b0c55dc541fcaf13c331e8061934bbb8e50201f7",
     "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
   },
-  "fresh_audit_sha256": "3eef3c161770dbd3326b4676b48d310e93a74067b99af21ab49d3907274b35c6",
+  "fresh_audit_sha256": "07146ae1e4d2209b450cfcdb7b4c9bbbbc3cbab1b3156c9bb9659a818d8753a6",
   "lean_toolchain": "leanprover/lean4:v4.34.0",
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12, 2.13 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

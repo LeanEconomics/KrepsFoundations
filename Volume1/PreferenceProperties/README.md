@@ -49,10 +49,13 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [RepresentationExtension](PreferenceProperties/RepresentationExtension.lean) | 6 | Problem 2.14c: continuous extension from a connected curve meeting every class |
 | [HomogeneousExtension](PreferenceProperties/HomogeneousExtension.lean) | 10 | Scale-compatible extension, one-sided ranks and constant preferences |
 | [SignedHomotheticRepresentation](PreferenceProperties/SignedHomotheticRepresentation.lean) | 11 | Full Proposition 2.19 and Problem 2.12, including ranks on both sides of the origin |
+| [HomotheticIdentification](PreferenceProperties/HomotheticIdentification.lean) | 5 | Problem 2.13: one nonzero class identifies the full homothetic preference |
+| [QuasiLinearIdentification](PreferenceProperties/QuasiLinearIdentification.lean) | 8 | Identified goods projection, subutility calibration and all money levels |
+| [QuasiLinearIdentificationExample](PreferenceProperties/QuasiLinearIdentificationExample.lean) | 6 | Continuous strictly monotone preferences with the same curve and different rankings |
 
-The current subset passes the full fresh-source audit: **325 theorems** and
-**442 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **227 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **344 theorems** and
+**464 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **246 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
@@ -61,6 +64,8 @@ The additive-existence direction of Proposition 2.14 and remaining problem solut
 are still in progress. Weak separability and homotheticity are fully characterized.
 The homogeneous representation handles positive, negative and origin-indifferent
 ranks without imposing commodity monotonicity.
+Problem 2.13 distinguishes full identification from a nonzero homothetic curve
+from identification over the observed goods projection in the quasi-linear case.
 The general continuous-representation theorem is proved through Cantor's countable
 order isomorphism and rational cuts; the book's diagonal proof is also complete.
 Problem 2.14c is complete; its specific recursive construction remains a separate obligation.

@@ -37,7 +37,10 @@
     "PreferenceProperties/HomotheticRays.lean",
     "PreferenceProperties/RepresentationExtension.lean",
     "PreferenceProperties/HomogeneousExtension.lean",
-    "PreferenceProperties/SignedHomotheticRepresentation.lean"
+    "PreferenceProperties/SignedHomotheticRepresentation.lean",
+    "PreferenceProperties/HomotheticIdentification.lean",
+    "PreferenceProperties/QuasiLinearIdentification.lean",
+    "PreferenceProperties/QuasiLinearIdentificationExample.lean"
   ],
   "theorem_counts": {
     "PreferenceProperties/Basic.lean": 5,
@@ -76,8 +79,11 @@
     "PreferenceProperties/HomotheticRays.lean": 13,
     "PreferenceProperties/RepresentationExtension.lean": 6,
     "PreferenceProperties/HomogeneousExtension.lean": 10,
-    "PreferenceProperties/SignedHomotheticRepresentation.lean": 11
+    "PreferenceProperties/SignedHomotheticRepresentation.lean": 11,
+    "PreferenceProperties/HomotheticIdentification.lean": 5,
+    "PreferenceProperties/QuasiLinearIdentification.lean": 8,
+    "PreferenceProperties/QuasiLinearIdentificationExample.lean": 6
   },
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.11, full 2.12, 2.13 and 2.14c, except the introductory intervals in 2.2. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }
