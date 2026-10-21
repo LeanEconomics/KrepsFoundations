@@ -23,6 +23,13 @@ import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 import Mathlib.Topology.Semicontinuity.Basic
 import Mathlib.Analysis.Normed.Group.FunctionSeries
+import Mathlib.MeasureTheory.Measure.Interval
+import Mathlib.MeasureTheory.Measure.Real
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.MeasureTheory.Measure.OpenPos
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.MeasureTheory.Measure.Typeclasses.SFinite
 set_option autoImplicit false
 
 /-
@@ -5807,6 +5814,490 @@ theorem problem_2_10_representation {k : ℕ}
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Lower-tail mass of a finite real measure
+
+Analytic support for Kreps I, Problem 2.15. The cumulative lower-tail mass of a
+finite measure is nondecreasing and upper semicontinuous. No normalization to a
+probability measure is imposed. Continuity from above of the measure supplies
+the upper-semicontinuity proof.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open MeasureTheory
+open scoped Topology
+
+/-- The real-valued mass of the closed lower half-line for an arbitrary finite measure. -/
+noncomputable def LowerDistribution (μ : Measure ℝ) (a : ℝ) : ℝ := μ.real (Set.Iic a)
+
+/-- Enlarging a lower half-line increases its mass. -/
+theorem lowerDistribution_monotone (μ : Measure ℝ) [IsFiniteMeasure μ] :
+    Monotone (LowerDistribution μ) :=
+  fun _ _ hab => measureReal_mono (Set.Iic_subset_Iic.mpr hab)
+
+/-- Lower-tail masses converge when cutoffs decrease geometrically to the target cutoff. -/
+theorem lowerDistribution_tendsto_above (μ : Measure ℝ) [IsFiniteMeasure μ] (a : ℝ) :
+    Filter.Tendsto (fun n : ℕ => LowerDistribution μ (a + (1 / 2 : ℝ) ^ n))
+      Filter.atTop (𝓝 (LowerDistribution μ a)) := by
+  have hlim : Filter.Tendsto (fun n : ℕ => a + (1 / 2 : ℝ) ^ n) Filter.atTop (𝓝 a) := by
+    simpa only [add_zero] using tendsto_const_nhds.add
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2)
+        (by norm_num : (1 / 2 : ℝ) < 1))
+  have hm : Antitone (fun n : ℕ => a + (1 / 2 : ℝ) ^ n) := by
+    apply antitone_nat_of_succ_le
+    intro n
+    rw [pow_succ]
+    nlinarith [pow_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2) n]
+  have hi : (⋂ n : ℕ, Set.Iic (a + (1 / 2 : ℝ) ^ n)) = Set.Iic a := by
+    ext x
+    constructor
+    · intro hx
+      have hx' : ∀ n : ℕ, x ≤ a + (1 / 2 : ℝ) ^ n := Set.mem_iInter.mp hx
+      exact isClosed_Ici.mem_of_tendsto hlim (Filter.Eventually.of_forall hx')
+    · intro hx
+      apply Set.mem_iInter.mpr
+      intro n
+      exact le_trans hx (le_add_of_nonneg_right
+        (pow_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2) n))
+  have hμ := tendsto_measure_iInter_atTop (μ := μ)
+    (fun _ : ℕ => isClosed_Iic.measurableSet.nullMeasurableSet)
+    (fun i j hij => Set.Iic_subset_Iic.mpr (hm hij)) ⟨0, measure_ne_top μ _⟩
+  rw [hi] at hμ
+  simpa only [LowerDistribution, measureReal_def, Function.comp_def] using
+    (ENNReal.continuousAt_toReal (measure_ne_top μ (Set.Iic a))).tendsto.comp hμ
+
+/-- The lower-tail mass function is upper semicontinuous, even when the measure has atoms. -/
+theorem lowerDistribution_upperSemicontinuous (μ : Measure ℝ) [IsFiniteMeasure μ] :
+    UpperSemicontinuous (LowerDistribution μ) := by
+  intro a b hb
+  obtain ⟨n, hn⟩ := ((lowerDistribution_tendsto_above μ a).eventually
+    (isOpen_Iio.mem_nhds hb)).exists
+  have hnear : ∀ᶠ y in 𝓝 a, y < a + (1 / 2 : ℝ) ^ n :=
+    isOpen_Iio.mem_nhds (lt_add_of_pos_right a (pow_pos (by norm_num) n))
+  filter_upwards [hnear] with y hy
+  exact (lowerDistribution_monotone μ hy.le).trans_lt hn
+
+/-- If the cutoff has zero mass, approaching it from below gives the same lower-tail mass. -/
+theorem lowerDistribution_tendsto_below (μ : Measure ℝ) [IsFiniteMeasure μ] (a : ℝ)
+    (ha : μ {a} = 0) :
+    Filter.Tendsto (fun n : ℕ => LowerDistribution μ (a - (1 / 2 : ℝ) ^ n))
+      Filter.atTop (𝓝 (LowerDistribution μ a)) := by
+  have hlim : Filter.Tendsto (fun n : ℕ => a - (1 / 2 : ℝ) ^ n) Filter.atTop (𝓝 a) := by
+    simpa only [sub_zero] using tendsto_const_nhds.sub
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2)
+        (by norm_num : (1 / 2 : ℝ) < 1))
+  have hm : Monotone (fun n : ℕ => a - (1 / 2 : ℝ) ^ n) := by
+    apply monotone_nat_of_le_succ
+    intro n
+    rw [pow_succ]
+    nlinarith [pow_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2) n]
+  have hi : (⋃ n : ℕ, Set.Iic (a - (1 / 2 : ℝ) ^ n)) = Set.Iio a := by
+    ext x
+    constructor
+    · intro hx
+      obtain ⟨n, hn⟩ := Set.mem_iUnion.mp hx
+      exact hn.trans_lt (sub_lt_self a (pow_pos (by norm_num) n))
+    · intro hx
+      obtain ⟨n, hn⟩ := (hlim.eventually (isOpen_Ioi.mem_nhds hx)).exists
+      exact Set.mem_iUnion.mpr ⟨n, hn.le⟩
+  have hμ := tendsto_measure_iUnion_atTop (μ := μ)
+    (fun i j hij => Set.Iic_subset_Iic.mpr (hm hij))
+  rw [hi, measure_congr (Iio_ae_eq_Iic' ha)] at hμ
+  simpa only [LowerDistribution, measureReal_def, Function.comp_def] using
+    (ENNReal.continuousAt_toReal (measure_ne_top μ (Set.Iic a))).tendsto.comp hμ
+
+/-- Absence of an atom supplies lower semicontinuity at the cutoff. -/
+theorem lowerDistribution_lowerSemicontinuousAt (μ : Measure ℝ) [IsFiniteMeasure μ] (a : ℝ)
+    (ha : μ {a} = 0) : LowerSemicontinuousAt (LowerDistribution μ) a := by
+  intro b hb
+  obtain ⟨n, hn⟩ := ((lowerDistribution_tendsto_below μ a ha).eventually
+    (isOpen_Ioi.mem_nhds hb)).exists
+  have hnear : ∀ᶠ y in 𝓝 a, a - (1 / 2 : ℝ) ^ n < y :=
+    isOpen_Ioi.mem_nhds (sub_lt_self a (pow_pos (by norm_num) n))
+  filter_upwards [hnear] with y hy
+  exact hn.trans_le (lowerDistribution_monotone μ hy.le)
+
+/-- The lower-tail function is continuous at cutoffs with zero singleton mass. -/
+theorem lowerDistribution_continuousAt (μ : Measure ℝ) [IsFiniteMeasure μ] (a : ℝ)
+    (ha : μ {a} = 0) : ContinuousAt (LowerDistribution μ) a :=
+  continuousAt_iff_lower_upperSemicontinuousAt.mpr
+    ⟨lowerDistribution_lowerSemicontinuousAt μ a ha, lowerDistribution_upperSemicontinuous μ a⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Utility from the measure of a lower preference contour
+
+Ingredients for Kreps I, Problem 2.15. A finite measure positive on every nonempty
+open set gives a representation on a connected domain. A continuous numerical
+representation identifies the construction with a cumulative distribution,
+which proves upper semicontinuity. Null indifference classes suffice for continuity.
+The book's Lebesgue-positivity assumption is handled by a separate orthant bridge.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open MeasureTheory
+
+variable {X : Type*} [MeasurableSpace X] {r : X → X → Prop}
+
+/-- The finite-measure construction `u(x) = μ(NBT(x))` in Problem 2.15. -/
+noncomputable def MeasureUtility (μ : Measure X) (r : X → X → Prop) (x : X) : ℝ :=
+  μ.real (NoBetterThan r x)
+
+/-- Transitivity gives inclusion of lower contours and hence weakly increasing measure utility. -/
+theorem measureUtility_mono (μ : Measure X) [IsFiniteMeasure μ] (ht : TransitivePref r)
+    {x y : X} (hxy : r x y) : MeasureUtility μ r y ≤ MeasureUtility μ r x :=
+  measureReal_mono (fun z hz => ht x y z hxy hz)
+
+/-- A strict rank interval contains a nonempty open set and therefore positive measure. -/
+theorem measureUtility_strict [TopologicalSpace X] [OpensMeasurableSpace X]
+    [PreconnectedSpace X] (μ : Measure X) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure]
+    (hr : Rational r) (hc : ContinuousPreference r) {x y : X} (hxy : Strict r x y) :
+    MeasureUtility μ r y < MeasureUtility μ r x := by
+  obtain ⟨z, hxz, hzy⟩ := exists_strict_between hr hc hxy
+  have ho := (continuousPreference_openStrictContours hc y).1.inter
+    (continuousPreference_openStrictContours hc x).2
+  have hpos := ho.measure_pos μ ⟨z, hzy, hxz⟩
+  have hsub : StrictlyBetterThan r y ∩ StrictlyWorseThan r x ⊆
+      NoBetterThan r x \ NoBetterThan r y := fun _ h => ⟨h.2.1, h.1.2⟩
+  have hdiff : 0 < μ (NoBetterThan r x \ NoBetterThan r y) :=
+    hpos.trans_le (measure_mono hsub)
+  have hreal : 0 < μ.real (NoBetterThan r x \ NoBetterThan r y) :=
+    ENNReal.toReal_pos (ne_of_gt hdiff) (measure_ne_top μ _)
+  have hnsub : NoBetterThan r y ⊆ NoBetterThan r x := fun w hw => hr.2 x y w hxy.1 hw
+  rw [measureReal_sdiff hnsub (((proposition_1_14c hr).mp hc y).1.measurableSet)] at hreal
+  exact sub_pos.mp hreal
+
+/-- Positive mass on nonempty opens suffices for the finite-measure representation. -/
+theorem measureUtility_represents [TopologicalSpace X] [OpensMeasurableSpace X]
+    [PreconnectedSpace X] (μ : Measure X) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure]
+    (hr : Rational r) (hc : ContinuousPreference r) : Represents (MeasureUtility μ r) r := by
+  intro x y
+  constructor
+  · exact measureUtility_mono μ hr.2
+  · intro h
+    by_contra hxy
+    have hyx : Strict r y x := ⟨(hr.1 x y).resolve_left hxy, hxy⟩
+    exact not_lt_of_ge h (measureUtility_strict μ hr hc hyx)
+
+/-- A continuous representation expresses lower-contour mass as cumulative mass of real ranks. -/
+theorem measureUtility_eq_distribution [TopologicalSpace X] [OpensMeasurableSpace X]
+    (μ : Measure X) {u : X → ℝ} (hu : Represents u r) (huc : Continuous u) (x : X) :
+    MeasureUtility μ r x = LowerDistribution (μ.map u) (u x) := by
+  unfold LowerDistribution
+  rw [map_measureReal_apply huc.measurable isClosed_Iic.measurableSet]
+  change μ.real (NoBetterThan r x) = μ.real (u ⁻¹' Set.Iic (u x))
+  congr 1
+  ext y
+  exact hu x y
+
+/-- A continuous representation makes finite lower-contour measure upper semicontinuous. -/
+theorem measureUtility_upperSemicontinuous [TopologicalSpace X] [OpensMeasurableSpace X]
+    (μ : Measure X) [IsFiniteMeasure μ] {u : X → ℝ}
+    (hu : Represents u r) (huc : Continuous u) : UpperSemicontinuous (MeasureUtility μ r) := by
+  have he : MeasureUtility μ r = fun x => LowerDistribution (μ.map u) (u x) :=
+    funext (measureUtility_eq_distribution μ hu huc)
+  rw [he]
+  exact (lowerDistribution_upperSemicontinuous (μ.map u)).comp huc
+
+/-- Zero mass on an indifference class is exactly zero mass at its represented rank. -/
+theorem measureUtility_rank_atom [TopologicalSpace X] [OpensMeasurableSpace X]
+    (μ : Measure X) {u : X → ℝ} (hu : Represents u r) (huc : Continuous u) (x : X) :
+    (μ.map u) {u x} = μ (IndifferenceClass r x) := by
+  rw [Measure.map_apply huc.measurable isClosed_singleton.measurableSet]
+  congr 1
+  ext y
+  exact (indifferent_iff_utility_eq hu y x).symm
+
+/-- Null indifference classes give continuity at the corresponding bundles. -/
+theorem measureUtility_continuousAt_of_null_class [TopologicalSpace X] [OpensMeasurableSpace X]
+    (μ : Measure X) [IsFiniteMeasure μ] {u : X → ℝ} (hu : Represents u r)
+    (huc : Continuous u) (x : X) (hx : μ (IndifferenceClass r x) = 0) :
+    ContinuousAt (MeasureUtility μ r) x := by
+  have he : MeasureUtility μ r = fun y => LowerDistribution (μ.map u) (u y) :=
+    funext (measureUtility_eq_distribution μ hu huc)
+  rw [he]
+  have ha : (μ.map u) {u x} = 0 := (measureUtility_rank_atom μ hu huc x).trans hx
+  exact (lowerDistribution_continuousAt (μ.map u) (u x) ha).comp huc.continuousAt
+
+/-- If every indifference class has zero measure, the finite-measure utility is continuous. -/
+theorem measureUtility_continuous_of_null_classes [TopologicalSpace X] [OpensMeasurableSpace X]
+    (μ : Measure X) [IsFiniteMeasure μ] {u : X → ℝ} (hu : Represents u r)
+    (huc : Continuous u) (hnull : ∀ x, μ (IndifferenceClass r x) = 0) :
+    Continuous (MeasureUtility μ r) :=
+  continuous_iff_continuousAt.mpr (fun x =>
+    measureUtility_continuousAt_of_null_class μ hu huc x (hnull x))
+
+/-- The representation and upper-semicontinuity conclusions on the book's orthant domain. -/
+theorem problem_2_15_openPos {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (μ : Measure (NonnegativeOrthant k)) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure]
+    (hr : Rational r) (hc : ContinuousPreference r) :
+    Represents (MeasureUtility μ r) r ∧ UpperSemicontinuous (MeasureUtility μ r) := by
+  let : PreconnectedSpace (NonnegativeOrthant k) :=
+    isPreconnected_iff_preconnectedSpace.mp
+      (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)).isPreconnected
+  obtain ⟨u, hu, huc⟩ := (proposition_2_9 k hr).mp hc
+  exact ⟨measureUtility_represents μ hr hc, measureUtility_upperSemicontinuous μ hu huc⟩
+
+/-- A sufficient continuity condition in **Problem 2.15**, stated on indifference classes. -/
+theorem problem_2_15_continuity {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (μ : Measure (NonnegativeOrthant k)) [IsFiniteMeasure μ]
+    (hr : Rational r) (hc : ContinuousPreference r)
+    (hnull : ∀ x, μ (IndifferenceClass r x) = 0) : Continuous (MeasureUtility μ r) := by
+  obtain ⟨u, hu, huc⟩ := (proposition_2_9 k hr).mp hc
+  exact measureUtility_continuous_of_null_classes μ hu huc hnull
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The Lebesgue-positivity hypothesis in Problem 2.15
+
+Lebesgue measure on the orthant is the ambient product measure pulled back through
+the subtype inclusion. Every nonempty relatively open set has positive measure,
+including neighborhoods at the boundary. Consequently, the book's condition that
+positive-Lebesgue-measure sets have positive `μ`-measure gives the full-support
+hypothesis used in the finite-measure utility construction.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open MeasureTheory
+
+/-- Lebesgue measure restricted to the nonnegative orthant, as a measure on its subtype. -/
+noncomputable def OrthantLebesgue (k : ℕ) : Measure (NonnegativeOrthant k) :=
+  (volume : Measure (Fin k → ℝ)).comap Subtype.val
+
+/-- Subtype measure is the ambient measure of the corresponding set of bundles. -/
+theorem orthantLebesgue_apply (k : ℕ) (A : Set (NonnegativeOrthant k)) :
+    OrthantLebesgue k A = volume (Subtype.val '' A) := by
+  exact (MeasurableEmbedding.subtype_coe
+    (isClosed_Ici (a := (0 : Fin k → ℝ))).measurableSet).comap_apply volume A
+
+/-- Every relative neighborhood contains an ambient ball inside the orthant. -/
+theorem orthant_open_contains_ambient_ball {k : ℕ} {U : Set (NonnegativeOrthant k)}
+    (hU : IsOpen U) (hne : U.Nonempty) :
+    ∃ y : Fin k → ℝ, ∃ δ > 0, Metric.ball y δ ⊆ Subtype.val '' U := by
+  obtain ⟨x, hx⟩ := hne
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp hU x hx
+  let y := RaisedBundle x (ε / 2) (by positivity)
+  have hyx : dist y x ≤ ε / 2 := raisedBundle_dist_le x (by positivity)
+  refine ⟨y.val, ε / 4, by positivity, ?_⟩
+  intro z hz
+  have hzdist : dist z y.val < ε / 4 := hz
+  have hznonneg : 0 ≤ z := by
+    intro j
+    have hcoord := (dist_le_pi_dist z y.val j).trans_lt hzdist
+    change |z j - (x.val j + ε / 2)| < ε / 4 at hcoord
+    have hlow := (abs_lt.mp hcoord).1
+    have hxj := x.property j
+    change 0 ≤ x.val j at hxj
+    change 0 ≤ z j
+    linarith
+  let z' : NonnegativeOrthant k := ⟨z, hznonneg⟩
+  refine ⟨z', hball ?_, rfl⟩
+  change dist z x.val < ε
+  have htriangle := dist_triangle z y.val x.val
+  change dist y.val x.val ≤ ε / 2 at hyx
+  linarith
+
+/-- Relative nonempty opens have positive Lebesgue measure, also at boundary points. -/
+theorem orthantLebesgue_open_pos {k : ℕ} {U : Set (NonnegativeOrthant k)}
+    (hU : IsOpen U) (hne : U.Nonempty) : 0 < OrthantLebesgue k U := by
+  obtain ⟨y, δ, hδ, hball⟩ := orthant_open_contains_ambient_ball hU hne
+  have hpos := Metric.isOpen_ball.measure_pos (volume : Measure (Fin k → ℝ))
+    ⟨y, Metric.mem_ball_self hδ⟩
+  rw [orthantLebesgue_apply]
+  exact hpos.trans_le (measure_mono hball)
+
+/-- The book's Lebesgue-positivity assumption implies positive mass on nonempty opens. -/
+theorem orthant_measure_openPos {k : ℕ} (μ : Measure (NonnegativeOrthant k))
+    (hμ : ∀ A, MeasurableSet A → 0 < OrthantLebesgue k A → 0 < μ A) :
+    μ.IsOpenPosMeasure := by
+  constructor
+  intro U hU hne
+  exact ne_of_gt (hμ U hU.measurableSet (orthantLebesgue_open_pos hU hne))
+
+/-- **Problem 2.15:** lower-contour measure represents preference and is upper semicontinuous. -/
+theorem problem_2_15 {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (μ : Measure (NonnegativeOrthant k)) [IsFiniteMeasure μ]
+    (hμ : ∀ A, MeasurableSet A → 0 < OrthantLebesgue k A → 0 < μ A)
+    (hr : Rational r) (hc : ContinuousPreference r) :
+    Represents (MeasureUtility μ r) r ∧ UpperSemicontinuous (MeasureUtility μ r) := by
+  let : μ.IsOpenPosMeasure := orthant_measure_openPos μ hμ
+  exact problem_2_15_openPos μ hr hc
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Atoms can make lower-contour utility discontinuous
+
+Kreps I, Problem 2.15. Adding a unit atom at a nonminimal bundle creates a jump
+along any sequence of strictly worse bundles converging to it. Starting with a
+finite measure equivalent to ambient Lebesgue measure preserves the book's exact
+positivity condition. The counterexample uses the ordinary increasing preference
+on one commodity, so even strict monotonicity cannot exclude this problem.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open MeasureTheory
+open scoped Topology
+
+variable {X : Type*} [MeasurableSpace X] {r : X → X → Prop}
+
+/-- A unit atom adds one to lower-contour utility at its own reflexive rank. -/
+theorem measureUtility_add_dirac_self (ν : Measure X) [IsFiniteMeasure ν]
+    (p : X) (hp : r p p) :
+    MeasureUtility (ν + Measure.dirac p) r p = MeasureUtility ν r p + 1 := by
+  unfold MeasureUtility
+  rw [measureReal_add_apply, Measure.dirac_real_apply_of_mem (s := NoBetterThan r p) hp]
+
+/-- The same atom contributes nothing to a strictly lower rank. -/
+theorem measureUtility_add_dirac_below [MeasurableSingletonClass X]
+    (ν : Measure X) [IsFiniteMeasure ν] {p x : X} (hpx : Strict r p x) :
+    MeasureUtility (ν + Measure.dirac p) r x = MeasureUtility ν r x := by
+  unfold MeasureUtility
+  rw [measureReal_add_apply, Measure.dirac_real_apply,
+    Set.indicator_of_notMem (s := NoBetterThan r x) hpx.2, add_zero]
+
+/-- Approaching an atom from strictly worse bundles witnesses a discontinuity. -/
+theorem measureUtility_add_dirac_not_continuousAt [TopologicalSpace X]
+    [MeasurableSingletonClass X] (ν : Measure X) [IsFiniteMeasure ν]
+    (hr : Rational r) (p : X) (f : ℕ → X)
+    (hf : Filter.Tendsto f Filter.atTop (𝓝 p)) (hfp : ∀ n, Strict r p (f n)) :
+    ¬ ContinuousAt (MeasureUtility (ν + Measure.dirac p) r) p := by
+  intro hc
+  have hlim := hc.tendsto.comp hf
+  have hbound : ∀ n,
+      MeasureUtility (ν + Measure.dirac p) r (f n) ≤ MeasureUtility ν r p := by
+    intro n
+    rw [measureUtility_add_dirac_below ν (hfp n)]
+    exact measureUtility_mono ν hr.2 (hfp n).1
+  have hle := le_of_tendsto' hlim hbound
+  rw [measureUtility_add_dirac_self ν p (complete_refl hr.1 p)] at hle
+  linarith
+
+/-- The numerical quantity of the single commodity. -/
+def OneCommodityUtility (x : NonnegativeOrthant 1) : ℝ := x.val 0
+
+/-- One unit of the single commodity, where the counterexample places its atom. -/
+def OneCommodityUnit : NonnegativeOrthant 1 := Diagonal ⟨1, by norm_num⟩
+
+/-- A sequence of quantities below one converging to one. -/
+noncomputable def OneCommodityApproach (n : ℕ) : NonnegativeOrthant 1 :=
+  Diagonal ⟨1 - (1 / 2 : ℝ) ^ n,
+    sub_nonneg.mpr (pow_le_one₀ (a := (1 / 2 : ℝ)) (n := n)
+      (by norm_num) (by norm_num))⟩
+
+/-- The ordinary one-commodity utility is continuous and strictly increasing. -/
+theorem oneCommodityUtility_properties :
+    Continuous OneCommodityUtility ∧ StrictMono OneCommodityUtility := by
+  refine ⟨(continuous_apply 0).comp continuous_subtype_val, ?_⟩
+  intro x y hxy
+  have hle := hxy.le 0
+  have hne : x.val 0 ≠ y.val 0 := by
+    intro he
+    apply hxy.ne
+    apply Subtype.ext
+    funext j
+    fin_cases j
+    exact he
+  exact lt_of_le_of_ne hle hne
+
+/-- The specified sequence converges to the atom bundle. -/
+theorem oneCommodityApproach_tendsto :
+    Filter.Tendsto OneCommodityApproach Filter.atTop (𝓝 OneCommodityUnit) := by
+  have hreal : Filter.Tendsto (fun n : ℕ => 1 - (1 / 2 : ℝ) ^ n)
+      Filter.atTop (𝓝 (1 : ℝ)) := by
+    simpa only [sub_zero] using tendsto_const_nhds.sub
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2)
+        (by norm_num : (1 / 2 : ℝ) < 1))
+  have hsub : Filter.Tendsto (fun n : ℕ => (⟨1 - (1 / 2 : ℝ) ^ n,
+      sub_nonneg.mpr (pow_le_one₀ (a := (1 / 2 : ℝ)) (n := n)
+        (by norm_num) (by norm_num))⟩ : Set.Ici (0 : ℝ)))
+      Filter.atTop (𝓝 (⟨1, by norm_num⟩ : Set.Ici (0 : ℝ))) :=
+    tendsto_subtype_rng.mpr hreal
+  exact diagonal_continuous.continuousAt.tendsto.comp hsub
+
+/-- Every quantity in the sequence is strictly worse than one unit. -/
+theorem oneCommodityApproach_strict (n : ℕ) :
+    Strict (UtilityPref OneCommodityUtility) OneCommodityUnit (OneCommodityApproach n) := by
+  change (1 - (1 / 2 : ℝ) ^ n ≤ 1) ∧ ¬ (1 ≤ 1 - (1 / 2 : ℝ) ^ n)
+  have hp : 0 < (1 / 2 : ℝ) ^ n := pow_pos (by norm_num) n
+  constructor <;> linarith
+
+/-- Pulling back a finite measure that dominates Lebesgue null sets preserves positive sets. -/
+theorem orthant_comap_positive {k : ℕ} (ν : Measure (Fin k → ℝ))
+    (hν : (volume : Measure (Fin k → ℝ)) ≪ ν)
+    {A : Set (NonnegativeOrthant k)} (hA : 0 < OrthantLebesgue k A) :
+    0 < ν.comap Subtype.val A := by
+  have he : ν.comap Subtype.val A = ν (Subtype.val '' A) :=
+    (MeasurableEmbedding.subtype_coe
+      (isClosed_Ici (a := (0 : Fin k → ℝ))).measurableSet).comap_apply ν A
+  rw [he]
+  apply pos_iff_ne_zero.mpr
+  intro hzero
+  have hvol := hν hzero
+  rw [← orthantLebesgue_apply] at hvol
+  exact ne_of_gt hA hvol
+
+/-- **Problem 2.15:** the book's assumptions allow a discontinuous measure utility. -/
+theorem problem_2_15_not_continuous :
+    ∃ μ : Measure (NonnegativeOrthant 1), IsFiniteMeasure μ ∧
+      (∀ A, MeasurableSet A → 0 < OrthantLebesgue 1 A → 0 < μ A) ∧
+      Represents (MeasureUtility μ (UtilityPref OneCommodityUtility))
+        (UtilityPref OneCommodityUtility) ∧
+      UpperSemicontinuous (MeasureUtility μ (UtilityPref OneCommodityUtility)) ∧
+      ¬ Continuous (MeasureUtility μ (UtilityPref OneCommodityUtility)) := by
+  obtain ⟨ν, hfinite, hν, _⟩ :=
+    exists_isFiniteMeasure_absolutelyContinuous (volume : Measure (Fin 1 → ℝ))
+  let : IsFiniteMeasure ν := hfinite
+  let ν' : Measure (NonnegativeOrthant 1) := ν.comap Subtype.val
+  let μ := ν' + Measure.dirac OneCommodityUnit
+  have hpos : ∀ A, MeasurableSet A → 0 < OrthantLebesgue 1 A → 0 < μ A := by
+    intro A _ hA
+    change 0 < (ν' + Measure.dirac OneCommodityUnit) A
+    rw [Measure.add_apply]
+    exact (orthant_comap_positive ν hν hA).trans_le (le_add_right le_rfl)
+  have hr := proposition_1_3a OneCommodityUtility
+  have hc := continuousPreference_of_continuous_utility oneCommodityUtility_properties.1
+  obtain ⟨hrep, husc⟩ := problem_2_15 μ hpos hr hc
+  refine ⟨μ, inferInstance, hpos, hrep, husc, ?_⟩
+  intro hcont
+  exact measureUtility_add_dirac_not_continuousAt ν' hr OneCommodityUnit
+    OneCommodityApproach oneCommodityApproach_tendsto oneCommodityApproach_strict hcont.continuousAt
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -6334,3 +6825,38 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.sampledDyadicUtility_formula
 #print axioms Kreps.PreferenceProperties.problem_2_10
 #print axioms Kreps.PreferenceProperties.problem_2_10_representation
+#print axioms Kreps.PreferenceProperties.LowerDistribution
+#print axioms Kreps.PreferenceProperties.lowerDistribution_monotone
+#print axioms Kreps.PreferenceProperties.lowerDistribution_tendsto_above
+#print axioms Kreps.PreferenceProperties.lowerDistribution_upperSemicontinuous
+#print axioms Kreps.PreferenceProperties.lowerDistribution_tendsto_below
+#print axioms Kreps.PreferenceProperties.lowerDistribution_lowerSemicontinuousAt
+#print axioms Kreps.PreferenceProperties.lowerDistribution_continuousAt
+#print axioms Kreps.PreferenceProperties.MeasureUtility
+#print axioms Kreps.PreferenceProperties.measureUtility_mono
+#print axioms Kreps.PreferenceProperties.measureUtility_strict
+#print axioms Kreps.PreferenceProperties.measureUtility_represents
+#print axioms Kreps.PreferenceProperties.measureUtility_eq_distribution
+#print axioms Kreps.PreferenceProperties.measureUtility_upperSemicontinuous
+#print axioms Kreps.PreferenceProperties.measureUtility_rank_atom
+#print axioms Kreps.PreferenceProperties.measureUtility_continuousAt_of_null_class
+#print axioms Kreps.PreferenceProperties.measureUtility_continuous_of_null_classes
+#print axioms Kreps.PreferenceProperties.problem_2_15_openPos
+#print axioms Kreps.PreferenceProperties.problem_2_15_continuity
+#print axioms Kreps.PreferenceProperties.OrthantLebesgue
+#print axioms Kreps.PreferenceProperties.orthantLebesgue_apply
+#print axioms Kreps.PreferenceProperties.orthant_open_contains_ambient_ball
+#print axioms Kreps.PreferenceProperties.orthantLebesgue_open_pos
+#print axioms Kreps.PreferenceProperties.orthant_measure_openPos
+#print axioms Kreps.PreferenceProperties.problem_2_15
+#print axioms Kreps.PreferenceProperties.measureUtility_add_dirac_self
+#print axioms Kreps.PreferenceProperties.measureUtility_add_dirac_below
+#print axioms Kreps.PreferenceProperties.measureUtility_add_dirac_not_continuousAt
+#print axioms Kreps.PreferenceProperties.OneCommodityUtility
+#print axioms Kreps.PreferenceProperties.OneCommodityUnit
+#print axioms Kreps.PreferenceProperties.OneCommodityApproach
+#print axioms Kreps.PreferenceProperties.oneCommodityUtility_properties
+#print axioms Kreps.PreferenceProperties.oneCommodityApproach_tendsto
+#print axioms Kreps.PreferenceProperties.oneCommodityApproach_strict
+#print axioms Kreps.PreferenceProperties.orthant_comap_positive
+#print axioms Kreps.PreferenceProperties.problem_2_15_not_continuous

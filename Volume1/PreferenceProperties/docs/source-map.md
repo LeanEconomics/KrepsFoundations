@@ -56,7 +56,7 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.14c, p. 48 | Extend a continuous curve representation to the full domain by indifference | `LiftedUtility`, `liftedUtility_represents`, `liftedUtility_agrees`, `liftedUtility_range`, `continuous_of_ordConnected_range`, `problem_2_14c`; the curve is connected and meets every indifference class |
 | Problem 2.14d-e, p. 49 | Recursive countable assignment represents preference and has interval-dense values | Pending; choose initial value zero for the first class |
 | Problem 2.14f-g, p. 49 | Finite sequence limits, independence of sequence, continuous representation on the curve | Pending |
-| Problem 2.15, p. 49 | Finite-measure lower-contour utility: representation, upper semicontinuity, discontinuity example and sufficient continuity conditions | Pending; full measure assumptions and orthant domain required |
+| Problem 2.15, p. 49 | Finite-measure lower-contour utility: representation, upper semicontinuity, discontinuity example and sufficient continuity conditions | `problem_2_15` proves representation and upper semicontinuity under the exact Lebesgue-positivity assumption; `orthantLebesgue_open_pos` handles boundary neighborhoods. `problem_2_15_not_continuous` gives a finite Lebesgue-positive measure with a unit atom and strictly increasing continuous one-good preference. `problem_2_15_continuity` gives continuity when every indifference class has zero measure; the pointwise result is `measureUtility_continuousAt_of_null_class`. |
 
 ## Local prerequisites and appendices
 

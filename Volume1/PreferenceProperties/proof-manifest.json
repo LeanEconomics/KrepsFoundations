@@ -47,7 +47,11 @@
     "PreferenceProperties/CobbDouglasMonotonicity.lean",
     "PreferenceProperties/IntervalNonattainment.lean",
     "PreferenceProperties/UpperSemicontinuousSeries.lean",
-    "PreferenceProperties/WeightedUtilitySemicontinuity.lean"
+    "PreferenceProperties/WeightedUtilitySemicontinuity.lean",
+    "PreferenceProperties/FiniteMeasureDistribution.lean",
+    "PreferenceProperties/MeasureUtility.lean",
+    "PreferenceProperties/OrthantMeasure.lean",
+    "PreferenceProperties/MeasureUtilityAtoms.lean"
   ],
   "theorem_counts": {
     "PreferenceProperties/Basic.lean": 5,
@@ -96,8 +100,12 @@
     "PreferenceProperties/CobbDouglasMonotonicity.lean": 10,
     "PreferenceProperties/IntervalNonattainment.lean": 5,
     "PreferenceProperties/UpperSemicontinuousSeries.lean": 2,
-    "PreferenceProperties/WeightedUtilitySemicontinuity.lean": 13
+    "PreferenceProperties/WeightedUtilitySemicontinuity.lean": 13,
+    "PreferenceProperties/FiniteMeasureDistribution.lean": 6,
+    "PreferenceProperties/MeasureUtility.lean": 10,
+    "PreferenceProperties/OrthantMeasure.lean": 5,
+    "PreferenceProperties/MeasureUtilityAtoms.lean": 8
   },
-  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.9-2.13 and 2.14c. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md.",
+  "scope": "Chapter 2 in progress: Definitions 2.1, 2.3, 2.4, 2.7, 2.11, 2.13, 2.15, 2.17 and 2.18; Propositions 2.2, 2.5, 2.6, 2.8, full 2.9, full 2.12, full 2.16 and full 2.19; the additive-to-strong direction of 2.14; diagonal construction; Lemma 2.10; indifference curves; Problems 2.2-2.7, 2.9-2.13, 2.14c and 2.15. The p. 32 minimum and Cobb-Douglas examples include strict all-coordinate increase, boundary failures in dimension at least two, and interior Cobb-Douglas strict monotonicity. Problem 2.9 includes all seven properties and exact linear/Leontief indifference curves. Problem 2.10 proves upper semicontinuity for arbitrary enumerations and nonnegative summable weights, including exactly the displayed dyadic weights; dense enumerations give representations. Commodity grouping covers arbitrary disjoint subsets and leftovers. Homogeneous representation does not assume commodity monotonicity. A nonzero indifference class identifies strictly monotone continuous homothetic preference. Quasi-linear identification covers all money levels over the observed goods projection; a continuous strictly monotone counterexample shows global nonidentification. General continuous representation uses Cantor order isomorphism and rational cuts; Problem 2.14's recursive algorithm remains pending. Twelve local Chapter 1 prerequisite modules contribute 98 theorems. All remaining items are tracked in docs/source-map.md. Problem 2.15 uses the exact Lebesgue-positivity assumption on the orthant, proves representation and upper semicontinuity, supplies a finite full-support measure with an atom giving discontinuity even for strictly increasing one-good preference, and proves continuity when indifference classes have zero measure.",
   "source": "Kreps, Microeconomic Foundations I, Chapter 2, pp. 30-49; Chapter 1 local prerequisites as itemized in docs/source-map.md."
 }

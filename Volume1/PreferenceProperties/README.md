@@ -59,10 +59,14 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [IntervalNonattainment](PreferenceProperties/IntervalNonattainment.lean) | 5 | Problem 2.2: the nonempty convex menus `(1,5)` and `(3,∞)` have no best point |
 | [UpperSemicontinuousSeries](PreferenceProperties/UpperSemicontinuousSeries.lean) | 2 | Upper semicontinuity under uniform limits and summably bounded series |
 | [WeightedUtilitySemicontinuity](PreferenceProperties/WeightedUtilitySemicontinuity.lean) | 13 | Problem 2.10: exact dyadic weights, upper semicontinuity and dense-enumeration representation |
+| [FiniteMeasureDistribution](PreferenceProperties/FiniteMeasureDistribution.lean) | 6 | Finite-measure lower-tail distributions, upper semicontinuity and continuity at atom-free cutoffs |
+| [MeasureUtility](PreferenceProperties/MeasureUtility.lean) | 10 | Lower-contour representation, cumulative-distribution identity and null-class continuity |
+| [OrthantMeasure](PreferenceProperties/OrthantMeasure.lean) | 5 | Boundary neighborhoods have positive Lebesgue measure; exact Problem 2.15 hypotheses |
+| [MeasureUtilityAtoms](PreferenceProperties/MeasureUtilityAtoms.lean) | 8 | Problem 2.15: a unit atom gives discontinuity under strictly increasing one-good preference |
 
-The current subset passes the full fresh-source audit: **398 theorems** and
-**526 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **300 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **427 theorems** and
+**561 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **329 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
@@ -76,6 +80,8 @@ from identification over the observed goods projection in the quasi-linear case.
 The general continuous-representation theorem is proved through Cantor's countable
 order isomorphism and rational cuts; the book's diagonal proof is also complete.
 Problem 2.14c is complete; its specific recursive construction remains a separate obligation.
+Problem 2.15 is complete under its stated measure assumptions. Indifference classes
+of zero measure suffice for continuity; atoms can prevent it even under strict monotonicity.
 This is not a completed-chapter claim.
 
 ## Build and verify

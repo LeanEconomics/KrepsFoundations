@@ -50,3 +50,7 @@ import PreferenceProperties.CobbDouglasMonotonicity
 import PreferenceProperties.IntervalNonattainment
 import PreferenceProperties.UpperSemicontinuousSeries
 import PreferenceProperties.WeightedUtilitySemicontinuity
+import PreferenceProperties.FiniteMeasureDistribution
+import PreferenceProperties.MeasureUtility
+import PreferenceProperties.OrthantMeasure
+import PreferenceProperties.MeasureUtilityAtoms
