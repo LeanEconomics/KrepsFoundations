@@ -35,6 +35,21 @@ import Mathlib.Topology.MetricSpace.Pseudo.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.Order
 import Mathlib.Analysis.Normed.Group.Indicator
+import Mathlib.Analysis.Convex.Slope
+import Mathlib.Topology.Order.LiminfLimsup
+import Mathlib.Topology.Instances.EReal.Lemmas
+import Mathlib.Topology.Order.AtTopBotIxx
+import Mathlib.Topology.Algebra.Order.Floor
+import Mathlib.Order.Filter.AtTopBot.Archimedean
+import Mathlib.Topology.Order.MonotoneContinuity
+import Mathlib.Topology.Order.Basic
+import Mathlib.Topology.Constructions
+import Mathlib.Topology.Algebra.Order.Field
+import Mathlib.Topology.MetricSpace.Cauchy
+import Mathlib.Analysis.Normed.Group.Bounded
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Topology.Connected.PathConnected
+import Mathlib.Topology.MetricSpace.Lipschitz
 set_option autoImplicit false
 
 /-
@@ -7965,6 +7980,2101 @@ theorem appendix2_diagnostic_counterexample :
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The ratio-and-sum utility in Problem 2.8b
+
+Below the line where total consumption equals one, utility is a fractional-linear
+function. Above that line it is the sum of consumption. These formulas agree on
+the dividing line. The axis and mixture identities here support the proof that
+no concave function represents the resulting preferences.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The exact utility `u₃` in Problem 2.8b. -/
+noncomputable def RatioSumUtility (x : NonnegativeOrthant 2) : ℝ :=
+  if x.val 0 + x.val 1 ≤ 1 then 2 * (1 + x.val 1) / (2 - x.val 0) - 1
+  else x.val 0 + x.val 1
+
+/-- The nonnegative second-commodity axis, extended by clamping negative parameters to zero. -/
+noncomputable def RatioAxisBundle (t : ℝ) : NonnegativeOrthant 2 :=
+  PairBundle 0 (max t 0) (by norm_num) (le_max_right _ _)
+
+/-- Along the nonnegative axis, the displayed utility equals its quantity parameter. -/
+theorem ratioSumUtility_axis {t : ℝ} (ht : 0 ≤ t) :
+    RatioSumUtility (RatioAxisBundle t) = t := by
+  simp only [RatioSumUtility, RatioAxisBundle, PairBundle, max_eq_left ht]
+  norm_num
+
+/-- The axis parametrization respects nonnegative convex mixtures. -/
+theorem ratioAxisBundle_mix {s t : ℝ} (hs : 0 ≤ s) (ht : 0 ≤ t)
+    {a : ℝ} (ha : a ∈ Set.Icc 0 1) :
+    Mix (convex_Ici (0 : Fin 2 → ℝ)) (RatioAxisBundle s) (RatioAxisBundle t) a ha =
+      RatioAxisBundle (a * s + (1 - a) * t) := by
+  have hm : 0 ≤ a * s + (1 - a) * t :=
+    add_nonneg (mul_nonneg ha.1 hs) (mul_nonneg (sub_nonneg.mpr ha.2) ht)
+  apply Subtype.ext
+  funext j
+  fin_cases j <;> simp [Mix, RatioAxisBundle, PairBundle, max_eq_left hs, max_eq_left ht,
+    max_eq_left hm]
+
+/-- Restricting a concave utility to the axis gives an ordinary concave real function. -/
+theorem concaveUtility_ratioAxis {u : NonnegativeOrthant 2 → ℝ}
+    (hu : ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u) :
+    ConcaveOn ℝ (Set.Ici 0) (fun t => u (RatioAxisBundle t)) := by
+  refine ⟨convex_Ici _, ?_⟩
+  intro s hs t ht a b ha hb hab
+  have he : b = 1 - a := by linarith
+  subst b
+  have ha' : a ∈ Set.Icc 0 1 := ⟨ha, by linarith⟩
+  have hj := hu (RatioAxisBundle s) (RatioAxisBundle t) a ha'
+  rw [ratioAxisBundle_mix hs ht ha'] at hj
+  exact hj
+
+/-- The ordinary concave secant bound controls increments to the right of rank one half. -/
+theorem concaveUtility_ratioAxis_bound {u : NonnegativeOrthant 2 → ℝ}
+    (hu : ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u) {δ : ℝ} (hδ : 0 < δ) :
+    u (RatioAxisBundle (1 / 2 + δ)) - u (RatioAxisBundle (1 / 2)) ≤
+      2 * δ * (u (RatioAxisBundle (1 / 2)) - u (RatioAxisBundle 0)) := by
+  have hs := (concaveUtility_ratioAxis hu).slope_anti_adjacent
+    (x := 0) (y := 1 / 2) (z := 1 / 2 + δ) (by norm_num)
+    (show 0 ≤ (1 / 2 : ℝ) + δ by linarith)
+    (by norm_num) (by linarith)
+  have hs' : (u (RatioAxisBundle (1 / 2 + δ)) - u (RatioAxisBundle (1 / 2))) / δ ≤
+      2 * (u (RatioAxisBundle (1 / 2)) - u (RatioAxisBundle 0)) := by
+    convert hs using 1 <;> ring
+  have hmul := (div_le_iff₀ hδ).mp hs'
+  nlinarith
+
+/-- A higher-rank bundle on a shorter ray from the common center of the lower indifference lines. -/
+noncomputable def RatioRayBundle (δ : ℝ) (hδ : 0 ≤ δ) : NonnegativeOrthant 2 :=
+  PairBundle (1 / 2) (1 / 8 + (3 / 4) * δ) (by norm_num) (by positivity)
+
+/-- The shorter-ray bundle has rank one half plus its increment. -/
+theorem ratioSumUtility_ray {δ : ℝ} (hδ : 0 ≤ δ) (hδ' : δ ≤ 1 / 4) :
+    RatioSumUtility (RatioRayBundle δ hδ) = 1 / 2 + δ := by
+  have hs : (1 / 2 : ℝ) + (1 / 8 + (3 / 4) * δ) ≤ 1 := by linarith
+  norm_num [RatioSumUtility, RatioRayBundle, PairBundle, hs]
+  ring
+
+/-- Equal physical weights contract the rank increment by three sevenths. -/
+theorem ratioSumUtility_ray_mix {δ : ℝ} (hδ : 0 ≤ δ) (hδ' : δ ≤ 1 / 4) :
+    RatioSumUtility (Mix (convex_Ici (0 : Fin 2 → ℝ))
+      (RatioAxisBundle (1 / 2)) (RatioRayBundle δ hδ) (1 / 2) ⟨by norm_num, by norm_num⟩) =
+      1 / 2 + (3 / 7) * δ := by
+  have hs : (1 / 2 : ℝ) * (1 / 2) +
+      (1 / 2 * (1 / 2) + 1 / 2 * (1 / 8 + 3 / 4 * δ)) ≤ 1 := by linarith
+  norm_num [RatioSumUtility, RatioAxisBundle, RatioRayBundle, PairBundle, Mix]
+  norm_num at hs
+  rw [ite_eq_left hs]
+  ring
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The nonexistence proof in Problem 2.8b
+
+Indifference along rays forces a concave representation to retain at least half
+an increment when its rank interval contracts by three sevenths. Iterating this
+inequality contradicts the concave secant bound on the commodity axis: after
+rescaling, the bound tends to zero at the geometric rate `(6/7)^n`.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- Equal values of the displayed utility give equal values in every representation. -/
+theorem ratioSum_rep_eq_of_value_eq {u : NonnegativeOrthant 2 → ℝ}
+    (hu : Represents u (UtilityPref RatioSumUtility)) {x y : NonnegativeOrthant 2}
+    (he : RatioSumUtility x = RatioSumUtility y) : u x = u y := by
+  apply le_antisymm
+  · exact (hu y x).mp (by change RatioSumUtility x ≤ RatioSumUtility y; rw [he])
+  · exact (hu x y).mp (by change RatioSumUtility y ≤ RatioSumUtility x; rw [he])
+
+/-- Equal-weight physical mixing imposes an excessive lower bound on rank increments. -/
+theorem ratioSum_concave_increment {u : NonnegativeOrthant 2 → ℝ}
+    (hu : Represents u (UtilityPref RatioSumUtility))
+    (hc : ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u)
+    {δ : ℝ} (hδ : 0 ≤ δ) (hδ' : δ ≤ 1 / 4) :
+    (1 / 2) * (u (RatioAxisBundle (1 / 2 + δ)) - u (RatioAxisBundle (1 / 2))) ≤
+      u (RatioAxisBundle (1 / 2 + (3 / 7) * δ)) - u (RatioAxisBundle (1 / 2)) := by
+  have hq : u (RatioRayBundle δ hδ) = u (RatioAxisBundle (1 / 2 + δ)) :=
+    ratioSum_rep_eq_of_value_eq hu ((ratioSumUtility_ray hδ hδ').trans
+      (ratioSumUtility_axis (by positivity)).symm)
+  have hm : u (Mix (convex_Ici (0 : Fin 2 → ℝ))
+      (RatioAxisBundle (1 / 2)) (RatioRayBundle δ hδ) (1 / 2) ⟨by norm_num, by norm_num⟩) =
+      u (RatioAxisBundle (1 / 2 + (3 / 7) * δ)) :=
+    ratioSum_rep_eq_of_value_eq hu ((ratioSumUtility_ray_mix hδ hδ').trans
+      (ratioSumUtility_axis (by positivity)).symm)
+  have hj := hc (RatioAxisBundle (1 / 2)) (RatioRayBundle δ hδ)
+    (1 / 2) ⟨by norm_num, by norm_num⟩
+  have hj' := hj.trans_eq hm
+  rw [hq] at hj'
+  linarith
+
+/-- **Problem 2.8b:** no concave function can represent the ratio-and-sum preference. -/
+theorem problem_2_8b_no_concave_representation :
+    ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref RatioSumUtility) ∧
+      ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u := by
+  rintro ⟨u, hu, hc⟩
+  let g : ℝ → ℝ := fun t => u (RatioAxisBundle t)
+  let d : ℕ → ℝ := fun n => (1 / 4) * (3 / 7 : ℝ) ^ n
+  have hd (n : ℕ) : 0 < d n ∧ d n ≤ 1 / 4 := by
+    have hp : 0 < (3 / 7 : ℝ) ^ n := pow_pos (by norm_num) n
+    have hp' : (3 / 7 : ℝ) ^ n ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)
+    dsimp [d]
+    constructor <;> nlinarith
+  have hdstep (n : ℕ) : d (n + 1) = (3 / 7) * d n := by
+    dsimp [d]
+    rw [pow_succ]
+    ring
+  have hlower (n : ℕ) : (1 / 2 : ℝ) ^ n * (g (3 / 4) - g (1 / 2)) ≤
+      g (1 / 2 + d n) - g (1 / 2) := by
+    induction n with
+    | zero => norm_num [d]
+    | succ n ih =>
+      have hr := ratioSum_concave_increment hu hc (hd n).1.le (hd n).2
+      change (1 / 2) * (g (1 / 2 + d n) - g (1 / 2)) ≤
+        g (1 / 2 + (3 / 7) * d n) - g (1 / 2) at hr
+      rw [← hdstep n] at hr
+      rw [pow_succ]
+      nlinarith
+  have hbound (n : ℕ) : (1 / 2 : ℝ) ^ n * (g (3 / 4) - g (1 / 2)) ≤
+      (3 / 7 : ℝ) ^ n * ((g (1 / 2) - g 0) / 2) := by
+    have hup := concaveUtility_ratioAxis_bound hc (hd n).1
+    change g (1 / 2 + d n) - g (1 / 2) ≤ 2 * d n * (g (1 / 2) - g 0) at hup
+    have hl := hlower n
+    dsimp [d] at hup
+    nlinarith
+  have hscaled (n : ℕ) : g (3 / 4) - g (1 / 2) ≤
+      (6 / 7 : ℝ) ^ n * ((g (1 / 2) - g 0) / 2) := by
+    calc
+      g (3 / 4) - g (1 / 2) =
+          (2 : ℝ) ^ n * ((1 / 2 : ℝ) ^ n * (g (3 / 4) - g (1 / 2))) := by
+            rw [← mul_assoc, ← mul_pow]
+            norm_num
+      _ ≤ (2 : ℝ) ^ n * ((3 / 7 : ℝ) ^ n * ((g (1 / 2) - g 0) / 2)) :=
+        mul_le_mul_of_nonneg_left (hbound n) (pow_nonneg (by norm_num) n)
+      _ = (6 / 7 : ℝ) ^ n * ((g (1 / 2) - g 0) / 2) := by
+        rw [← mul_assoc, ← mul_pow]
+        norm_num
+  have hlim : Filter.Tendsto
+      (fun n : ℕ => (6 / 7 : ℝ) ^ n * ((g (1 / 2) - g 0) / 2)) Filter.atTop (𝓝 0) := by
+    simpa only [zero_mul] using
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 6 / 7)
+        (by norm_num : (6 / 7 : ℝ) < 1)).mul_const ((g (1 / 2) - g 0) / 2)
+  have hle : g (3 / 4) - g (1 / 2) ≤ 0 := ge_of_tendsto' hlim hscaled
+  have hstrict : Strict (UtilityPref RatioSumUtility)
+      (RatioAxisBundle (3 / 4)) (RatioAxisBundle (1 / 2)) := by
+    change RatioSumUtility (RatioAxisBundle (1 / 2)) ≤
+        RatioSumUtility (RatioAxisBundle (3 / 4)) ∧
+      ¬ RatioSumUtility (RatioAxisBundle (3 / 4)) ≤ RatioSumUtility (RatioAxisBundle (1 / 2))
+    rw [ratioSumUtility_axis (by norm_num : (0 : ℝ) ≤ 1 / 2),
+      ratioSumUtility_axis (by norm_num : (0 : ℝ) ≤ 3 / 4)]
+    norm_num
+  have hlt := (strict_iff_utility_lt hu _ _).mp hstrict
+  change g (1 / 2) < g (3 / 4) at hlt
+  linarith
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuous semi-strictly convex preferences without concave representation
+
+Kreps I, Problem 2.8b. Every contour is a half-space cut out by a linear form
+whose coefficient depends on the rank. This gives continuity and semi-strict
+convexity, completing the counterexample alongside the no-representation theorem.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Below the dividing line, the denominator is positive. -/
+theorem ratioSum_denominator_pos {x : NonnegativeOrthant 2}
+    (hx : x.val 0 + x.val 1 ≤ 1) : 0 < 2 - x.val 0 := by
+  have hx₁ := x.property 1
+  change 0 ≤ x.val 1 at hx₁
+  linarith
+
+/-- The fractional branch takes values at most one. -/
+theorem ratioSumUtility_low_le_one {x : NonnegativeOrthant 2}
+    (hx : x.val 0 + x.val 1 ≤ 1) : RatioSumUtility x ≤ 1 := by
+  rw [RatioSumUtility, ite_eq_left hx]
+  apply sub_le_iff_le_add.mpr
+  apply (div_le_iff₀ (ratioSum_denominator_pos hx)).mpr
+  nlinarith
+
+/-- Both branches of the utility are nonnegative. -/
+theorem ratioSumUtility_nonneg (x : NonnegativeOrthant 2) : 0 ≤ RatioSumUtility x := by
+  have hx₀ : 0 ≤ x.val 0 := x.property 0
+  have hx₁ : 0 ≤ x.val 1 := x.property 1
+  by_cases hx : x.val 0 + x.val 1 ≤ 1
+  · rw [RatioSumUtility, ite_eq_left hx]
+    apply sub_nonneg.mpr
+    apply (le_div_iff₀ (ratioSum_denominator_pos hx)).mpr
+    nlinarith
+  · rw [RatioSumUtility, ite_eq_right hx]
+    linarith
+
+/-- The linear form defining an upper contour at the given nonnegative rank. -/
+noncomputable def RatioRankLinearForm (c : ℝ) (x : NonnegativeOrthant 2) : ℝ :=
+  min (c + 1) 2 * x.val 0 + 2 * x.val 1
+
+/-- Above the dividing line every rank at most one is strictly exceeded. -/
+theorem ratioRankLinearForm_high {x : NonnegativeOrthant 2} {c : ℝ}
+    (hc₀ : 0 ≤ c) (hc₁ : c ≤ 1) (hx : 1 < x.val 0 + x.val 1) :
+    2 * c < RatioRankLinearForm c x := by
+  have hx₁ : 0 ≤ x.val 1 := x.property 1
+  rw [RatioRankLinearForm, min_eq_left (by linarith)]
+  have hmain := mul_pos (show 0 < c + 1 by linarith) (sub_pos.mpr hx)
+  have htail := mul_nonneg (sub_nonneg.mpr hc₁) hx₁
+  nlinarith
+
+/-- A weak upper utility contour is exactly a linear half-space. -/
+theorem ratioSumUtility_le_iff {x : NonnegativeOrthant 2} {c : ℝ} (hc : 0 ≤ c) :
+    c ≤ RatioSumUtility x ↔ 2 * c ≤ RatioRankLinearForm c x := by
+  by_cases hc₁ : c ≤ 1
+  · by_cases hx : x.val 0 + x.val 1 ≤ 1
+    · rw [RatioSumUtility, ite_eq_left hx, RatioRankLinearForm, min_eq_left (by linarith)]
+      rw [le_sub_iff_add_le, le_div_iff₀ (ratioSum_denominator_pos hx)]
+      constructor <;> intro h <;> nlinarith
+    · have hform := ratioRankLinearForm_high hc hc₁ (lt_of_not_ge hx)
+      rw [RatioSumUtility, ite_eq_right hx]
+      constructor <;> intro h
+      · exact hform.le
+      · linarith
+  · have hc₁' : 1 < c := lt_of_not_ge hc₁
+    rw [RatioRankLinearForm, min_eq_right (by linarith)]
+    by_cases hx : x.val 0 + x.val 1 ≤ 1
+    · have hu := ratioSumUtility_low_le_one hx
+      constructor <;> intro h <;> nlinarith
+    · rw [RatioSumUtility, ite_eq_right hx]
+      constructor <;> intro h <;> nlinarith
+
+/-- A strict upper utility contour is the corresponding open half-space. -/
+theorem ratioSumUtility_lt_iff {x : NonnegativeOrthant 2} {c : ℝ} (hc : 0 ≤ c) :
+    c < RatioSumUtility x ↔ 2 * c < RatioRankLinearForm c x := by
+  by_cases hc₁ : c ≤ 1
+  · by_cases hx : x.val 0 + x.val 1 ≤ 1
+    · rw [RatioSumUtility, ite_eq_left hx, RatioRankLinearForm, min_eq_left (by linarith)]
+      rw [lt_sub_iff_add_lt, lt_div_iff₀ (ratioSum_denominator_pos hx)]
+      constructor <;> intro h <;> nlinarith
+    · have hform := ratioRankLinearForm_high hc hc₁ (lt_of_not_ge hx)
+      rw [RatioSumUtility, ite_eq_right hx]
+      constructor <;> intro h
+      · exact hform
+      · linarith
+  · have hc₁' : 1 < c := lt_of_not_ge hc₁
+    rw [RatioRankLinearForm, min_eq_right (by linarith)]
+    by_cases hx : x.val 0 + x.val 1 ≤ 1
+    · have hu := ratioSumUtility_low_le_one hx
+      constructor <;> intro h <;> nlinarith
+    · rw [RatioSumUtility, ite_eq_right hx]
+      constructor <;> intro h <;> nlinarith
+
+/-- The two displayed branches agree at total consumption one. -/
+theorem ratioSumUtility_boundary {x : NonnegativeOrthant 2}
+    (hx : x.val 0 + x.val 1 = 1) : RatioSumUtility x = 1 := by
+  apply le_antisymm (ratioSumUtility_low_le_one hx.le)
+  apply (ratioSumUtility_le_iff (by norm_num : (0 : ℝ) ≤ 1)).mpr
+  norm_num [RatioRankLinearForm]
+  linarith
+
+/-- At the bundle's own rank its contour equation holds with equality. -/
+theorem ratioRankLinearForm_self (x : NonnegativeOrthant 2) :
+    RatioRankLinearForm (RatioSumUtility x) x = 2 * RatioSumUtility x := by
+  apply le_antisymm
+  · apply le_of_not_gt
+    intro h
+    exact lt_irrefl _ ((ratioSumUtility_lt_iff (ratioSumUtility_nonneg x)).mpr h)
+  · exact (ratioSumUtility_le_iff (ratioSumUtility_nonneg x)).mp le_rfl
+
+/-- The contour form is linear in consumption mixtures. -/
+theorem ratioRankLinearForm_mix (c : ℝ) (x y : NonnegativeOrthant 2)
+    (a : ℝ) (ha : a ∈ Set.Icc 0 1) :
+    RatioRankLinearForm c (Mix (convex_Ici (0 : Fin 2 → ℝ)) x y a ha) =
+      a * RatioRankLinearForm c x + (1 - a) * RatioRankLinearForm c y := by
+  dsimp [RatioRankLinearForm, Mix]
+  ring
+
+/-- The ratio-and-sum preference is convex on the full orthant. -/
+theorem ratioSumPreference_convex :
+    ConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref RatioSumUtility) := by
+  intro x y hxy a ha
+  apply (ratioSumUtility_le_iff (ratioSumUtility_nonneg y)).mpr
+  have hm := ratioRankLinearForm_mix (RatioSumUtility y) x y a ha
+  have hy := ratioRankLinearForm_self y
+  have hx := (ratioSumUtility_le_iff (ratioSumUtility_nonneg y)).mp hxy
+  have hlin : 2 * RatioSumUtility y ≤ a * RatioRankLinearForm (RatioSumUtility y) x +
+      (1 - a) * RatioRankLinearForm (RatioSumUtility y) y := by
+    have hyeq := congrArg (fun v : ℝ => (1 - a) * v) hy
+    nlinarith [mul_nonneg ha.1 (sub_nonneg.mpr hx)]
+  exact hlin.trans_eq hm.symm
+
+/-- Strictly better endpoints improve every interior mixture strictly over the lower rank. -/
+theorem ratioSumPreference_semiStrict :
+    SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ))
+      (UtilityPref RatioSumUtility) := by
+  refine ⟨ratioSumPreference_convex, ?_⟩
+  intro x y hxy a ha
+  have hu : Represents RatioSumUtility (UtilityPref RatioSumUtility) := fun _ _ => Iff.rfl
+  apply (strict_iff_utility_lt hu _ y).mpr
+  apply (ratioSumUtility_lt_iff (ratioSumUtility_nonneg y)).mpr
+  have hm := ratioRankLinearForm_mix (RatioSumUtility y) x y a ⟨ha.1.le, ha.2.le⟩
+  have hy := ratioRankLinearForm_self y
+  have hx := (ratioSumUtility_lt_iff (ratioSumUtility_nonneg y)).mp
+    ((strict_iff_utility_lt hu x y).mp hxy)
+  have hlin : 2 * RatioSumUtility y < a * RatioRankLinearForm (RatioSumUtility y) x +
+      (1 - a) * RatioRankLinearForm (RatioSumUtility y) y := by
+    nlinarith [mul_pos ha.1 (sub_pos.mpr hx)]
+  exact hlin.trans_eq hm.symm
+
+/-- Every fixed-rank contour form is continuous. -/
+theorem ratioRankLinearForm_continuous (c : ℝ) : Continuous (RatioRankLinearForm c) :=
+  (((continuous_apply 0).comp continuous_subtype_val).const_mul _).add
+    (((continuous_apply 1).comp continuous_subtype_val).const_mul _)
+
+/-- The weak upper and lower contours are closed linear half-spaces. -/
+theorem ratioSumPreference_continuous : ContinuousPreference (UtilityPref RatioSumUtility) := by
+  apply (proposition_1_14c (proposition_1_3a RatioSumUtility)).mpr
+  intro x
+  have hn := ratioSumUtility_nonneg x
+  have hlo : NoBetterThan (UtilityPref RatioSumUtility) x =
+      {y | RatioRankLinearForm (RatioSumUtility x) y ≤ 2 * RatioSumUtility x} := by
+    ext y
+    change RatioSumUtility y ≤ RatioSumUtility x ↔
+      RatioRankLinearForm (RatioSumUtility x) y ≤ 2 * RatioSumUtility x
+    constructor
+    · intro h
+      apply le_of_not_gt
+      intro hf
+      exact not_lt_of_ge h ((ratioSumUtility_lt_iff hn).mpr hf)
+    · intro h
+      apply le_of_not_gt
+      intro hf
+      exact not_lt_of_ge h ((ratioSumUtility_lt_iff hn).mp hf)
+  have hhi : NoWorseThan (UtilityPref RatioSumUtility) x =
+      {y | 2 * RatioSumUtility x ≤ RatioRankLinearForm (RatioSumUtility x) y} := by
+    ext y
+    exact ratioSumUtility_le_iff hn
+  rw [hlo, hhi]
+  exact ⟨isClosed_le (ratioRankLinearForm_continuous _) continuous_const,
+    isClosed_le continuous_const (ratioRankLinearForm_continuous _)⟩
+
+/-- The displayed utility itself is continuous, not merely its represented preference. -/
+theorem ratioSumUtility_continuous : Continuous RatioSumUtility :=
+  continuous_of_full_nonnegative_range (fun _ _ => Iff.rfl)
+    ratioSumPreference_continuous ratioSumUtility_nonneg
+    (fun c hc => ⟨RatioAxisBundle c, ratioSumUtility_axis hc⟩)
+
+/-- **Problem 2.8b:** continuous semi-strictly convex preference with no concave representation. -/
+theorem problem_2_8b :
+    Rational (UtilityPref RatioSumUtility) ∧
+      ContinuousPreference (UtilityPref RatioSumUtility) ∧
+      SemiStrictlyConvexPreference (convex_Ici (0 : Fin 2 → ℝ)) (UtilityPref RatioSumUtility) ∧
+      ¬ ∃ u : NonnegativeOrthant 2 → ℝ, Represents u (UtilityPref RatioSumUtility) ∧
+        ConcaveUtility (convex_Ici (0 : Fin 2 → ℝ)) u :=
+  ⟨proposition_1_3a _, ratioSumPreference_continuous, ratioSumPreference_semiStrict,
+    problem_2_8b_no_concave_representation⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Completing an assigned scale from a dense sample
+
+Kreps I, Problem 2.14(f)-(g). Taking the supremum of the assigned ranks weakly
+below a point extends the specified scale. Including best and worst ranks in the
+sample ensures finite bounds at every point. Strict separation gives representation;
+density of the assigned values removes numerical gaps and gives continuity.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*}
+
+/-- Every point lies between two sampled original ranks, with equality permitted. -/
+def SampleBrackets (v : X → ℝ) (q : ℕ → X) : Prop :=
+  ∀ x, ∃ i j, v (q i) ≤ v x ∧ v x ≤ v (q j)
+
+/-- The sample contains a representative of each attained extreme rank. -/
+def SampleContainsExtremes (v : X → ℝ) (q : ℕ → X) : Prop :=
+  (∀ x, (∀ y, v x ≤ v y) → ∃ n, v (q n) = v x) ∧
+    (∀ x, (∀ y, v y ≤ v x) → ∃ n, v (q n) = v x)
+
+/-- Strict separation and the included extreme ranks supply finite brackets everywhere. -/
+theorem sampleBrackets_of_extremes {v : X → ℝ} {q : ℕ → X}
+    (hs : StrictRankSeparator v (Set.range q)) (he : SampleContainsExtremes v q) :
+    SampleBrackets v q := by
+  intro x
+  have hlo : ∃ i, v (q i) ≤ v x := by
+    by_cases h : ∃ y, v y < v x
+    · obtain ⟨y, hy⟩ := h
+      obtain ⟨z, ⟨i, rfl⟩, _, hix⟩ := hs y x hy
+      exact ⟨i, hix.le⟩
+    · have hmin : ∀ y, v x ≤ v y := fun y => le_of_not_gt (fun hy => h ⟨y, hy⟩)
+      obtain ⟨i, hi⟩ := he.1 x hmin
+      exact ⟨i, hi.le⟩
+  have hhi : ∃ j, v x ≤ v (q j) := by
+    by_cases h : ∃ y, v x < v y
+    · obtain ⟨y, hy⟩ := h
+      obtain ⟨z, ⟨j, rfl⟩, hxj, _⟩ := hs x y hy
+      exact ⟨j, hxj.le⟩
+    · have hmax : ∀ y, v y ≤ v x := fun y => le_of_not_gt (fun hy => h ⟨y, hy⟩)
+      obtain ⟨j, hj⟩ := he.2 x hmax
+      exact ⟨j, hj.ge⟩
+  obtain ⟨i, hi⟩ := hlo
+  obtain ⟨j, hj⟩ := hhi
+  exact ⟨i, j, hi, hj⟩
+
+/-- Assigned values of sampled points no better than the given point. -/
+def SampleRankCut (v : X → ℝ) (q : ℕ → X) (u : ℕ → ℝ) (x : X) : Set ℝ :=
+  u '' {n | v (q n) ≤ v x}
+
+/-- Complete the assigned scale by taking the supremum of each lower cut. -/
+noncomputable def SampleRankExtension (v : X → ℝ) (q : ℕ → X) (u : ℕ → ℝ) (x : X) : ℝ :=
+  sSup (SampleRankCut v q u x)
+
+/-- A sampled lower bracket makes every cut nonempty. -/
+theorem sampleRankCut_nonempty {v : X → ℝ} {q : ℕ → X} (u : ℕ → ℝ)
+    (hb : SampleBrackets v q) (x : X) : (SampleRankCut v q u x).Nonempty := by
+  obtain ⟨i, _, hi, _⟩ := hb x
+  exact ⟨u i, i, hi, rfl⟩
+
+/-- A sampled upper bracket bounds every assigned lower cut. -/
+theorem sampleRankCut_bddAbove {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q) (x : X) :
+    BddAbove (SampleRankCut v q u x) := by
+  obtain ⟨_, j, _, hj⟩ := hb x
+  refine ⟨u j, ?_⟩
+  rintro a ⟨i, hi, rfl⟩
+  exact (hu i j).mp (hi.trans hj)
+
+/-- A sampled rank below the point bounds its extension from below. -/
+theorem sampleRankExtension_lower {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q)
+    {x : X} {i : ℕ} (hi : v (q i) ≤ v x) : u i ≤ SampleRankExtension v q u x :=
+  le_csSup (sampleRankCut_bddAbove hu hb x) ⟨i, hi, rfl⟩
+
+/-- A sampled rank above the point bounds its extension from above. -/
+theorem sampleRankExtension_upper {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q)
+    {x : X} {j : ℕ} (hj : v x ≤ v (q j)) : SampleRankExtension v q u x ≤ u j := by
+  apply csSup_le (sampleRankCut_nonempty u hb x)
+  rintro a ⟨i, hi, rfl⟩
+  exact (hu i j).mp (hi.trans hj)
+
+/-- The extension agrees with all of the prescribed sampled values. -/
+theorem sampleRankExtension_at_sample {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q) (i : ℕ) :
+    SampleRankExtension v q u (q i) = u i :=
+  le_antisymm (sampleRankExtension_upper hu hb le_rfl)
+    (sampleRankExtension_lower hu hb le_rfl)
+
+/-- Inclusion of lower cuts preserves weak original rank comparisons. -/
+theorem sampleRankExtension_mono {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q)
+    {x y : X} (hxy : v x ≤ v y) :
+    SampleRankExtension v q u x ≤ SampleRankExtension v q u y := by
+  apply csSup_le (sampleRankCut_nonempty u hb x)
+  rintro a ⟨i, hi, rfl⟩
+  exact sampleRankExtension_lower hu hb (hi.trans hxy)
+
+/-- Two intermediate sampled ranks force a strict comparison of the completed values. -/
+theorem sampleRankExtension_strict {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    (hu : RankPreserving (v ∘ q) u) (hb : SampleBrackets v q)
+    (hs : StrictRankSeparator v (Set.range q)) {x y : X} (hxy : v x < v y) :
+    SampleRankExtension v q u x < SampleRankExtension v q u y := by
+  obtain ⟨a, ⟨i, rfl⟩, hxi, hiy⟩ := hs x y hxy
+  obtain ⟨b, ⟨j, rfl⟩, hij, hjy⟩ := hs (q i) y hiy
+  exact (sampleRankExtension_upper hu hb hxi.le).trans_lt
+    (((rankPreserving_lt hu i j).mp hij).trans_le (sampleRankExtension_lower hu hb hjy.le))
+
+/-- The extension represents the original preference on the entire domain. -/
+theorem sampleRankExtension_represents {v : X → ℝ} {q : ℕ → X} {u : ℕ → ℝ}
+    {r : X → X → Prop} (hv : Represents v r) (hu : RankPreserving (v ∘ q) u)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q)) :
+    Represents (SampleRankExtension v q u) r := by
+  intro x y
+  constructor
+  · exact fun hxy => sampleRankExtension_mono hu hb ((hv x y).mp hxy)
+  · intro hxy
+    by_contra h
+    have hlt : v x < v y := lt_of_not_ge (fun hle => h ((hv x y).mpr hle))
+    exact not_lt_of_ge hxy (sampleRankExtension_strict hu hb hs hlt)
+
+/-- A represented continuous preference has continuous utility if its range has no open gaps. -/
+theorem continuous_of_interval_closure_range [TopologicalSpace X]
+    {r : X → X → Prop} {u : X → ℝ} (hu : Represents u r) (hc : ContinuousPreference r)
+    (hgap : ∀ x y, Set.Icc (u x) (u y) ⊆ closure (Set.range u)) : Continuous u := by
+  apply OrderTopology.continuous_iff.mpr
+  intro a
+  have ho := continuousPreference_openStrictContours hc
+  constructor
+  · apply isOpen_iff_mem_nhds.mpr
+    intro x hx
+    change a < u x at hx
+    by_cases hall : ∀ y, a < u y
+    · exact Filter.mem_of_superset Filter.univ_mem (fun y _ => hall y)
+    · push Not at hall
+      obtain ⟨y, hy⟩ := hall
+      have hm : (a + u x) / 2 ∈ closure (Set.range u) :=
+        hgap y x ⟨by linarith, by linarith⟩
+      obtain ⟨_, ⟨haz, hzx⟩, z, rfl⟩ := mem_closure_iff.mp hm (Set.Ioo a (u x))
+        isOpen_Ioo ⟨by linarith, by linarith⟩
+      have hxz := (strict_iff_utility_lt hu x z).mpr hzx
+      apply Filter.mem_of_superset ((ho z).1.mem_nhds hxz)
+      intro w hw
+      exact haz.trans ((strict_iff_utility_lt hu w z).mp hw)
+  · apply isOpen_iff_mem_nhds.mpr
+    intro x hx
+    change u x < a at hx
+    by_cases hall : ∀ y, u y < a
+    · exact Filter.mem_of_superset Filter.univ_mem (fun y _ => hall y)
+    · push Not at hall
+      obtain ⟨y, hy⟩ := hall
+      have hm : (u x + a) / 2 ∈ closure (Set.range u) :=
+        hgap x y ⟨by linarith, by linarith⟩
+      obtain ⟨_, ⟨hxz, hza⟩, z, rfl⟩ := mem_closure_iff.mp hm (Set.Ioo (u x) a)
+        isOpen_Ioo ⟨by linarith, by linarith⟩
+      have hzx := (strict_iff_utility_lt hu z x).mpr hxz
+      apply Filter.mem_of_superset ((ho z).2.mem_nhds hzx)
+      intro w hw
+      exact ((strict_iff_utility_lt hu z w).mp hw).trans hza
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The continuous extension and finite limits of the recursive scale
+
+Kreps I, Problem 2.14(f)-(g). Complete precisely the assigned midpoint scale by
+lower cuts. Its dense numerical range gives continuity. Every convergent sequence
+of sampled points consequently has a finite limit, with extended-real limsup and
+liminf equal to that real number. All such sequences give the same value.
+
+The final wrapper constructs its initial, possibly discontinuous representation
+by the countable weighted-sum method. It does not invoke the separate general
+continuous-representation theorem.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+variable {X : Type*}
+
+/-- The extension of the exact recursive assignment to the full preference domain. -/
+noncomputable def RecursiveUtility (v : X → ℝ) (q : ℕ → X) : X → ℝ :=
+  SampleRankExtension v q (RecursiveRank (v ∘ q))
+
+/-- The extension retains every value assigned by the recursion. -/
+theorem recursiveUtility_at_sample {v : X → ℝ} {q : ℕ → X}
+    (hb : SampleBrackets v q) (n : ℕ) :
+    RecursiveUtility v q (q n) = RecursiveRank (v ∘ q) n :=
+  sampleRankExtension_at_sample (recursiveRank_preserving _) hb n
+
+/-- Completing the recursive scale preserves every preference comparison. -/
+theorem recursiveUtility_represents {r : X → X → Prop} {v : X → ℝ} {q : ℕ → X}
+    (hv : Represents v r) (hb : SampleBrackets v q)
+    (hs : StrictRankSeparator v (Set.range q)) : Represents (RecursiveUtility v q) r :=
+  sampleRankExtension_represents hv (recursiveRank_preserving _) hb hs
+
+/-- Every completed value lies in the smallest interval containing the sampled assigned values. -/
+theorem recursiveUtility_mem_interval {v : X → ℝ} {q : ℕ → X}
+    (hb : SampleBrackets v q) (x : X) :
+    RecursiveUtility v q x ∈ RecursiveRankInterval (v ∘ q) := by
+  obtain ⟨i, j, hi, hj⟩ := hb x
+  exact ⟨i, j, sampleRankExtension_lower (recursiveRank_preserving _) hb hi,
+    sampleRankExtension_upper (recursiveRank_preserving _) hb hj⟩
+
+/-- Dense assigned ranks make the completed representation continuous, including at extrema. -/
+theorem recursiveUtility_continuous [TopologicalSpace X] {r : X → X → Prop}
+    {v : X → ℝ} {q : ℕ → X} (hv : Represents v r) (hc : ContinuousPreference r)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q)) :
+    Continuous (RecursiveUtility v q) := by
+  apply continuous_of_interval_closure_range (recursiveUtility_represents hv hb hs) hc
+  have hd : ∀ i j, (v ∘ q) i < (v ∘ q) j →
+      ∃ k, (v ∘ q) i < (v ∘ q) k ∧ (v ∘ q) k < (v ∘ q) j := by
+    intro i j hij
+    obtain ⟨z, ⟨k, rfl⟩, hik, hkj⟩ := hs (q i) (q j) hij
+    exact ⟨k, hik, hkj⟩
+  have hrange : Set.range (RecursiveRank (v ∘ q)) ⊆ Set.range (RecursiveUtility v q) := by
+    rintro t ⟨n, rfl⟩
+    exact ⟨q n, recursiveUtility_at_sample hb n⟩
+  intro x y t ht
+  apply closure_mono hrange
+  apply recursiveRankInterval_subset_closure (v ∘ q) hd
+  exact (recursiveRankInterval_ordConnected (v ∘ q)).out
+    (recursiveUtility_mem_interval hb x) (recursiveUtility_mem_interval hb y) ht
+
+/-- Along every convergent sampled sequence, the assigned values converge to the extension. -/
+theorem recursiveUtility_sample_limit [TopologicalSpace X] {r : X → X → Prop}
+    {v : X → ℝ} {q : ℕ → X} (hv : Represents v r) (hc : ContinuousPreference r)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q))
+    {x : X} (s : ℕ → ℕ) (hseq : Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x)) :
+    Filter.Tendsto (RecursiveRank (v ∘ q) ∘ s) Filter.atTop (𝓝 (RecursiveUtility v q x)) := by
+  have h := (recursiveUtility_continuous hv hc hb hs).continuousAt.tendsto.comp hseq
+  simpa only [Function.comp_def, recursiveUtility_at_sample hb] using h
+
+/-- **Problem 2.14(f):** limsup and liminf agree and are finite, as extended-real limits. -/
+theorem problem_2_14f [TopologicalSpace X] {r : X → X → Prop}
+    {v : X → ℝ} {q : ℕ → X} (hv : Represents v r) (hc : ContinuousPreference r)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q))
+    {x : X} (s : ℕ → ℕ) (hseq : Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x)) :
+    ∃ l : ℝ, Filter.Tendsto (RecursiveRank (v ∘ q) ∘ s) Filter.atTop (𝓝 l) ∧
+      Filter.limsup (fun n => (RecursiveRank (v ∘ q) (s n) : EReal)) Filter.atTop =
+        (l : EReal) ∧
+      Filter.liminf (fun n => (RecursiveRank (v ∘ q) (s n) : EReal)) Filter.atTop =
+        (l : EReal) := by
+  have h := recursiveUtility_sample_limit hv hc hb hs s hseq
+  have he : Filter.Tendsto (fun n => (RecursiveRank (v ∘ q) (s n) : EReal))
+      Filter.atTop (𝓝 (RecursiveUtility v q x : EReal)) :=
+    continuous_coe_real_ereal.continuousAt.tendsto.comp h
+  exact ⟨RecursiveUtility v q x, h, he.limsup_eq, he.liminf_eq⟩
+
+/-- The limiting value is independent of the sampled sequence and its enumeration indices. -/
+theorem recursiveUtility_limit_unique [TopologicalSpace X] {r : X → X → Prop}
+    {v : X → ℝ} {q : ℕ → X} (hv : Represents v r) (hc : ContinuousPreference r)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q))
+    {x : X} (s : ℕ → ℕ) (hseq : Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x))
+    {l : ℝ} (hl : Filter.Tendsto (RecursiveRank (v ∘ q) ∘ s) Filter.atTop (𝓝 l)) :
+    l = RecursiveUtility v q x :=
+  tendsto_nhds_unique hl (recursiveUtility_sample_limit hv hc hb hs s hseq)
+
+/-- Every point of a dense sampled metric domain is approached by a sampled sequence. -/
+theorem dense_sample_sequence [TopologicalSpace X] [FrechetUrysohnSpace X]
+    (q : ℕ → X) (hq : DenseRange q) (x : X) :
+    ∃ s : ℕ → ℕ, Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x) := by
+  classical
+  obtain ⟨f, hf, hlim⟩ := mem_closure_iff_seq_limit.mp (hq x)
+  choose s hs using hf
+  refine ⟨s, ?_⟩
+  have he : q ∘ s = f := funext hs
+  rwa [he]
+
+/-- Best and worst preference classes, when attained, are represented in the sample. -/
+def SampleContainsPreferenceExtremes (r : X → X → Prop) (q : ℕ → X) : Prop :=
+  (∀ x, (∀ y, r y x) → ∃ n, Indifferent r (q n) x) ∧
+    (∀ x, (∀ y, r x y) → ∃ n, Indifferent r (q n) x)
+
+/-- The preference formulation of included extremes gives the numerical formulation. -/
+theorem sampleContainsExtremes_of_preference {r : X → X → Prop} {v : X → ℝ} {q : ℕ → X}
+    (hv : Represents v r) (he : SampleContainsPreferenceExtremes r q) :
+    SampleContainsExtremes v q := by
+  constructor
+  · intro x hx
+    obtain ⟨n, hn⟩ := he.1 x (fun y => (hv y x).mpr (hx y))
+    exact ⟨n, le_antisymm ((hv x (q n)).mp hn.2) ((hv (q n) x).mp hn.1)⟩
+  · intro x hx
+    obtain ⟨n, hn⟩ := he.2 x (fun y => (hv x y).mpr (hx y))
+    exact ⟨n, le_antisymm ((hv x (q n)).mp hn.2) ((hv (q n) x).mp hn.1)⟩
+
+/-- **Problem 2.14(g):** the sequence limits define a continuous representation. -/
+theorem problem_2_14g [TopologicalSpace X] {r : X → X → Prop}
+    {v : X → ℝ} {q : ℕ → X} (hv : Represents v r) (hc : ContinuousPreference r)
+    (hb : SampleBrackets v q) (hs : StrictRankSeparator v (Set.range q)) :
+    Represents (RecursiveUtility v q) r ∧ Continuous (RecursiveUtility v q) ∧
+      ∀ x (s : ℕ → ℕ), Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x) →
+        Filter.Tendsto (RecursiveRank (v ∘ q) ∘ s) Filter.atTop (𝓝 (RecursiveUtility v q x)) :=
+  ⟨recursiveUtility_represents hv hb hs, recursiveUtility_continuous hv hc hb hs,
+    fun _ s hseq => recursiveUtility_sample_limit hv hc hb hs s hseq⟩
+
+/-- Parts (d)-(g) need only continuous rational preference and the book's augmented dense sample. -/
+theorem problem_2_14_recursive_completion [TopologicalSpace X] [PreconnectedSpace X]
+    {r : X → X → Prop} (hr : Rational r) (hc : ContinuousPreference r)
+    (q : ℕ → X) (hq : DenseRange q) (he : SampleContainsPreferenceExtremes r q) :
+    let v := SampledWeightedUtility r q DyadicWeight
+    Represents v r ∧ Represents (RecursiveUtility v q) r ∧ Continuous (RecursiveUtility v q) ∧
+      ∀ x (s : ℕ → ℕ), Filter.Tendsto (q ∘ s) Filter.atTop (𝓝 x) →
+        Filter.Tendsto (RecursiveRank (v ∘ q) ∘ s) Filter.atTop (𝓝 (RecursiveUtility v q x)) := by
+  let v := SampledWeightedUtility r q DyadicWeight
+  have hv : Represents v r := sampledWeightedUtility_represents q dyadicWeight_pos
+    dyadicWeight_summable hr (dense_orderSeparating hr hc hq)
+  have hs := dense_strictRankSeparator hr hc hv hq
+  have hb := sampleBrackets_of_extremes hs (sampleContainsExtremes_of_preference hv he)
+  exact ⟨hv, problem_2_14g hv hc hb hs⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Include attained best and worst ranks in the dense sample
+
+Kreps I, Problem 2.14, pp. 48-49. Prepending a worst point when one exists and a
+best point when one exists preserves density and covers both possible extreme
+classes. If an extreme does not exist, the original first sample point is used.
+Thus all four attained/unattained-extrema cases are covered without an assumption
+that the numerical range is bounded or that its supremum or infimum is attained.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*}
+
+/-- A globally worst point when one exists; otherwise use the specified anchor. -/
+noncomputable def WorstSamplePoint (r : X → X → Prop) (anchor : X) : X := by
+  classical
+  exact if h : ∃ x, ∀ y, r y x then h.choose else anchor
+
+/-- A globally best point when one exists; otherwise use the specified anchor. -/
+noncomputable def BestSamplePoint (r : X → X → Prop) (anchor : X) : X := by
+  classical
+  exact if h : ∃ x, ∀ y, r x y then h.choose else anchor
+
+/-- The dense enumeration with possible extreme ranks prepended. -/
+noncomputable def AugmentedPreferenceSample (r : X → X → Prop) (q : ℕ → X) : ℕ → X
+  | 0 => WorstSamplePoint r (q 0)
+  | 1 => BestSamplePoint r (q 0)
+  | n + 2 => q n
+
+/-- Every original sample point remains in the augmented enumeration. -/
+theorem augmentedPreferenceSample_tail (r : X → X → Prop) (q : ℕ → X) (n : ℕ) :
+    AugmentedPreferenceSample r q (n + 2) = q n := rfl
+
+/-- Prepending the extreme ranks preserves density. -/
+theorem augmentedPreferenceSample_dense [TopologicalSpace X]
+    (r : X → X → Prop) (q : ℕ → X) (hq : DenseRange q) :
+    DenseRange (AugmentedPreferenceSample r q) := by
+  apply hq.mono
+  rintro x ⟨n, rfl⟩
+  exact ⟨n + 2, rfl⟩
+
+/-- Every attained best or worst class is represented in the augmented sample. -/
+theorem augmentedPreferenceSample_extremes (r : X → X → Prop) (q : ℕ → X) :
+    SampleContainsPreferenceExtremes r (AugmentedPreferenceSample r q) := by
+  classical
+  constructor
+  · intro x hx
+    have h : ∃ z, ∀ y, r y z := ⟨x, hx⟩
+    refine ⟨0, ?_⟩
+    change Indifferent r (WorstSamplePoint r (q 0)) x
+    rw [WorstSamplePoint, dite_eq_left h]
+    exact ⟨hx h.choose, h.choose_spec x⟩
+  · intro x hx
+    have h : ∃ z, ∀ y, r z y := ⟨x, hx⟩
+    refine ⟨1, ?_⟩
+    change Indifferent r (BestSamplePoint r (q 0)) x
+    rw [BestSamplePoint, dite_eq_left h]
+    exact ⟨h.choose_spec x, hx h.choose⟩
+
+/-- Dense samples augmented as in the book bracket every original numerical rank. -/
+theorem augmentedPreferenceSample_brackets [TopologicalSpace X] [PreconnectedSpace X]
+    {r : X → X → Prop} {v : X → ℝ} (hr : Rational r) (hc : ContinuousPreference r)
+    (hv : Represents v r) (q : ℕ → X) (hq : DenseRange q) :
+    SampleBrackets v (AugmentedPreferenceSample r q) :=
+  sampleBrackets_of_extremes
+    (dense_strictRankSeparator hr hc hv (augmentedPreferenceSample_dense r q hq))
+    (sampleContainsExtremes_of_preference hv (augmentedPreferenceSample_extremes r q))
+
+/-- The complete recursive proof starts from any dense enumeration. -/
+theorem recursive_completion_of_dense_sample [TopologicalSpace X] [PreconnectedSpace X]
+    {r : X → X → Prop} (hr : Rational r) (hc : ContinuousPreference r)
+    (q : ℕ → X) (hq : DenseRange q) :
+    let q' := AugmentedPreferenceSample r q
+    let v := SampledWeightedUtility r q' DyadicWeight
+    Represents v r ∧ Represents (RecursiveUtility v q') r ∧ Continuous (RecursiveUtility v q') ∧
+      ∀ x (s : ℕ → ℕ), Filter.Tendsto (q' ∘ s) Filter.atTop (nhds x) →
+        Filter.Tendsto (RecursiveRank (v ∘ q') ∘ s) Filter.atTop
+          (nhds (RecursiveUtility v q' x)) :=
+  problem_2_14_recursive_completion hr hc (AugmentedPreferenceSample r q)
+    (augmentedPreferenceSample_dense r q hq) (augmentedPreferenceSample_extremes r q)
+
+/-- Existence of the augmented enumeration requires only a nonempty separable domain. -/
+theorem exists_dense_sample_with_extremes [TopologicalSpace X]
+    [TopologicalSpace.SeparableSpace X] [Nonempty X] (r : X → X → Prop) :
+    ∃ q : ℕ → X, DenseRange q ∧ SampleContainsPreferenceExtremes r q := by
+  obtain ⟨q, hq⟩ := TopologicalSpace.exists_dense_seq X
+  exact ⟨AugmentedPreferenceSample r q, augmentedPreferenceSample_dense r q hq,
+    augmentedPreferenceSample_extremes r q⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A continuous connect-the-dots curve
+
+Kreps I, Problem 2.14(a), p. 48. Interpolate linearly between consecutive integer
+points in a convex domain. The affine formulas agree at every integer junction;
+local finiteness of the closed unit intervals gives continuity on the whole line.
+A sequence indexed by natural numbers is extended constantly to negative indices.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {S : Set E}
+
+/-- Linear interpolation between each consecutive pair of integer-indexed points. -/
+noncomputable def PolygonalCurve (hS : Convex ℝ S) (q : ℤ → S) (t : ℝ) : S :=
+  Mix hS (q (⌊t⌋ + 1)) (q ⌊t⌋) (Int.fract t)
+    ⟨Int.fract_nonneg t, (Int.fract_lt_one t).le⟩
+
+/-- At an integer, interpolation returns the prescribed point. -/
+theorem polygonalCurve_int (hS : Convex ℝ S) (q : ℤ → S) (n : ℤ) :
+    PolygonalCurve hS q n = q n := by
+  apply Subtype.ext
+  simp [PolygonalCurve, Mix]
+
+/-- Each closed unit interval carries one affine segment, including both endpoints. -/
+theorem polygonalCurve_formula (hS : Convex ℝ S) (q : ℤ → S) (n : ℤ)
+    {t : ℝ} (ht : t ∈ Set.Icc (n : ℝ) ((n : ℝ) + 1)) :
+    (PolygonalCurve hS q t).val =
+      (t - n) • (q (n + 1)).val + (1 - (t - n)) • (q n).val := by
+  by_cases hn : t < (n : ℝ) + 1
+  · have hf : ⌊t⌋ = n := Int.floor_eq_iff.mpr ⟨ht.1, hn⟩
+    simp only [PolygonalCurve, Mix, Int.fract, hf]
+  · have he : t = ((n + 1 : ℤ) : ℝ) := by push_cast; linarith [ht.2]
+    rw [he, polygonalCurve_int]
+    simp
+
+/-- The integer unit intervals form a locally finite closed cover of the real line. -/
+theorem integer_unit_intervals_locallyFinite :
+    LocallyFinite (fun n : ℤ => Set.Icc (n : ℝ) ((n : ℝ) + 1)) :=
+  locallyFinite_Icc_of_tendsto tendsto_intCast_atTop_atTop
+    (Filter.tendsto_atBot_add_const_right _ 1
+      (tendsto_intCast_atBot_iff.mpr Filter.tendsto_id))
+
+/-- Affine continuity on the closed unit intervals glues to a continuous curve. -/
+theorem polygonalCurve_continuous (hS : Convex ℝ S) (q : ℤ → S) :
+    Continuous (PolygonalCurve hS q) := by
+  have hcover : (⋃ n : ℤ, Set.Icc (n : ℝ) ((n : ℝ) + 1)) = Set.univ := by
+    apply Set.eq_univ_of_forall
+    intro t
+    exact Set.mem_iUnion.mpr ⟨⌊t⌋, Int.floor_le t, (Int.lt_floor_add_one t).le⟩
+  have hval : Continuous (fun t => (PolygonalCurve hS q t).val) := by
+    apply integer_unit_intervals_locallyFinite.continuous hcover (fun _ => isClosed_Icc)
+    intro n
+    have hp : Continuous (fun t : ℝ =>
+        (t - n) • (q (n + 1)).val + (1 - (t - n)) • (q n).val) := by fun_prop
+    apply hp.continuousOn.congr
+    intro t ht
+    exact polygonalCurve_formula hS q n ht
+  exact hval.subtype_mk _
+
+/-- The image of a polygonal curve is connected in the sense needed for the crossing lemma. -/
+theorem polygonalCurve_range_preconnected (hS : Convex ℝ S) (q : ℤ → S) :
+    IsPreconnected (Set.range (PolygonalCurve hS q)) :=
+  isPreconnected_range (polygonalCurve_continuous hS q)
+
+/-- A natural-number sequence gives a curve constant before zero and joining all its points. -/
+noncomputable def SequenceCurve (hS : Convex ℝ S) (q : ℕ → S) : ℝ → S :=
+  PolygonalCurve hS (fun n => q n.toNat)
+
+/-- Every prescribed sequence point lies on the curve at its natural-number parameter. -/
+theorem sequenceCurve_nat (hS : Convex ℝ S) (q : ℕ → S) (n : ℕ) :
+    SequenceCurve hS q n = q n := by
+  simpa only [SequenceCurve, Int.cast_natCast, Int.toNat_natCast] using
+    polygonalCurve_int hS (fun m => q m.toNat) n
+
+/-- The countable connect-the-dots construction is continuous. -/
+theorem sequenceCurve_continuous (hS : Convex ℝ S) (q : ℕ → S) :
+    Continuous (SequenceCurve hS q) := polygonalCurve_continuous hS _
+
+/-- Every point in the prescribed sequence belongs to the curve image. -/
+theorem sequenceCurve_contains_range (hS : Convex ℝ S) (q : ℕ → S) :
+    Set.range q ⊆ Set.range (SequenceCurve hS q) := by
+  rintro x ⟨n, rfl⟩
+  exact ⟨n, sequenceCurve_nat hS q n⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A countable sequence brackets every numerical rank
+
+Kreps I, Problem 2.14(a). A countable dense sequence in the numerical range is
+cofinal below every nonminimal rank and coinitial above every nonmaximal rank.
+Include any attained extrema to obtain weak brackets for every point. This uses
+only a real-valued representation, with no continuity assumption on that function.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*}
+
+/-- A dense sample of the numerical range, with extrema included, brackets every rank. -/
+theorem sampleBrackets_of_dense_rank_range (v : X → ℝ) (q : ℕ → X)
+    (hd : DenseRange (fun n => (⟨v (q n), Set.mem_range_self (q n)⟩ : Set.range v)))
+    (he : SampleContainsExtremes v q) : SampleBrackets v q := by
+  intro x
+  have hlo : ∃ i, v (q i) ≤ v x := by
+    by_cases hy : ∃ y, v y < v x
+    · obtain ⟨y, hy⟩ := hy
+      have ho : IsOpen {a : Set.range v | a.val < v x} :=
+        isOpen_lt continuous_subtype_val continuous_const
+      obtain ⟨i, hi⟩ := hd.exists_mem_open ho ⟨⟨v y, Set.mem_range_self y⟩, hy⟩
+      exact ⟨i, hi.le⟩
+    · obtain ⟨i, hi⟩ := he.1 x (fun y => le_of_not_gt (fun h => hy ⟨y, h⟩))
+      exact ⟨i, hi.le⟩
+  have hhi : ∃ j, v x ≤ v (q j) := by
+    by_cases hy : ∃ y, v x < v y
+    · obtain ⟨y, hy⟩ := hy
+      have ho : IsOpen {a : Set.range v | v x < a.val} :=
+        isOpen_lt continuous_const continuous_subtype_val
+      obtain ⟨j, hj⟩ := hd.exists_mem_open ho ⟨⟨v y, Set.mem_range_self y⟩, hy⟩
+      exact ⟨j, hj.le⟩
+    · obtain ⟨j, hj⟩ := he.2 x (fun y => le_of_not_gt (fun h => hy ⟨y, h⟩))
+      exact ⟨j, hj.ge⟩
+  obtain ⟨i, hi⟩ := hlo
+  obtain ⟨j, hj⟩ := hhi
+  exact ⟨i, j, hi, hj⟩
+
+/-- Every real-valued scale has a countable bracketing sample containing attained extremes. -/
+theorem exists_sample_brackets [Nonempty X] (v : X → ℝ) :
+    ∃ q : ℕ → X, SampleBrackets v q ∧ SampleContainsExtremes v q := by
+  classical
+  let : Nonempty (Set.range v) := ⟨⟨v (Classical.arbitrary X), Set.mem_range_self _⟩⟩
+  obtain ⟨f, hf⟩ := TopologicalSpace.exists_dense_seq (Set.range v)
+  let q : ℕ → X := fun n => (f n).property.choose
+  have hq (n : ℕ) : v (q n) = (f n).val := (f n).property.choose_spec
+  have hqd : DenseRange (fun n => (⟨v (q n), Set.mem_range_self (q n)⟩ : Set.range v)) := by
+    have heq : (fun n => (⟨v (q n), Set.mem_range_self (q n)⟩ : Set.range v)) = f := by
+      funext n
+      exact Subtype.ext (hq n)
+    rwa [heq]
+  let q' := AugmentedPreferenceSample (UtilityPref v) q
+  have hd : DenseRange (fun n => (⟨v (q' n), Set.mem_range_self (q' n)⟩ : Set.range v)) := by
+    apply hqd.mono
+    rintro a ⟨n, rfl⟩
+    exact ⟨n + 2, rfl⟩
+  have he : SampleContainsExtremes v q' :=
+    sampleContainsExtremes_of_preference (fun _ _ => Iff.rfl)
+      (augmentedPreferenceSample_extremes (UtilityPref v) q)
+  exact ⟨q', sampleBrackets_of_dense_rank_range v q' hd he, he⟩
+
+/-- In preference language, a countable sequence is both cofinal and coinitial. -/
+theorem exists_preference_bracketing_sequence [Nonempty X] {r : X → X → Prop}
+    {v : X → ℝ} (hv : Represents v r) :
+    ∃ q : ℕ → X, ∀ x, ∃ i j, r (q i) x ∧ r x (q j) := by
+  obtain ⟨q, hb, _⟩ := exists_sample_brackets v
+  refine ⟨q, fun x => ?_⟩
+  obtain ⟨j, i, hj, hi⟩ := hb x
+  exact ⟨i, j, (hv (q i) x).mpr hi, (hv x (q j)).mpr hj⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# A reference curve meeting every indifference class
+
+Kreps I, Problem 2.14(a)-(b), p. 48. From any numerical representation, choose
+a countable sequence bracketing all ranks and join the points by affine segments.
+When best and worst ranks are both attained, a single segment suffices. Otherwise
+the countable construction handles each of the remaining three extrema cases.
+The connected-image crossing lemma then makes the curve meet every class.
+
+The final theorem assembles parts (a)-(g): construct the curve, run the exact
+recursive scale on an augmented dense subset of its image, and extend by indifference.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {S : Set E}
+
+/-- A countable sequence of weak rank bounds gives a continuous bracketing polygonal curve. -/
+theorem exists_bracketing_polygonal_curve [Nonempty S] (hS : Convex ℝ S)
+    {r : S → S → Prop} {v : S → ℝ} (hv : Represents v r) :
+    ∃ q : ℕ → S, Continuous (SequenceCurve hS q) ∧
+      ∀ x, ∃ a b : ℝ, r (SequenceCurve hS q a) x ∧ r x (SequenceCurve hS q b) := by
+  obtain ⟨q, hq⟩ := exists_preference_bracketing_sequence hv
+  refine ⟨q, sequenceCurve_continuous hS q, fun x => ?_⟩
+  obtain ⟨i, j, hi, hj⟩ := hq x
+  refine ⟨i, j, ?_⟩
+  simpa only [sequenceCurve_nat] using And.intro hi hj
+
+/-- The single segment from a best point to a worst point. -/
+def ExtremeReferenceSegment (hS : Convex ℝ S) (best worst : S) (t : UnitSegment) : S :=
+  Mix hS worst best t.val t.property
+
+/-- The segment starts at the best point. -/
+theorem extremeReferenceSegment_zero (hS : Convex ℝ S) (best worst : S) :
+    ExtremeReferenceSegment hS best worst ⟨0, by norm_num⟩ = best :=
+  mix_zero hS worst best _
+
+/-- The segment ends at the worst point. -/
+theorem extremeReferenceSegment_one (hS : Convex ℝ S) (best worst : S) :
+    ExtremeReferenceSegment hS best worst ⟨1, by norm_num⟩ = worst :=
+  mix_one hS worst best _
+
+/-- The one-segment construction is continuous. -/
+theorem extremeReferenceSegment_continuous (hS : Convex ℝ S) (best worst : S) :
+    Continuous (ExtremeReferenceSegment hS best worst) := by
+  have h : Continuous (fun t : UnitSegment =>
+      t.val • worst.val + (1 - t.val) • best.val) := by fun_prop
+  exact h.subtype_mk _
+
+/-- The both-extrema-attained case in **Problem 2.14(a)** uses only one line segment. -/
+theorem problem_2_14a_both_extrema (hS : Convex ℝ S) {r : S → S → Prop}
+    (best worst : S) (hbest : ∀ x, r best x) (hworst : ∀ x, r x worst) :
+    Continuous (ExtremeReferenceSegment hS best worst) ∧
+      ∀ x, r (ExtremeReferenceSegment hS best worst ⟨0, by norm_num⟩) x ∧
+        r x (ExtremeReferenceSegment hS best worst ⟨1, by norm_num⟩) := by
+  refine ⟨extremeReferenceSegment_continuous hS best worst, fun x => ?_⟩
+  rw [extremeReferenceSegment_zero, extremeReferenceSegment_one]
+  exact ⟨hbest x, hworst x⟩
+
+/-- In the both-extrema case the single segment crosses every indifference class. -/
+theorem extremeReferenceSegment_covers (hS : Convex ℝ S) {r : S → S → Prop}
+    (hr : Rational r) (hc : ContinuousPreference r) (best worst : S)
+    (hbest : ∀ x, r best x) (hworst : ∀ x, r x worst) (x : S) :
+    ∃ t, Indifferent r (ExtremeReferenceSegment hS best worst t) x := by
+  have h := problem_2_14a_both_extrema hS best worst hbest hworst
+  exact lemma_2_10 hr hc _ h.1 x (h.2 x).1 (h.2 x).2
+
+/-- A two-point list continued constantly has just one nonconstant affine segment. -/
+def ExtremeReferenceSequence (best worst : S) (n : ℕ) : S := if n = 0 then best else worst
+
+/-- The two-point sequence starts at its best point. -/
+theorem extremeReferenceSequence_curve_zero (hS : Convex ℝ S) (best worst : S) :
+    SequenceCurve hS (ExtremeReferenceSequence best worst) 0 = best := by
+  simpa only [Nat.cast_zero, ExtremeReferenceSequence, ite_true] using
+    sequenceCurve_nat hS (ExtremeReferenceSequence best worst) 0
+
+/-- Its first affine segment ends at its worst point. -/
+theorem extremeReferenceSequence_curve_one (hS : Convex ℝ S) (best worst : S) :
+    SequenceCurve hS (ExtremeReferenceSequence best worst) 1 = worst := by
+  simpa only [Nat.cast_one, ExtremeReferenceSequence, one_ne_zero, ite_false] using
+    sequenceCurve_nat hS (ExtremeReferenceSequence best worst) 1
+
+/-- On the unit interval the two-point polygonal curve is exactly the single segment. -/
+theorem extremeReferenceSequence_on_unit (hS : Convex ℝ S) (best worst : S)
+    (t : UnitSegment) :
+    SequenceCurve hS (ExtremeReferenceSequence best worst) t.val =
+      ExtremeReferenceSegment hS best worst t := by
+  apply Subtype.ext
+  have h := polygonalCurve_formula hS
+    (fun n : ℤ => ExtremeReferenceSequence best worst n.toNat) 0 (t := t.val)
+    (by simpa only [Int.cast_zero, zero_add] using t.property)
+  simpa only [SequenceCurve, ExtremeReferenceSequence, zero_add, Int.toNat_zero,
+    Int.toNat_one, ite_true, one_ne_zero, ite_false, Int.cast_zero, sub_zero,
+    ExtremeReferenceSegment, Mix] using h
+
+/-- The two-point polygonal curve has precisely the image of the one line segment. -/
+theorem extremeReferenceSequence_range (hS : Convex ℝ S) (best worst : S) :
+    Set.range (SequenceCurve hS (ExtremeReferenceSequence best worst)) =
+      Set.range (ExtremeReferenceSegment hS best worst) := by
+  classical
+  apply Set.Subset.antisymm
+  · rintro x ⟨t, rfl⟩
+    let a := Int.fract t
+    have ha : a ∈ Set.Icc (0 : ℝ) 1 := ⟨Int.fract_nonneg t, (Int.fract_lt_one t).le⟩
+    by_cases hA : (⌊t⌋ + 1).toNat = 0
+    · by_cases hB : (⌊t⌋).toNat = 0
+      · refine ⟨⟨0, by norm_num⟩, ?_⟩
+        simp only [SequenceCurve, PolygonalCurve, ExtremeReferenceSequence,
+          hA, hB, ite_true, extremeReferenceSegment_zero]
+        exact (mix_self hS best (Int.fract t) _).symm
+      · refine ⟨⟨1 - a, sub_nonneg.mpr ha.2, by linarith [ha.1]⟩, ?_⟩
+        change Mix hS worst best (1 - a) _ = _
+        simp only [SequenceCurve, PolygonalCurve, ExtremeReferenceSequence,
+          hA, hB, ite_true, ite_false]
+        exact (mix_swap hS best worst a ha).symm
+    · by_cases hB : (⌊t⌋).toNat = 0
+      · refine ⟨⟨a, ha⟩, ?_⟩
+        simp only [SequenceCurve, PolygonalCurve, ExtremeReferenceSequence,
+          hA, hB, ite_true, ite_false, ExtremeReferenceSegment]
+        rfl
+      · refine ⟨⟨1, by norm_num⟩, ?_⟩
+        simp only [SequenceCurve, PolygonalCurve, ExtremeReferenceSequence,
+          hA, hB, ite_false, extremeReferenceSegment_one]
+        exact (mix_self hS worst (Int.fract t) _).symm
+  · rintro x ⟨t, rfl⟩
+    exact ⟨t.val, extremeReferenceSequence_on_unit hS best worst t⟩
+
+/-- With both extrema attained, the real-parameter curve brackets all points using one segment. -/
+theorem extremeReferenceSequence_brackets (hS : Convex ℝ S) {r : S → S → Prop}
+    (best worst : S) (hbest : ∀ x, r best x) (hworst : ∀ x, r x worst) :
+    Continuous (SequenceCurve hS (ExtremeReferenceSequence best worst)) ∧
+      ∀ x, ∃ a b : ℝ, r (SequenceCurve hS (ExtremeReferenceSequence best worst) a) x ∧
+        r x (SequenceCurve hS (ExtremeReferenceSequence best worst) b) := by
+  refine ⟨sequenceCurve_continuous hS _, fun x => ⟨0, 1, ?_, ?_⟩⟩
+  · rw [extremeReferenceSequence_curve_zero]
+    exact hbest x
+  · rw [extremeReferenceSequence_curve_one]
+    exact hworst x
+
+/-- **Problem 2.14(a):** a continuous countable connect-the-dots curve brackets all preferences. -/
+theorem problem_2_14a {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hr : Rational r) (hc : ContinuousPreference r) :
+    ∃ q : ℕ → NonnegativeOrthant k,
+      Continuous (SequenceCurve (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)) q) ∧
+        ∀ x, ∃ a b : ℝ,
+          r (SequenceCurve (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)) q a) x ∧
+          r x (SequenceCurve (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)) q b) := by
+  classical
+  let : Nonempty (NonnegativeOrthant k) := ⟨⟨0, le_rfl⟩⟩
+  by_cases he : (∃ best, ∀ x, r best x) ∧ ∃ worst, ∀ x, r x worst
+  · obtain ⟨⟨best, hbest⟩, ⟨worst, hworst⟩⟩ := he
+    exact ⟨ExtremeReferenceSequence best worst, extremeReferenceSequence_brackets
+      (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)) best worst hbest hworst⟩
+  · obtain ⟨v, hv⟩ := proposition_1_15 k hr hc
+    exact exists_bracketing_polygonal_curve (convex_Ici (𝕜 := ℝ) (0 : Fin k → ℝ)) hv
+
+/-- **Problem 2.14(b):** every bracketed class meets the connected curve. -/
+theorem problem_2_14b {X : Type*} [TopologicalSpace X] {r : X → X → Prop}
+    (hr : Rational r) (hc : ContinuousPreference r) (f : ℝ → X) (hf : Continuous f)
+    (hb : ∀ x, ∃ a b : ℝ, r (f a) x ∧ r x (f b)) :
+    ∀ x, ∃ t, Indifferent r (f t) x := by
+  intro x
+  obtain ⟨a, b, ha, hb⟩ := hb x
+  exact indifference_on_connected_image hr hc f hf x ha hb
+
+/-- Parts (a)-(b) produce a connected curve image meeting every indifference class. -/
+theorem problem_2_14ab {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hr : Rational r) (hc : ContinuousPreference r) :
+    ∃ f : ℝ → NonnegativeOrthant k, Continuous f ∧
+      IsPreconnected (Set.range f) ∧ ∀ x, ∃ t, Indifferent r (f t) x := by
+  obtain ⟨q, hq, hb⟩ := problem_2_14a hr hc
+  exact ⟨_, hq, isPreconnected_range hq, problem_2_14b hr hc _ hq hb⟩
+
+/-- **Problem 2.14:** the complete curve, recursive-scale, and indifference-extension proof. -/
+theorem problem_2_14 {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hr : Rational r) (hc : ContinuousPreference r) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u := by
+  obtain ⟨f, hf, hZ, hcover⟩ := problem_2_14ab hr hc
+  let Z := Set.range f
+  let : Nonempty Z := ⟨⟨f 0, Set.mem_range_self 0⟩⟩
+  let : PreconnectedSpace Z := isPreconnected_iff_preconnectedSpace.mp hZ
+  let rz : Z → Z → Prop := fun x y => r x.val y.val
+  have hrz : Rational rz := ⟨fun x y => hr.1 x.val y.val,
+    fun x y z => hr.2 x.val y.val z.val⟩
+  have hcz : ContinuousPreference rz :=
+    hc.preimage (continuous_subtype_val.prodMap continuous_subtype_val)
+  obtain ⟨q, hq, he⟩ := exists_dense_sample_with_extremes rz
+  have hcomplete := problem_2_14_recursive_completion hrz hcz q hq he
+  let v := SampledWeightedUtility rz q DyadicWeight
+  have hu : Represents (RecursiveUtility v q) rz := hcomplete.2.1
+  have huc : Continuous (RecursiveUtility v q) := hcomplete.2.2.1
+  have hclasses : ∀ x, ∃ z : Z, Indifferent r z.val x := by
+    intro x
+    obtain ⟨t, ht⟩ := hcover x
+    exact ⟨⟨f t, Set.mem_range_self t⟩, ht⟩
+  obtain ⟨u, hrep, hcont, _⟩ := problem_2_14c hr hc Z hZ (RecursiveUtility v q) hu huc hclasses
+  exact ⟨u, hrep, hcont⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Strong separability and third-factor cancellation
+
+Preparation for Kreps I, Proposition 2.14. Debreu's 1959 discussion paper,
+pp. 12-13, derives the local Thomsen hexagon by compensating in a third block.
+The cancellation below is proved from strong separability, not assumed as an axiom.
+Connectedness and continuity supply the compensator locally. Constructing an
+additive cardinal scale from this local cancellation is a separate remaining step.
+
+Source: https://cowles.yale.edu/sites/default/files/2022-08/d0076.pdf
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*}
+  {r : (∀ i, B i) → (∀ i, B i) → Prop}
+
+/-- Independence of the complement of a block allows its common value to be changed. -/
+theorem stronglySeparable_complement_iff [Finite I] (hs : StronglySeparable r)
+    (i : I) (x y : ∀ i, B i) (a b : B i) :
+    r (Function.update x i a) (Function.update y i a) ↔
+      r (Function.update x i b) (Function.update y i b) := by
+  let : Fintype I := Fintype.ofFinite I
+  simpa only [Finset.piecewise_erase_univ, Function.update_self] using
+    hs (Finset.univ.erase i) x y (Function.update x i a) (Function.update x i b)
+
+/-- When two bundles have the same block, changing that common block preserves comparison. -/
+theorem stronglySeparable_common_update_iff [Finite I] (hs : StronglySeparable r)
+    {i : I} {x y : ∀ i, B i} (hxy : x i = y i) (a : B i) :
+    r x y ↔ r (Function.update x i a) (Function.update y i a) := by
+  have hy : Function.update y i (x i) = y := by
+    rw [hxy, Function.update_eq_self]
+  simpa only [Function.update_eq_self, hy] using
+    stronglySeparable_complement_iff hs i x y (x i) a
+
+/-- A three-coordinate slice through a reference bundle. -/
+def ThreeCoordinateBundle (z : ∀ i, B i) (i j l : I)
+    (a : B i) (b : B j) (c : B l) : ∀ i, B i :=
+  Function.update (Function.update (Function.update z i a) j b) l c
+
+/-- Replacing the first selected coordinate stays in the same three-coordinate slice. -/
+theorem threeCoordinateBundle_update_first (z : ∀ i, B i) {i j l : I}
+    (hij : i ≠ j) (hil : i ≠ l) (a a' : B i) (b : B j) (c : B l) :
+    Function.update (ThreeCoordinateBundle z i j l a b c) i a' =
+      ThreeCoordinateBundle z i j l a' b c := by
+  unfold ThreeCoordinateBundle
+  rw [Function.update_comm hil.symm, Function.update_comm hij.symm, Function.update_idem]
+
+/-- Replacing the second selected coordinate stays in the same slice. -/
+theorem threeCoordinateBundle_update_second (z : ∀ i, B i) {i j l : I}
+    (hjl : j ≠ l) (a : B i) (b b' : B j) (c : B l) :
+    Function.update (ThreeCoordinateBundle z i j l a b c) j b' =
+      ThreeCoordinateBundle z i j l a b' c := by
+  unfold ThreeCoordinateBundle
+  rw [Function.update_comm hjl.symm, Function.update_idem]
+
+/-- Replacing the third selected coordinate stays in the same slice. -/
+theorem threeCoordinateBundle_update_third (z : ∀ i, B i) (i j l : I)
+    (a : B i) (b : B j) (c c' : B l) :
+    Function.update (ThreeCoordinateBundle z i j l a b c) l c' =
+      ThreeCoordinateBundle z i j l a b c' := by
+  simp only [ThreeCoordinateBundle, Function.update_idem]
+
+/-- Independence of each pair of factors from the remaining factor. -/
+def ThreeFactorIndependent {A B C : Type*}
+    (r : (A × B × C) → (A × B × C) → Prop) : Prop :=
+  (∀ a a' b b' c c', r (a, b, c) (a, b', c') ↔ r (a', b, c) (a', b', c')) ∧
+  (∀ b b' a a' c c', r (a, b, c) (a', b, c') ↔ r (a, b', c) (a', b', c')) ∧
+  (∀ c c' a a' b b', r (a, b, c) (a', b', c) ↔ r (a, b, c') (a', b', c'))
+
+/-- Strong separability supplies all three independence properties on every distinct-block slice. -/
+theorem stronglySeparable_threeFactor [Finite I] (hs : StronglySeparable r)
+    (z : ∀ i, B i) {i j l : I} (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l) :
+    ThreeFactorIndependent (fun p q : B i × B j × B l =>
+      r (ThreeCoordinateBundle z i j l p.1 p.2.1 p.2.2)
+        (ThreeCoordinateBundle z i j l q.1 q.2.1 q.2.2)) := by
+  constructor
+  · intro a a' b b' c c'
+    have he : ThreeCoordinateBundle z i j l a b c i =
+        ThreeCoordinateBundle z i j l a b' c' i := by
+      simp [ThreeCoordinateBundle, hij, hil]
+    simpa only [threeCoordinateBundle_update_first z hij hil] using
+      stronglySeparable_common_update_iff hs he a'
+  constructor
+  · intro b b' a a' c c'
+    have he : ThreeCoordinateBundle z i j l a b c j =
+        ThreeCoordinateBundle z i j l a' b c' j := by
+      simp [ThreeCoordinateBundle, hjl]
+    simpa only [threeCoordinateBundle_update_second z hjl] using
+      stronglySeparable_common_update_iff hs he b'
+  · intro c c' a a' b b'
+    have he : ThreeCoordinateBundle z i j l a b c l =
+        ThreeCoordinateBundle z i j l a' b' c l := by
+      simp [ThreeCoordinateBundle]
+    simpa only [threeCoordinateBundle_update_third] using
+      stronglySeparable_common_update_iff hs he c'
+
+/-- Transitivity of weak preference gives transitivity of indifference. -/
+theorem indifferent_transitive {X : Type*} {r : X → X → Prop} (ht : TransitivePref r)
+    {x y z : X} (hxy : Indifferent r x y) (hyz : Indifferent r y z) : Indifferent r x z :=
+  ⟨ht x y z hxy.1 hyz.1, ht z y x hyz.2 hxy.2⟩
+
+/-- The first-factor independence condition transports both directions of indifference. -/
+theorem threeFactor_first_indifferent {A B C : Type*}
+    {r : (A × B × C) → (A × B × C) → Prop} (hi : ThreeFactorIndependent r)
+    (a a' : A) (b b' : B) (c c' : C) :
+    Indifferent r (a, b, c) (a, b', c') ↔ Indifferent r (a', b, c) (a', b', c') :=
+  and_congr (hi.1 a a' b b' c c') (hi.1 a a' b' b c' c)
+
+/-- The second-factor independence condition transports indifference. -/
+theorem threeFactor_second_indifferent {A B C : Type*}
+    {r : (A × B × C) → (A × B × C) → Prop} (hi : ThreeFactorIndependent r)
+    (b b' : B) (a a' : A) (c c' : C) :
+    Indifferent r (a, b, c) (a', b, c') ↔ Indifferent r (a, b', c) (a', b', c') :=
+  and_congr (hi.2.1 b b' a a' c c') (hi.2.1 b b' a' a c' c)
+
+/-- The third-factor independence condition transports indifference. -/
+theorem threeFactor_third_indifferent {A B C : Type*}
+    {r : (A × B × C) → (A × B × C) → Prop} (hi : ThreeFactorIndependent r)
+    (c c' : C) (a a' : A) (b b' : B) :
+    Indifferent r (a, b, c) (a', b', c) ↔ Indifferent r (a, b, c') (a', b', c') :=
+  and_congr (hi.2.2 c c' a a' b b') (hi.2.2 c c' a' a b' b)
+
+/-- Debreu's third-factor hexagon: a compensating third coordinate closes the indifference chain. -/
+theorem third_factor_hexagon {A B C : Type*}
+    {r : (A × B × C) → (A × B × C) → Prop} (ht : TransitivePref r)
+    (hi : ThreeFactorIndependent r) (a₁ a₂ a₃ : A) (b₁ b₂ b₃ : B) (c c' : C)
+    (hab : Indifferent r (a₂, b₁, c) (a₁, b₂, c))
+    (hcd : Indifferent r (a₃, b₁, c) (a₁, b₃, c))
+    (hp : Indifferent r (a₁, b₁, c') (a₂, b₁, c)) :
+    Indifferent r (a₃, b₂, c) (a₂, b₃, c) := by
+  have hpb := indifferent_transitive ht hp hab
+  have hqe := (threeFactor_first_indifferent hi a₁ a₃ b₁ b₂ c' c).mp hpb
+  have hrf := (threeFactor_second_indifferent hi b₁ b₃ a₁ a₂ c' c).mp hp
+  have hqr := (threeFactor_third_indifferent hi c c' a₃ a₁ b₁ b₃).mp hcd
+  exact indifferent_transitive ht ⟨hqe.2, hqe.1⟩ (indifferent_transitive ht hqr hrf)
+
+/-- An interior rank in a connected third factor can compensate every sufficiently nearby pair. -/
+theorem third_factor_local_compensation {A B C : Type*}
+    [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace C] [PreconnectedSpace C]
+    {r : (A × B × C) → (A × B × C) → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (a : A) (b : B) (c cLow cHigh : C)
+    (hlo : Strict r (a, b, c) (a, b, cLow)) (hhi : Strict r (a, b, cHigh) (a, b, c)) :
+    ∃ U : Set (A × B), IsOpen U ∧ (a, b) ∈ U ∧
+      ∀ p ∈ U, ∃ d, Indifferent r (a, b, d) (p.1, p.2, c) := by
+  let f : A × B → A × B × C := fun p => (p.1, p.2, c)
+  have hf : Continuous f := continuous_fst.prodMk (continuous_snd.prodMk continuous_const)
+  let U := f ⁻¹' (StrictlyBetterThan r (a, b, cLow) ∩ StrictlyWorseThan r (a, b, cHigh))
+  have ho := continuousPreference_openStrictContours hc
+  refine ⟨U, ((ho (a, b, cLow)).1.inter (ho (a, b, cHigh)).2).preimage hf,
+    ⟨hlo, hhi⟩, ?_⟩
+  intro p hp
+  exact indifference_on_connected_image hr hc (fun d => (a, b, d))
+    (continuous_const.prodMk (continuous_const.prodMk continuous_id))
+    (p.1, p.2, c) hp.2.1 hp.1.1
+
+/-- Continuity and the third-factor bracket turn the algebraic hexagon into local cancellation. -/
+theorem third_factor_local_hexagon {A B C : Type*}
+    [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace C] [PreconnectedSpace C]
+    {r : (A × B × C) → (A × B × C) → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hi : ThreeFactorIndependent r)
+    (a₁ : A) (b₁ : B) (c cLow cHigh : C)
+    (hlo : Strict r (a₁, b₁, c) (a₁, b₁, cLow))
+    (hhi : Strict r (a₁, b₁, cHigh) (a₁, b₁, c)) :
+    ∃ U : Set (A × B), IsOpen U ∧ (a₁, b₁) ∈ U ∧
+      ∀ a₂ a₃ b₂ b₃, (a₂, b₁) ∈ U →
+        Indifferent r (a₂, b₁, c) (a₁, b₂, c) →
+        Indifferent r (a₃, b₁, c) (a₁, b₃, c) →
+        Indifferent r (a₃, b₂, c) (a₂, b₃, c) := by
+  obtain ⟨U, hU, hp, hcomp⟩ := third_factor_local_compensation hr hc a₁ b₁ c cLow cHigh hlo hhi
+  refine ⟨U, hU, hp, ?_⟩
+  intro a₂ a₃ b₂ b₃ hmem hab hcd
+  obtain ⟨c', hc'⟩ := hcomp (a₂, b₁) hmem
+  exact third_factor_hexagon hr.2 hi a₁ a₂ a₃ b₁ b₂ b₃ c c' hab hcd hc'
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Topological foundations of the additive construction
+
+Preparation for Kreps I, Proposition 2.14. A nontrivial connected third block
+has an interior preference rank. Strong separability then gives local Thomsen
+cancellation on a slice through the other two blocks. All hypotheses in this
+step are derived from the original preference; no additive representation or
+hexagon condition is assumed.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- Restricting a rational preference through a map preserves rationality. -/
+theorem rational_preference_pullback {X Y : Type*} {r : X → X → Prop}
+    (hr : Rational r) (f : Y → X) : Rational (fun x y => r (f x) (f y)) :=
+  ⟨fun x y => hr.1 (f x) (f y), fun x y z => hr.2 (f x) (f y) (f z)⟩
+
+/-- A continuous parametrization preserves the joint openness of strict preference. -/
+theorem continuousPreference_pullback {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    {r : X → X → Prop} (hc : ContinuousPreference r) {f : Y → X} (hf : Continuous f) :
+    ContinuousPreference (fun x y => r (f x) (f y)) := hc.preimage (hf.prodMap hf)
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*}
+
+/-- Varying three coordinates is a continuous parametrization of the commodity product. -/
+theorem threeCoordinateBundle_continuous [∀ i, TopologicalSpace (B i)]
+    (z : ∀ i, B i) (i j l : I) :
+    Continuous (fun p : B i × B j × B l =>
+      ThreeCoordinateBundle z i j l p.1 p.2.1 p.2.2) :=
+  ((continuous_const.update i continuous_fst).update j continuous_snd.fst).update l
+    continuous_snd.snd
+
+/-- Preference restricted to a three-coordinate slice. -/
+def ThreeCoordinatePreference (r : (∀ i, B i) → (∀ i, B i) → Prop)
+    (z : ∀ i, B i) (i j l : I) (p q : B i × B j × B l) : Prop :=
+  r (ThreeCoordinateBundle z i j l p.1 p.2.1 p.2.2)
+    (ThreeCoordinateBundle z i j l q.1 q.2.1 q.2.2)
+
+/-- Connectedness gives an interior rank between any strict pair in the third factor. -/
+theorem third_factor_interior_rank {A B C : Type*}
+    [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace C] [PreconnectedSpace C]
+    {r : (A × B × C) → (A × B × C) → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (a : A) (b : B) {cLow cHigh : C}
+    (hstrict : Strict r (a, b, cHigh) (a, b, cLow)) :
+    ∃ c, Strict r (a, b, c) (a, b, cLow) ∧ Strict r (a, b, cHigh) (a, b, c) := by
+  have hf : Continuous (fun c : C => (a, b, c)) :=
+    continuous_const.prodMk (continuous_const.prodMk continuous_id)
+  obtain ⟨c, hhi, hlo⟩ := exists_strict_between
+    (rational_preference_pullback hr (fun c => (a, b, c)))
+    (continuousPreference_pullback hc hf) hstrict
+  exact ⟨c, hlo, hhi⟩
+
+/-- A nontrivial third factor supplies the interior rank needed for local cancellation. -/
+theorem third_factor_local_hexagon_of_nontrivial {A B C : Type*}
+    [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace C] [PreconnectedSpace C]
+    {r : (A × B × C) → (A × B × C) → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hi : ThreeFactorIndependent r) (a₁ : A) (b₁ : B)
+    (hnt : ∃ cHigh cLow, Strict r (a₁, b₁, cHigh) (a₁, b₁, cLow)) :
+    ∃ c : C, ∃ U : Set (A × B), IsOpen U ∧ (a₁, b₁) ∈ U ∧
+      ∀ a₂ a₃ b₂ b₃, (a₂, b₁) ∈ U →
+        Indifferent r (a₂, b₁, c) (a₁, b₂, c) →
+        Indifferent r (a₃, b₁, c) (a₁, b₃, c) →
+        Indifferent r (a₃, b₂, c) (a₂, b₃, c) := by
+  obtain ⟨cHigh, cLow, hstrict⟩ := hnt
+  obtain ⟨c, hlo, hhi⟩ := third_factor_interior_rank hr hc a₁ b₁ hstrict
+  obtain ⟨U, hU, hp, hhex⟩ := third_factor_local_hexagon hr hc hi a₁ b₁ c cLow cHigh hlo hhi
+  exact ⟨c, U, hU, hp, hhex⟩
+
+/-- Strong separability, continuity and a connected nontrivial third block imply a local hexagon. -/
+theorem stronglySeparable_local_hexagon [Finite I] [∀ i, TopologicalSpace (B i)]
+    {r : (∀ i, B i) → (∀ i, B i) → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hs : StronglySeparable r)
+    {i j l : I} (hij : i ≠ j) (hil : i ≠ l) (hjl : j ≠ l)
+    [PreconnectedSpace (B l)] (hnt : NontrivialBlock r l) :
+    ∃ z : ∀ i, B i, ∃ c : B l, ∃ U : Set (B i × B j), IsOpen U ∧ (z i, z j) ∈ U ∧
+      ∀ a₂ a₃ b₂ b₃, (a₂, z j) ∈ U →
+        Indifferent (ThreeCoordinatePreference r z i j l) (a₂, z j, c) (z i, b₂, c) →
+        Indifferent (ThreeCoordinatePreference r z i j l) (a₃, z j, c) (z i, b₃, c) →
+        Indifferent (ThreeCoordinatePreference r z i j l) (a₃, b₂, c) (a₂, b₃, c) := by
+  obtain ⟨cHigh, cLow, z, hz⟩ := hnt
+  have hr' : Rational (ThreeCoordinatePreference r z i j l) :=
+    rational_preference_pullback hr _
+  have hc' : ContinuousPreference (ThreeCoordinatePreference r z i j l) :=
+    continuousPreference_pullback hc (threeCoordinateBundle_continuous z i j l)
+  have hi : ThreeFactorIndependent (ThreeCoordinatePreference r z i j l) :=
+    stronglySeparable_threeFactor hs z hij hil hjl
+  have hnt' : ∃ a b, Strict (ThreeCoordinatePreference r z i j l)
+      (z i, z j, a) (z i, z j, b) := by
+    refine ⟨cHigh, cLow, ?_⟩
+    simpa only [Strict, ThreeCoordinatePreference, ThreeCoordinateBundle,
+      Function.update_eq_self] using hz
+  obtain ⟨c, U, hU, hp, hhex⟩ :=
+    third_factor_local_hexagon_of_nontrivial hr' hc' hi (z i) (z j) hnt'
+  exact ⟨z, c, U, hU, hp, hhex⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuous block scores
+
+Preparation for Kreps I, Proposition 2.14. Continuous representations on a
+connected space have interval ranges. Equivalent representations therefore
+induce an order homeomorphism between their attained ranges. For a weakly
+separable preference, this proves continuity of each coordinate of the exact
+baseline aggregator, without requiring a continuous choice of representatives.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*} {r : X → X → Prop} {u v : X → ℝ}
+
+/-- Equivalent utilities identify their attained ranges by an order isomorphism. -/
+noncomputable def UtilityRangeOrderIso (hu : Represents u r) (hv : Represents v r) :
+    Set.range u ≃o Set.range v where
+  toFun q := ⟨UtilityTransform u v q.val, by
+    obtain ⟨x, hx⟩ := q.property
+    rw [← hx, utilityTransform_apply hu hv]
+    exact ⟨x, rfl⟩⟩
+  invFun q := ⟨UtilityTransform v u q.val, by
+    obtain ⟨x, hx⟩ := q.property
+    rw [← hx, utilityTransform_apply hv hu]
+    exact ⟨x, rfl⟩⟩
+  left_inv := by
+    rintro ⟨_, x, rfl⟩
+    apply Subtype.ext
+    change UtilityTransform v u (UtilityTransform u v (u x)) = u x
+    rw [utilityTransform_apply hu hv, utilityTransform_apply hv hu]
+  right_inv := by
+    rintro ⟨_, x, rfl⟩
+    apply Subtype.ext
+    change UtilityTransform u v (UtilityTransform v u (v x)) = v x
+    rw [utilityTransform_apply hv hu, utilityTransform_apply hu hv]
+  map_rel_iff' := by
+    rintro ⟨_, x, rfl⟩ ⟨_, y, rfl⟩
+    change UtilityTransform u v (u x) ≤ UtilityTransform u v (u y) ↔ u x ≤ u y
+    rw [utilityTransform_apply hu hv, utilityTransform_apply hu hv]
+    exact (hv y x).symm.trans (hu y x)
+
+/-- On connected continuous utility ranges, the ordinal change of scale is continuous. -/
+theorem utilityTransform_continuous_range [TopologicalSpace X] [PreconnectedSpace X]
+    (hu : Represents u r) (hv : Represents v r) (huc : Continuous u) (hvc : Continuous v) :
+    Continuous (fun q : Set.range u => UtilityTransform u v q.val) := by
+  let : Set.OrdConnected (Set.range u) := (isPreconnected_range huc).ordConnected
+  let : Set.OrdConnected (Set.range v) := (isPreconnected_range hvc).ordConnected
+  exact continuous_subtype_val.comp (UtilityRangeOrderIso hu hv).continuous
+
+variable {I : Type*} [DecidableEq I] {B : I → Type*} {L : Type*}
+
+/-- Replacing a single block depends continuously on the replacement. -/
+theorem replaceBlock_continuous [∀ i, TopologicalSpace (B i)] [TopologicalSpace L]
+    (s : BlockBundle B L) (i : I) : Continuous (ReplaceBlock s i) :=
+  (continuous_const.update i continuous_id).prodMk continuous_const
+
+/-- Continuous overall utility gives continuous baseline subutilities. -/
+theorem baselineSubutility_continuous [∀ i, TopologicalSpace (B i)] [TopologicalSpace L]
+    {u : BlockBundle B L → ℝ} (hu : Continuous u) (s : BlockBundle B L) (i : I) :
+    Continuous (BaselineSubutility u s i) := hu.comp (replaceBlock_continuous s i)
+
+/-- Connected commodity blocks yield interval-valued continuous baseline scores. -/
+theorem baselineSubutility_ordConnected [∀ i, TopologicalSpace (B i)] [TopologicalSpace L]
+    {u : BlockBundle B L → ℝ} (hu : Continuous u) (s : BlockBundle B L) (i : I)
+    [PreconnectedSpace (B i)] : Set.OrdConnected (Set.range (BaselineSubutility u s i)) :=
+  (isPreconnected_range (baselineSubutility_continuous hu s i)).ordConnected
+
+/-- Separability identifies utility in every surrounding bundle with the baseline preference. -/
+theorem baselineSubutility_represents_context {u : BlockBundle B L → ℝ}
+    {r : BlockBundle B L → BlockBundle B L → Prop} (hu : Represents u r)
+    (hs : WeaklySeparable r) (s₀ s : BlockBundle B L) (i : I) :
+    Represents (BaselineSubutility u s i)
+      (fun a b => r (ReplaceBlock s₀ i a) (ReplaceBlock s₀ i b)) := by
+  intro a b
+  exact (hs i a b s₀ s).trans (hu _ _)
+
+/-- Changing the surrounding goods changes a connected block's scale continuously. -/
+theorem baselineSubutility_transform_continuous
+    [∀ i, TopologicalSpace (B i)] [TopologicalSpace L]
+    {u : BlockBundle B L → ℝ} {r : BlockBundle B L → BlockBundle B L → Prop}
+    (hu : Represents u r) (hs : WeaklySeparable r) (hc : Continuous u)
+    (s₀ s : BlockBundle B L) (i : I) [PreconnectedSpace (B i)] :
+    Continuous (fun q : Set.range (BaselineSubutility u s₀ i) =>
+      UtilityTransform (BaselineSubutility u s₀ i) (BaselineSubutility u s i) q.val) :=
+  utilityTransform_continuous_range
+    (baselineSubutility_represents_context hu hs s₀ s₀ i)
+    (baselineSubutility_represents_context hu hs s₀ s i)
+    (baselineSubutility_continuous hc s₀ i) (baselineSubutility_continuous hc s i)
+
+/-- Choosing representatives commutes with changing a single score coordinate. -/
+theorem scoreRepresentatives_update (w : ∀ i, B i → ℝ) (q : ∀ i, Set.range (w i))
+    (i : I) (t : Set.range (w i)) :
+    (fun j => ScoreRepresentative w j (Function.update q i t j)) =
+      Function.update (fun j => ScoreRepresentative w j (q j)) i
+        (ScoreRepresentative w i t) := by
+  funext j
+  by_cases hj : j = i
+  · subst j
+    simp only [Function.update_self]
+  · simp only [Function.update_of_ne hj]
+
+/-- Each coordinate of the exact weak-separability aggregator is continuous. -/
+theorem subutilityAggregator_coordinate_continuous
+    [∀ i, TopologicalSpace (B i)] [TopologicalSpace L]
+    {u : BlockBundle B L → ℝ} {r : BlockBundle B L → BlockBundle B L → Prop}
+    (hu : Represents u r) (hs : WeaklySeparable r) (hc : Continuous u)
+    (s₀ : BlockBundle B L) (q : ∀ i, Set.range (BaselineSubutility u s₀ i))
+    (l : L) (i : I) [PreconnectedSpace (B i)] :
+    Continuous (fun t => SubutilityAggregator u (BaselineSubutility u s₀)
+      (Function.update q i t, l)) := by
+  let w := BaselineSubutility u s₀
+  let s : BlockBundle B L := ((fun j => ScoreRepresentative w j (q j)), l)
+  have hf := baselineSubutility_represents_context hu hs s₀ s₀ i
+  have hg := baselineSubutility_represents_context hu hs s₀ s i
+  convert baselineSubutility_transform_continuous hu hs hc s₀ s i using 1
+  funext t
+  change u ((fun j => ScoreRepresentative w j (Function.update q i t j)), l) = _
+  rw [scoreRepresentatives_update]
+  change BaselineSubutility u s i (ScoreRepresentative w i t) =
+    UtilityTransform (w i) (BaselineSubutility u s i) t.val
+  rw [← scoreRepresentative_spec w i t]
+  exact (utilityTransform_apply hf hg (ScoreRepresentative w i t)).symm
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Joint continuity of increasing aggregators
+
+An increasing real-valued function on a finite product of densely ordered
+spaces is jointly continuous if it is continuous in each coordinate. The
+proof builds a finite product neighborhood inside each strict level set.
+Endpoints of the coordinate intervals are allowed.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open Filter Set
+open scoped Topology
+
+/-- A continuous strict lower level has a nearby lower bound whose upper ray is a neighborhood. -/
+theorem continuous_lower_level_bound {A : Type*} [LinearOrder A] [DenselyOrdered A]
+    [TopologicalSpace A] [OrderTopology A] {f : A → ℝ} (hf : Continuous f)
+    {x : A} {a : ℝ} (ha : a < f x) :
+    ∃ y, y ≤ x ∧ a < f y ∧ Ici y ∈ 𝓝 x := by
+  by_cases hx : ∃ z, z < x
+  · obtain ⟨l, hl, hs⟩ := exists_Ioc_subset_of_mem_nhds
+      (hf.continuousAt.preimage_mem_nhds (Ioi_mem_nhds ha)) hx
+    obtain ⟨y, hly, hyx⟩ := exists_between hl
+    exact ⟨y, hyx.le, hs ⟨hly, hyx.le⟩, Ici_mem_nhds hyx⟩
+  · refine ⟨x, le_rfl, ha, ?_⟩
+    have he : Ici x = univ := by
+      ext y
+      simp only [mem_Ici, mem_univ, iff_true]
+      exact le_of_not_gt (fun hy => hx ⟨y, hy⟩)
+    rw [he]
+    exact univ_mem
+
+variable {I : Type*} [DecidableEq I] {A : I → Type*}
+variable [∀ i, LinearOrder (A i)] [∀ i, DenselyOrdered (A i)]
+variable [∀ i, TopologicalSpace (A i)] [∀ i, OrderTopology (A i)]
+
+/-- Lower bounds for finitely many coordinates can be chosen inside a strict lower level. -/
+theorem finite_coordinate_lower_bound {F : (∀ i, A i) → ℝ}
+    (hc : ∀ p i, Continuous (fun t => F (Function.update p i t)))
+    (s : Finset I) (p : ∀ i, A i) {a : ℝ} (ha : a < F p) :
+    ∃ q, q ≤ p ∧ a < F q ∧ (∀ i ∈ s, Ici (q i) ∈ 𝓝 (p i)) ∧
+      ∀ i ∉ s, q i = p i := by
+  induction s using Finset.induction_on with
+  | empty => exact ⟨p, le_rfl, ha, by simp, by simp⟩
+  | @insert i s his ih =>
+    obtain ⟨q, hqp, haq, hqn, hqe⟩ := ih
+    have hiq : q i = p i := hqe i his
+    have haq' : a < F (Function.update q i (q i)) := by
+      simpa only [Function.update_eq_self] using haq
+    obtain ⟨t, hti, hat, htn⟩ := continuous_lower_level_bound (hc q i) haq'
+    refine ⟨Function.update q i t, ?_, hat, ?_, ?_⟩
+    · intro j
+      by_cases hji : j = i
+      · subst j
+        simpa only [Function.update_self] using hti.trans (hqp i)
+      · simpa only [Function.update_of_ne hji] using hqp j
+    · intro j hj
+      rcases Finset.mem_insert.mp hj with hji | hjs
+      · subst j
+        simpa only [Function.update_self, hiq] using htn
+      · have hji : j ≠ i := fun h => his (h ▸ hjs)
+        simpa only [Function.update_of_ne hji] using hqn j hjs
+    · intro j hj
+      have hji : j ≠ i := fun h => hj (h ▸ Finset.mem_insert_self i s)
+      have hjs : j ∉ s := fun h => hj (Finset.mem_insert_of_mem h)
+      simpa only [Function.update_of_ne hji] using hqe j hjs
+
+/-- A separately continuous increasing finite-product function has open strict lower levels. -/
+theorem finiteProductMonotone_isOpen_lt [Finite I] {F : (∀ i, A i) → ℝ}
+    (hm : Monotone F) (hc : ∀ p i, Continuous (fun t => F (Function.update p i t)))
+    (a : ℝ) : IsOpen {p | a < F p} := by
+  classical
+  let : Fintype I := Fintype.ofFinite I
+  apply isOpen_iff_mem_nhds.mpr
+  intro p hp
+  obtain ⟨q, _, haq, hqn, _⟩ := finite_coordinate_lower_bound hc Finset.univ p hp
+  have hn (i : I) : ∀ᶠ x in 𝓝 p, q i ≤ x i :=
+    (continuous_apply i).continuousAt.preimage_mem_nhds (hqn i (Finset.mem_univ i))
+  filter_upwards [Filter.eventually_all.mpr hn] with x hx
+  exact haq.trans_le (hm hx)
+
+/-- Coordinate continuity and monotonicity imply joint continuity on a finite interval product. -/
+theorem finiteProductMonotone_continuous [Finite I] {F : (∀ i, A i) → ℝ}
+    (hm : Monotone F) (hc : ∀ p i, Continuous (fun t => F (Function.update p i t))) :
+    Continuous F := by
+  apply OrderTopology.continuous_iff.mpr
+  intro a
+  refine ⟨finiteProductMonotone_isOpen_lt hm hc a, ?_⟩
+  have hn : Monotone (fun p : ∀ i, (A i)ᵒᵈ => -F p) := by
+    intro p q hpq
+    exact neg_le_neg (hm hpq)
+  have ho := finiteProductMonotone_isOpen_lt hn (fun p i => (hc p i).neg) (-a)
+  have hdual : Continuous (fun p : ∀ i, A i => (fun i => p i : ∀ i, (A i)ᵒᵈ)) :=
+    continuous_pi (fun i => continuous_apply i)
+  convert ho.preimage hdual using 1
+  ext p
+  change F p < a ↔ -a < -F p
+  exact neg_lt_neg_iff.symm
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: sequences, accumulation and compactness
+
+Definitions A2.6 and A2.9–A2.13, Propositions A2.7–A2.8 and A2.12, and
+Corollary A2.14, pp. 445–447. Sequence indices start at zero. Accumulation uses
+arbitrarily late visits to neighborhoods, so repeated values are allowed.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology
+
+/-- **Definition A2.6:** convergence is eventual closeness for every positive epsilon. -/
+theorem definition_A2_6 {X : Type*} [PseudoMetricSpace X] (u : ℕ → X) (x : X) :
+    Filter.Tendsto u Filter.atTop (𝓝 x) ↔
+      ∀ ε > 0, ∃ N, ∀ n > N, dist (u n) x < ε := Metric.tendsto_atTop'
+
+/-- **Proposition A2.7:** openness means eventual membership for convergent sequences. -/
+theorem proposition_A2_7 {X : Type*} [PseudoMetricSpace X] (S : Set X) :
+    IsOpen S ↔ ∀ x ∈ S, ∀ u : ℕ → X, Filter.Tendsto u Filter.atTop (𝓝 x) →
+      ∃ N, ∀ n ≥ N, u n ∈ S := by
+  constructor
+  · intro hS x hx u hu
+    exact Filter.eventually_atTop.mp (hu.eventually (hS.mem_nhds hx))
+  · intro h
+    apply isClosed_compl_iff.mp
+    apply IsSeqClosed.isClosed
+    intro u x hu hlim hx
+    obtain ⟨N, hN⟩ := h x hx u hlim
+    exact hu N (hN N le_rfl)
+
+/-- **Proposition A2.8:** a set is closed exactly when it contains all its sequential limits. -/
+theorem proposition_A2_8 {X : Type*} [PseudoMetricSpace X] (S : Set X) :
+    IsClosed S ↔ ∀ u : ℕ → X, ∀ x, (∀ n, u n ∈ S) →
+      Filter.Tendsto u Filter.atTop (𝓝 x) → x ∈ S := by
+  constructor
+  · intro h u x hu hlim
+    exact h.mem_of_tendsto hlim (Filter.Eventually.of_forall hu)
+  · intro h
+    exact IsSeqClosed.isClosed (fun u x hu hlim => h u x hu hlim)
+
+/-- **Definition A2.9:** accumulation means returning arbitrarily late to every neighborhood. -/
+theorem definition_A2_9 {X : Type*} [PseudoMetricSpace X] (u : ℕ → X) (x : X) :
+    MapClusterPt x Filter.atTop u ↔
+      ∀ ε > 0, ∀ N : ℕ, ∃ n ≥ N, dist (u n) x < ε := by
+  rw [Metric.nhds_basis_ball.mapClusterPt_iff_frequently]
+  simp only [Filter.frequently_atTop, Metric.mem_ball]
+
+/-- **Definition A2.10** and its exercise: accumulation means a convergent subsequence exists. -/
+theorem appendix2_accumulation_subsequence {X : Type*} [PseudoMetricSpace X]
+    (u : ℕ → X) (x : X) :
+    MapClusterPt x Filter.atTop u ↔ ∃ φ : ℕ → ℕ, StrictMono φ ∧
+      Filter.Tendsto (u ∘ φ) Filter.atTop (𝓝 x) := by
+  constructor
+  · exact MapClusterPt.tendsto_subseq
+  · rintro ⟨φ, hφ, hlim⟩
+    exact MapClusterPt.of_comp hφ.tendsto_atTop hlim.mapClusterPt
+
+/-- The sequential description of closure on p. 446, allowing constant sequences. -/
+theorem appendix2_closure_sequence {X : Type*} [PseudoMetricSpace X] (S : Set X) (x : X) :
+    x ∈ closure S ↔ ∃ u : ℕ → X, (∀ n, u n ∈ S) ∧
+      Filter.Tendsto u Filter.atTop (𝓝 x) := mem_closure_iff_seq_limit
+
+/-- The book's set-accumulation convention includes every point of the set itself. -/
+theorem appendix2_set_accumulation_self {X : Type*} [PseudoMetricSpace X]
+    {S : Set X} {x : X} (hx : x ∈ S) :
+    ∃ u : ℕ → X, (∀ n, u n ∈ S) ∧ MapClusterPt x Filter.atTop u :=
+  ⟨fun _ => x, fun _ => hx, tendsto_const_nhds.mapClusterPt⟩
+
+/-- **Definition A2.11:** boundedness means a strict uniform bound on norms. -/
+theorem definition_A2_11 {E : Type*} [NormedAddCommGroup E] (S : Set E) :
+    Bornology.IsBounded S ↔ ∃ M > 0, ∀ x ∈ S, ‖x‖ < M := by
+  constructor
+  · intro h
+    obtain ⟨M, hM, hbound⟩ := h.exists_pos_norm_le
+    refine ⟨M + 1, by linarith, fun x hx => ?_⟩
+    have hb := hbound x hx
+    linarith
+  · rintro ⟨M, _, hbound⟩
+    exact isBounded_iff_forall_norm_le.mpr ⟨M, fun x hx => (hbound x hx).le⟩
+
+/-- **Proposition A2.12:** a bounded Euclidean sequence has an accumulation point. -/
+theorem proposition_A2_12 {k : ℕ} (u : ℕ → CommodityEuclidean k)
+    (hu : Bornology.IsBounded (Set.range u)) :
+    ∃ x ∈ closure (Set.range u), MapClusterPt x Filter.atTop u := by
+  obtain ⟨x, hx, φ, hφ, hlim⟩ := hu.isCompact_closure.tendsto_subseq
+    (fun n => subset_closure (Set.mem_range_self n))
+  exact ⟨x, hx, (appendix2_accumulation_subsequence u x).mpr ⟨φ, hφ, hlim⟩⟩
+
+/-- The Cauchy criterion stated before Definition A2.13. -/
+theorem appendix2_cauchy_criterion {X : Type*} [PseudoMetricSpace X] (u : ℕ → X) :
+    CauchySeq u ↔ ∀ ε > 0, ∃ N, ∀ m ≥ N, ∀ n ≥ N, dist (u m) (u n) < ε :=
+  Metric.cauchySeq_iff
+
+/-- Euclidean space is complete: every Cauchy sequence has a finite Euclidean limit. -/
+theorem appendix2_euclidean_complete {k : ℕ} (u : ℕ → CommodityEuclidean k)
+    (hu : CauchySeq u) : ∃ x, Filter.Tendsto u Filter.atTop (𝓝 x) :=
+  cauchySeq_tendsto_of_complete hu
+
+/-- **Definition A2.13:** Euclidean compactness is equivalent to closedness and boundedness. -/
+theorem definition_A2_13 {k : ℕ} (S : Set (CommodityEuclidean k)) :
+    IsCompact S ↔ IsClosed S ∧ Bornology.IsBounded S := Metric.isCompact_iff_isClosed_bounded
+
+/-- **Corollary A2.14:** a compact sequence has accumulation points, all inside its compact set. -/
+theorem corollary_A2_14 {X : Type*} [MetricSpace X] {S : Set X} (hS : IsCompact S)
+    (u : ℕ → X) (hu : ∀ n, u n ∈ S) :
+    (∃ x, MapClusterPt x Filter.atTop u) ∧
+      ∀ x, MapClusterPt x Filter.atTop u → x ∈ S := by
+  obtain ⟨x, _, φ, hφ, hlim⟩ := hS.tendsto_subseq hu
+  refine ⟨⟨x, (appendix2_accumulation_subsequence u x).mpr ⟨φ, hφ, hlim⟩⟩, ?_⟩
+  intro y hy
+  exact hS.isClosed.mem_of_mapClusterPt hy (Filter.Eventually.of_forall hu)
+
+/-- The finite-set compactness remark on p. 447. -/
+theorem appendix2_finite_compact {X : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : S.Finite) : IsCompact S := hS.isCompact
+
+/-- The open-cover characterization discussed after Corollary A2.14. -/
+theorem appendix2_compact_open_cover {X : Type} [TopologicalSpace X] (S : Set X) :
+    IsCompact S ↔ ∀ {ι : Type} (U : ι → Set X), (∀ i, IsOpen (U i)) →
+      S ⊆ ⋃ i, U i → ∃ F : Finset ι, S ⊆ ⋃ i ∈ F, U i :=
+  isCompact_iff_finite_subcover
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: continuous functions and the intermediate-value theorem
+
+Definition A2.15, Propositions A2.15–A2.16, Definition A2.17 and Proposition
+A2.18, pp. 447–448. Using a subtype as the domain gives precisely relative
+continuity. The book's term "simply connected" here means path connected;
+its definition also permits the empty set. No assertion about homotopies is made.
+-/
+
+namespace Kreps.PreferenceProperties
+
+open scoped Topology NNReal
+
+/-- **Definition A2.15:** the epsilon–delta definition on a relative domain. -/
+theorem definition_A2_15 {X Y : Type*} [PseudoMetricSpace X] [PseudoMetricSpace Y]
+    (f : X → Y) (S : Set X) (x : X) :
+    ContinuousWithinAt f S x ↔ ∀ ε > 0, ∃ δ > 0, ∀ ⦃y⦄,
+      y ∈ S → dist y x < δ → dist (f y) (f x) < ε := Metric.continuousWithinAt_iff
+
+/-- The footnote's uniform continuity condition uses one delta for all base points. -/
+theorem appendix2_uniform_continuity {X Y : Type*}
+    [PseudoMetricSpace X] [PseudoMetricSpace Y] (f : X → Y) :
+    UniformContinuous f ↔ ∀ ε > 0, ∃ δ > 0, ∀ ⦃x y⦄,
+      dist x y < δ → dist (f x) (f y) < ε := Metric.uniformContinuous_iff
+
+/-- A uniform Lipschitz bound supplies the footnote's uniform continuity. -/
+theorem appendix2_lipschitz_uniform {X Y : Type*} [PseudoMetricSpace X]
+    [PseudoMetricSpace Y] {f : X → Y} {K : ℝ≥0} (hf : LipschitzWith K f) :
+    UniformContinuous f := hf.uniformContinuous
+
+/-- **Proposition A2.15(a):** continuity at a point is equivalent to sequential continuity. -/
+theorem proposition_A2_15a {X Y : Type*} [PseudoMetricSpace X] [TopologicalSpace Y]
+    (f : X → Y) (x : X) :
+    ContinuousAt f x ↔ ∀ u : ℕ → X, Filter.Tendsto u Filter.atTop (𝓝 x) →
+      Filter.Tendsto (f ∘ u) Filter.atTop (𝓝 (f x)) := tendsto_nhds_iff_seq_tendsto
+
+/-- **Proposition A2.15(b):** open-preimage characterization; subtypes encode relative openness. -/
+theorem proposition_A2_15b_open {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (f : X → Y) : Continuous f ↔ ∀ O, IsOpen O → IsOpen (f ⁻¹' O) := continuous_def
+
+/-- **Proposition A2.15(b):** the equivalent closed-preimage characterization. -/
+theorem proposition_A2_15b_closed {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (f : X → Y) : Continuous f ↔ ∀ C, IsClosed C → IsClosed (f ⁻¹' C) :=
+  continuous_iff_isClosed
+
+/-- **Proposition A2.16(a):** sums of continuous vector-valued functions are continuous. -/
+theorem proposition_A2_16a {X : Type*} [TopologicalSpace X] {k : ℕ}
+    {f g : X → CommodityEuclidean k} (hf : Continuous f) (hg : Continuous g) :
+    Continuous (fun x => f x + g x) := hf.add hg
+
+/-- **Proposition A2.16(b):** products of continuous real functions are continuous. -/
+theorem proposition_A2_16b {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} (hf : Continuous f) (hg : Continuous g) :
+    Continuous (fun x => f x * g x) := hf.mul hg
+
+/-- **Proposition A2.16(c):** a quotient is continuous where its denominator is nonzero. -/
+theorem proposition_A2_16c {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} (hf : Continuous f) (hg : Continuous g) {x : X} (hx : g x ≠ 0) :
+    ContinuousAt (fun y => f y / g y) x := hf.continuousAt.div hg.continuousAt hx
+
+/-- **Proposition A2.16(d):** continuous functions compose. -/
+theorem proposition_A2_16d {X Y Z : Type*} [TopologicalSpace X]
+    [TopologicalSpace Y] [TopologicalSpace Z] {f : X → Y} {g : Y → Z}
+    (hf : Continuous f) (hg : Continuous g) : Continuous (g ∘ f) := hg.comp hf
+
+/-- **Definition A2.17:** the book's convention is path connectedness, allowing the empty set. -/
+theorem definition_A2_17 {X : Type*} [TopologicalSpace X] (S : Set X) :
+    (∀ x ∈ S, ∀ y ∈ S, JoinedIn S x y) ↔ S = ∅ ∨ IsPathConnected S := by
+  constructor
+  · intro h
+    rcases Set.eq_empty_or_nonempty S with hS | hS
+    · exact Or.inl hS
+    · exact Or.inr (isPathConnected_iff.mpr ⟨hS, h⟩)
+  · rintro (rfl | h)
+    · simp
+    · exact h.joinedIn
+
+/-- **Proposition A2.18:** every intermediate value is attained along a path-connected domain. -/
+theorem proposition_A2_18 {X : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : ∀ x ∈ S, ∀ y ∈ S, JoinedIn S x y) {f : X → ℝ}
+    (hf : ContinuousOn f S) {x y : X} (hx : x ∈ S) (hy : y ∈ S)
+    {r : ℝ} (hxr : f x < r) (hry : r < f y) : ∃ z ∈ S, f z = r := by
+  have hp : IsPathConnected S := isPathConnected_iff.mpr ⟨⟨x, hx⟩, hS⟩
+  exact hp.isConnected.isPreconnected.intermediate_value hx hy hf ⟨hxr.le, hry.le⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Appendix 2: bounds and extrema
+
+Definition A2.19 and Propositions A2.20–A2.21, pp. 448–450. Real suprema and
+infima have explicit nonemptiness and boundedness hypotheses. Extended-real
+suprema and infima implement the book's infinite and empty-set conventions.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- **Definition A2.19(a):** upper and lower bounds on a real set. -/
+theorem definition_A2_19a (S : Set ℝ) :
+    (BddAbove S ↔ ∃ M, ∀ x ∈ S, x ≤ M) ∧
+      (BddBelow S ↔ ∃ m, ∀ x ∈ S, m ≤ x) := ⟨Iff.rfl, Iff.rfl⟩
+
+/-- **Definition A2.19(b):** the real supremum is the least upper bound. -/
+theorem definition_A2_19b {S : Set ℝ} (hne : S.Nonempty) (hb : BddAbove S) :
+    IsLUB S (sSup S) := isLUB_csSup hne hb
+
+/-- **Definition A2.19(c):** the real infimum is the greatest lower bound. -/
+theorem definition_A2_19c {S : Set ℝ} (hne : S.Nonempty) (hb : BddBelow S) :
+    IsGLB S (sInf S) := isGLB_csInf hne hb
+
+/-- **Definition A2.19(d):** a supremum belonging to the set is its maximum. -/
+theorem definition_A2_19d_max {S : Set ℝ} (hb : BddAbove S) (hmem : sSup S ∈ S) :
+    IsGreatest S (sSup S) := ⟨hmem, fun _ hx => le_csSup hb hx⟩
+
+/-- **Definition A2.19(d):** an infimum belonging to the set is its minimum. -/
+theorem definition_A2_19d_min {S : Set ℝ} (hb : BddBelow S) (hmem : sInf S ∈ S) :
+    IsLeast S (sInf S) := ⟨hmem, fun _ hx => csInf_le hb hx⟩
+
+/-- A nonempty bounded-above real set has the same supremum after embedding into extended reals. -/
+theorem appendix2_extended_sup_finite {S : Set ℝ} (hne : S.Nonempty) (hb : BddAbove S) :
+    sSup ((fun x : ℝ => (x : EReal)) '' S) = ((sSup S : ℝ) : EReal) := by
+  apply (isLUB_sSup _).unique
+  refine ⟨?_, ?_⟩
+  · rintro _ ⟨x, hx, rfl⟩
+    exact EReal.coe_le_coe (le_csSup hb hx)
+  · intro z hz
+    induction z using EReal.rec with
+    | bot =>
+      obtain ⟨x, hx⟩ := hne
+      exact False.elim ((not_le_of_gt (EReal.bot_lt_coe x)) (hz ⟨x, hx, rfl⟩))
+    | coe r =>
+      exact EReal.coe_le_coe (csSup_le hne fun x hx =>
+        EReal.coe_le_coe_iff.mp (hz ⟨x, hx, rfl⟩))
+    | top => exact le_top
+
+/-- The corresponding finite infimum agrees with the extended-real infimum. -/
+theorem appendix2_extended_inf_finite {S : Set ℝ} (hne : S.Nonempty) (hb : BddBelow S) :
+    sInf ((fun x : ℝ => (x : EReal)) '' S) = ((sInf S : ℝ) : EReal) := by
+  apply (isGLB_sInf _).unique
+  refine ⟨?_, ?_⟩
+  · rintro _ ⟨x, hx, rfl⟩
+    exact EReal.coe_le_coe (csInf_le hb hx)
+  · intro z hz
+    induction z using EReal.rec with
+    | bot => exact bot_le
+    | coe r =>
+      exact EReal.coe_le_coe (le_csInf hne fun x hx =>
+        EReal.coe_le_coe_iff.mp (hz ⟨x, hx, rfl⟩))
+    | top =>
+      obtain ⟨x, hx⟩ := hne
+      exact False.elim ((not_le_of_gt (EReal.coe_lt_top x)) (hz ⟨x, hx, rfl⟩))
+
+/-- **Definition A2.19(b):** unboundedness above gives positive infinity. -/
+theorem appendix2_extended_sup_unbounded {S : Set ℝ} (hS : ¬BddAbove S) :
+    sSup ((fun x : ℝ => (x : EReal)) '' S) = ⊤ := by
+  by_contra h
+  apply hS
+  refine ⟨(sSup ((fun x : ℝ => (x : EReal)) '' S)).toReal, fun x hx => ?_⟩
+  have hx' : (x : EReal) ∈ (fun x : ℝ => (x : EReal)) '' S := ⟨x, hx, rfl⟩
+  exact EReal.coe_le_coe_iff.mp ((le_sSup hx').trans (EReal.le_coe_toReal h))
+
+/-- **Definition A2.19(c):** unboundedness below gives negative infinity. -/
+theorem appendix2_extended_inf_unbounded {S : Set ℝ} (hS : ¬BddBelow S) :
+    sInf ((fun x : ℝ => (x : EReal)) '' S) = ⊥ := by
+  by_contra h
+  apply hS
+  refine ⟨(sInf ((fun x : ℝ => (x : EReal)) '' S)).toReal, fun x hx => ?_⟩
+  have hx' : (x : EReal) ∈ (fun x : ℝ => (x : EReal)) '' S := ⟨x, hx, rfl⟩
+  exact EReal.coe_le_coe_iff.mp ((EReal.coe_toReal_le h).trans (sInf_le hx'))
+
+/-- **Proposition A2.20(a):** the extended infimum is at most the supremum for a nonempty set. -/
+theorem proposition_A2_20a {S : Set ℝ} (hne : S.Nonempty) :
+    sInf ((fun x : ℝ => (x : EReal)) '' S) ≤
+      sSup ((fun x : ℝ => (x : EReal)) '' S) := by
+  obtain ⟨x, hx⟩ := hne
+  have hx' : (x : EReal) ∈ (fun x : ℝ => (x : EReal)) '' S := ⟨x, hx, rfl⟩
+  exact (sInf_le hx').trans (le_sSup hx')
+
+/-- **Proposition A2.20(b):** boundedness gives finite extended extrema on a nonempty real set. -/
+theorem proposition_A2_20b {S : Set ℝ} (hne : S.Nonempty) :
+    (BddAbove S → ∃ r : ℝ, sSup ((fun x : ℝ => (x : EReal)) '' S) = r) ∧
+      (BddBelow S → ∃ r : ℝ, sInf ((fun x : ℝ => (x : EReal)) '' S) = r) :=
+  ⟨fun h => ⟨sSup S, appendix2_extended_sup_finite hne h⟩,
+    fun h => ⟨sInf S, appendix2_extended_inf_finite hne h⟩⟩
+
+/-- **Proposition A2.20(c):** a nonempty compact real set has a maximum and a minimum. -/
+theorem proposition_A2_20c {S : Set ℝ} (hne : S.Nonempty) (hS : IsCompact S) :
+    IsGreatest S (sSup S) ∧ IsLeast S (sInf S) :=
+  ⟨hS.isGreatest_sSup hne, hS.isLeast_sInf hne⟩
+
+/-- The explicit empty-set conventions immediately following Proposition A2.20. -/
+theorem appendix2_empty_extrema :
+    sSup (∅ : Set EReal) = ⊥ ∧ sInf (∅ : Set EReal) = ⊤ := ⟨sSup_empty, sInf_empty⟩
+
+/-- **Proposition A2.21:** a continuous function attains its finite supremum on a compact set. -/
+theorem proposition_A2_21 {X : Type*} [TopologicalSpace X] {S : Set X} {f : X → ℝ}
+    (hS : IsCompact S) (hne : S.Nonempty) (hf : ContinuousOn f S) :
+    BddAbove (f '' S) ∧ ∃ x ∈ S, f x = sSup (f '' S) ∧ ∀ y ∈ S, f y ≤ f x := by
+  obtain ⟨x, hx, heq, hmax⟩ := hS.exists_sSup_image_eq_and_ge hne hf
+  exact ⟨hS.bddAbove_image hf, x, hx, heq.symm, hmax⟩
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -8678,3 +10788,173 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.diagnosticNegative_formula
 #print axioms Kreps.PreferenceProperties.diagnosticNegative_not_upperSemicontinuousAt
 #print axioms Kreps.PreferenceProperties.appendix2_diagnostic_counterexample
+#print axioms Kreps.PreferenceProperties.RatioSumUtility
+#print axioms Kreps.PreferenceProperties.RatioAxisBundle
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_axis
+#print axioms Kreps.PreferenceProperties.ratioAxisBundle_mix
+#print axioms Kreps.PreferenceProperties.concaveUtility_ratioAxis
+#print axioms Kreps.PreferenceProperties.concaveUtility_ratioAxis_bound
+#print axioms Kreps.PreferenceProperties.RatioRayBundle
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_ray
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_ray_mix
+#print axioms Kreps.PreferenceProperties.ratioSum_rep_eq_of_value_eq
+#print axioms Kreps.PreferenceProperties.ratioSum_concave_increment
+#print axioms Kreps.PreferenceProperties.problem_2_8b_no_concave_representation
+#print axioms Kreps.PreferenceProperties.ratioSum_denominator_pos
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_low_le_one
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_nonneg
+#print axioms Kreps.PreferenceProperties.RatioRankLinearForm
+#print axioms Kreps.PreferenceProperties.ratioRankLinearForm_high
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_le_iff
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_lt_iff
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_boundary
+#print axioms Kreps.PreferenceProperties.ratioRankLinearForm_self
+#print axioms Kreps.PreferenceProperties.ratioRankLinearForm_mix
+#print axioms Kreps.PreferenceProperties.ratioSumPreference_convex
+#print axioms Kreps.PreferenceProperties.ratioSumPreference_semiStrict
+#print axioms Kreps.PreferenceProperties.ratioRankLinearForm_continuous
+#print axioms Kreps.PreferenceProperties.ratioSumPreference_continuous
+#print axioms Kreps.PreferenceProperties.ratioSumUtility_continuous
+#print axioms Kreps.PreferenceProperties.problem_2_8b
+#print axioms Kreps.PreferenceProperties.SampleBrackets
+#print axioms Kreps.PreferenceProperties.SampleContainsExtremes
+#print axioms Kreps.PreferenceProperties.sampleBrackets_of_extremes
+#print axioms Kreps.PreferenceProperties.SampleRankCut
+#print axioms Kreps.PreferenceProperties.SampleRankExtension
+#print axioms Kreps.PreferenceProperties.sampleRankCut_nonempty
+#print axioms Kreps.PreferenceProperties.sampleRankCut_bddAbove
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_lower
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_upper
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_at_sample
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_mono
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_strict
+#print axioms Kreps.PreferenceProperties.sampleRankExtension_represents
+#print axioms Kreps.PreferenceProperties.continuous_of_interval_closure_range
+#print axioms Kreps.PreferenceProperties.RecursiveUtility
+#print axioms Kreps.PreferenceProperties.recursiveUtility_at_sample
+#print axioms Kreps.PreferenceProperties.recursiveUtility_represents
+#print axioms Kreps.PreferenceProperties.recursiveUtility_mem_interval
+#print axioms Kreps.PreferenceProperties.recursiveUtility_continuous
+#print axioms Kreps.PreferenceProperties.recursiveUtility_sample_limit
+#print axioms Kreps.PreferenceProperties.problem_2_14f
+#print axioms Kreps.PreferenceProperties.recursiveUtility_limit_unique
+#print axioms Kreps.PreferenceProperties.dense_sample_sequence
+#print axioms Kreps.PreferenceProperties.SampleContainsPreferenceExtremes
+#print axioms Kreps.PreferenceProperties.sampleContainsExtremes_of_preference
+#print axioms Kreps.PreferenceProperties.problem_2_14g
+#print axioms Kreps.PreferenceProperties.problem_2_14_recursive_completion
+#print axioms Kreps.PreferenceProperties.WorstSamplePoint
+#print axioms Kreps.PreferenceProperties.BestSamplePoint
+#print axioms Kreps.PreferenceProperties.AugmentedPreferenceSample
+#print axioms Kreps.PreferenceProperties.augmentedPreferenceSample_tail
+#print axioms Kreps.PreferenceProperties.augmentedPreferenceSample_dense
+#print axioms Kreps.PreferenceProperties.augmentedPreferenceSample_extremes
+#print axioms Kreps.PreferenceProperties.augmentedPreferenceSample_brackets
+#print axioms Kreps.PreferenceProperties.recursive_completion_of_dense_sample
+#print axioms Kreps.PreferenceProperties.exists_dense_sample_with_extremes
+#print axioms Kreps.PreferenceProperties.PolygonalCurve
+#print axioms Kreps.PreferenceProperties.polygonalCurve_int
+#print axioms Kreps.PreferenceProperties.polygonalCurve_formula
+#print axioms Kreps.PreferenceProperties.integer_unit_intervals_locallyFinite
+#print axioms Kreps.PreferenceProperties.polygonalCurve_continuous
+#print axioms Kreps.PreferenceProperties.polygonalCurve_range_preconnected
+#print axioms Kreps.PreferenceProperties.SequenceCurve
+#print axioms Kreps.PreferenceProperties.sequenceCurve_nat
+#print axioms Kreps.PreferenceProperties.sequenceCurve_continuous
+#print axioms Kreps.PreferenceProperties.sequenceCurve_contains_range
+#print axioms Kreps.PreferenceProperties.sampleBrackets_of_dense_rank_range
+#print axioms Kreps.PreferenceProperties.exists_sample_brackets
+#print axioms Kreps.PreferenceProperties.exists_preference_bracketing_sequence
+#print axioms Kreps.PreferenceProperties.exists_bracketing_polygonal_curve
+#print axioms Kreps.PreferenceProperties.ExtremeReferenceSegment
+#print axioms Kreps.PreferenceProperties.extremeReferenceSegment_zero
+#print axioms Kreps.PreferenceProperties.extremeReferenceSegment_one
+#print axioms Kreps.PreferenceProperties.extremeReferenceSegment_continuous
+#print axioms Kreps.PreferenceProperties.problem_2_14a_both_extrema
+#print axioms Kreps.PreferenceProperties.extremeReferenceSegment_covers
+#print axioms Kreps.PreferenceProperties.ExtremeReferenceSequence
+#print axioms Kreps.PreferenceProperties.extremeReferenceSequence_curve_zero
+#print axioms Kreps.PreferenceProperties.extremeReferenceSequence_curve_one
+#print axioms Kreps.PreferenceProperties.extremeReferenceSequence_on_unit
+#print axioms Kreps.PreferenceProperties.extremeReferenceSequence_range
+#print axioms Kreps.PreferenceProperties.extremeReferenceSequence_brackets
+#print axioms Kreps.PreferenceProperties.problem_2_14a
+#print axioms Kreps.PreferenceProperties.problem_2_14b
+#print axioms Kreps.PreferenceProperties.problem_2_14ab
+#print axioms Kreps.PreferenceProperties.problem_2_14
+#print axioms Kreps.PreferenceProperties.stronglySeparable_complement_iff
+#print axioms Kreps.PreferenceProperties.stronglySeparable_common_update_iff
+#print axioms Kreps.PreferenceProperties.ThreeCoordinateBundle
+#print axioms Kreps.PreferenceProperties.threeCoordinateBundle_update_first
+#print axioms Kreps.PreferenceProperties.threeCoordinateBundle_update_second
+#print axioms Kreps.PreferenceProperties.threeCoordinateBundle_update_third
+#print axioms Kreps.PreferenceProperties.ThreeFactorIndependent
+#print axioms Kreps.PreferenceProperties.stronglySeparable_threeFactor
+#print axioms Kreps.PreferenceProperties.indifferent_transitive
+#print axioms Kreps.PreferenceProperties.threeFactor_first_indifferent
+#print axioms Kreps.PreferenceProperties.threeFactor_second_indifferent
+#print axioms Kreps.PreferenceProperties.threeFactor_third_indifferent
+#print axioms Kreps.PreferenceProperties.third_factor_hexagon
+#print axioms Kreps.PreferenceProperties.third_factor_local_compensation
+#print axioms Kreps.PreferenceProperties.third_factor_local_hexagon
+#print axioms Kreps.PreferenceProperties.rational_preference_pullback
+#print axioms Kreps.PreferenceProperties.continuousPreference_pullback
+#print axioms Kreps.PreferenceProperties.threeCoordinateBundle_continuous
+#print axioms Kreps.PreferenceProperties.ThreeCoordinatePreference
+#print axioms Kreps.PreferenceProperties.third_factor_interior_rank
+#print axioms Kreps.PreferenceProperties.third_factor_local_hexagon_of_nontrivial
+#print axioms Kreps.PreferenceProperties.stronglySeparable_local_hexagon
+#print axioms Kreps.PreferenceProperties.UtilityRangeOrderIso
+#print axioms Kreps.PreferenceProperties.utilityTransform_continuous_range
+#print axioms Kreps.PreferenceProperties.replaceBlock_continuous
+#print axioms Kreps.PreferenceProperties.baselineSubutility_continuous
+#print axioms Kreps.PreferenceProperties.baselineSubutility_ordConnected
+#print axioms Kreps.PreferenceProperties.baselineSubutility_represents_context
+#print axioms Kreps.PreferenceProperties.baselineSubutility_transform_continuous
+#print axioms Kreps.PreferenceProperties.scoreRepresentatives_update
+#print axioms Kreps.PreferenceProperties.subutilityAggregator_coordinate_continuous
+#print axioms Kreps.PreferenceProperties.continuous_lower_level_bound
+#print axioms Kreps.PreferenceProperties.finite_coordinate_lower_bound
+#print axioms Kreps.PreferenceProperties.finiteProductMonotone_isOpen_lt
+#print axioms Kreps.PreferenceProperties.finiteProductMonotone_continuous
+#print axioms Kreps.PreferenceProperties.definition_A2_6
+#print axioms Kreps.PreferenceProperties.proposition_A2_7
+#print axioms Kreps.PreferenceProperties.proposition_A2_8
+#print axioms Kreps.PreferenceProperties.definition_A2_9
+#print axioms Kreps.PreferenceProperties.appendix2_accumulation_subsequence
+#print axioms Kreps.PreferenceProperties.appendix2_closure_sequence
+#print axioms Kreps.PreferenceProperties.appendix2_set_accumulation_self
+#print axioms Kreps.PreferenceProperties.definition_A2_11
+#print axioms Kreps.PreferenceProperties.proposition_A2_12
+#print axioms Kreps.PreferenceProperties.appendix2_cauchy_criterion
+#print axioms Kreps.PreferenceProperties.appendix2_euclidean_complete
+#print axioms Kreps.PreferenceProperties.definition_A2_13
+#print axioms Kreps.PreferenceProperties.corollary_A2_14
+#print axioms Kreps.PreferenceProperties.appendix2_finite_compact
+#print axioms Kreps.PreferenceProperties.appendix2_compact_open_cover
+#print axioms Kreps.PreferenceProperties.definition_A2_15
+#print axioms Kreps.PreferenceProperties.appendix2_uniform_continuity
+#print axioms Kreps.PreferenceProperties.appendix2_lipschitz_uniform
+#print axioms Kreps.PreferenceProperties.proposition_A2_15a
+#print axioms Kreps.PreferenceProperties.proposition_A2_15b_open
+#print axioms Kreps.PreferenceProperties.proposition_A2_15b_closed
+#print axioms Kreps.PreferenceProperties.proposition_A2_16a
+#print axioms Kreps.PreferenceProperties.proposition_A2_16b
+#print axioms Kreps.PreferenceProperties.proposition_A2_16c
+#print axioms Kreps.PreferenceProperties.proposition_A2_16d
+#print axioms Kreps.PreferenceProperties.definition_A2_17
+#print axioms Kreps.PreferenceProperties.proposition_A2_18
+#print axioms Kreps.PreferenceProperties.definition_A2_19a
+#print axioms Kreps.PreferenceProperties.definition_A2_19b
+#print axioms Kreps.PreferenceProperties.definition_A2_19c
+#print axioms Kreps.PreferenceProperties.definition_A2_19d_max
+#print axioms Kreps.PreferenceProperties.definition_A2_19d_min
+#print axioms Kreps.PreferenceProperties.appendix2_extended_sup_finite
+#print axioms Kreps.PreferenceProperties.appendix2_extended_inf_finite
+#print axioms Kreps.PreferenceProperties.appendix2_extended_sup_unbounded
+#print axioms Kreps.PreferenceProperties.appendix2_extended_inf_unbounded
+#print axioms Kreps.PreferenceProperties.proposition_A2_20a
+#print axioms Kreps.PreferenceProperties.proposition_A2_20b
+#print axioms Kreps.PreferenceProperties.proposition_A2_20c
+#print axioms Kreps.PreferenceProperties.appendix2_empty_extrema
+#print axioms Kreps.PreferenceProperties.proposition_A2_21

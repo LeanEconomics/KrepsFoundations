@@ -17,7 +17,7 @@ dependency versions, verification scripts, and CI structure. The reference files
 in section 8.
 
 Status: active implementation goal, 2026-10-21. Chapter 1 and Appendix 1 are complete
-(213 theorems, 322 audited declarations); Chapter 2 is active with 457 new chapter/appendix theorems audited.
+(213 theorems, 322 audited declarations); Chapter 2 is active with 606 new chapter/appendix theorems audited.
 The current authorized goal ends after Chapters 1–2 and their required foundations are
 complete, audited and pushed to the public `LeanEconomics/KrepsFoundations` repository.
 Create that repository if needed when this checkpoint is ready. Then end this goal;

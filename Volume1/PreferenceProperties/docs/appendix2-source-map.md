@@ -17,25 +17,25 @@ an entry: the book's statement and hypotheses must have an explicit bridge.
 | Definition A2.5, p. 443 | Closure as the least closed superset and interior as the greatest open subset, including intersection/union constructions | `definition_A2_5_closure`, `definition_A2_5_interior`, `appendix2_closure_intersection`, `appendix2_interior_union` |
 | Closure/interior exercises, p. 443 | Interior ball characterization, complement duality, subtype closure formula, relative interior of the full domain | `appendix2_interior_ball`, `appendix2_closure_interior_complement`, `appendix2_relative_interior_self`; subtype closure formula pending |
 | Equivalent distances, p. 444 | Euclidean, supremum and sum norms; exact `(1,3)` to `(5,0)` distances `5`, `4`, `7`; norm inequalities and common topology | Pending |
-| Definition A2.6, p. 445 | Epsilon/eventually definition of sequence convergence | Pending |
-| Proposition A2.7, p. 445 | Sequential characterization of openness | Pending |
-| Proposition A2.8, p. 445 | Sequential characterization of closedness | Pending |
+| Definition A2.6, p. 445 | Epsilon/eventually definition of sequence convergence | `definition_A2_6` |
+| Proposition A2.7, p. 445 | Sequential characterization of openness | `proposition_A2_7` |
+| Proposition A2.8, p. 445 | Sequential characterization of closedness | `proposition_A2_8` |
 | Sequence examples, pp. 445–446 | Diverging multiples of ten; alternating sequences approaching one and two | Pending |
-| Definitions A2.9–A2.10 and exercise, p. 446 | Repeated visits to every neighborhood; strictly increasing subsequence indices; accumulation iff subsequence limit | Pending |
-| Set accumulation and closure, p. 446 | Closure as the points obtainable as limits of sequences from the set | Pending; the book allows constant sequences, so its set-accumulation convention includes isolated points |
-| Definition A2.11, p. 446 | Norm boundedness equivalent to uniform coordinate bounds | Pending |
-| Proposition A2.12, pp. 446–447 | A bounded sequence has an accumulation point; finite-dimensional completeness and the Cauchy criterion | Pending |
-| Definition A2.13, p. 447 | Closed and bounded iff compact, with the open-cover definition made explicit | Pending |
-| Corollary A2.14 and finite-set remark, p. 447 | Compact sequences have accumulation points in the set; every finite set is compact | Pending |
-| Definition A2.15, p. 447 | Epsilon/delta continuity on the relative domain; uniform and Lipschitz variants in footnote 5 | Pending |
-| Proposition A2.15a–b, p. 448 | Sequential continuity; open and closed preimage characterizations | Pending; retain the duplicated printed number for the preceding definition and this proposition |
-| Proposition A2.16a–d, p. 448 | Continuity under addition, multiplication, division at a nonzero denominator and composition | Pending |
-| Definition A2.17, p. 448 | Continuous paths between every pair of points | Pending; the book calls this "simply connected", but the stated definition is path connectedness |
-| Proposition A2.18, p. 448 | Intermediate values on a path-connected domain | General connected-image crossing is available; explicit appendix bridge pending |
-| Definition A2.19, pp. 448–449 | Upper/lower bounds; real and extended-real suprema/infima; maxima/minima as attained extrema | Pending |
-| Proposition A2.20a–c, p. 449 | Infimum does not exceed supremum; finite extrema for nonempty bounded sets; compact nonempty sets attain both extrema | Pending; the nonempty qualification applies to finite real infima as well |
-| Empty-set convention, p. 449 | Extended-real `sup ∅ = -∞`, `inf ∅ = +∞` | Pending; do not use Mathlib's default real `sSup ∅ = 0` as this convention |
-| Proposition A2.21 and two proofs, pp. 449–450 | Continuous real functions attain a finite supremum on a nonempty compact set; sequence and finite-cover arguments | Standard compact-choice theorem already present; explicit appendix statement and proof inventory pending |
+| Definitions A2.9–A2.10 and exercise, p. 446 | Repeated visits to every neighborhood; strictly increasing subsequence indices; accumulation iff subsequence limit | `definition_A2_9`, `appendix2_accumulation_subsequence` |
+| Set accumulation and closure, p. 446 | Closure as the points obtainable as limits of sequences from the set | `appendix2_closure_sequence`, `appendix2_set_accumulation_self`; constant sequences are allowed, as in the book |
+| Definition A2.11, p. 446 | Norm boundedness equivalent to uniform coordinate bounds | `definition_A2_11` gives strict norm bounds; coordinate-bound equivalence pending |
+| Proposition A2.12, pp. 446–447 | A bounded sequence has an accumulation point; finite-dimensional completeness and the Cauchy criterion | `proposition_A2_12`, `appendix2_cauchy_criterion`, `appendix2_euclidean_complete` |
+| Definition A2.13, p. 447 | Closed and bounded iff compact, with the open-cover definition made explicit | `definition_A2_13`, `appendix2_compact_open_cover` |
+| Corollary A2.14 and finite-set remark, p. 447 | Compact sequences have accumulation points in the set; every finite set is compact | `corollary_A2_14`, `appendix2_finite_compact` |
+| Definition A2.15, p. 447 | Epsilon/delta continuity on the relative domain; uniform and Lipschitz variants in footnote 5 | `definition_A2_15`, `appendix2_uniform_continuity`, `appendix2_lipschitz_uniform`; exact pointwise Lipschitz footnote variant pending |
+| Proposition A2.15a–b, p. 448 | Sequential continuity; open and closed preimage characterizations | `proposition_A2_15a`, `proposition_A2_15b_open`, `proposition_A2_15b_closed`; the duplicated printed numbering is retained |
+| Proposition A2.16a–d, p. 448 | Continuity under addition, multiplication, division at a nonzero denominator and composition | `proposition_A2_16a`, `proposition_A2_16b`, `proposition_A2_16c`, `proposition_A2_16d` |
+| Definition A2.17, p. 448 | Continuous paths between every pair of points | `definition_A2_17` identifies path connectedness, allowing the empty set; the printed term "simply connected" does not assert anything about homotopies |
+| Proposition A2.18, p. 448 | Intermediate values on a path-connected domain | `proposition_A2_18` |
+| Definition A2.19, pp. 448–449 | Upper/lower bounds; real and extended-real suprema/infima; maxima/minima as attained extrema | `definition_A2_19a`–`definition_A2_19d_min`; `appendix2_extended_sup_finite`, `appendix2_extended_inf_finite` and both unbounded-extremum results |
+| Proposition A2.20a–c, p. 449 | Infimum does not exceed supremum; finite extrema for nonempty bounded sets; compact nonempty sets attain both extrema | `proposition_A2_20a`, `proposition_A2_20b`, `proposition_A2_20c`; nonemptiness applies to finite infima as well |
+| Empty-set convention, p. 449 | Extended-real `sup ∅ = -∞`, `inf ∅ = +∞` | `appendix2_empty_extrema`, using extended reals |
+| Proposition A2.21 and two proofs, pp. 449–450 | Continuous real functions attain a finite supremum on a nonempty compact set; sequence and finite-cover arguments | `proposition_A2_21` proves the common statement of both printed proofs using Mathlib’s compact-image extrema theorem; sequential compactness and finite-open-cover formulations are separately bridged above |
 | Definition A2.22 and discussion, p. 450 | Limsup/liminf via tail suprema/infima, monotone tails, infinite cases and extreme accumulation points | Pending; extended-real values are needed for unbounded sequences |
 | Proposition A2.23, pp. 450–451 | Equality of liminf and limsup characterizes convergence to their common extended-real value | Pending; finite real convergence requires the common value to be finite |
 | Definition A2.24, p. 451 | Epsilon/delta definitions of upper and lower semicontinuity | `definition_A2_24_upper`, `definition_A2_24_lower` |

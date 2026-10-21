@@ -74,15 +74,31 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [RecursiveRankDensity](PreferenceProperties/RecursiveRankDensity.lean) | 9 | Problem 2.14e: first midpoint insertion, exclusion of gaps and density in the smallest interval |
 | [AppendixMetricTopology](PreferenceProperties/AppendixMetricTopology.lean) | 21 | Appendix 2: Euclidean distance, basic topology, relative sets, closure and interior |
 | [AppendixSemicontinuity](PreferenceProperties/AppendixSemicontinuity.lean) | 9 | Appendix 2: semicontinuity, compact maxima and correction of the signed-series diagnostic |
+| [RatioSumUtility](PreferenceProperties/RatioSumUtility.lean) | 6 | Problem 2.8b: the exact ratio/sum utility and its rank geometry |
+| [RatioSumNoConcavity](PreferenceProperties/RatioSumNoConcavity.lean) | 3 | Problem 2.8b: geometric-decay contradiction for every concave representation |
+| [RatioSumPreference](PreferenceProperties/RatioSumPreference.lean) | 15 | Problem 2.8b: continuity, semi-strict convexity and the complete conclusion |
+| [SampledRankExtension](PreferenceProperties/SampledRankExtension.lean) | 10 | Supremum extension of sampled ranks with bracketing and exact agreement |
+| [RecursiveUtilityLimits](PreferenceProperties/RecursiveUtilityLimits.lean) | 11 | Problem 2.14f-g: finite limits, independence and continuity of the exact recursive scale |
+| [AugmentedPreferenceSample](PreferenceProperties/AugmentedPreferenceSample.lean) | 6 | Dense samples containing attained extreme indifference classes |
+| [PolygonalCurve](PreferenceProperties/PolygonalCurve.lean) | 8 | Continuous countable connect-the-dots curves in convex domains |
+| [NumericalRankBrackets](PreferenceProperties/NumericalRankBrackets.lean) | 3 | Countable bracketing from a possibly discontinuous numerical representation |
+| [PreferenceReferenceCurve](PreferenceProperties/PreferenceReferenceCurve.lean) | 15 | Problem 2.14a-g: complete book construction, with a single segment for attained extrema |
+| [StrongSeparabilityCancellation](PreferenceProperties/StrongSeparabilityCancellation.lean) | 13 | Cancellation consequences of the actual strong-separability hypotheses |
+| [StrongSeparabilityTopology](PreferenceProperties/StrongSeparabilityTopology.lean) | 6 | Local Thomsen cancellation from continuity, connectedness and a third block |
+| [SubutilityContinuity](PreferenceProperties/SubutilityContinuity.lean) | 8 | Order-homeomorphic subutility ranges and coordinate continuity of the aggregator |
+| [FiniteProductContinuity](PreferenceProperties/FiniteProductContinuity.lean) | 4 | Joint continuity from coordinate continuity and monotonicity on finite interval products |
+| [AppendixSequences](PreferenceProperties/AppendixSequences.lean) | 15 | Appendix 2: convergence, accumulation, completeness and compactness |
+| [AppendixContinuousFunctions](PreferenceProperties/AppendixContinuousFunctions.lean) | 12 | Appendix 2: continuity, relative domains and the intermediate-value theorem |
+| [AppendixExtrema](PreferenceProperties/AppendixExtrema.lean) | 14 | Appendix 2: finite and extended extrema, empty sets and compact maximum attainment |
 
-The current subset passes the full fresh-source audit: **555 theorems** and
-**712 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **457 new chapter and appendix theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **704 theorems** and
+**882 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **606 new chapter and appendix theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
 
-The additive-existence direction of Proposition 2.14 and remaining problem solutions
+The additive-existence direction of Proposition 2.14 and its Problem 2.1 table entry
 are still in progress. Weak separability and homotheticity are fully characterized.
 The homogeneous representation handles positive, negative and origin-indifferent
 ranks without imposing commodity monotonicity.
@@ -90,9 +106,9 @@ Problem 2.13 distinguishes full identification from a nonzero homothetic curve
 from identification over the observed goods projection in the quasi-linear case.
 The general continuous-representation theorem is proved through Cantor's countable
 order isomorphism and rational cuts; the book's diagonal proof is also complete.
-Problems 2.14c–e are complete, including the specified recursive assignment and its
-interval-dense range. The connecting curve and sequence-limit extension remain in progress.
-Problem 2.8a is complete for both exact displayed utilities. Problem 2.1 retains only
+Problem 2.14 is complete through the connecting curve, exact recursive assignment,
+interval-dense range, finite sequence limits and continuous extension.
+Problem 2.8 is complete for all three exact displayed utilities. Problem 2.1 retains only
 the additive-existence dependency; the book's excluded ???? cell is unclaimed.
 The [Appendix 2 inventory](docs/appendix2-source-map.md) separates completed bridges
 from its remaining obligations and records the signed-series diagnostic correction.
