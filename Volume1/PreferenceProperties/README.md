@@ -31,16 +31,22 @@ changes. Declarations use `Kreps.PreferenceProperties`.
 | [Insatiability](PreferenceProperties/Insatiability.lean) | 3 | Problem 2.3: global insatiability and semi-strict convexity imply LNS |
 | [ConvexityExamples](PreferenceProperties/ConvexityExamples.lean) | 13 | Problems 2.2-2.3: compact-menu nonattainment and a flat utility |
 | [TransformationExamples](PreferenceProperties/TransformationExamples.lean) | 6 | Problem 2.5: ordinal rescalings destroy concavity or continuity |
+| [ContinuousUtility](PreferenceProperties/ContinuousUtility.lean) | 5 | Forward Proposition 2.9, compact attainment and Lemma 2.10 |
+| [DiagonalBounds](PreferenceProperties/DiagonalBounds.lean) | 8 | Min/max bounds and an indifferent diagonal point |
+| [DiagonalRepresentation](PreferenceProperties/DiagonalRepresentation.lean) | 10 | Unique diagonal coordinate, representation and continuity |
+| [IndifferenceCurves](PreferenceProperties/IndifferenceCurves.lean) | 4 | Thin classes, decreasing two-good curves and strict mixtures |
+| [PathCounterexample](PreferenceProperties/PathCounterexample.lean) | 7 | Problem 2.7: coordinate bounds without monotonicity do not imply crossing |
 
-The current subset passes the full fresh-source audit: **167 theorems** and
-**233 audited declarations**. This includes 98 theorems in twelve local Chapter 1
-prerequisite modules and **69 new Chapter 2 theorems**. All 14 verifier tests pass.
+The current subset passes the full fresh-source audit: **201 theorems** and
+**276 audited declarations**. This includes 98 theorems in twelve local Chapter 1
+prerequisite modules and **103 new Chapter 2 theorems**. All 14 verifier tests pass.
 The copied modules are from Chapter 1 commit `dfb548d`; the project has no dependency
 on another chapter's build products. The [verification record](verification/verification.json)
 contains the generated hashes and axiom checks.
 
-The general continuous-representation theorem, the diagonal construction, separability,
-quasi-linearity, homotheticity and remaining problem solutions are still in progress.
+The general continuous-representation theorem, separability, quasi-linearity,
+homotheticity and remaining problem solutions are still in progress. The diagonal
+construction retains the book's extra monotonicity assumptions.
 This is not a completed-chapter claim.
 
 ## Build and verify

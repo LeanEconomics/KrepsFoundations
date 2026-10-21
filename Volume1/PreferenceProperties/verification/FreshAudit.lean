@@ -11,6 +11,7 @@ import Mathlib.Analysis.Convex.PathConnected
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Analysis.Convex.Quasiconvex
+import Mathlib.Topology.Order.Compact
 set_option autoImplicit false
 
 /-
@@ -2352,6 +2353,490 @@ theorem problem_2_5b :
 
 end Kreps.PreferenceProperties
 
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuous utility and intermediate indifference
+
+Kreps I, the forward direction of Proposition 2.9, the compact-choice consequence
+on p. 35, and Lemma 2.10, pp. 36, 38. The connected-image lemma proves the path
+crossing result without assuming a continuous numerical representation. It is an
+ingredient of that representation construction, not a use of the desired conclusion.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {X : Type*} [TopologicalSpace X] {r : X → X → Prop}
+
+/-- **Proposition 2.9**, forward direction, from a continuous representation. -/
+theorem proposition_2_9_forward {u : X → ℝ} (hu : Represents u r) (hc : Continuous u) :
+    ContinuousPreference r := by
+  have he : r = UtilityPref u := by
+    funext x y
+    exact propext (hu x y)
+  rw [he]
+  exact continuousPreference_of_continuous_utility hc
+
+/-- The extreme-value proof of nonempty compact-menu choice described on p. 35. -/
+theorem compact_choice_of_continuous_utility {u : X → ℝ} (hu : Represents u r)
+    (hc : Continuous u) {A : Set X} (hA : IsCompact A) (hne : A.Nonempty) :
+    (PrefChoice r A).Nonempty := by
+  obtain ⟨x, hx, hmax⟩ := hA.exists_isMaxOn hne hc.continuousOn
+  exact ⟨x, hx, fun y hy => (hu x y).mpr (hmax hy)⟩
+
+/-- A connected continuous image crosses every weakly bracketed indifference class. -/
+theorem indifference_on_connected_image {T : Type*} [TopologicalSpace T]
+    [PreconnectedSpace T] (hr : Rational r) (hc : ContinuousPreference r)
+    (f : T → X) (hf : Continuous f) (x : X) {a b : T}
+    (ha : r (f a) x) (hb : r x (f b)) : ∃ t, Indifferent r (f t) x := by
+  by_contra hn
+  push Not at hn
+  let U := f ⁻¹' StrictlyBetterThan r x
+  let V := f ⁻¹' StrictlyWorseThan r x
+  have ho := continuousPreference_openStrictContours hc
+  have hU : IsOpen U := (ho x).1.preimage hf
+  have hV : IsOpen V := (ho x).2.preimage hf
+  have ha' : a ∈ U := ⟨ha, fun h => hn a ⟨ha, h⟩⟩
+  have hb' : b ∈ V := ⟨hb, fun h => hn b ⟨h, hb⟩⟩
+  have hcover : Set.univ ⊆ U ∪ V := by
+    intro t _
+    rcases hr.1 (f t) x with h | h
+    · exact Or.inl ⟨h, fun h' => hn t ⟨h, h'⟩⟩
+    · exact Or.inr ⟨h, fun h' => hn t ⟨h', h⟩⟩
+  obtain ⟨t, _, htU, htV⟩ := isPreconnected_univ U V hU hV hcover
+    ⟨a, Set.mem_univ a, ha'⟩ ⟨b, Set.mem_univ b, hb'⟩
+  exact htU.2 htV.1
+
+/-- **Lemma 2.10:** a continuous path between weak preference bounds meets the middle class. -/
+theorem lemma_2_10 (hr : Rational r) (hc : ContinuousPreference r)
+    (f : UnitSegment → X) (hf : Continuous f) (x : X)
+    (h0 : r (f ⟨0, by norm_num⟩) x) (h1 : r x (f ⟨1, by norm_num⟩)) :
+    ∃ t, Indifferent r (f t) x := by
+  let : PreconnectedSpace UnitSegment := isPreconnected_iff_preconnectedSpace.mp
+    (convex_Icc (0 : ℝ) 1).isPreconnected
+  exact indifference_on_connected_image hr hc f hf x h0 h1
+
+/-- Section 2.4: monotonicity converts coordinate bounds into the bounds in Lemma 2.10. -/
+theorem monotone_path_crossing {k : ℕ}
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (f : UnitSegment → NonnegativeOrthant k) (hf : Continuous f) (x : NonnegativeOrthant k)
+    (h0 : x ≤ f ⟨0, by norm_num⟩) (h1 : f ⟨1, by norm_num⟩ ≤ x) :
+    ∃ t, Indifferent r (f t) x :=
+  lemma_2_10 hr hc f hf x (hm _ _ h0) (hm _ _ h1)
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Every indifference class meets the diagonal
+
+Kreps I, the diagonal construction in Steps 2-3, pp. 37-38. The book brackets
+a bundle between the diagonal bundles formed from its minimum and maximum
+coordinates. Lemma 2.10 supplies an indifferent diagonal bundle. Positive dimension
+is explicit because those coordinate extrema require a nonempty set of goods.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {k : ℕ}
+
+/-- The diagonal bundle with the same nonnegative amount of every commodity. -/
+def Diagonal (a : Set.Ici (0 : ℝ)) : NonnegativeOrthant k :=
+  ⟨fun _ => a.val, fun _ => a.property⟩
+
+/-- The diagonal parametrization is continuous. -/
+theorem diagonal_continuous : Continuous (Diagonal (k := k)) :=
+  (continuous_pi fun _ => continuous_subtype_val).subtype_mk _
+
+/-- The smallest coordinate, in the positive-dimensional setting of the construction. -/
+noncomputable def MinCoordinate (hk : 0 < k) (x : NonnegativeOrthant k) : ℝ :=
+  Finset.univ.inf' ⟨⟨0, hk⟩, Finset.mem_univ _⟩ x.val
+
+/-- The largest coordinate. -/
+noncomputable def MaxCoordinate (hk : 0 < k) (x : NonnegativeOrthant k) : ℝ :=
+  Finset.univ.sup' ⟨⟨0, hk⟩, Finset.mem_univ _⟩ x.val
+
+/-- A nonnegative bundle has nonnegative minimum coordinate. -/
+theorem minCoordinate_nonneg (hk : 0 < k) (x : NonnegativeOrthant k) :
+    0 ≤ MinCoordinate hk x := by
+  unfold MinCoordinate
+  exact Finset.le_inf' _ _ (fun j _ => x.property j)
+
+/-- Each coordinate lies above the minimum. -/
+theorem minCoordinate_le (hk : 0 < k) (x : NonnegativeOrthant k) (j : Fin k) :
+    MinCoordinate hk x ≤ x.val j := Finset.inf'_le _ (Finset.mem_univ j)
+
+/-- Each coordinate lies below the maximum. -/
+theorem le_maxCoordinate (hk : 0 < k) (x : NonnegativeOrthant k) (j : Fin k) :
+    x.val j ≤ MaxCoordinate hk x := Finset.le_sup' _ (Finset.mem_univ j)
+
+/-- A nonnegative bundle has nonnegative maximum coordinate. -/
+theorem maxCoordinate_nonneg (hk : 0 < k) (x : NonnegativeOrthant k) :
+    0 ≤ MaxCoordinate hk x :=
+  (x.property ⟨0, hk⟩).trans (le_maxCoordinate hk x ⟨0, hk⟩)
+
+/-- Step 2: every bundle is indifferent to a point on the diagonal. -/
+theorem diagonal_indifference_exists (hk : 0 < k)
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop} (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r) (x : NonnegativeOrthant k) :
+    ∃ a : Set.Ici (0 : ℝ), Indifferent r (Diagonal a) x := by
+  let lo := MinCoordinate hk x
+  let hi := MaxCoordinate hk x
+  have hlo : 0 ≤ lo := minCoordinate_nonneg hk x
+  have hhi : 0 ≤ hi := maxCoordinate_nonneg hk x
+  let f (t : UnitSegment) : NonnegativeOrthant k :=
+    ⟨fun _ => t.val * lo + (1 - t.val) * hi,
+      fun _ => add_nonneg (mul_nonneg t.property.1 hlo)
+        (mul_nonneg (sub_nonneg.mpr t.property.2) hhi)⟩
+  have hf : Continuous f := by
+    apply Continuous.subtype_mk
+    apply continuous_pi
+    intro j
+    exact (continuous_subtype_val.mul continuous_const).add
+      ((continuous_const.sub continuous_subtype_val).mul continuous_const)
+  have h0 : r (f ⟨0, by norm_num⟩) x := by
+    apply hm
+    intro j
+    simpa [f] using le_maxCoordinate hk x j
+  have h1 : r x (f ⟨1, by norm_num⟩) := by
+    apply hm
+    intro j
+    simpa [f] using minCoordinate_le hk x j
+  obtain ⟨t, ht⟩ := lemma_2_10 hr hc f hf x h0 h1
+  exact ⟨⟨t.val * lo + (1 - t.val) * hi,
+    add_nonneg (mul_nonneg t.property.1 hlo)
+      (mul_nonneg (sub_nonneg.mpr t.property.2) hhi)⟩, ht⟩
+
+/-- Step 3: the diagonal's numerical coordinate represents its preference order. -/
+theorem diagonal_weak_iff
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hm : MonotonePreference r) (hs : StrictAllIncreasePreference r)
+    (a b : Set.Ici (0 : ℝ)) : r (Diagonal a) (Diagonal b) ↔ b.val ≤ a.val := by
+  constructor
+  · intro hab
+    by_contra hnot
+    exact (hs (Diagonal b) (Diagonal a) (fun _ => lt_of_not_ge hnot)).2 hab
+  · intro hba
+    exact hm _ _ (fun _ => hba)
+
+/-- Equal diagonal ranks mean equal coordinates, including the boundary at zero. -/
+theorem diagonal_indifferent_iff
+    {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+    (hm : MonotonePreference r) (hs : StrictAllIncreasePreference r)
+    (a b : Set.Ici (0 : ℝ)) : Indifferent r (Diagonal a) (Diagonal b) ↔ a = b := by
+  change (r (Diagonal a) (Diagonal b) ∧ r (Diagonal b) (Diagonal a)) ↔ a = b
+  rw [diagonal_weak_iff hm hs, diagonal_weak_iff hm hs]
+  exact ⟨fun h => Subtype.ext (le_antisymm h.2 h.1), fun h => by cases h; exact ⟨le_rfl, le_rfl⟩⟩
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The diagonal continuous representation
+
+Kreps I, Steps 3-5 of the construction on pp. 37-38. Each bundle has a unique
+indifferent diagonal coordinate. That coordinate represents the preference and
+is continuous. The continuity proof uses open strict contours and the exact
+nonnegative range, including its zero endpoint. The extra monotonicity assumptions
+remain explicit; this module does not claim the general converse of Proposition 2.9.
+-/
+
+namespace Kreps.PreferenceProperties
+
+variable {k : ℕ} {r : NonnegativeOrthant k → NonnegativeOrthant k → Prop}
+
+/-- Step 4: two indifferent diagonal representatives of a bundle have the same coordinate. -/
+theorem diagonal_indifference_unique (hr : Rational r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) {x : NonnegativeOrthant k}
+    {a b : Set.Ici (0 : ℝ)} (ha : Indifferent r (Diagonal a) x)
+    (hb : Indifferent r (Diagonal b) x) : a = b := by
+  apply (diagonal_indifferent_iff hm hs a b).mp
+  exact ⟨hr.2 _ x _ ha.1 hb.2, hr.2 _ x _ hb.1 ha.2⟩
+
+/-- The existence and uniqueness needed to define the diagonal utility. -/
+theorem diagonal_indifference_existsUnique (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) (x : NonnegativeOrthant k) :
+    ∃! a : Set.Ici (0 : ℝ), Indifferent r (Diagonal a) x := by
+  obtain ⟨a, ha⟩ := diagonal_indifference_exists hk hr hc hm x
+  exact ⟨a, ha, fun b hb => diagonal_indifference_unique hr hm hs hb ha⟩
+
+/-- Select the diagonal coordinate; the uniqueness theorem makes it canonical under strictness. -/
+noncomputable def DiagonalCoordinate (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (x : NonnegativeOrthant k) : Set.Ici (0 : ℝ) :=
+  Classical.choose (diagonal_indifference_exists hk hr hc hm x)
+
+/-- The selected coordinate has precisely the required indifference property. -/
+theorem diagonalCoordinate_spec (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r) (x : NonnegativeOrthant k) :
+    Indifferent r (Diagonal (DiagonalCoordinate hk hr hc hm x)) x :=
+  Classical.choose_spec (diagonal_indifference_exists hk hr hc hm x)
+
+/-- Step 4's real-valued utility: the location of the indifferent diagonal bundle. -/
+noncomputable def DiagonalUtility (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (x : NonnegativeOrthant k) : ℝ := (DiagonalCoordinate hk hr hc hm x).val
+
+/-- The diagonal scale is nonnegative even when some goods have zero consumption. -/
+theorem diagonalUtility_nonneg (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r) (x : NonnegativeOrthant k) :
+    0 ≤ DiagonalUtility hk hr hc hm x := (DiagonalCoordinate hk hr hc hm x).property
+
+/-- Step 5's ordinal representation assertion. -/
+theorem diagonalUtility_represents (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) : Represents (DiagonalUtility hk hr hc hm) r := by
+  intro x y
+  have hx := diagonalCoordinate_spec hk hr hc hm x
+  have hy := diagonalCoordinate_spec hk hr hc hm y
+  constructor
+  · intro hxy
+    have hdiag := hr.2 _ x _ hx.1 (hr.2 x y _ hxy hy.2)
+    exact (diagonal_weak_iff hm hs _ _).mp hdiag
+  · intro hxy
+    have hdiag := (diagonal_weak_iff hm hs
+      (DiagonalCoordinate hk hr hc hm x) (DiagonalCoordinate hk hr hc hm y)).mpr hxy
+    exact hr.2 x _ y hx.2 (hr.2 _ _ y hdiag hy.1)
+
+/-- On the diagonal itself, utility is exactly the common commodity quantity. -/
+theorem diagonalUtility_diagonal (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) (a : Set.Ici (0 : ℝ)) :
+    DiagonalUtility hk hr hc hm (Diagonal a) = a.val := by
+  have he := (diagonal_indifferent_iff hm hs _ a).mp
+    (diagonalCoordinate_spec hk hr hc hm (Diagonal a))
+  exact congrArg Subtype.val he
+
+/-- An exact nonnegative utility range converts continuous strict contours into continuity. -/
+theorem continuous_of_full_nonnegative_range {X : Type*} [TopologicalSpace X]
+    {r : X → X → Prop} {u : X → ℝ} (hu : Represents u r)
+    (hc : ContinuousPreference r) (hn : ∀ x, 0 ≤ u x)
+    (hfull : ∀ a : ℝ, 0 ≤ a → ∃ x, u x = a) : Continuous u := by
+  apply OrderTopology.continuous_iff.mpr
+  intro a
+  have ho := continuousPreference_openStrictContours hc
+  by_cases ha : 0 ≤ a
+  · obtain ⟨z, hz⟩ := hfull a ha
+    have hgt : u ⁻¹' Set.Ioi a = StrictlyBetterThan r z := by
+      ext x
+      change a < u x ↔ Strict r x z
+      rw [strict_iff_utility_lt hu, hz]
+    have hlt : u ⁻¹' Set.Iio a = StrictlyWorseThan r z := by
+      ext x
+      change u x < a ↔ Strict r z x
+      rw [strict_iff_utility_lt hu, hz]
+    exact ⟨hgt ▸ (ho z).1, hlt ▸ (ho z).2⟩
+  · have hgt : u ⁻¹' Set.Ioi a = Set.univ := by
+      ext x
+      change (a < u x) ↔ True
+      exact iff_true_intro (lt_of_lt_of_le (lt_of_not_ge ha) (hn x))
+    have hlt : u ⁻¹' Set.Iio a = ∅ := by
+      ext x
+      change (u x < a) ↔ False
+      exact iff_false_intro (not_lt_of_ge ((le_of_lt (lt_of_not_ge ha)).trans (hn x)))
+    exact ⟨hgt ▸ isOpen_univ, hlt ▸ isOpen_empty⟩
+
+/-- Step 5's continuity assertion, including the zero endpoint of the diagonal. -/
+theorem diagonalUtility_continuous (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) : Continuous (DiagonalUtility hk hr hc hm) := by
+  apply continuous_of_full_nonnegative_range (diagonalUtility_represents hk hr hc hm hs) hc
+    (diagonalUtility_nonneg hk hr hc hm)
+  intro a ha
+  exact ⟨Diagonal ⟨a, ha⟩, diagonalUtility_diagonal hk hr hc hm hs ⟨a, ha⟩⟩
+
+/-- **Proposition 2.9 with the extra assumptions**, proved by all five diagonal steps. -/
+theorem proposition_2_9_monotone (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hm : MonotonePreference r)
+    (hs : StrictAllIncreasePreference r) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u :=
+  ⟨DiagonalUtility hk hr hc hm, diagonalUtility_represents hk hr hc hm hs,
+    diagonalUtility_continuous hk hr hc hm hs⟩
+
+/-- Footnote 6, p. 36: weak monotonicity follows from the other assumptions. -/
+theorem continuous_representation_strictAllIncrease (hk : 0 < k) (hr : Rational r)
+    (hc : ContinuousPreference r) (hs : StrictAllIncreasePreference r) :
+    ∃ u : NonnegativeOrthant k → ℝ, Represents u r ∧ Continuous u :=
+  proposition_2_9_monotone hk hr hc (continuous_strictAllIncrease_monotone hr hc hs) hs
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# The mathematical assertions in indifference-curve diagrams
+
+Kreps I, Section 2.4, pp. 38-39. Local insatiability excludes a ball inside
+an indifference class; strict monotonicity makes two-good curves decreasing;
+strict convexity makes interior mixtures of distinct indifferent bundles better.
+The path-crossing assertion is `monotone_path_crossing` in `ContinuousUtility`.
+No smoothness assertion follows from these assumptions.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The indifference class denoted I(x) in the chapter. -/
+def IndifferenceClass {X : Type*} (r : X → X → Prop) (x : X) : Set X :=
+  {y | Indifferent r y x}
+
+/-- Local insatiability prevents any positive-radius ball from lying in one class. -/
+theorem indifferenceClass_no_ball {X : Type*} [PseudoMetricSpace X] {r : X → X → Prop}
+    (hr : Rational r) (hl : LocallyInsatiable r) (x z : X) {ε : ℝ} (hε : 0 < ε) :
+    ¬Metric.ball z ε ⊆ IndifferenceClass r x := by
+  intro hsub
+  have hz : Indifferent r z x := hsub (by simpa using hε)
+  obtain ⟨y, hy, hbetter⟩ := locallyInsatiable_iff_open.mp hl z ε hε
+  have hyx : Indifferent r y x := hsub hy
+  exact hbetter.2 (hr.2 z x y hz.1 hyx.2)
+
+/-- Thus every indifference class has empty relative interior. -/
+theorem indifferenceClass_interior_empty {X : Type*} [PseudoMetricSpace X]
+    {r : X → X → Prop} (hr : Rational r) (hl : LocallyInsatiable r) (x : X) :
+    interior (IndifferenceClass r x) = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro z hz
+  obtain ⟨ε, hε, hb⟩ := Metric.isOpen_iff.mp isOpen_interior z hz
+  exact indifferenceClass_no_ball hr hl x z hε (fun _ h => interior_subset (hb h))
+
+/-- For two goods, strictly more of the first requires less of the second along a class. -/
+theorem indifferenceCurve_decreasing
+    {r : NonnegativeOrthant 2 → NonnegativeOrthant 2 → Prop}
+    (hs : StrictlyMonotonePreference r) {x y : NonnegativeOrthant 2}
+    (hi : Indifferent r y x) (hfirst : x.val 0 < y.val 0) : y.val 1 < x.val 1 := by
+  by_contra hnot
+  have hxy : x ≤ y := by
+    intro j
+    fin_cases j
+    · exact hfirst.le
+    · exact le_of_not_gt hnot
+  have hne : y ≠ x := by
+    intro he
+    have h := congrArg (fun z : NonnegativeOrthant 2 => z.val 0) he
+    linarith
+  exact (hs y x hxy hne).2 hi.2
+
+/-- Distinct indifferent endpoints have strictly better interior mixtures under strict convexity. -/
+theorem indifference_mixture_strict {E : Type*} [AddCommGroup E] [Module ℝ E]
+    {S : Set E} {hS : Convex ℝ S} {r : S → S → Prop}
+    (hs : StrictlyConvexPreference hS r) {x y : S} (hne : x ≠ y)
+    (hi : Indifferent r x y) (a : ℝ) (ha : a ∈ Set.Ioo 0 1) :
+    Strict r (Mix hS x y a ⟨ha.1.le, ha.2.le⟩) y :=
+  hs x y hne hi.1 a ha
+
+end Kreps.PreferenceProperties
+
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+
+/-!
+# Continuity and local insatiability do not imply coordinatewise path crossing
+
+Kreps I, Problem 2.7, p. 46. The utility x₁ - x₂ is continuous and locally
+insatiable. The diagonal path from (4,4) to (1,1) passes from strictly above
+to strictly below (3,2) in both coordinates, but has constant utility zero
+and therefore never meets that bundle's indifference class of utility one.
+-/
+
+namespace Kreps.PreferenceProperties
+
+/-- The first good helps while the second hurts. -/
+def NetUtility (x : NonnegativeOrthant 2) : ℝ := x.val 0 - x.val 1
+
+/-- This utility is continuous on the whole orthant. -/
+theorem netUtility_continuous : Continuous NetUtility :=
+  ((continuous_apply 0).comp continuous_subtype_val).sub
+    ((continuous_apply 1).comp continuous_subtype_val)
+
+/-- Increasing just the first good gives an arbitrarily nearby strict improvement. -/
+theorem netPreference_locallyInsatiable : LocallyInsatiable (UtilityPref NetUtility) := by
+  intro x ε hε
+  let y := PairBundle (x.val 0 + ε) (x.val 1)
+    (add_nonneg (x.property 0) hε.le) (x.property 1)
+  have hd : dist y x ≤ ε := by
+    change dist (fun j : Fin 2 => if j = 0 then x.val 0 + ε else x.val 1) x.val ≤ ε
+    apply (dist_pi_le_iff hε.le).mpr
+    intro j
+    fin_cases j
+    · simp [abs_of_pos hε]
+    · simpa using hε.le
+  have hlt : NetUtility x < NetUtility y := by
+    change x.val 0 - x.val 1 < (x.val 0 + ε) - x.val 1
+    linarith
+  exact ⟨y, hd, hlt.le, not_le_of_gt hlt⟩
+
+/-- A continuous diagonal path whose endpoints lie on opposite coordinate sides of the target. -/
+def AvoidingPath (t : UnitSegment) : NonnegativeOrthant 2 :=
+  ⟨fun _ => 4 - 3 * t.val, fun _ => by
+    change 0 ≤ 4 - 3 * t.val
+    have ht : t.val ≤ 1 := t.property.2
+    linarith⟩
+
+/-- The path has no jumps. -/
+theorem avoidingPath_continuous : Continuous AvoidingPath :=
+  (continuous_pi fun _ =>
+    continuous_const.sub (continuous_const.mul continuous_subtype_val)).subtype_mk _
+
+/-- The coordinatewise intermediate bundle has utility one. -/
+def PathMiddle : NonnegativeOrthant 2 := PairBundle 3 2 (by norm_num) (by norm_num)
+
+/-- Every commodity falls past its target level along the path. -/
+theorem avoidingPath_coordinate_bounds :
+    (∀ j, PathMiddle.val j < (AvoidingPath ⟨0, by norm_num⟩).val j) ∧
+    (∀ j, (AvoidingPath ⟨1, by norm_num⟩).val j < PathMiddle.val j) := by
+  constructor <;> intro j <;> fin_cases j <;> norm_num [PathMiddle, PairBundle, AvoidingPath]
+
+/-- Yet no path point is indifferent to the target. -/
+theorem avoidingPath_no_indifference :
+    ¬∃ t, Indifferent (UtilityPref NetUtility) (AvoidingPath t) PathMiddle := by
+  rintro ⟨t, ht⟩
+  norm_num [Indifferent, UtilityPref, NetUtility, AvoidingPath, PathMiddle, PairBundle] at ht
+
+/-- **Problem 2.7:** the counterexample also satisfies local insatiability. -/
+theorem problem_2_7 :
+    Rational (UtilityPref NetUtility) ∧ ContinuousPreference (UtilityPref NetUtility) ∧
+    LocallyInsatiable (UtilityPref NetUtility) ∧ Continuous AvoidingPath ∧
+    (∀ j, PathMiddle.val j < (AvoidingPath ⟨0, by norm_num⟩).val j) ∧
+    (∀ j, (AvoidingPath ⟨1, by norm_num⟩).val j < PathMiddle.val j) ∧
+    ¬∃ t, Indifferent (UtilityPref NetUtility) (AvoidingPath t) PathMiddle :=
+  ⟨proposition_1_3a _, continuousPreference_of_continuous_utility netUtility_continuous,
+    netPreference_locallyInsatiable, avoidingPath_continuous, avoidingPath_coordinate_bounds.1,
+    avoidingPath_coordinate_bounds.2, avoidingPath_no_indifference⟩
+
+/-- The failed hypothesis is monotonicity, as the path-crossing theorem also shows. -/
+theorem netPreference_not_monotone : ¬MonotonePreference (UtilityPref NetUtility) := by
+  intro hm
+  apply avoidingPath_no_indifference
+  exact monotone_path_crossing (proposition_1_3a _)
+    (continuousPreference_of_continuous_utility netUtility_continuous) hm
+    AvoidingPath avoidingPath_continuous PathMiddle
+    (fun j => (avoidingPath_coordinate_bounds.1 j).le)
+    (fun j => (avoidingPath_coordinate_bounds.2 j).le)
+
+end Kreps.PreferenceProperties
+
 set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.FullMenus
 #print axioms Kreps.PreferenceProperties.ChoiceRule
@@ -2586,3 +3071,46 @@ set_option linter.style.longLine false
 #print axioms Kreps.PreferenceProperties.problem_2_5a
 #print axioms Kreps.PreferenceProperties.jumpUtility_not_continuous
 #print axioms Kreps.PreferenceProperties.problem_2_5b
+#print axioms Kreps.PreferenceProperties.proposition_2_9_forward
+#print axioms Kreps.PreferenceProperties.compact_choice_of_continuous_utility
+#print axioms Kreps.PreferenceProperties.indifference_on_connected_image
+#print axioms Kreps.PreferenceProperties.lemma_2_10
+#print axioms Kreps.PreferenceProperties.monotone_path_crossing
+#print axioms Kreps.PreferenceProperties.Diagonal
+#print axioms Kreps.PreferenceProperties.diagonal_continuous
+#print axioms Kreps.PreferenceProperties.MinCoordinate
+#print axioms Kreps.PreferenceProperties.MaxCoordinate
+#print axioms Kreps.PreferenceProperties.minCoordinate_nonneg
+#print axioms Kreps.PreferenceProperties.minCoordinate_le
+#print axioms Kreps.PreferenceProperties.le_maxCoordinate
+#print axioms Kreps.PreferenceProperties.maxCoordinate_nonneg
+#print axioms Kreps.PreferenceProperties.diagonal_indifference_exists
+#print axioms Kreps.PreferenceProperties.diagonal_weak_iff
+#print axioms Kreps.PreferenceProperties.diagonal_indifferent_iff
+#print axioms Kreps.PreferenceProperties.diagonal_indifference_unique
+#print axioms Kreps.PreferenceProperties.diagonal_indifference_existsUnique
+#print axioms Kreps.PreferenceProperties.DiagonalCoordinate
+#print axioms Kreps.PreferenceProperties.diagonalCoordinate_spec
+#print axioms Kreps.PreferenceProperties.DiagonalUtility
+#print axioms Kreps.PreferenceProperties.diagonalUtility_nonneg
+#print axioms Kreps.PreferenceProperties.diagonalUtility_represents
+#print axioms Kreps.PreferenceProperties.diagonalUtility_diagonal
+#print axioms Kreps.PreferenceProperties.continuous_of_full_nonnegative_range
+#print axioms Kreps.PreferenceProperties.diagonalUtility_continuous
+#print axioms Kreps.PreferenceProperties.proposition_2_9_monotone
+#print axioms Kreps.PreferenceProperties.continuous_representation_strictAllIncrease
+#print axioms Kreps.PreferenceProperties.IndifferenceClass
+#print axioms Kreps.PreferenceProperties.indifferenceClass_no_ball
+#print axioms Kreps.PreferenceProperties.indifferenceClass_interior_empty
+#print axioms Kreps.PreferenceProperties.indifferenceCurve_decreasing
+#print axioms Kreps.PreferenceProperties.indifference_mixture_strict
+#print axioms Kreps.PreferenceProperties.NetUtility
+#print axioms Kreps.PreferenceProperties.netUtility_continuous
+#print axioms Kreps.PreferenceProperties.netPreference_locallyInsatiable
+#print axioms Kreps.PreferenceProperties.AvoidingPath
+#print axioms Kreps.PreferenceProperties.avoidingPath_continuous
+#print axioms Kreps.PreferenceProperties.PathMiddle
+#print axioms Kreps.PreferenceProperties.avoidingPath_coordinate_bounds
+#print axioms Kreps.PreferenceProperties.avoidingPath_no_indifference
+#print axioms Kreps.PreferenceProperties.problem_2_7
+#print axioms Kreps.PreferenceProperties.netPreference_not_monotone

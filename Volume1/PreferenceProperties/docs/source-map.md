@@ -18,11 +18,11 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Proposition 2.8a, p. 34 | Concave/strictly concave representation implies convex/strictly convex preference | `proposition_2_8a_concave`, `proposition_2_8a_strict` |
 | Proposition 2.8b, p. 34 | Three quasi-concavity equivalences | `proposition_2_8b_quasi`, `proposition_2_8b_strict`, `proposition_2_8b_semiStrict` |
 | Section 2.2, p. 35 | Concavity need not survive ordinal rescaling; quasi-concavity does | `quasiConcave_strictMono_transform`, `problem_2_5a`; nonexistence of any concave representation remains pending in Problem 2.8 |
-| Proposition 2.9, pp. 35-38 | Continuous representation implies continuous preference, and full converse | Pending; the converse must not assume monotonicity |
-| Lemma 2.10, pp. 36, 38 | A continuous path crosses any intervening indifference class | Pending |
-| Section 2.3, pp. 36-38 | Five-step diagonal construction under the additional monotonicity assumptions | Pending; existence, uniqueness, representation and continuity all required |
-| Section 2.3, p. 35 | Compact-menu attainment via continuous utility | Pending; distinguish from copied Chapter 1 direct compactness proof |
-| Section 2.4, pp. 38-39 | Thin indifference classes; decreasing two-good curves; crossing; strict convexity | Pending; smoothness is expressly not claimed by the book |
+| Proposition 2.9, pp. 35-38 | Continuous representation implies continuous preference, and full converse | `proposition_2_9_forward`; the general converse remains pending and must not assume monotonicity |
+| Lemma 2.10, pp. 36, 38 | A continuous path crosses any intervening indifference class | `indifference_on_connected_image`, `lemma_2_10`; no continuous representation assumed |
+| Section 2.3, pp. 36-38 | Five-step diagonal construction under the additional monotonicity assumptions | `DiagonalBounds` and `DiagonalRepresentation`: existence, uniqueness, representation and continuity; `proposition_2_9_monotone`, `continuous_representation_strictAllIncrease` |
+| Section 2.3, p. 35 | Compact-menu attainment via continuous utility | `compact_choice_of_continuous_utility`; separate from the copied Chapter 1 direct compactness proof |
+| Section 2.4, pp. 38-39 | Thin indifference classes; decreasing two-good curves; crossing; strict convexity | `indifferenceClass_no_ball`, `indifferenceClass_interior_empty`, `indifferenceCurve_decreasing`, `monotone_path_crossing`, `indifference_mixture_strict`; no smoothness claim |
 | Definition 2.11; Proposition 2.12, pp. 40-41 | Disjoint commodity blocks; weak separability iff a strictly increasing aggregator on attained subutility ranges | Pending; arbitrary finite number of blocks and leftover commodities |
 | Definition 2.13, p. 42 | Strong separability for unions of blocks; nontriviality of a block | Pending |
 | Proposition 2.14, p. 42 | Continuous strong separability with at least three nontrivial blocks gives continuous additive representation | Pending; this full theorem is in scope despite the book referring out for its proof |
@@ -42,7 +42,7 @@ This chapter is in progress. `Pending` makes no formalization claim.
 | Problem 2.4, p. 46 | Proof of Proposition 2.5 | `problem_2_4` |
 | Problem 2.5a-b, p. 46 | Increasing transformations can destroy concavity and continuity | `ConvexWarp`, `problem_2_5a`, `jumpUtility_not_continuous`, `problem_2_5b` |
 | Problem 2.6, p. 46 | Strict all-coordinate monotonicity iff monotonicity plus LNS under continuity; conclusions without continuity | `problem_2_6`, `strictAllIncrease_locallyInsatiable`, `monotone_locallyInsatiable_strictAllIncrease`, `problem_2_6_without_continuity` |
-| Problem 2.7, p. 46 | Continuous, locally insatiable preference can fail the coordinatewise path-crossing assertion without monotonicity | Pending |
+| Problem 2.7, p. 46 | Continuous, locally insatiable preference can fail the coordinatewise path-crossing assertion without monotonicity | `NetUtility`, `AvoidingPath`, `problem_2_7`, `netPreference_not_monotone` |
 | Problem 2.8a, pp. 46-47 | The two displayed product-based utilities: convexity, lack of any concave representation, semi-strictness and continuity | Pending; exact piecewise formulas were checked against page images |
 | Problem 2.8b, p. 47 | The displayed continuous semi-strictly convex preference has no concave representation | Pending; the difficult nonexistence conclusion is required |
 | Problem 2.9a, p. 47 | Positive linear utility: indifference curves and all seven listed preference properties | Pending |

@@ -22,3 +22,8 @@ import PreferenceProperties.MonotonicityExamples
 import PreferenceProperties.Insatiability
 import PreferenceProperties.ConvexityExamples
 import PreferenceProperties.TransformationExamples
+import PreferenceProperties.ContinuousUtility
+import PreferenceProperties.DiagonalBounds
+import PreferenceProperties.DiagonalRepresentation
+import PreferenceProperties.IndifferenceCurves
+import PreferenceProperties.PathCounterexample
