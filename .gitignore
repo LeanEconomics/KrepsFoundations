@@ -1,0 +1,6 @@
+**/.lake/
+**/__pycache__/
+*.pyc
+*.pdf
+.local/
+**/verification/*.txt

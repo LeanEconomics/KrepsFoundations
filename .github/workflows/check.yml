@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Check Kreps Foundations proofs
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  proofs:
+    name: ${{ matrix.project }} proofs
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [Volume1/ChoicePreferenceUtility]
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install pinned elan
+        run: |
+          curl --fail --location https://github.com/leanprover/elan/releases/download/v4.2.4/elan-x86_64-unknown-linux-gnu.tar.gz -o elan.tar.gz
+          tar xzf elan.tar.gz
+          ./elan-init -y --no-modify-path --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Install the pinned Lean toolchain
+        run: |
+          for attempt in 1 2 3 4 5; do
+            "$HOME/.elan/bin/elan" toolchain install "$(cat lean-toolchain)" && exit 0
+            echo "toolchain download failed (attempt $attempt), retrying"
+            sleep $((attempt * 20))
+          done
+          exit 1
+      - name: Fetch pinned mathematical dependencies
+        run: |
+          python - <<'PY'
+          import json, subprocess, time
+          from pathlib import Path
+          config = json.loads(Path('proof-manifest.json').read_text())
+          imports = {line.removeprefix('import ') for name in config['modules']
+                     for line in Path(name).read_text().splitlines()
+                     if line.startswith('import Mathlib.')}
+          for attempt in range(1, 6):
+              if subprocess.run(['lake', 'exe', 'cache', 'get', *sorted(imports)]).returncode == 0:
+                  break
+              print(f'cache download failed (attempt {attempt}), retrying', flush=True)
+              time.sleep(20 * attempt)
+          else:
+              raise SystemExit('lake exe cache get failed five times')
+          PY
+      - name: Test verification failure paths
+        if: ${{ hashFiles(format('{0}/scripts/test_*.py', matrix.project)) != '' }}
+        run: python -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Build and audit every proof
+        run: python scripts/verify.py
