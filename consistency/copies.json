@@ -1,0 +1,326 @@
+{
+  "copies": [
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/Basic.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/Basic.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/Rationalization.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/Rationalization.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/FiniteUtility.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/FiniteUtility.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/StrictPreference.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/StrictPreference.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/CountableUtility.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/CountableUtility.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/InfiniteChoice.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/InfiniteChoice.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/UtilityEquivalence.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/UtilityEquivalence.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/ContinuousPreference.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/ContinuousPreference.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/OrthantRepresentation.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/OrthantRepresentation.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/CompactChoice.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/CompactChoice.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/UtilityExamples.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/UtilityExamples.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/Lexicographic.lean",
+      "destination": "Volume1/PreferenceProperties/PreferenceProperties/Lexicographic.lean",
+      "replacements": [
+        [
+          "Kreps.PreferenceProperties",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import PreferenceProperties.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/Basic.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationBasic.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/StrictPreference.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationStrictPreference.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/CountableUtility.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationCountableUtility.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/ContinuousPreference.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationContinuousPreference.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/OrthantRepresentation.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationOrthantRepresentation.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/Monotonicity.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationMonotonicity.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/Lexicographic.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationLexicographic.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/ContinuousUtility.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationContinuousUtility.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/DensePreferenceRanks.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationDensePreferenceRanks.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/RankCutUtility.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationRankCutUtility.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/PreferenceProperties/PreferenceProperties/GeneralContinuousRepresentation.lean",
+      "destination": "Volume1/ConsumerDemand/ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean",
+      "replacements": [
+        [
+          "Kreps.ConsumerDemand.Representation",
+          "Kreps.PreferenceProperties"
+        ],
+        [
+          "import ConsumerDemand.Representation",
+          "import PreferenceProperties."
+        ]
+      ]
+    }
+  ]
+}

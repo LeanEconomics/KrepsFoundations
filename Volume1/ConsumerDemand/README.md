@@ -2,8 +2,9 @@
 
 Formalization of Kreps, *Microeconomic Foundations I*, Chapter 3, pp. 50–66.
 Definitions, numbered propositions, Problems 3.1–3.14, and mathematical illustrations
-are implemented and independently reviewed. The frozen audit passed **450 theorems
-and 610 declarations across 64 modules**, with all 14 verifier tests passing.
+are implemented and independently reviewed. The frozen audit passed **455 theorems
+and 615 declarations across 65 modules**, including the primitive-convexity API,
+with all 14 verifier tests passing.
 The [source map](docs/source-map.md) records exact coverage; generated proof checks
 and source hashes are in [verification](verification/verification.json). See
 [corrections](docs/corrections.md) for domain conventions and qualifications.
@@ -69,6 +70,7 @@ dependency on another chapter. See [third-party notices](THIRD_PARTY_NOTICES.md)
 | [RepresentationRankCutUtility](ConsumerDemand/RepresentationRankCutUtility.lean) | 13 | A bounded utility from dense rational ranks |
 | [RepresentationGeneralContinuousRepresentation](ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean) | 5 | The general continuous-representation theorem |
 | [PrimitivePreferences](ConsumerDemand/PrimitivePreferences.lean) | 3 | Consumer demand from primitive preferences |
+| [PrimitiveConvexChoice](ConsumerDemand/PrimitiveConvexChoice.lean) | 5 | Convexity and uniqueness of choice directly from primitive preferences |
 | [PrimitiveChoiceProperties](ConsumerDemand/PrimitiveChoiceProperties.lean) | 2 | Primitive-preference uniqueness with irrelevant goods |
 | [ProductHomogeneity](ConsumerDemand/ProductHomogeneity.lean) | 4 | Homotheticity of the explicit demand examples |
 | [QuasiconcaveOptimality](ConsumerDemand/QuasiconcaveOptimality.lean) | 3 | Quasi-concave first-order sufficiency |

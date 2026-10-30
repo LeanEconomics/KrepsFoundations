@@ -42,10 +42,17 @@ jobs:
           python - <<'PY'
           import json, subprocess, time
           from pathlib import Path
-          config = json.loads(Path('proof-manifest.json').read_text())
-          imports = {line.removeprefix('import ') for name in config['modules']
-                     for line in Path(name).read_text().splitlines()
-                     if line.startswith('import Mathlib.')}
+          projects = [Path.cwd()]
+          if Path.cwd().name == 'RevealedPreference':
+              projects = sorted(Path.cwd().parent.glob('*/proof-manifest.json'))
+              projects = [path.parent for path in projects]
+          imports = set()
+          for project in projects:
+              config = json.loads((project / 'proof-manifest.json').read_text())
+              imports.update(line.removeprefix('import ')
+                             for name in config['modules']
+                             for line in (project / name).read_text().splitlines()
+                             if line.startswith('import Mathlib.'))
           for attempt in range(1, 6):
               if subprocess.run(['lake', 'exe', 'cache', 'get', *sorted(imports)]).returncode == 0:
                   break
@@ -59,3 +66,9 @@ jobs:
         run: python -m unittest discover -s scripts -p 'test_*.py' -v
       - name: Build and audit every proof
         run: python scripts/verify.py
+      - name: Test cross-chapter consistency checks
+        if: ${{ matrix.project == 'Volume1/RevealedPreference' }}
+        run: python -m unittest discover -s ../../scripts -p 'test_*.py' -v
+      - name: Jointly audit chapters and compatibility bridges
+        if: ${{ matrix.project == 'Volume1/RevealedPreference' }}
+        run: python ../../scripts/verify_consistency.py

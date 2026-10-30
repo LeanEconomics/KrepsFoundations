@@ -32,8 +32,8 @@ the Appendix 3 inventory distinguishes the foundations used here from its later 
 
 Chapters 1–2 are published in `LeanEconomics/KrepsFoundations`. On 2026-10-29, the
 user resumed work on Chapters 3–4 with parallel agents. Their source review and full
-fresh audits passed on 2026-10-30: Chapter 3 has 450 theorems / 610 audited declarations
-across 64 modules; Chapter 4 has 137 theorems / 192 declarations across 17 modules.
+fresh audits passed on 2026-10-30: Chapter 3 has 455 theorems / 615 audited declarations
+across 65 modules; Chapter 4 has 137 theorems / 192 declarations across 17 modules.
 These totals include attributed local prerequisites. Both chapters include all numbered
 results, mathematical exercises and examples, with explicit qualifications and corrections.
 Their Appendix 4–5 support does not claim complete coverage of those generic appendices.

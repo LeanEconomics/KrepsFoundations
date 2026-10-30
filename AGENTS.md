@@ -27,6 +27,10 @@ practice. The reference repositories are sources to inspect, not additional depe
 - Reuse prior chapter material by making attributed local copies in the receiving
   chapter's namespace. Record the originating commit and review all affected copies
   when changing a common definition or statement.
+- Keep full-copy mappings in `consistency/copies.json` and semantic interface checks in
+  `consistency/ChapterBridges.lean`. After changing shared foundations, run the root
+  consistency tests and `python scripts/verify_consistency.py`, in addition to affected
+  chapter audits. Preserve independent packages; this check compiles their sources jointly.
 
 ## Mathematical work
 

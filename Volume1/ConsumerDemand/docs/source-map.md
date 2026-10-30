@@ -2,8 +2,9 @@
 
 Source: David M. Kreps, *Microeconomic Foundations I*, printed pp. 50–66.
 The mathematical implementation and independent source review are complete.
-The frozen full build, fresh elaboration and all-declaration axiom audit passed;
-see [verification](../verification/verification.json).
+The frozen full build, fresh elaboration and all-declaration axiom audit passed,
+including the primitive-convexity API; see
+[verification](../verification/verification.json).
 Consumption domains include zero except for the explicitly positive logarithmic
 menu. Prices are strictly positive and income is nonnegative unless a statement
 explicitly assumes positive income.
@@ -11,7 +12,7 @@ explicitly assumes positive income.
 | Source | Formalization | Status and scope |
 | --- | --- | --- |
 | Section 3.1, pp. 50–51 | `Prerequisites`, `BudgetSets`, `PrimitivePreferences` | Complete preference/utility conventions, positive prices, nonnegative income, budget and primitive continuous-representation bridge. |
-| Proposition 3.1a–d, pp. 53–54 | `ConsumerProblem`, `BudgetSets` | Complete. Scaling preserves the entire solution set; existence; convexity and uniqueness; local insatiability forces budget exhaustion. |
+| Proposition 3.1a–d, pp. 53–54 | `ConsumerProblem`, `BudgetSets`, `PrimitiveConvexChoice` | Complete. Scaling preserves the entire solution set; existence; convexity and uniqueness; local insatiability forces budget exhaustion. Convexity and uniqueness are also available directly from primitive preference assumptions, composing Chapter 2's menu arguments with the budget results and primitive existence. |
 | Figure 3.1, p. 51 | `BudgetGeometry`, `BudgetTriangle` | Complete single-good vertices and exact two-good convex-hull triangle, including zero income. A strictly positive feasible bundle exists at positive income. |
 | Figure 3.2a–c, p. 53 | `DemandIllustrations` | Complete constructed continuous witnesses: two distinct optima with nonconvex preferences, the entire budget line with convex but non-strict preferences, and a unique satiation bundle with slack expenditure. The formulas are not claimed to be printed in the book. |
 | Figure 3.3, p. 54 | `ConsumerProblem.preferenceChoice_exhausts_budget` | Complete feasible-neighborhood argument. Continuity of expenditure supplies the slack neighborhood; this replaces the printed conservative coordinate-radius estimate. |
@@ -59,6 +60,9 @@ attribution changes only. `PrimitivePreferences` bridges their definitions to
 this chapter and derives continuous utility from rational continuous preferences.
 `HomotheticDemand` additionally adapts the homotheticity definition and elementary
 scaling identities from the same Chapter 2 revision.
+`PrimitiveConvexChoice` adapts Chapter 2's two Proposition 2.6 menu lemmas and
+specializes them to budgets. Its uniqueness theorem derives existence from rational
+continuous preference and requires no supplied utility representation or maximizer.
 
 The prose motivating constant prices, resale, household services, saving and
 the interpretation of a one-time shopping expedition is explanatory discussion,

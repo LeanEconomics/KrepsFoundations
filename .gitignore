@@ -4,3 +4,5 @@
 *.pdf
 .local/
 **/verification/*.txt
+consistency/FreshAudit.lean
+consistency/*.txt

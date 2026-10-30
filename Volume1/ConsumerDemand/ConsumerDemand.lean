@@ -58,6 +58,7 @@ import ConsumerDemand.RepresentationDensePreferenceRanks
 import ConsumerDemand.RepresentationRankCutUtility
 import ConsumerDemand.RepresentationGeneralContinuousRepresentation
 import ConsumerDemand.PrimitivePreferences
+import ConsumerDemand.PrimitiveConvexChoice
 import ConsumerDemand.PrimitiveChoiceProperties
 import ConsumerDemand.ProductHomogeneity
 import ConsumerDemand.QuasiconcaveOptimality
