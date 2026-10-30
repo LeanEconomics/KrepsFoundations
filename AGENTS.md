@@ -1,9 +1,10 @@
 # Working on KrepsFoundations
 
 This repository formalizes David M. Kreps, *Microeconomic Foundations I*, chapter by
-chapter. The user sets the mathematical scope. The current milestone is Chapters 1–2;
-later chapters remain planned until the user resumes them. Keep status claims tied to
-the actual statements and completed verification, rather than declaration counts alone.
+chapter. The user sets the mathematical scope. Chapters 1–4 have completed their source
+reviews and proof audits. Chapters 5–16 remain planned until the user resumes them.
+Keep status claims tied to the actual statements and completed verification, rather than
+declaration counts alone.
 
 The convention references and their exact revisions are recorded in
 [PROVENANCE.md](PROVENANCE.md). This file combines DynamicProgramming's independent

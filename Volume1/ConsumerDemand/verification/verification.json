@@ -1,0 +1,6067 @@
+{
+  "checked_at_utc": "2026-10-30T09:36:47.258917+00:00",
+  "theorems": 450,
+  "module_theorems": {
+    "ConsumerDemand/Prerequisites.lean": 1,
+    "ConsumerDemand/BudgetSets.lean": 13,
+    "ConsumerDemand/ConsumerProblem.lean": 10,
+    "ConsumerDemand/ConstrainedOptimization.lean": 2,
+    "ConsumerDemand/LinearBudgetMultipliers.lean": 1,
+    "ConsumerDemand/ConcaveSupport.lean": 3,
+    "ConsumerDemand/CalculusOptimality.lean": 9,
+    "ConsumerDemand/LogarithmicSupport.lean": 6,
+    "ConsumerDemand/ShiftedProductDemand.lean": 5,
+    "ConsumerDemand/CobbDouglasDemand.lean": 10,
+    "ConsumerDemand/BangForBuck.lean": 8,
+    "ConsumerDemand/CorrespondenceMaximum.lean": 13,
+    "ConsumerDemand/BudgetContinuity.lean": 13,
+    "ConsumerDemand/BudgetGeometry.lean": 3,
+    "ConsumerDemand/BudgetTriangle.lean": 2,
+    "ConsumerDemand/CESSupport.lean": 3,
+    "ConsumerDemand/CESDemand.lean": 15,
+    "ConsumerDemand/CESContinuity.lean": 7,
+    "ConsumerDemand/HomotheticDemand.lean": 10,
+    "ConsumerDemand/CESHomogeneity.lean": 5,
+    "ConsumerDemand/LinearDemand.lean": 6,
+    "ConsumerDemand/CESLimits.lean": 8,
+    "ConsumerDemand/CappedAbsoluteDerivatives.lean": 2,
+    "ConsumerDemand/CommodityTransfers.lean": 7,
+    "ConsumerDemand/DecreasingDemand.lean": 2,
+    "ConsumerDemand/DemandIllustrations.lean": 14,
+    "ConsumerDemand/WaterfillingMultiplier.lean": 4,
+    "ConsumerDemand/ShiftedDemandProcedure.lean": 9,
+    "ConsumerDemand/FiniteShiftedDemand.lean": 7,
+    "ConsumerDemand/IndirectUtility.lean": 10,
+    "ConsumerDemand/IrrelevantGoods.lean": 4,
+    "ConsumerDemand/LeontiefDemand.lean": 9,
+    "ConsumerDemand/LinearLeontiefHomogeneity.lean": 4,
+    "ConsumerDemand/SeparableMarginals.lean": 10,
+    "ConsumerDemand/SeparableDemand.lean": 10,
+    "ConsumerDemand/QuasiLinearDemand.lean": 7,
+    "ConsumerDemand/QuasiLinearUniqueness.lean": 4,
+    "ConsumerDemand/QuasiLinearWealth.lean": 8,
+    "ConsumerDemand/MarginalIntersections.lean": 3,
+    "ConsumerDemand/OneSidedConditions.lean": 7,
+    "ConsumerDemand/OrdinalDifferentiability.lean": 5,
+    "ConsumerDemand/PartialDerivativeCounterexample.lean": 12,
+    "ConsumerDemand/PositiveLogDemand.lean": 5,
+    "ConsumerDemand/RepresentationBasic.lean": 5,
+    "ConsumerDemand/RepresentationStrictPreference.lean": 12,
+    "ConsumerDemand/RepresentationCountableUtility.lean": 10,
+    "ConsumerDemand/RepresentationContinuousPreference.lean": 10,
+    "ConsumerDemand/RepresentationOrthantRepresentation.lean": 5,
+    "ConsumerDemand/RepresentationMonotonicity.lean": 17,
+    "ConsumerDemand/RepresentationLexicographic.lean": 3,
+    "ConsumerDemand/RepresentationContinuousUtility.lean": 5,
+    "ConsumerDemand/RepresentationDensePreferenceRanks.lean": 5,
+    "ConsumerDemand/RepresentationRankCutUtility.lean": 13,
+    "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean": 5,
+    "ConsumerDemand/PrimitivePreferences.lean": 3,
+    "ConsumerDemand/PrimitiveChoiceProperties.lean": 2,
+    "ConsumerDemand/ProductHomogeneity.lean": 4,
+    "ConsumerDemand/QuasiconcaveOptimality.lean": 3,
+    "ConsumerDemand/RobinsonCrusoe.lean": 13,
+    "ConsumerDemand/RobinsonCrusoeConvexity.lean": 11,
+    "ConsumerDemand/SeparableNonhomothetic.lean": 7,
+    "ConsumerDemand/ShiftedLogExample.lean": 4,
+    "ConsumerDemand/ShiftedProductHomothetic.lean": 4,
+    "ConsumerDemand/StationaryCubicExamples.lean": 13
+  },
+  "audited_declarations": 610,
+  "declarations": [
+    {
+      "name": "Kreps.ConsumerDemand.Complete",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.TransitivePref",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Rational",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PrefChoice",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.UtilityPref",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Represents",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Strict",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Indifferent",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.utilityPref_rational",
+      "kind": "theorem",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.NonnegativeOrthant",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LocallyInsatiable",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Mix",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ConvexMenu",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ConvexPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StrictlyConvexPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ConcaveUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.QuasiConcaveUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StrictlyQuasiConcaveUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/Prerequisites.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PositivePrices",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ZeroBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Expenditure",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.BudgetSet",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.commodity_expenditure_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_coordinate_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_isClosed",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_isCompact",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_mix",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_convex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ScalePrices",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_scalePrices",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetSets.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.MarshallianDemand",
+      "kind": "def",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.mem_marshallianDemand_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.mem_marshallianDemand_iff_isMaxOn",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_1a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_1b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marshallianDemand_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_1c_convex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marshallianDemand_subsingleton",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_1c_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.preferenceChoice_exhausts_budget",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_1d",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.feasible_segment_derivative_nonpos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConstrainedOptimization.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.convex_firstOrderNecessary",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConstrainedOptimization.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linear_budget_multipliers",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearBudgetMultipliers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.concave_support_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConcaveSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.concave_support_upper",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConcaveSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.concave_firstOrderSufficient",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ConcaveSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.MarginalUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CombinedOptimality",
+      "kind": "def",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.OptimalityConditions",
+      "kind": "def",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.BudgetVectors",
+      "kind": "def",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.mem_budgetVectors_val",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetVectors_convex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.derivative_coordinate_expansion",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marginalUtility_right_derivative",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.combinedOptimality_iff_complementarity",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.combinedOptimality_iff_lagrangian",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_5a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.optimalityConditions_firstOrder",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_5b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CalculusOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ShiftedLogUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LogMarginals",
+      "kind": "def",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.log_sub_log_le_tangent",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.log_sub_log_lt_tangent",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedLog_strict_support",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.combinedOptimality_linear_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedLog_strict_optimality",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedLog_demand_of_positive_shifts",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LogarithmicSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ShiftedCobbDouglas",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedCobbDouglas_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedCobbDouglas_eq_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.log_shiftedCobbDouglas",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedCobbDouglas_strict_optimality",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedCobbDouglas_demand_of_optimality",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CobbDouglas",
+      "kind": "def",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exponent_sum_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CobbDouglasBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglasBundle_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_cobbDouglasBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglasBundle_logMarginals",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglasBundle_optimality",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_demand_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglasBundle_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_demand_positive",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CobbDouglasDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.combinedOptimality_bangForBuck",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.consumed_good_maximizes_bangForBuck",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.consumed_goods_equal_bangForBuck",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.consumed_goods_marginal_cross_product",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.consumed_goods_marginal_ratio",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_expenditure_share",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_other_prices_irrelevant",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_ten_percent",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BangForBuck.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SequentialUpper",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SequentialLower",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ParametricMaxima",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.parametricMaxima_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.parametricMaxima_sequentialUpper",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.sequentialUpper_upperHemicontinuousAt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.sequentialLower_of_continuous_selections",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LocalCompactBound",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ParametricValue",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.parametricValue_eq_of_maximum",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.parametricValue_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LocalCompactBound.mono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SequentialUpper.isClosed",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SequentialUpper.isCompact",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.continuous_of_singleton_correspondence",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SameObjectiveUpperBounds",
+      "kind": "def",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.maximum_theorem_auxiliary",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.maximum_theorem",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.sameObjectiveUpperBounds_iff_value_eq",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PriceIncome",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ScaleBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.scaleBundle_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.scaleBundle_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_scaleBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_price_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_joint_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.BudgetAdjustmentFactor",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.BudgetAdjustment",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetAdjustment_self",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetAdjustment_feasible",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetAdjustment_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_continuous_selection",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_sequentialLower",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_sequentialUpper",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_localCompactBound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SingleGoodBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetGeometry.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_singleGoodBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetGeometry.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.singleGoodBundle_mem_budgetSet",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetGeometry.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetSet_exists_positive",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetGeometry.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.BudgetTriangleVertices",
+      "kind": "def",
+      "module": "ConsumerDemand/BudgetTriangle.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetTriangleVertices_subset",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetTriangle.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.budgetVectors_eq_triangle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/BudgetTriangle.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.normalizedPower_unit_tangent_lt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.normalizedPower_tangent_lt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.normalizedPower_tangent_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESSupport.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CESPowerSum",
+      "kind": "def",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CESUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CESWeight",
+      "kind": "def",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CESDenominator",
+      "kind": "def",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesWeight_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesDenominator_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CESBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesBundle_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_cesBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesBundle_marginal_ratio",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_strict_support",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_of_positive",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_strict_budget",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_strict_budget",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ces_demand_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesBundle_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_7",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_zero_of_coordinate",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_le_coordinate",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_continuousAt_interior",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_continuousAt_interior",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_continuousAt_boundary",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESContinuity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.HomotheticPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.scaleBundle_zero_scalar",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.scaleBundle_mul",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.scaleBundle_inv",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.homothetic_scale_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.mem_budgetSet_scale_bundle_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.homothetic_choice_scale_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.homothetic_choice_scale_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.homothetic_choice_set_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.homothetic_of_homogeneous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/HomotheticDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesPowerSum_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_scale_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LinearUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linearUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linearUtility_singleGoodBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linearUtility_le_ratio_expenditure",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_maximal_utility_price_ratio",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.singleGoodBundle_mem_linearDemand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_6a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesUtility_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_7_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesWeight_continuousAt_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesDenominator_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesDenominator_continuousAt_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesBundle_at_zero_exponent",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_7_zero_limit",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cesDemand_tendsto_cobbDouglas",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CESLimits.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cappedAbs_eq_difference",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CappedAbsoluteDerivatives.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cappedAbs_one_sided",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CappedAbsoluteDerivatives.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.TransferDirection",
+      "kind": "def",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.transferDirection_cost",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.transfer_nonnegative",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.TransferBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_transferBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.transferBundle_mem_budget",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.derivative_transferDirection",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.utility_transfer_derivative",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_improving_commodity_transfer",
+      "kind": "theorem",
+      "module": "ConsumerDemand/CommodityTransfers.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StrictlyDecreasingPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/DecreasingDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_1_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DecreasingDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_1_not_locallyInsatiable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DecreasingDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IllustrationPrices",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IllustrationFirst",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IllustrationSecond",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IllustrationSatiation",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparatedOptimaUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SatiationUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.illustration_expenditure",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.separatedOptimaUtility_le_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2a_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2b_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.satiationUtility_le_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2c_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2c_slack",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.illustration_vertices_ne",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.separatedOptimaUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2a_not_convex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2b_convex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2b_not_strictlyConvex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.satiationUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.figure_3_2c_not_locallyInsatiable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/DemandIllustrations.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.WaterfillCost",
+      "kind": "def",
+      "module": "ConsumerDemand/WaterfillingMultiplier.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillCost_continuousOn",
+      "kind": "theorem",
+      "module": "ConsumerDemand/WaterfillingMultiplier.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillCost_lower_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/WaterfillingMultiplier.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillCost_upper_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/WaterfillingMultiplier.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_waterfill_multiplier",
+      "kind": "theorem",
+      "module": "ConsumerDemand/WaterfillingMultiplier.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.WaterfillBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillBundle_commodity_cost",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_waterfillBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillBundle_shifted_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillBundle_marginal_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillBundle_marginal_eq",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillBundle_optimality",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedProduct_demand_of_waterfill",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_5",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_5_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedDemandProcedure.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.WaterfillActiveSet",
+      "kind": "def",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ActiveSetMultiplier",
+      "kind": "def",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillCost_eq_active_sum",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfillActiveSet_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.waterfill_multiplier_eq_active_candidate",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.activeSetMultiplier_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.active_candidate_solves_expenditure",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_5_finite_candidates",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_5_finite_candidate_sound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/FiniteShiftedDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IndirectUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.indirectUtility_eq_of_mem",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.indirectUtility_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_3a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.consumer_maximum_theorem",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_3b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marshallianDemand_localCompactBound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marshallianDemand_isCompact",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marshallianDemand_upperHemicontinuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_3c",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.proposition_3_3b_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.IrrelevantOutside",
+      "kind": "def",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StrictlyConvexInGoods",
+      "kind": "def",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.RemoveGood",
+      "kind": "def",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_removeGood",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.irrelevant_good_zero_at_choice",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_2_subsingleton",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_2_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/IrrelevantGoods.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LeontiefUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUtility_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.le_leontiefUtility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LeontiefUnitCost",
+      "kind": "def",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUnitCost_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LeontiefBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefBundle_effective_quantity",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_leontiefBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUtility_leontiefBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUtility_cost_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefBundle_mem_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_6b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LeontiefDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linearUtility_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearLeontiefHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.linearUtility_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearLeontiefHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUtility_scale",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearLeontiefHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.leontiefUtility_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/LinearLeontiefHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals",
+      "kind": "structure",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.mk",
+      "kind": "constructor",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.utility",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.marginal",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.concave",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.increasing",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.hasDeriv",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.continuous_marginal",
+      "kind": "projection",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.total",
+      "kind": "def",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.derivative",
+      "kind": "def",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.marginal_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.marginal_strictAnti",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.marginal_antitone",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.hasFDeriv",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.marginalUtility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.continuous_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.concave_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.strictConcave_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.strictQuasiConcave_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.unique_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableMarginals.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.perDollar",
+      "kind": "def",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.MarginalGraph",
+      "kind": "def",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.GraphicalAllocation",
+      "kind": "def",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.perDollar_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.perDollar_strictAnti",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marginalGraph_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marginalGraph_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.graphicalAllocation_optimal",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.optimal_graphicalAllocation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.demand_iff_graphicalAllocation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_graphicalAllocation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.graphicalAllocation_height_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_8",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.withNumeraire",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.withNumeraire_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.NonmoneyPrices",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.NonmoneyBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.QuasiLinearAllocation",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinearAllocation_iff_graphical",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_9",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinearAllocation_optimal",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinear_height_strict_numeraire_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinear_positive_numeraire_graph",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinear_nonmoney_independent",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.strict_component_equal_at_maxima",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.expenditure_nonmoney_split",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinear_demand_subsingleton",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiLinear_unique_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.NumeraireTarget",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.NumeraireResidualBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.nonmoney_residualBundle",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.residualBundle_expenditure",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.numeraire_target_optimal",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.numeraire_target_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.positive_numeraire_target",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.numeraire_target_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.below_target_numeraire_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.no_target_numeraire_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiLinearWealth.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_marginalGraph_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/MarginalIntersections.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.marginalGraph_zero_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/MarginalIntersections.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.numeraireTarget_exists_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/MarginalIntersections.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.right_derivative_nonpos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.left_derivative_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.coordinate_expenditure_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.demand_coordinate_left_max",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.demand_coordinate_right_max",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.demand_feasible_path_derivative_nonpos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_13",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OneSidedConditions.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.KinkTransform",
+      "kind": "def",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.kinkTransform_strictMono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.kinkTransform_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.kinkTransform_not_differentiableAt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.kinkTransform_represents_linear",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.kinkTransform_not_differentiableWithinAt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/OrdinalDifferentiability.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PartialDerivativeUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PartialDerivativePrices",
+      "kind": "def",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PartialDerivativeBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_one_sided",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeBundle_values",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_budget_bound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_first_slice",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_second_slice",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_partials",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_no_common_multiplier",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_exchange",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.partialDerivativeUtility_exchange_right",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_13_coordinate_multiplier_limitation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PartialDerivativeCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.PositiveBudgetSet",
+      "kind": "def",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.LogarithmicDemand",
+      "kind": "def",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.log_cobbDouglas",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_3a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_3b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.logarithmicDemand_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_3c",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PositiveLogDemand.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.FullMenus",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.ChoiceRule",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.FeasibleOn",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Feasible",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.FiniteNonempty",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.CoherentOn",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Coherent",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Complete",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.TransitivePref",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Rational",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.PrefChoice",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.UtilityPref",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.UtilityChoice",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Represents",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Revealed",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Strict",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.Indifferent",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.NoBetterThan",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.complete_refl",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.prefChoice_feasible",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.feasible_empty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.represents_choice",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.coherent_iff_on_full",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationBasic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.AsymmetricPref",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.NegativelyTransitive",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.WeakFromStrict",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.IndifferenceFromStrict",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strict_weak_trans",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.weak_strict_trans",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9c",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9d",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9e",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9f",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9g",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_9h",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_10",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.problem_1_9",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.OrderSeparating",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.exists_positive_summable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.WeightedUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.weightedTerm_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.weightedUtility_mono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.weightedUtility_strict",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.weightedUtility_represents",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.represents_of_countable_separating",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_11",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strict_iff_utility_lt",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.countable_separating_of_represents",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_12",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationCountableUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.NoWorseThan",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.StrictlyBetterThan",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.StrictlyWorseThan",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.ContinuousPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.MetricContinuousPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuousPreference_iff_metric",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuousPreference_of_continuous_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.ClosedContours",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.OpenStrictContours",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuousPreference_openStrictContours",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.closedContours_iff_openStrictContours",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.openStrictContours_continuousPreference",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_14c",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_14d",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.SequenceWeakContinuity",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.SequenceStrictContinuity",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_14a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_14b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.problem_1_11",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousPreference.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.exists_strict_between",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.dense_orderSeparating",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.represents_of_continuous_connected",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.NonnegativeOrthant",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_15",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_1_15_metric",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationOrthantRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.MonotonePreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.StrictlyMonotonePreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.StrictAllIncreasePreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.GloballyInsatiable",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.LocallyInsatiable",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_2_2_monotone",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_2_2_strict",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.monotone_all_representations",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.monotone_of_some_representation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strict_all_representations",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strict_of_some_representation",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strictlyMonotone_monotone",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strictlyMonotone_strictAllIncrease",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.locallyInsatiable_iff_open",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.locallyInsatiable_global",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.globallyInsatiable_iff_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.locallyInsatiable_iff_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.RaisedBundle",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.raisedBundle_dist_le",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.strictAllIncrease_locallyInsatiable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.monotone_locallyInsatiable_strictAllIncrease",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuous_strictAllIncrease_monotone",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.problem_2_6",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationMonotonicity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.UnitSegment",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/RepresentationLexicographic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.LexicographicPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationLexicographic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.lexicographic_rational",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationLexicographic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.lexicographic_not_representable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationLexicographic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.problem_1_10",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationLexicographic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_2_9_forward",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.compact_choice_of_continuous_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.indifference_on_connected_image",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.lemma_2_10",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.monotone_path_crossing",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationContinuousUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.StrictRankSeparator",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.dense_strictRankSeparator",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.InteriorRankSet",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.interiorRank_witness",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.interiorRank_between",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.interiorRankSet_countable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.RationalUnit",
+      "kind": "abbrev",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.interiorRanks_orderIso",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationDensePreferenceRanks.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.RationalRankValue",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rationalRankValue_bounds",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rationalRankValue_strictMono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.RankCutSet",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutSet_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutSet_bddAbove",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.RankCutUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_le_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_mono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_upper",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_lower",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_at_rank",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_strict",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_represents",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_attains_rationals",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationRankCutUtility.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuous_of_dense_rational_range",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.rankCutUtility_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.continuous_represents_of_continuous_connected",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_2_9",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Representation.proposition_2_9_metric",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.ContinuousPreference",
+      "kind": "def",
+      "module": "ConsumerDemand/PrimitivePreferences.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.continuous_utility_of_primitive_preferences",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PrimitivePreferences.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.preferenceChoice_eq_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PrimitivePreferences.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.primitive_consumer_choice_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PrimitivePreferences.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_2_primitive",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PrimitiveChoiceProperties.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.FirstGoods",
+      "kind": "def",
+      "module": "ConsumerDemand/PrimitiveChoiceProperties.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.mem_firstGoods",
+      "kind": "theorem",
+      "module": "ConsumerDemand/PrimitiveChoiceProperties.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_scale_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ProductHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.cobbDouglas_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ProductHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.weightedLog_scale_pos",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ProductHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.logarithmic_positive_scaling_iff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ProductHomogeneity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.quasiconcave_direction_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiconcaveOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.exists_better_strictly_affordable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiconcaveOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_11a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/QuasiconcaveOptimality.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CrusoeFeasible",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CrusoeObjective",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CrusoeDemand",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.CrusoeValue",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_nonempty",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_isCompact",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeObjective_continuous",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_continuous_selection",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_sequentialLower",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_sequentialUpper",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeFeasible_localCompactBound",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14a",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14d",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeValue_eq_of_optimum",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeDemand_isCompact",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeDemand_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeDemand_continuous_of_unique",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoe.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.MonotoneFutureUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StrictlyMonotoneFutureUtility",
+      "kind": "def",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoe_production_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoe_stream_nonneg",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeObjective_concave",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeObjective_strictConcave_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeObjective_strictConcave_production",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.crusoeDemand_subsingleton_of_strictConcave",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14c_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14c_production",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14d_lower_utility",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_14d_lower_production",
+      "kind": "theorem",
+      "module": "ConsumerDemand/RobinsonCrusoeConvexity.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.separable_not_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10a_separable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10a_quasiLinear",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SeparableMarginals.strictMono_total",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.one_good_strictMono_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10a_separable_one_good",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10a_numeraire_only",
+      "kind": "theorem",
+      "module": "ConsumerDemand/SeparableNonhomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Problem34Utility",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Problem34Prices",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Problem34BundleFive",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Problem34BundleSixteenPointFour",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.Problem34BundleHundred",
+      "kind": "def",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem34Utility_eq",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_4_five",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_4_sixteenPointFour",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_4_hundred",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedLogExample.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedProduct_not_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductHomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedProduct_homothetic_iff_zero_shifts",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductHomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.shiftedProduct_one_good_homothetic",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductHomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_10a_shifted_log",
+      "kind": "theorem",
+      "module": "ConsumerDemand/ShiftedProductHomothetic.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.StationaryCubic",
+      "kind": "def",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.SingleQuantity",
+      "kind": "def",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.UnitPrice",
+      "kind": "def",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_increasing",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_contDiff",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_locallyInsatiable",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_derivative_one",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_conditions",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_nonoptimal",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_strictlyConvex",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_quasiConcave",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_demand",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_multiplier_forced_zero",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.stationaryCubic_strictMono",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_11b",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    },
+    {
+      "name": "Kreps.ConsumerDemand.problem_3_12",
+      "kind": "theorem",
+      "module": "ConsumerDemand/StationaryCubicExamples.lean"
+    }
+  ],
+  "full_build": "passed",
+  "fresh_source_compilation": "passed",
+  "fresh_source_lint_options": [
+    "-Dlinter.mathlibStandardSet=true",
+    "-Dlinter.style.header=false"
+  ],
+  "axioms": {
+    "Kreps.ConsumerDemand.Complete": [],
+    "Kreps.ConsumerDemand.TransitivePref": [],
+    "Kreps.ConsumerDemand.Rational": [],
+    "Kreps.ConsumerDemand.PrefChoice": [],
+    "Kreps.ConsumerDemand.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Strict": [],
+    "Kreps.ConsumerDemand.Indifferent": [],
+    "Kreps.ConsumerDemand.utilityPref_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.NonnegativeOrthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LocallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ConvexMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StrictlyConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.QuasiConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StrictlyQuasiConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PositivePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ZeroBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.BudgetSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.commodity_expenditure_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_coordinate_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_isClosed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ScalePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_scalePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.MarshallianDemand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.mem_marshallianDemand_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.mem_marshallianDemand_iff_isMaxOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_1a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_1b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marshallianDemand_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_1c_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marshallianDemand_subsingleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_1c_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.preferenceChoice_exhausts_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_1d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.feasible_segment_derivative_nonpos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.convex_firstOrderNecessary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linear_budget_multipliers": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.concave_support_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.concave_support_upper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.concave_firstOrderSufficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.MarginalUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CombinedOptimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.OptimalityConditions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.BudgetVectors": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.mem_budgetVectors_val": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetVectors_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.derivative_coordinate_expansion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marginalUtility_right_derivative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.combinedOptimality_iff_complementarity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.combinedOptimality_iff_lagrangian": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_5a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.optimalityConditions_firstOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_5b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ShiftedLogUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LogMarginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.log_sub_log_le_tangent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.log_sub_log_lt_tangent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedLog_strict_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.combinedOptimality_linear_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedLog_strict_optimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedLog_demand_of_positive_shifts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ShiftedCobbDouglas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedCobbDouglas_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedCobbDouglas_eq_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.log_shiftedCobbDouglas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedCobbDouglas_strict_optimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedCobbDouglas_demand_of_optimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CobbDouglas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exponent_sum_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CobbDouglasBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglasBundle_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_cobbDouglasBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglasBundle_logMarginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglasBundle_optimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_demand_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglasBundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_demand_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.combinedOptimality_bangForBuck": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.consumed_good_maximizes_bangForBuck": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.consumed_goods_equal_bangForBuck": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.consumed_goods_marginal_cross_product": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.consumed_goods_marginal_ratio": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_expenditure_share": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_other_prices_irrelevant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_ten_percent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SequentialUpper": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SequentialLower": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ParametricMaxima": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.parametricMaxima_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.parametricMaxima_sequentialUpper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.sequentialUpper_upperHemicontinuousAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.sequentialLower_of_continuous_selections": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LocalCompactBound": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ParametricValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.parametricValue_eq_of_maximum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.parametricValue_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LocalCompactBound.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SequentialUpper.isClosed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SequentialUpper.isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.continuous_of_singleton_correspondence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SameObjectiveUpperBounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.maximum_theorem_auxiliary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.maximum_theorem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.sameObjectiveUpperBounds_iff_value_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PriceIncome": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ScaleBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.scaleBundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.scaleBundle_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_scaleBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_price_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_joint_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.BudgetAdjustmentFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.BudgetAdjustment": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetAdjustment_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetAdjustment_feasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetAdjustment_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_continuous_selection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_sequentialLower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_sequentialUpper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_localCompactBound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SingleGoodBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_singleGoodBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.singleGoodBundle_mem_budgetSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetSet_exists_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.BudgetTriangleVertices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetTriangleVertices_subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.budgetVectors_eq_triangle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.normalizedPower_unit_tangent_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.normalizedPower_tangent_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.normalizedPower_tangent_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CESPowerSum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CESUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CESWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CESDenominator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesWeight_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesDenominator_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CESBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesBundle_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_cesBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesBundle_marginal_ratio": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_strict_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_of_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_strict_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_strict_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ces_demand_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesBundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_7": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_zero_of_coordinate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_le_coordinate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_continuousAt_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_continuousAt_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_continuousAt_boundary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.HomotheticPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.scaleBundle_zero_scalar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.scaleBundle_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.scaleBundle_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.homothetic_scale_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.mem_budgetSet_scale_bundle_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.homothetic_choice_scale_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.homothetic_choice_scale_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.homothetic_choice_set_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.homothetic_of_homogeneous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesPowerSum_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_scale_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LinearUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linearUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linearUtility_singleGoodBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linearUtility_le_ratio_expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_maximal_utility_price_ratio": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.singleGoodBundle_mem_linearDemand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_6a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesUtility_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_7_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesWeight_continuousAt_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesDenominator_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesDenominator_continuousAt_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesBundle_at_zero_exponent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_7_zero_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cesDemand_tendsto_cobbDouglas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cappedAbs_eq_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cappedAbs_one_sided": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.TransferDirection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.transferDirection_cost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.transfer_nonnegative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.TransferBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_transferBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.transferBundle_mem_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.derivative_transferDirection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.utility_transfer_derivative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_improving_commodity_transfer": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StrictlyDecreasingPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_1_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_1_not_locallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IllustrationPrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IllustrationFirst": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IllustrationSecond": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IllustrationSatiation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparatedOptimaUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SatiationUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.illustration_expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.separatedOptimaUtility_le_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2a_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2b_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.satiationUtility_le_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2c_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2c_slack": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.illustration_vertices_ne": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.separatedOptimaUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2a_not_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2b_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2b_not_strictlyConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.satiationUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.figure_3_2c_not_locallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.WaterfillCost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillCost_continuousOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillCost_lower_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillCost_upper_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_waterfill_multiplier": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.WaterfillBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillBundle_commodity_cost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_waterfillBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillBundle_shifted_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillBundle_marginal_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillBundle_marginal_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillBundle_optimality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedProduct_demand_of_waterfill": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_5": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_5_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.WaterfillActiveSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ActiveSetMultiplier": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillCost_eq_active_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfillActiveSet_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.waterfill_multiplier_eq_active_candidate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.activeSetMultiplier_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.active_candidate_solves_expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_5_finite_candidates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_5_finite_candidate_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IndirectUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.indirectUtility_eq_of_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.indirectUtility_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_3a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.consumer_maximum_theorem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_3b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marshallianDemand_localCompactBound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marshallianDemand_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marshallianDemand_upperHemicontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_3c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.proposition_3_3b_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.IrrelevantOutside": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StrictlyConvexInGoods": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.RemoveGood": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_removeGood": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.irrelevant_good_zero_at_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_2_subsingleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_2_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LeontiefUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUtility_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.le_leontiefUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LeontiefUnitCost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUnitCost_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LeontiefBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefBundle_effective_quantity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_leontiefBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUtility_leontiefBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUtility_cost_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefBundle_mem_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_6b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linearUtility_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.linearUtility_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUtility_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.leontiefUtility_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.marginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.hasDeriv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.continuous_marginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.derivative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.marginal_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.marginal_strictAnti": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.marginal_antitone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.hasFDeriv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.marginalUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.continuous_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.concave_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.strictConcave_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.strictQuasiConcave_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.unique_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.perDollar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.MarginalGraph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.GraphicalAllocation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.perDollar_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.perDollar_strictAnti": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marginalGraph_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marginalGraph_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.graphicalAllocation_optimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.optimal_graphicalAllocation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.demand_iff_graphicalAllocation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_graphicalAllocation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.graphicalAllocation_height_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.withNumeraire": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.withNumeraire_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.NonmoneyPrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.NonmoneyBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.QuasiLinearAllocation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinearAllocation_iff_graphical": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinearAllocation_optimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinear_height_strict_numeraire_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinear_positive_numeraire_graph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinear_nonmoney_independent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.strict_component_equal_at_maxima": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.expenditure_nonmoney_split": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinear_demand_subsingleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiLinear_unique_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.NumeraireTarget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.NumeraireResidualBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.nonmoney_residualBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.residualBundle_expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.numeraire_target_optimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.numeraire_target_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.positive_numeraire_target": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.numeraire_target_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.below_target_numeraire_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.no_target_numeraire_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_marginalGraph_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.marginalGraph_zero_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.numeraireTarget_exists_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.right_derivative_nonpos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.left_derivative_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.coordinate_expenditure_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.demand_coordinate_left_max": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.demand_coordinate_right_max": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.demand_feasible_path_derivative_nonpos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_13": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.KinkTransform": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.kinkTransform_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.kinkTransform_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.kinkTransform_not_differentiableAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.kinkTransform_represents_linear": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.kinkTransform_not_differentiableWithinAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PartialDerivativeUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PartialDerivativePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PartialDerivativeBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_one_sided": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeBundle_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_budget_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_first_slice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_second_slice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_partials": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_no_common_multiplier": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_exchange": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.partialDerivativeUtility_exchange_right": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_13_coordinate_multiplier_limitation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.PositiveBudgetSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.LogarithmicDemand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.log_cobbDouglas": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_3a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_3b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.logarithmicDemand_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_3c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.FullMenus": [],
+    "Kreps.ConsumerDemand.Representation.ChoiceRule": [],
+    "Kreps.ConsumerDemand.Representation.FeasibleOn": [],
+    "Kreps.ConsumerDemand.Representation.Feasible": [],
+    "Kreps.ConsumerDemand.Representation.FiniteNonempty": [],
+    "Kreps.ConsumerDemand.Representation.CoherentOn": [],
+    "Kreps.ConsumerDemand.Representation.Coherent": [],
+    "Kreps.ConsumerDemand.Representation.Complete": [],
+    "Kreps.ConsumerDemand.Representation.TransitivePref": [],
+    "Kreps.ConsumerDemand.Representation.Rational": [],
+    "Kreps.ConsumerDemand.Representation.PrefChoice": [],
+    "Kreps.ConsumerDemand.Representation.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.UtilityChoice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.Revealed": [],
+    "Kreps.ConsumerDemand.Representation.Strict": [],
+    "Kreps.ConsumerDemand.Representation.Indifferent": [],
+    "Kreps.ConsumerDemand.Representation.NoBetterThan": [],
+    "Kreps.ConsumerDemand.Representation.complete_refl": [],
+    "Kreps.ConsumerDemand.Representation.prefChoice_feasible": [],
+    "Kreps.ConsumerDemand.Representation.feasible_empty": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.represents_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.coherent_iff_on_full": [],
+    "Kreps.ConsumerDemand.Representation.AsymmetricPref": [],
+    "Kreps.ConsumerDemand.Representation.NegativelyTransitive": [],
+    "Kreps.ConsumerDemand.Representation.WeakFromStrict": [],
+    "Kreps.ConsumerDemand.Representation.IndifferenceFromStrict": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9a": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9b": [],
+    "Kreps.ConsumerDemand.Representation.strict_weak_trans": [],
+    "Kreps.ConsumerDemand.Representation.weak_strict_trans": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9d": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9e": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9f": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9g": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_9h": [],
+    "Kreps.ConsumerDemand.Representation.proposition_1_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.problem_1_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.OrderSeparating": [],
+    "Kreps.ConsumerDemand.Representation.exists_positive_summable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.WeightedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.weightedTerm_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.weightedUtility_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.weightedUtility_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.weightedUtility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.represents_of_countable_separating": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strict_iff_utility_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.countable_separating_of_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_12": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.NoWorseThan": [],
+    "Kreps.ConsumerDemand.Representation.StrictlyBetterThan": [],
+    "Kreps.ConsumerDemand.Representation.StrictlyWorseThan": [],
+    "Kreps.ConsumerDemand.Representation.ContinuousPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.MetricContinuousPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.continuousPreference_iff_metric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.continuousPreference_of_continuous_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.ClosedContours": [],
+    "Kreps.ConsumerDemand.Representation.OpenStrictContours": [],
+    "Kreps.ConsumerDemand.Representation.continuousPreference_openStrictContours": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.closedContours_iff_openStrictContours": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.openStrictContours_continuousPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_14c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_14d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.SequenceWeakContinuity": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.SequenceStrictContinuity": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_14a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_14b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.problem_1_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.exists_strict_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.dense_orderSeparating": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.represents_of_continuous_connected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.NonnegativeOrthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_15": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_1_15_metric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.MonotonePreference": [],
+    "Kreps.ConsumerDemand.Representation.StrictlyMonotonePreference": [],
+    "Kreps.ConsumerDemand.Representation.StrictAllIncreasePreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.GloballyInsatiable": [],
+    "Kreps.ConsumerDemand.Representation.LocallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_2_2_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_2_2_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.monotone_all_representations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.monotone_of_some_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strict_all_representations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strict_of_some_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strictlyMonotone_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strictlyMonotone_strictAllIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.locallyInsatiable_iff_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.locallyInsatiable_global": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.globallyInsatiable_iff_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.locallyInsatiable_iff_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.RaisedBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.raisedBundle_dist_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.strictAllIncrease_locallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.monotone_locallyInsatiable_strictAllIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.continuous_strictAllIncrease_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.problem_2_6": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.UnitSegment": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.LexicographicPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.lexicographic_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.lexicographic_not_representable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.problem_1_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_2_9_forward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.compact_choice_of_continuous_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.indifference_on_connected_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.lemma_2_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.monotone_path_crossing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.StrictRankSeparator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.dense_strictRankSeparator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.InteriorRankSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.interiorRank_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.interiorRank_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.interiorRankSet_countable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.RationalUnit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.interiorRanks_orderIso": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.RationalRankValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rationalRankValue_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rationalRankValue_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.RankCutSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutSet_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutSet_bddAbove": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.RankCutUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_le_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_upper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_at_rank": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_attains_rationals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.continuous_of_dense_rational_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.rankCutUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.continuous_represents_of_continuous_connected": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_2_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Representation.proposition_2_9_metric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.ContinuousPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.continuous_utility_of_primitive_preferences": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.preferenceChoice_eq_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.primitive_consumer_choice_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_2_primitive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.FirstGoods": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.mem_firstGoods": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_scale_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.cobbDouglas_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.weightedLog_scale_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.logarithmic_positive_scaling_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.quasiconcave_direction_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.exists_better_strictly_affordable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_11a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CrusoeFeasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CrusoeObjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CrusoeDemand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.CrusoeValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeObjective_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_continuous_selection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_sequentialLower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_sequentialUpper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeFeasible_localCompactBound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeValue_eq_of_optimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeDemand_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeDemand_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeDemand_continuous_of_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.MonotoneFutureUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StrictlyMonotoneFutureUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoe_production_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoe_stream_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeObjective_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeObjective_strictConcave_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeObjective_strictConcave_production": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.crusoeDemand_subsingleton_of_strictConcave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14c_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14c_production": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14d_lower_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_14d_lower_production": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.separable_not_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10a_separable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10a_quasiLinear": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SeparableMarginals.strictMono_total": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.one_good_strictMono_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10a_separable_one_good": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10a_numeraire_only": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Problem34Utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Problem34Prices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Problem34BundleFive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Problem34BundleSixteenPointFour": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.Problem34BundleHundred": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem34Utility_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_4_five": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_4_sixteenPointFour": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_4_hundred": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedProduct_not_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedProduct_homothetic_iff_zero_shifts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.shiftedProduct_one_good_homothetic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_10a_shifted_log": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.StationaryCubic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.SingleQuantity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.UnitPrice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_increasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_contDiff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_locallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_derivative_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_conditions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_nonoptimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_strictlyConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_quasiConcave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_demand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_multiplier_forced_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.stationaryCubic_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_11b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ConsumerDemand.problem_3_12": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_sha256": {
+    "ConsumerDemand/Prerequisites.lean": "aae4fc77b0e74da1a449a44534fe23c9364bfc63f2aaebdb94e23cd41950a3c3",
+    "ConsumerDemand/BudgetSets.lean": "06d777ef981312a4034164e4974d8c0f3192f32b364058c13b2c5713addc3d33",
+    "ConsumerDemand/ConsumerProblem.lean": "e5ba42570ae6b897464d261d0b0faa7871ad189e517792422c36269a62f712dc",
+    "ConsumerDemand/ConstrainedOptimization.lean": "4ac9e9663ee22ff8a93252bd71a0c4903fd2616a0a8b0abaec58618eb8bb0d27",
+    "ConsumerDemand/LinearBudgetMultipliers.lean": "4037aa467c356cf824b64f0398656439659efd95855ac3ae1d3d54fd77bf81fb",
+    "ConsumerDemand/ConcaveSupport.lean": "a79bff470c6d0fd007072f0aa24940921adbdd770074787c2c3fa414a327532c",
+    "ConsumerDemand/CalculusOptimality.lean": "b86865c954978d0bb653559c61fe49a2471107ce8087c4d8a5bfc95bae86739d",
+    "ConsumerDemand/LogarithmicSupport.lean": "abfda97d6b6c0f6601832abbcd7020882ca515a45081a4bb7c13ea75e746148b",
+    "ConsumerDemand/ShiftedProductDemand.lean": "c5c7981e9a6761acce865da23ffe9dc09fc50875cb524549dff051f7c30be397",
+    "ConsumerDemand/CobbDouglasDemand.lean": "978578579a5794e1864c3d62efa516b46089b68b864882fd9f0c858e920122da",
+    "ConsumerDemand/BangForBuck.lean": "c9680e1b495ee6733176d34a391f2fccf3a26dd24842f0f7728551326ded4dbe",
+    "ConsumerDemand/CorrespondenceMaximum.lean": "2d8b64914022db7a5af764afd12c1d2fa87802a22379395c2446c2a25c5a2cc9",
+    "ConsumerDemand/BudgetContinuity.lean": "88252172f1d32cf7d81168f915b084aebcaf670e08003803dd0acd11f9b98100",
+    "ConsumerDemand/BudgetGeometry.lean": "15532284259662afe955dfde2c397e8c6a6a033dbab56951f27022dee5b75846",
+    "ConsumerDemand/BudgetTriangle.lean": "1519ea5af011f6d34c7b249c07602450482bdbb78f11775f678b4e0ad188bc00",
+    "ConsumerDemand/CESSupport.lean": "a92ce4c2647226b8f69f916637bef726f146959c4f625c3020ba16a7530ed0b9",
+    "ConsumerDemand/CESDemand.lean": "183b6d507d9ec505c7ab70aa1934e718b8fc6c8bd8a6cd48b9fa651d3e7c5045",
+    "ConsumerDemand/CESContinuity.lean": "51d8dd4b87307123c7895b0827452e37f8f711cf4e488a05084df16a62bb3867",
+    "ConsumerDemand/HomotheticDemand.lean": "a0b6bf0734352ed9ef9369f4f3d0e622797dfd8ec61c09a38a8b7df6ac277215",
+    "ConsumerDemand/CESHomogeneity.lean": "82fb1fe1ed6ee45f1eb1ae090fa99b7c4ab8e7caf36f0657f338362a7e6e5fba",
+    "ConsumerDemand/LinearDemand.lean": "b875ecac36a2ae44345cf5649a9e285843ee80cf06836f691256065d437b25ab",
+    "ConsumerDemand/CESLimits.lean": "1a086cde1e24d7f8c3af08ab319d2819997850dc3c189003f13caffed0b98d69",
+    "ConsumerDemand/CappedAbsoluteDerivatives.lean": "1f940841d9f81533cc09fc959f6a25344ab392de8160a98145b6547f75790178",
+    "ConsumerDemand/CommodityTransfers.lean": "03f17307ffccecb29d15d977693c11d3878b687183c8049a7a426662334b6c3e",
+    "ConsumerDemand/DecreasingDemand.lean": "16491821576b8480c10699983ee08c71d944fcdaf857c0c60348d1ffd1270e39",
+    "ConsumerDemand/DemandIllustrations.lean": "0aed5d6238dff6b6cac2eb0b6dda2d3d42e0dd371d2cf961585ccff4d4bc3d43",
+    "ConsumerDemand/WaterfillingMultiplier.lean": "130067e5acb916a5eaf8c3c814fdaca866f94e0f606da9dc9c3f33b725bd372e",
+    "ConsumerDemand/ShiftedDemandProcedure.lean": "b214f601afefcd95f1001237cda8de90351fd4fd893b108e00ee5aea110cb772",
+    "ConsumerDemand/FiniteShiftedDemand.lean": "0581ad99b8deb79c179a2ec29f09636f0d9e037f41acaed3c49f8e1d1a9c7759",
+    "ConsumerDemand/IndirectUtility.lean": "39978103906bf4b2820014d75929258e5f46fe21771cf84b4323d168e49d5e2a",
+    "ConsumerDemand/IrrelevantGoods.lean": "c2d2b95e72c7ab7a6721847b6b9bcd84e0012fc8858a77e3c7f11b078a875503",
+    "ConsumerDemand/LeontiefDemand.lean": "7ef4c695faffebe8e31a8572e03820c70983934a1ca081420c162d78a510d832",
+    "ConsumerDemand/LinearLeontiefHomogeneity.lean": "f93889e71bc854a00ed88db4a083077d9ce8e6002800f809d6aac30af937a06a",
+    "ConsumerDemand/SeparableMarginals.lean": "268749003f0630d821ca9a3b3a4bdeaea1f8ae24a4ba2e1d8e4005eb17a204d4",
+    "ConsumerDemand/SeparableDemand.lean": "c5f9519bc0606c7d36c10779e00500bae281128213fef4f60cca4844c0786d3f",
+    "ConsumerDemand/QuasiLinearDemand.lean": "01ea261c76aa38d9fc1feb1287c2a57439e9e0f35c6f19df845b82a6e79b8d43",
+    "ConsumerDemand/QuasiLinearUniqueness.lean": "120906d4548d4f1a7bb28b3996ebf377f80ec0d0608cc7688b2f9c4860b6e6a5",
+    "ConsumerDemand/QuasiLinearWealth.lean": "adb7e67ded02b4e0be7f86259dd54ab633b3ab0c4fa04a41cf33c6b1b83ca67f",
+    "ConsumerDemand/MarginalIntersections.lean": "0ab7f1c9eee070b87b884ef9e2d5cc134a7ca3ca8667b3b19a3a0eca25322979",
+    "ConsumerDemand/OneSidedConditions.lean": "f6c65e91a699e47617f576b10b030d2018ae7c4882ba25eb40eac3d90cf20aea",
+    "ConsumerDemand/OrdinalDifferentiability.lean": "ed2c87d1c33f37fc4c61e0353a7a94530133c21a30d92f2a2995a36ff9d0c5b3",
+    "ConsumerDemand/PartialDerivativeCounterexample.lean": "e28248d8601024424edebae1bc6c96495e5b9e3edc9fc333dbeef3a0a039549c",
+    "ConsumerDemand/PositiveLogDemand.lean": "fab740d58a6b1b2f8281c95e14f61b09865117e8222e9d49940e149229b946a0",
+    "ConsumerDemand/RepresentationBasic.lean": "4207ad831af00e8c7b87f441ad5f122785833524dd66df89e229addf76d2d63b",
+    "ConsumerDemand/RepresentationStrictPreference.lean": "0eeaf5e0f4978cb41d363538bb33adfcb38f5c4d60f4debe941c1a73aea74225",
+    "ConsumerDemand/RepresentationCountableUtility.lean": "a76cc9ec03e785e610127414be7eca927721dffb846ecaf514be43819c36bc94",
+    "ConsumerDemand/RepresentationContinuousPreference.lean": "81856bd186d16630cab485f8bd073215e0048563729722a77b924632dd225335",
+    "ConsumerDemand/RepresentationOrthantRepresentation.lean": "9515c701da83825fd814ece803d10af29fbac262dfeec7833945a391dceb4f13",
+    "ConsumerDemand/RepresentationMonotonicity.lean": "29ec41bef3145120fc2d8fc5ea35a95047ccba54289cee34ca9c2046fa56fd52",
+    "ConsumerDemand/RepresentationLexicographic.lean": "6a9362445c5e88ba7858d49776b9cd484077879c884a7269bc9a87f329a7d1b4",
+    "ConsumerDemand/RepresentationContinuousUtility.lean": "28b8b12cd05905b1bfd70f9e96e1f5f159fdc4d4b84bc2cf20c17773da92d14b",
+    "ConsumerDemand/RepresentationDensePreferenceRanks.lean": "1e133e524c94e3d311557b77c186f1276f7038abe87703edd9c2c20667045a20",
+    "ConsumerDemand/RepresentationRankCutUtility.lean": "e9701247e63f40ec4013334d93bf1f801caf0f7fdca22b15979043ec79236e96",
+    "ConsumerDemand/RepresentationGeneralContinuousRepresentation.lean": "d986741cc5488908c0cbf9404e42c8a08a3e7e2e1892ad09851949a49589f644",
+    "ConsumerDemand/PrimitivePreferences.lean": "4aa64c5845f4bb509b1474927806e00f9fa93b8c4c0e6b01243bd116ca00e353",
+    "ConsumerDemand/PrimitiveChoiceProperties.lean": "66e58ea3f978cf516cdf599301f5d1801db9a4a6d849ea4888f5e8b80fd71023",
+    "ConsumerDemand/ProductHomogeneity.lean": "35c55e23c6c1272b2758caff182967f1990ba0b5edc49fe7cc85d6cd2e8ff73a",
+    "ConsumerDemand/QuasiconcaveOptimality.lean": "79382ec15ce21079ad3e74ae288e3b7fa8c1d580af3c33b7d72f362c62f35326",
+    "ConsumerDemand/RobinsonCrusoe.lean": "b72017e9f1bb342bf5e41fe900535ca70836003730d58723c3f5f960c8bf88fb",
+    "ConsumerDemand/RobinsonCrusoeConvexity.lean": "b719aa1101ec75f273480c879c03917c4961eabd63e77f6c804a0219d953b51c",
+    "ConsumerDemand/SeparableNonhomothetic.lean": "642e1afc849c1c0c00bdf9f5bd87d65d1204b6a4ab6e88d9f92196f7a7bf92c3",
+    "ConsumerDemand/ShiftedLogExample.lean": "ab3ffa1c3f932aba0d9e3ee9ef5d8d1104392aac53ebd7bb696f9231ca878493",
+    "ConsumerDemand/ShiftedProductHomothetic.lean": "70734e6872efa49d90440c7c8f3afbfba018da60ae316fa90063ca435f622893",
+    "ConsumerDemand/StationaryCubicExamples.lean": "16aba8c963b6ca0b39701989aefe2cf8c5c6dc4e51adee3471866ade09ab2023",
+    "ConsumerDemand.lean": "333176f90fcc25317693bbe89f0d2f11d155d2f959ac4dea1b4cd1bc7d1c5f16",
+    "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "lakefile.toml": "10030f402270202a9a1d74e918e998ab0849d84e0c98ac2de915eeeb4cac4941",
+    "lake-manifest.json": "53f366f6387d10b08516fc6f6fd09fedf9b4c257ef459f4cf0115eeac84a5438",
+    "proof-manifest.json": "230133e992e325f1da444034400c4ac8177bfefc47926564efa4dbb95d6cad23",
+    "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "fresh_audit_sha256": "45f4ac7d4f7ad7d57ec820b9095dbdd0cabd61a84e427c32aa85d593e95e6aa1",
+  "lean_toolchain": "leanprover/lean4:v4.34.0",
+  "scope": "Chapter 3, pp. 50-66: definitions, all numbered propositions, all mathematical parts of Problems 3.1-3.14, geometric illustrations and marginal-transfer commentary. Prerequisite reuse and Appendix 4-5 support are specified in docs/source-map.md. Final fresh audit records are maintained separately in verification/.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 3, pp. 50-66."
+}

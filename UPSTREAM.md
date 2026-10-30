@@ -97,3 +97,21 @@ separability, quasi-linear preferences and the recursive utility algorithm are c
 expressed in chapter structures. They belong in the economics formalization. A future
 shared economics library may reuse them after comparing definitions and hypotheses;
 they are not ready-made Mathlib additions.
+
+## Candidates from Chapters 3–4
+
+The Chapter 3 maximum theorem separates sequential graph closure, feasible recovery,
+local compact bounds, nonempty maxima and continuous supremum values. Its auxiliary
+correspondence version follows Kreps A4.7. Search at Mathlib revision
+`5ed2965256430c3649e86755f9576b54eca72435` found useful sequential bridges in
+`Topology/Semicontinuity/Hemicontinuity.lean`, compact subsequences in
+`Topology/Sequences.lean`, and `Filter.tendsto_of_subseq_tendsto`. These are used
+rather than re-proved. A broader search and a review of filter-based formulations
+are required before proposing an upstream interface.
+
+`ConcaveSupport` specializes the scalar concave slope inequality along an affine
+segment to obtain a Fréchet derivative support inequality within a convex domain,
+including boundary points. Existing `Analysis/Convex/Deriv.lean` slope results and
+`Analysis/Calculus/LocalExtr/Basic.lean` tangent-cone necessity supply the main
+analysis. Any upstream proposal should first check duplication and harmonize the
+interface with existing convex analysis. No upstream submission has been made.

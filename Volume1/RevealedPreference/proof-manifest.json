@@ -1,0 +1,43 @@
+{
+  "library": "RevealedPreference",
+  "modules": [
+    "RevealedPreference/Basic.lean",
+    "RevealedPreference/RevealedChains.lean",
+    "RevealedPreference/RevealedRanks.lean",
+    "RevealedPreference/AfriatRankInduction.lean",
+    "RevealedPreference/FiniteMinimum.lean",
+    "RevealedPreference/FiniteAffineEnvelope.lean",
+    "RevealedPreference/PreferenceProperties.lean",
+    "RevealedPreference/MarketData.lean",
+    "RevealedPreference/GarpNecessity.lean",
+    "RevealedPreference/AfriatTheorem.lean",
+    "RevealedPreference/ComparativeStatics.lean",
+    "RevealedPreference/EconomicCommentary.lean",
+    "RevealedPreference/GiffenExample.lean",
+    "RevealedPreference/MarketExamples.lean",
+    "RevealedPreference/InsatiabilityExamples.lean",
+    "RevealedPreference/OwnPriceData.lean",
+    "RevealedPreference/PrescribedUtilities.lean"
+  ],
+  "theorem_counts": {
+    "RevealedPreference/Basic.lean": 6,
+    "RevealedPreference/RevealedChains.lean": 11,
+    "RevealedPreference/RevealedRanks.lean": 7,
+    "RevealedPreference/AfriatRankInduction.lean": 4,
+    "RevealedPreference/FiniteMinimum.lean": 6,
+    "RevealedPreference/FiniteAffineEnvelope.lean": 14,
+    "RevealedPreference/PreferenceProperties.lean": 5,
+    "RevealedPreference/MarketData.lean": 7,
+    "RevealedPreference/GarpNecessity.lean": 5,
+    "RevealedPreference/AfriatTheorem.lean": 6,
+    "RevealedPreference/ComparativeStatics.lean": 8,
+    "RevealedPreference/EconomicCommentary.lean": 8,
+    "RevealedPreference/GiffenExample.lean": 18,
+    "RevealedPreference/MarketExamples.lean": 10,
+    "RevealedPreference/InsatiabilityExamples.lean": 6,
+    "RevealedPreference/OwnPriceData.lean": 7,
+    "RevealedPreference/PrescribedUtilities.lean": 9
+  },
+  "scope": "Chapter 4 formalization complete: all numbered definitions, Lemmas 4.1/4.4/4.5, Proposition 4.3 with all Afriat directions on the full domain, Propositions 4.6–4.8, Problems 4.1–4.4, exact Tables 4.1–4.2, the modified dataset and both permitted observed rankings, the below-1000 indifference illustration, WARP uniqueness distinction, zero-income argument, and the p. 75 own-price claims. The printed unrestricted finite own-price assertion is false; a corrected positive-quantity theorem and explicit boundary counterexample are proved and documented. Problem 4.3 has a regular full-domain utility with unique maximizers and a reproducible diagram. The source map and construction guide record primitive hypotheses, domain conventions, and the conditional attainment in Proposition 4.7. Final fresh audit records are maintained separately in verification/.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 4, pp. 67-78; selected attributed Chapter 2 prerequisites at commit 7d496c5."
+}

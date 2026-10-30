@@ -60,22 +60,23 @@ names do not establish governance or authorship for this separate repository.
 
 ## Dependency and verifier identity
 
-Both chapter manifests have exactly the same `packages` entries as the inspected
-DynamicProgramming `RecursiveMethods/DeterministicDP/lake-manifest.json`. The only
+All four implemented chapter manifests have exactly the same `packages` entries as the
+inspected DynamicProgramming `RecursiveMethods/DeterministicDP/lake-manifest.json`. The only
 top-level manifest difference is the chapter package name. The nine pinned packages are
 Mathlib, plausible, LeanSearchClient, importGraph, proofwidgets, aesop, Qq, batteries and Cli.
 The Mathlib revision is `5ed2965256430c3649e86755f9576b54eca72435`.
 
-Both chapters' verifier and tests are byte-for-byte copies of the reference files:
+All four chapters' verifier and tests are byte-for-byte copies of the reference files:
 
 | File | SHA-256 |
 | --- | --- |
 | `scripts/verify.py` | `a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b` |
 | `scripts/test_verify.py` | `3edbe360ed0a2d9071d2d3402ef2205e116f466f8af213ab241840cd9255666c` |
 
-The convention alignment changes documentation and contribution guidance. It does not
-change those scripts, the proof-checking policy, dependencies, CI permissions or Lean
-proof modules. Future changes to any baseline need their own explicit provenance entry
+The dependency and verifier identity checks were repeated for Chapters 1–4 on
+2026-10-30. The Chapter 3–4 milestone adds proof modules and CI matrix entries while
+preserving these scripts, the proof-checking policy, dependencies and read-only CI
+permissions. Future changes to any baseline need their own explicit provenance entry
 and verification; this audit is not a claim about a later state.
 
 ## Authorship, licenses and review

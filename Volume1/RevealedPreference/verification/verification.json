@@ -1,0 +1,1944 @@
+{
+  "checked_at_utc": "2026-10-29T22:29:57.467624+00:00",
+  "theorems": 137,
+  "module_theorems": {
+    "RevealedPreference/Basic.lean": 6,
+    "RevealedPreference/RevealedChains.lean": 11,
+    "RevealedPreference/RevealedRanks.lean": 7,
+    "RevealedPreference/AfriatRankInduction.lean": 4,
+    "RevealedPreference/FiniteMinimum.lean": 6,
+    "RevealedPreference/FiniteAffineEnvelope.lean": 14,
+    "RevealedPreference/PreferenceProperties.lean": 5,
+    "RevealedPreference/MarketData.lean": 7,
+    "RevealedPreference/GarpNecessity.lean": 5,
+    "RevealedPreference/AfriatTheorem.lean": 6,
+    "RevealedPreference/ComparativeStatics.lean": 8,
+    "RevealedPreference/EconomicCommentary.lean": 8,
+    "RevealedPreference/GiffenExample.lean": 18,
+    "RevealedPreference/MarketExamples.lean": 10,
+    "RevealedPreference/InsatiabilityExamples.lean": 6,
+    "RevealedPreference/OwnPriceData.lean": 7,
+    "RevealedPreference/PrescribedUtilities.lean": 9
+  },
+  "audited_declarations": 192,
+  "declarations": [
+    {
+      "name": "Kreps.RevealedPreference.Complete",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.TransitivePref",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Rational",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Strict",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Indifferent",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.PrefChoice",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.UtilityPref",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Represents",
+      "kind": "def",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.complete_refl",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strict_weak_trans",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.weak_strict_trans",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.utilityPref_rational",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.represents_rational",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strict_iff_utility_lt",
+      "kind": "theorem",
+      "module": "RevealedPreference/Basic.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.DirectWeak",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.DirectStrict",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.RevealedWeak",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.RevealedStrict",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MatrixGARP",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.directWeak_revealedWeak",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.directStrict_revealedStrict",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedStrict_weak",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedWeak_strict_trans",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedStrict_weak_trans",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedStrict_trans",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_no_reverse",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_iff_return_cost",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_diagonal_zero",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.negative_diagonal_not_matrixGARP",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_of_scores",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedChains.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.StrictSuccessors",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.RevealedRank",
+      "kind": "def",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.mem_strictSuccessors",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictSuccessors_subset",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedRank_le",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.revealedRank_lt",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.lemma_4_4a",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.lemma_4_4b",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.lemma_4_4c",
+      "kind": "theorem",
+      "module": "RevealedPreference/RevealedRanks.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.exists_positive_finite_multiplier",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatRankInduction.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.afriat_all_minimal",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatRankInduction.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.afriat_of_rank_on_finset",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatRankInduction.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.lemma_4_5",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatRankInduction.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.FiniteMinimum",
+      "kind": "def",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteMinimum_le",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.le_finiteMinimum",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteMinimum_attained",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteMinimum_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteMinimum_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteMinimum_concaveOn",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.AffineExpenditure",
+      "kind": "def",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.affineExpenditure_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.affineExpenditure_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.affineExpenditure_mix",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.FiniteAffineTerm",
+      "kind": "def",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineTerm_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineTerm_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineTerm_mix",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineTerm_concaveOn",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.FiniteAffineEnvelope",
+      "kind": "def",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_le_term",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_concaveOn",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_at_anchor",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_le_value",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.finiteAffineEnvelope_maximizes",
+      "kind": "theorem",
+      "module": "RevealedPreference/FiniteAffineEnvelope.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.NonnegativeOrthant",
+      "kind": "abbrev",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.StrictlyMonotonePreference",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.LocallyInsatiable",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ContinuousPreference",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Mix",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ConvexPreference",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.continuousPreference_of_continuous_utility",
+      "kind": "theorem",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictlyMonotonePreference_of_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.locallyInsatiable_iff_open",
+      "kind": "theorem",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.RaisedBundle",
+      "kind": "def",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.raisedBundle_dist_le",
+      "kind": "theorem",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictlyMonotone_locallyInsatiable",
+      "kind": "theorem",
+      "module": "RevealedPreference/PreferenceProperties.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Expenditure",
+      "kind": "def",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Budget",
+      "kind": "def",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData",
+      "kind": "structure",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.mk",
+      "kind": "constructor",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.price",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.income",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.bundle",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.price_pos",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.income_nonneg",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.feasible",
+      "kind": "projection",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.cost",
+      "kind": "def",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GARP",
+      "kind": "def",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Rationalizes",
+      "kind": "def",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.expenditure_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.expenditure_orthant_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictBudget_isOpen",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.MarketData.cost_self_nonpos",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_budget_exhaustion",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_cost_eq_difference",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.constant_utility_rationalizes",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.lemma_4_1",
+      "kind": "theorem",
+      "module": "RevealedPreference/GarpNecessity.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.optimal_budget_exhaustion",
+      "kind": "theorem",
+      "module": "RevealedPreference/GarpNecessity.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.rationalizes_revealedWeak",
+      "kind": "theorem",
+      "module": "RevealedPreference/GarpNecessity.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.rationalizes_revealedStrict",
+      "kind": "theorem",
+      "module": "RevealedPreference/GarpNecessity.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.rationalizes_garp",
+      "kind": "theorem",
+      "module": "RevealedPreference/GarpNecessity.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_of_afriat",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.matrixGARP_iff_afriat",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.convexPreference_of_concaveOn",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_exists_concave_utility",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.proposition_4_3",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_iff_regular_rationalizable",
+      "kind": "theorem",
+      "module": "RevealedPreference/AfriatTheorem.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.OwnPriceIncrease",
+      "kind": "def",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.expenditure_own_price",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.compensated_old_expenditure",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.proposition_4_6",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.expenditure_price_quantity_difference",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.proposition_4_8",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_lower_income",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_lower_income_quantity",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.proposition_4_7",
+      "kind": "theorem",
+      "module": "RevealedPreference/ComparativeStatics.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.StrictlyConvexPreference",
+      "kind": "def",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.dominated_strict_ranking_not_monotone",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.midpoint_strict_rankings_not_convex",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.budget_mix",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictlyConvex_budget_choice_unique",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.unique_choice_strict",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.strictlyConvex_choice_strict",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.zero_income_bundle_zero",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.globally_inferior_demand_zero",
+      "kind": "theorem",
+      "module": "RevealedPreference/EconomicCommentary.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenUtility",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenPreference",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenOldPrices",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenNewPrices",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenOldBundle",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.GiffenNewBundle",
+      "kind": "def",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenUtility_continuous",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenUtility_concaveOn",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenUtility_strictMono",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenPreference_regular",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenPrices_positive",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffenPrices_ownPriceIncrease",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_old_feasible",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_new_feasible",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_budget_exhaustion",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_old_value",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_new_value",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_old_maximum",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_old_unique",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_new_maximum",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_new_unique",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_old_choice",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.giffen_new_choice",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.problem_4_3",
+      "kind": "theorem",
+      "module": "RevealedPreference/GiffenExample.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.InitialBundles",
+      "kind": "def",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.InitialData",
+      "kind": "def",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.table_4_1_costs",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.initialData_exhausts",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.initialData_not_garp",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.initialData_not_rationalizable",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ModifiedData",
+      "kind": "def",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedData_third_costs",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedData_garp",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedData_rationalizable",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.Problem41Data",
+      "kind": "def",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.table_4_2_costs",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.problem_4_1_garp",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.problem_4_1",
+      "kind": "theorem",
+      "module": "RevealedPreference/MarketExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ThousandPlateauUtility",
+      "kind": "def",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.thousandPlateauUtility_zero",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.thousandPlateauUtility_indifferent",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.affordable_coordinate_le_income",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.thousandPlateauUtility_rationalizes",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.thousandPlateauUtility_nonconstant",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.linear_boundary_tie",
+      "kind": "theorem",
+      "module": "RevealedPreference/InsatiabilityExamples.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ownPriceData_cost",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_of_own_price_data",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.own_price_data_rationalizable",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.garp_two_own_price_observations",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.BoundaryOwnPriceData",
+      "kind": "def",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.boundaryOwnPriceData_exhausts",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.boundaryOwnPriceData_price_increase",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.boundaryOwnPriceData_not_garp",
+      "kind": "theorem",
+      "module": "RevealedPreference/OwnPriceData.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.DataEnvelope",
+      "kind": "def",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.dataEnvelope_at",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.dataEnvelope_rationalizes",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.ModifiedUtility",
+      "kind": "def",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modified_multipliers_pos",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modified_afriat",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedUtility_regular",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedUtility_rationalizes",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedUtility_values",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedUtility_strict_rankings",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    },
+    {
+      "name": "Kreps.RevealedPreference.modifiedUtility_tied_rankings",
+      "kind": "theorem",
+      "module": "RevealedPreference/PrescribedUtilities.lean"
+    }
+  ],
+  "full_build": "passed",
+  "fresh_source_compilation": "passed",
+  "fresh_source_lint_options": [
+    "-Dlinter.mathlibStandardSet=true",
+    "-Dlinter.style.header=false"
+  ],
+  "axioms": {
+    "Kreps.RevealedPreference.Complete": [],
+    "Kreps.RevealedPreference.TransitivePref": [],
+    "Kreps.RevealedPreference.Rational": [],
+    "Kreps.RevealedPreference.Strict": [],
+    "Kreps.RevealedPreference.Indifferent": [],
+    "Kreps.RevealedPreference.PrefChoice": [],
+    "Kreps.RevealedPreference.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.complete_refl": [],
+    "Kreps.RevealedPreference.strict_weak_trans": [],
+    "Kreps.RevealedPreference.weak_strict_trans": [],
+    "Kreps.RevealedPreference.utilityPref_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.represents_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strict_iff_utility_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.DirectWeak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.DirectStrict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.RevealedWeak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.RevealedStrict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MatrixGARP": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.directWeak_revealedWeak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.directStrict_revealedStrict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedStrict_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedWeak_strict_trans": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedStrict_weak_trans": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedStrict_trans": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_no_reverse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_iff_return_cost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_diagonal_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.negative_diagonal_not_matrixGARP": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_of_scores": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.StrictSuccessors": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.RevealedRank": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.mem_strictSuccessors": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictSuccessors_subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedRank_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.revealedRank_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.lemma_4_4a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.lemma_4_4b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.lemma_4_4c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.exists_positive_finite_multiplier": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.afriat_all_minimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.afriat_of_rank_on_finset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.lemma_4_5": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.FiniteMinimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteMinimum_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.le_finiteMinimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteMinimum_attained": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteMinimum_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteMinimum_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteMinimum_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.AffineExpenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.affineExpenditure_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.affineExpenditure_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.affineExpenditure_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.FiniteAffineTerm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineTerm_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineTerm_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineTerm_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineTerm_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.FiniteAffineEnvelope": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_le_term": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_at_anchor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_le_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.finiteAffineEnvelope_maximizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.NonnegativeOrthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.StrictlyMonotonePreference": [],
+    "Kreps.RevealedPreference.LocallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ContinuousPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.continuousPreference_of_continuous_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictlyMonotonePreference_of_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.locallyInsatiable_iff_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.RaisedBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.raisedBundle_dist_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictlyMonotone_locallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.price": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.income": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.bundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.price_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.income_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.feasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.cost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GARP": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Rationalizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.expenditure_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.expenditure_orthant_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictBudget_isOpen": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.MarketData.cost_self_nonpos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_budget_exhaustion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_cost_eq_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.constant_utility_rationalizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.lemma_4_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.optimal_budget_exhaustion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.rationalizes_revealedWeak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.rationalizes_revealedStrict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.rationalizes_garp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_of_afriat": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.matrixGARP_iff_afriat": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.convexPreference_of_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_exists_concave_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.proposition_4_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_iff_regular_rationalizable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.OwnPriceIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.expenditure_own_price": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.compensated_old_expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.proposition_4_6": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.expenditure_price_quantity_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.proposition_4_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_lower_income": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_lower_income_quantity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.proposition_4_7": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.StrictlyConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.dominated_strict_ranking_not_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.midpoint_strict_rankings_not_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.budget_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictlyConvex_budget_choice_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.unique_choice_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.strictlyConvex_choice_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.zero_income_bundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.globally_inferior_demand_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenOldPrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenNewPrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenOldBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.GiffenNewBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenUtility_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenUtility_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenPreference_regular": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenPrices_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffenPrices_ownPriceIncrease": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_old_feasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_new_feasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_budget_exhaustion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_old_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_new_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_old_maximum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_old_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_new_maximum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_new_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_old_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.giffen_new_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.problem_4_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.InitialBundles": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.InitialData": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.table_4_1_costs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.initialData_exhausts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.initialData_not_garp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.initialData_not_rationalizable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ModifiedData": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedData_third_costs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedData_garp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedData_rationalizable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.Problem41Data": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.table_4_2_costs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.problem_4_1_garp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.problem_4_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ThousandPlateauUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.thousandPlateauUtility_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.thousandPlateauUtility_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.affordable_coordinate_le_income": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.thousandPlateauUtility_rationalizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.thousandPlateauUtility_nonconstant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.linear_boundary_tie": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ownPriceData_cost": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_of_own_price_data": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.own_price_data_rationalizable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.garp_two_own_price_observations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.BoundaryOwnPriceData": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.boundaryOwnPriceData_exhausts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.boundaryOwnPriceData_price_increase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.boundaryOwnPriceData_not_garp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.DataEnvelope": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.dataEnvelope_at": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.dataEnvelope_rationalizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.ModifiedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modified_multipliers_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modified_afriat": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedUtility_regular": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedUtility_rationalizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedUtility_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedUtility_strict_rankings": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.RevealedPreference.modifiedUtility_tied_rankings": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_sha256": {
+    "RevealedPreference/Basic.lean": "d1cb228424bfd17959b637af833e90e080a1952dbdca0b85e8285673a773b7c9",
+    "RevealedPreference/RevealedChains.lean": "51744eed37ab0a33f77e9421deb1766ee5c7f1828f34907ab96ce80e08f52802",
+    "RevealedPreference/RevealedRanks.lean": "8e06739cea00cdf9c060dd1d5de67dbb695b60578f2cd035ae1fc4f8942ded2f",
+    "RevealedPreference/AfriatRankInduction.lean": "0b5384ca7d4936adeb86a9b2325293f66fc77d91b6da96aed54636ffaebf1489",
+    "RevealedPreference/FiniteMinimum.lean": "eb8a234b0758a7ad1290f62c6b64837af9e7e12f6fd69ee85f2822503f203196",
+    "RevealedPreference/FiniteAffineEnvelope.lean": "4287f270c443ee17119d9bb6e179185d041fd411270639e6346b5cd193cf43cf",
+    "RevealedPreference/PreferenceProperties.lean": "636fd4d98f10f0832b8388b65c9e0f2c6b5943b6e59c415dfd7d5bd4adf481df",
+    "RevealedPreference/MarketData.lean": "a7a0578b484e642a6046dcb2a0ad86d649d51e7371d18ed1f2289aee38ebb29c",
+    "RevealedPreference/GarpNecessity.lean": "9fba4868310cc0d39537436c7271815c259fc697f1fb50de019f331b82a78dd2",
+    "RevealedPreference/AfriatTheorem.lean": "069f0818eb44a7ca9bbeda469d4eb0a8fad37c5fa63698fc0aea4c7bda2492ce",
+    "RevealedPreference/ComparativeStatics.lean": "eda0f55bd727b650efdefbc48bc5218354a5d609cee94211e339ac460c8638d8",
+    "RevealedPreference/EconomicCommentary.lean": "d412ea4cd87feb411aa7e71bea3ab7a431ddbad09e5aca1c863dc567f34d165f",
+    "RevealedPreference/GiffenExample.lean": "32314787e773d11a7eb643dfe9e39b4e5bec6758beb2723d704cb36534e2c51b",
+    "RevealedPreference/MarketExamples.lean": "c3ad71c7d8738a7dd0da67cb043f0c4f80aad003bb5f86b8c27fcf77c60e9329",
+    "RevealedPreference/InsatiabilityExamples.lean": "d23746d3bd6682abdca192c2a01e5ea890ed003afd413540f76e83824786e03b",
+    "RevealedPreference/OwnPriceData.lean": "59a086971c8f36db5612508631447486c5f7492220fd0fb394533c08c7ed954b",
+    "RevealedPreference/PrescribedUtilities.lean": "60f7815e24a2954e1b4a51722629006132569ecced8f0fc43856f7b3289637de",
+    "RevealedPreference.lean": "850ccefe8e25ae8d8a50583a3534357dddc37a7d6af183ba027c4f50836a78f3",
+    "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "lakefile.toml": "63328557a5d42301590034eda2ac164c1e3fb9b9a6db3ccae3cf943457dbe2b8",
+    "lake-manifest.json": "206f8c4b0ae7f6a5bb6714bb5f4d766448779c855cea94b20c3b5453d204870b",
+    "proof-manifest.json": "36e52bf888d78e5eee3eae1e252406371c41b1a6ada2131c268cef9ca7bc911a",
+    "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "fresh_audit_sha256": "c4951a1e639de53c137bbfcc6aee045f58a06b8e6bdf2f587d371ae0992b9017",
+  "lean_toolchain": "leanprover/lean4:v4.34.0",
+  "scope": "Chapter 4 formalization complete: all numbered definitions, Lemmas 4.1/4.4/4.5, Proposition 4.3 with all Afriat directions on the full domain, Propositions 4.6\u20134.8, Problems 4.1\u20134.4, exact Tables 4.1\u20134.2, the modified dataset and both permitted observed rankings, the below-1000 indifference illustration, WARP uniqueness distinction, zero-income argument, and the p. 75 own-price claims. The printed unrestricted finite own-price assertion is false; a corrected positive-quantity theorem and explicit boundary counterexample are proved and documented. Problem 4.3 has a regular full-domain utility with unique maximizers and a reproducible diagram. The source map and construction guide record primitive hypotheses, domain conventions, and the conditional attainment in Proposition 4.7. Final fresh audit records are maintained separately in verification/.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 4, pp. 67-78; selected attributed Chapter 2 prerequisites at commit 7d496c5."
+}

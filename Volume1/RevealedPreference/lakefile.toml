@@ -1,0 +1,19 @@
+name = "RevealedPreference"
+version = "0.1.0"
+keywords = ["math", "economics", "microeconomics"]
+defaultTargets = ["RevealedPreference"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.34.0"
+
+[[lean_lib]]
+name = "RevealedPreference"

@@ -1,0 +1,77 @@
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+import ConsumerDemand.Prerequisites
+import ConsumerDemand.BudgetSets
+import ConsumerDemand.ConsumerProblem
+import ConsumerDemand.ConstrainedOptimization
+import ConsumerDemand.LinearBudgetMultipliers
+import ConsumerDemand.ConcaveSupport
+import ConsumerDemand.CalculusOptimality
+import ConsumerDemand.LogarithmicSupport
+import ConsumerDemand.ShiftedProductDemand
+import ConsumerDemand.CobbDouglasDemand
+import ConsumerDemand.BangForBuck
+import ConsumerDemand.CorrespondenceMaximum
+import ConsumerDemand.BudgetContinuity
+import ConsumerDemand.BudgetGeometry
+import ConsumerDemand.BudgetTriangle
+import ConsumerDemand.CESSupport
+import ConsumerDemand.CESDemand
+import ConsumerDemand.CESContinuity
+import ConsumerDemand.HomotheticDemand
+import ConsumerDemand.CESHomogeneity
+import ConsumerDemand.LinearDemand
+import ConsumerDemand.CESLimits
+import ConsumerDemand.CappedAbsoluteDerivatives
+import ConsumerDemand.CommodityTransfers
+import ConsumerDemand.DecreasingDemand
+import ConsumerDemand.DemandIllustrations
+import ConsumerDemand.WaterfillingMultiplier
+import ConsumerDemand.ShiftedDemandProcedure
+import ConsumerDemand.FiniteShiftedDemand
+import ConsumerDemand.IndirectUtility
+import ConsumerDemand.IrrelevantGoods
+import ConsumerDemand.LeontiefDemand
+import ConsumerDemand.LinearLeontiefHomogeneity
+import ConsumerDemand.SeparableMarginals
+import ConsumerDemand.SeparableDemand
+import ConsumerDemand.QuasiLinearDemand
+import ConsumerDemand.QuasiLinearUniqueness
+import ConsumerDemand.QuasiLinearWealth
+import ConsumerDemand.MarginalIntersections
+import ConsumerDemand.OneSidedConditions
+import ConsumerDemand.OrdinalDifferentiability
+import ConsumerDemand.PartialDerivativeCounterexample
+import ConsumerDemand.PositiveLogDemand
+import ConsumerDemand.RepresentationBasic
+import ConsumerDemand.RepresentationStrictPreference
+import ConsumerDemand.RepresentationCountableUtility
+import ConsumerDemand.RepresentationContinuousPreference
+import ConsumerDemand.RepresentationOrthantRepresentation
+import ConsumerDemand.RepresentationMonotonicity
+import ConsumerDemand.RepresentationLexicographic
+import ConsumerDemand.RepresentationContinuousUtility
+import ConsumerDemand.RepresentationDensePreferenceRanks
+import ConsumerDemand.RepresentationRankCutUtility
+import ConsumerDemand.RepresentationGeneralContinuousRepresentation
+import ConsumerDemand.PrimitivePreferences
+import ConsumerDemand.PrimitiveChoiceProperties
+import ConsumerDemand.ProductHomogeneity
+import ConsumerDemand.QuasiconcaveOptimality
+import ConsumerDemand.RobinsonCrusoe
+import ConsumerDemand.RobinsonCrusoeConvexity
+import ConsumerDemand.SeparableNonhomothetic
+import ConsumerDemand.ShiftedLogExample
+import ConsumerDemand.ShiftedProductHomothetic
+import ConsumerDemand.StationaryCubicExamples
+
+/-!
+# Kreps I: Basics of Consumer Demand
+
+Definitions, numbered results, exercises and mathematical illustrations are
+implemented. The source map records exact coverage and qualifications. Final
+publication requires the frozen recompilation and transitive-axiom audit.
+-/
