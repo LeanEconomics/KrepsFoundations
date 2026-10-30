@@ -13,10 +13,14 @@ maps, corrections and fresh proof audits. Work proceeds in book order.
 
 | Project | Chapter | Checked results | Start here |
 | --- | --- | --- | --- |
-| [Volume1/ChoicePreferenceUtility](Volume1/ChoicePreferenceUtility/README.md) | 1. Choice, Preference, and Utility | 263 theorems / 387 declarations audited; Chapter 1 and Appendix 1 mathematical coverage complete | [Chapter overview](Volume1/ChoicePreferenceUtility/README.md) |
-| [Volume1/PreferenceProperties](Volume1/PreferenceProperties/README.md) | 2. Structural Properties of Preferences and Utility Functions | Chapter 2 complete; 966 new chapter/appendix theorems; 1064 total with local prerequisites; fresh audit passed | [Chapter overview](Volume1/PreferenceProperties/README.md) |
-| [Volume1/ConsumerDemand](Volume1/ConsumerDemand/README.md) | 3. Basics of Consumer Demand | 450 theorems / 610 declarations; complete fresh audit passed | [Chapter overview](Volume1/ConsumerDemand/README.md) |
-| [Volume1/RevealedPreference](Volume1/RevealedPreference/README.md) | 4. Revealed Preference and Afriat’s Theorem | 137 theorems / 192 declarations; complete fresh audit passed | [Chapter overview](Volume1/RevealedPreference/README.md) |
+| [Volume1/ChoicePreferenceUtility](Volume1/ChoicePreferenceUtility/README.md) | 1. Choice, Preference, and Utility | 263 theorems / 387 declarations; fresh audit passed | [Chapter overview](Volume1/ChoicePreferenceUtility/README.md) |
+| [Volume1/PreferenceProperties](Volume1/PreferenceProperties/README.md) | 2. Structural Properties of Preferences and Utility Functions | 1064 theorems / 1378 declarations; fresh audit passed | [Chapter overview](Volume1/PreferenceProperties/README.md) |
+| [Volume1/ConsumerDemand](Volume1/ConsumerDemand/README.md) | 3. Basics of Consumer Demand | 450 theorems / 610 declarations; fresh audit passed | [Chapter overview](Volume1/ConsumerDemand/README.md) |
+| [Volume1/RevealedPreference](Volume1/RevealedPreference/README.md) | 4. Revealed Preference and Afriat’s Theorem | 137 theorems / 192 declarations; fresh audit passed | [Chapter overview](Volume1/RevealedPreference/README.md) |
+
+Counts cover each complete independent project, including attributed local prerequisites.
+Declarations include theorems, definitions and generated structure constants. Chapter
+overviews and source maps give the breakdown and precise chapter/appendix coverage.
 
 Chapters 1–4 are complete within the scope recorded in their source maps, including
 their mathematical exercises, examples and documented corrections. Chapters 3–4
