@@ -24,7 +24,7 @@ mathematics, explicit assumptions, provenance and upstream-candidate tracking.
 DynamicProgramming pins and its stricter no-placeholder verifier where the references
 differ; do not copy the other repository’s model-specific scope or local machine setup.
 
-Status: Chapters 1–4 and their required foundations are complete. Chapter 1 has
+Status: Chapters 1–6 and their required foundations are complete. Chapter 1 has
 263 theorems and 387 audited declarations; Chapter 2 has 966 new chapter/appendix
 theorems, plus 98 attributed local prerequisite theorems. Source maps and fresh
 verification records specify the checked scope. Appendix 1 and Appendix 2 are complete;
@@ -37,7 +37,13 @@ across 65 modules; Chapter 4 has 137 theorems / 192 declarations across 17 modul
 These totals include attributed local prerequisites. Both chapters include all numbered
 results, mathematical exercises and examples, with explicit qualifications and corrections.
 Their Appendix 4–5 support does not claim complete coverage of those generic appendices.
-Chapters 5–16 remain a roadmap outside this completed milestone.
+Chapters 5–6 passed source review and their full proof audits on 2026-11-07.
+Chapter 5 has 276 theorems and 415 audited declarations in 42 modules. Chapter 6
+has 458 theorems and 629 audited declarations in 78 modules. The source maps
+record Problems 5.1–5.6 and 6.1–6.14, the Borel and subjective expected-utility
+representations, the stochastic-dominance constructions and the optional stopped
+gamble. The six-chapter verification includes 48 full-copy checks and 36 compatibility
+theorems. Chapters 7–16 remain planned.
 
 ---
 
@@ -223,8 +229,8 @@ They do not change a source theorem's hypotheses.
 
 ## 3. Chapter projects
 
-This table preserves the original roadmap; Chapters 1–4 are now implemented and audited
-as recorded above, while Chapters 5–16 remain planned. Printed page ranges include
+This table preserves the original roadmap. Chapters 1–6 are implemented and audited
+as recorded above. Chapters 7–16 remain planned. Printed page ranges include
 bibliographic notes and problems.
 The scope column specifies the main development; the coverage rule in section 2 applies
 to all sections and problems, including material not individually named in this table.
@@ -423,6 +429,6 @@ These commit-pinned references define the conventions being followed:
 - [Mathematical preliminaries](https://github.com/LeanEconomics/DynamicProgramming/blob/d39805f553dfb9619271b32bbf858d3162ca7e4e/RecursiveMethods/MathematicalPreliminaries/README.md) and [fixed-point arguments](https://github.com/LeanEconomics/DynamicProgramming/blob/d39805f553dfb9619271b32bbf858d3162ca7e4e/RecursiveMethods/FixedPointArguments/README.md), for candidate supporting mathematics to assess during implementation.
 
 The chapter/appendix titles, printed page ranges and Chapter 1 numbering were checked
-against the local book. Chapters 1–4 have detailed completed source inventories in their
-projects. Inventories for Chapters 5–16 remain the first step of their respective
+against the local book. Chapters 1–6 have detailed completed source inventories in their
+projects. Inventories for Chapters 7–16 remain the first step of their respective
 milestones, not a claim of completed source review or formalization.

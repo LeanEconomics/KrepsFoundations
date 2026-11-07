@@ -7,14 +7,16 @@ import ChoicePreferenceUtility
 import PreferenceProperties
 import ConsumerDemand
 import RevealedPreference
+import ChoiceUnderUncertainty
+import UtilityForMoney
 
 /-!
-# Compatibility of the four independent chapter libraries
+# Compatibility of the independent chapter libraries
 
 These checks use the actual public chapter definitions and results. Equalities
-detect changes to copied economic conventions; the final constructions compose
-Chapter 4's Afriat utility with Chapter 2's concavity bridge and Chapter 3's
-consumer maximum theorem. The independent Lake packages remain unchanged.
+detect changes to copied economic conventions. The constructions connect Afriat
+utility with consumer demand and derive income-lottery preferences from bundle
+lotteries and optimal consumption at each realized income.
 
 The repository consistency checker jointly elaborates the chapter sources and
 these checks, replacing only these root imports with their actual source bodies.
@@ -234,5 +236,69 @@ theorem garp_gives_consumer_maximum_theorem {I : Type*} [Finite I] {k : ℕ}
   obtain ⟨u, hc, _, _, hR⟩ := RevealedPreference.garp_exists_concave_utility hG
   exact ⟨fun x => u x.val, hR, hc.comp continuous_subtype_val,
     ConsumerDemand.consumer_maximum_theorem (hc.comp continuous_subtype_val)⟩
+
+/-- On finite state spaces, Savage's Sure-Thing Principle is strong separability by states. -/
+theorem sureThing_iff_stronglySeparable {S X : Type*} [Finite S] [DecidableEq S]
+    (r : (S → X) → (S → X) → Prop) :
+    ChoiceUnderUncertainty.SureThing r ↔ PreferenceProperties.StronglySeparable r := by
+  classical
+  constructor
+  · intro h T a b z t
+    apply h (T : Set S)
+    · intro s hs
+      simp [Finset.piecewise, show s ∈ T from hs]
+    · intro s hs
+      simp [Finset.piecewise, show s ∉ T from hs]
+  · intro h T a a' b b' hin hout
+    let R := T.toFinite.toFinset
+    have hmem (s : S) : s ∈ R ↔ s ∈ T := Set.Finite.mem_toFinset _
+    have he (f g k : S → X) (ht : ∀ s ∈ T, f s = k s) (hc : ∀ s ∉ T, g s = k s) :
+        R.piecewise f g = k := by
+      funext s
+      by_cases hs : s ∈ T
+      · simp [Finset.piecewise, (hmem s).mpr hs, ht s hs]
+      · simp [Finset.piecewise, mt (hmem s).mp hs, hc s hs]
+    have hh := h R a b a a'
+    rwa [he a a a (by simp) (by simp), he b a b (by simp) (fun s hs => (hout s hs).1),
+      he a a' a' (fun s hs => (hin s hs).1) (by simp),
+      he b a' b' (fun s hs => (hin s hs).2) (fun s hs => (hout s hs).2)] at hh
+
+/-- Chapters 5 and 6 both allow a lottery with finite support on an arbitrary prize type. -/
+theorem simpleLottery_agrees (X : Type*) :
+    ChoiceUnderUncertainty.SimpleLottery X = UtilityForMoney.SimpleLottery X := rfl
+
+/-- Evaluation of the same lottery has the same cardinal meaning in Chapters 5 and 6. -/
+theorem expectedUtility_agrees {X : Type*} (U : X → ℝ)
+    (p : ChoiceUnderUncertainty.SimpleLottery X) :
+    ChoiceUnderUncertainty.ExpectedUtility U p = UtilityForMoney.ExpectedUtility U p := rfl
+
+/-- Lottery rationality and representation have the Chapter 1 definitions. -/
+theorem lottery_preference_agrees {X : Type*} (r : X → X → Prop) (u : X → ℝ) :
+    ChoicePreferenceUtility.Rational r = ChoiceUnderUncertainty.Rational r ∧
+      ChoicePreferenceUtility.Represents u r = ChoiceUnderUncertainty.Represents u r := ⟨rfl, rfl⟩
+
+/-- Income utility uses the same budget maxima as the original Chapter 3 project. -/
+theorem indirectUtility_agrees {k : ℕ} (u : ConsumerDemand.NonnegativeOrthant k → ℝ)
+    (p : ConsumerDemand.PositivePrices k) (y : ℝ≥0) :
+    ConsumerDemand.IndirectUtility u p y = UtilityForMoney.Demand.IndirectUtility u p y := rfl
+
+/-- The original mixture theorem and consumer problem jointly imply the induced income model. -/
+theorem bundle_axioms_give_income_utility {k : ℕ}
+    {r : ChoiceUnderUncertainty.SimpleLottery (ConsumerDemand.NonnegativeOrthant k) →
+      ChoiceUnderUncertainty.SimpleLottery (ConsumerDemand.NonnegativeOrthant k) → Prop}
+    (hr : ChoiceUnderUncertainty.MixtureAxioms r) :
+    ∃ U : ConsumerDemand.NonnegativeOrthant k → ℝ,
+      ChoiceUnderUncertainty.Represents (ChoiceUnderUncertainty.ExpectedUtility U) r ∧
+      (Continuous U → ∀ p : ConsumerDemand.PositivePrices k,
+        (∃ f : ℝ≥0 → ConsumerDemand.NonnegativeOrthant k,
+          ∀ y, f y ∈ ConsumerDemand.MarshallianDemand U p y) ∧
+        ∀ f : ℝ≥0 → ConsumerDemand.NonnegativeOrthant k,
+          (∀ y, f y ∈ ConsumerDemand.MarshallianDemand U p y) →
+          ChoiceUnderUncertainty.Represents
+            (ChoiceUnderUncertainty.ExpectedUtility (ConsumerDemand.IndirectUtility U p))
+            (UtilityForMoney.InducedIncomePreference r f) ∧
+          ChoiceUnderUncertainty.MixtureAxioms (UtilityForMoney.InducedIncomePreference r f)) := by
+  obtain ⟨U, hU⟩ := ChoiceUnderUncertainty.proposition_5_3.mp hr
+  exact ⟨U, hU, fun hc p => UtilityForMoney.proposition_6_16 hc hU p⟩
 
 end Kreps.Compatibility

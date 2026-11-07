@@ -11,16 +11,17 @@ import verify_consistency as consistency
 
 ROOT = Path(__file__).resolve().parents[1]
 CHAPTERS = (
-    "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference"
+    "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference",
+    "ChoiceUnderUncertainty", "UtilityForMoney"
 )
 
 
 class ConsistencyTests(unittest.TestCase):
     def test_current_copy_inventory_and_parity(self):
         manifest = json.loads((ROOT / "consistency/copies.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(manifest["copies"]), 23)
+        self.assertEqual(len(manifest["copies"]), 48)
         destinations = [entry["destination"] for entry in manifest["copies"]]
-        self.assertEqual(len(set(destinations)), 23)
+        self.assertEqual(len(set(destinations)), 48)
         consistency.check_copies(ROOT)
 
     def test_current_environment_matches_across_all_chapters(self):

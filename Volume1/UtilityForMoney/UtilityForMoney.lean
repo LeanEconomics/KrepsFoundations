@@ -1,0 +1,90 @@
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+import UtilityForMoney.MonetaryLotteries
+import UtilityForMoney.ComparativeRisk
+import UtilityForMoney.RiskMeasures
+import UtilityForMoney.Insurance
+import UtilityForMoney.RiskyAssets
+import UtilityForMoney.ArrowPrattComparison
+import UtilityForMoney.LocalRiskPremium
+import UtilityForMoney.ArrowPrattTheorem
+import UtilityForMoney.WealthShifts
+import UtilityForMoney.WealthRiskClassification
+import UtilityForMoney.ConstantAbsoluteRisk
+import UtilityForMoney.CARACalibration
+import UtilityForMoney.CARACalibrationPreferences
+import UtilityForMoney.BehavioralCalibration
+import UtilityForMoney.PortfolioCases
+import UtilityForMoney.CARAPortfolio
+import UtilityForMoney.FiniteCouplings
+import UtilityForMoney.CouplingSeparation
+import UtilityForMoney.DominanceFiniteMinimum
+import UtilityForMoney.StochasticDominance
+import UtilityForMoney.SupermartingaleCoupling
+import UtilityForMoney.ConditionalRisk
+import UtilityForMoney.DemandPrerequisites
+import UtilityForMoney.DemandBudgetSets
+import UtilityForMoney.DemandCorrespondenceMaximum
+import UtilityForMoney.DemandBudgetContinuity
+import UtilityForMoney.DemandConsumerProblem
+import UtilityForMoney.DemandIndirectUtility
+import UtilityForMoney.LotteryBasic
+import UtilityForMoney.LotteryStrictPreference
+import UtilityForMoney.LotteryMixtureSpace
+import UtilityForMoney.LotteryMixtureAlgebra
+import UtilityForMoney.LotteryIndependence
+import UtilityForMoney.LotteryProbabilityGrids
+import UtilityForMoney.LotterySegmentOrder
+import UtilityForMoney.LotterySegmentCalibration
+import UtilityForMoney.LotteryBoundedCalibration
+import UtilityForMoney.LotteryUnboundedCalibration
+import UtilityForMoney.LotterySimpleLottery
+import UtilityForMoney.LotteryLotteryEvaluation
+import UtilityForMoney.LotteryMixtureRepresentation
+import UtilityForMoney.IncomeChoice
+import UtilityForMoney.DominanceExample
+import UtilityForMoney.DominanceInterpolation
+import UtilityForMoney.LotteryMeasureMixtures
+import UtilityForMoney.LotteryWeakApproximation
+import UtilityForMoney.LotteryWeakUtilityContinuity
+import UtilityForMoney.LotteryLimits
+import UtilityForMoney.DominanceOrders
+import UtilityForMoney.EqualProbabilityRisk
+import UtilityForMoney.EscapingPrizes
+import UtilityForMoney.GeneralQuantile
+import UtilityForMoney.ImperfectInsurance
+import UtilityForMoney.InsuranceOptimality
+import UtilityForMoney.IntegratedDominance
+import UtilityForMoney.IntervalArrowPratt
+import UtilityForMoney.IntervalWealthShifts
+import UtilityForMoney.IntervalCARA
+import UtilityForMoney.InverseUtilityDerivatives
+import UtilityForMoney.RiskAttitudes
+import UtilityForMoney.MonetaryPreference
+import UtilityForMoney.MultipleRiskyAssets
+import UtilityForMoney.PriceIncomeRisk
+import UtilityForMoney.PriceRiskExamples
+import UtilityForMoney.PrizeContinuity
+import UtilityForMoney.QuantileBins
+import UtilityForMoney.QuantileCoupling
+import UtilityForMoney.RelativeRisk
+import UtilityForMoney.RepeatedGambles
+import UtilityForMoney.SmallShares
+import UtilityForMoney.StoppedGambles
+import UtilityForMoney.StoppedGambleLimits
+import UtilityForMoney.StoppedRuinProbability
+import UtilityForMoney.StoppedBoundedUtility
+import UtilityForMoney.TimingExamples
+import UtilityForMoney.TimingValueBounds
+import UtilityForMoney.TimingIncomeLotteries
+import UtilityForMoney.VaryingSupport
+
+/-!
+# Utility for money
+
+Chapter 6 of Kreps, *Microeconomic Foundations I*, pp. 123–147. The source map records
+numbered results, mathematical examples, all exercises and corrections.
+-/

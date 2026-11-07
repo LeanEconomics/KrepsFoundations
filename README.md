@@ -17,21 +17,24 @@ maps, corrections and fresh proof audits. Work proceeds in book order.
 | [Volume1/PreferenceProperties](Volume1/PreferenceProperties/README.md) | 2. Structural Properties of Preferences and Utility Functions | 1064 theorems / 1378 declarations; fresh audit passed | [Chapter overview](Volume1/PreferenceProperties/README.md) |
 | [Volume1/ConsumerDemand](Volume1/ConsumerDemand/README.md) | 3. Basics of Consumer Demand | 455 theorems / 615 declarations; fresh audit passed | [Chapter overview](Volume1/ConsumerDemand/README.md) |
 | [Volume1/RevealedPreference](Volume1/RevealedPreference/README.md) | 4. Revealed Preference and Afriat’s Theorem | 137 theorems / 192 declarations; fresh audit passed | [Chapter overview](Volume1/RevealedPreference/README.md) |
+| [Volume1/ChoiceUnderUncertainty](Volume1/ChoiceUnderUncertainty/README.md) | 5. Choice under Uncertainty | 276 theorems / 415 declarations; fresh audit passed | [Chapter overview](Volume1/ChoiceUnderUncertainty/README.md) |
+| [Volume1/UtilityForMoney](Volume1/UtilityForMoney/README.md) | 6. Utility for Money | 458 theorems / 629 declarations; fresh audit passed | [Chapter overview](Volume1/UtilityForMoney/README.md) |
 
 Counts cover each complete independent project, including attributed local prerequisites.
 Declarations include theorems, definitions and generated structure constants. Chapter
 overviews and source maps give the breakdown and precise chapter/appendix coverage.
 
-Chapters 1–4 are complete within the scope recorded in their source maps, including
-their mathematical exercises, examples and documented corrections. Chapters 3–4
-passed independent source review, full builds, fresh-source compilation and all
-declaration axiom audits on 2026-10-30. Required appendix support is distinguished
-from complete appendix coverage. Chapters 5–16 remain planned.
+Chapters 1–6 are complete within the scope recorded in their source maps, including
+their mathematical exercises, examples and documented corrections. Chapters 5–6
+passed source review, full builds, fresh compilation and all declaration axiom
+audits on 2026-11-07. The appendix inventories record the foundations covered
+by each project. Chapters 7–16 remain planned.
 
 The chapters build on one another through attributed local copies of earlier foundations,
 while retaining independent Lake projects. The [cross-chapter checks](consistency/README.md)
-compare those copies and jointly compile the four libraries with explicit compatibility
-proofs, including Afriat rationalization feeding into consumer demand. CI runs these checks
+compare those copies and jointly compile the six libraries with explicit compatibility
+proofs. These connect Afriat rationalization to consumer demand and bundle lotteries
+to preferences over income after optimal consumption. CI runs these checks
 alongside the individual chapter audits.
 
 ## Build and verify

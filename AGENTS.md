@@ -1,8 +1,8 @@
 # Working on KrepsFoundations
 
 This repository formalizes David M. Kreps, *Microeconomic Foundations I*, chapter by
-chapter. The user sets the mathematical scope. Chapters 1–4 have completed their source
-reviews and proof audits. Chapters 5–16 remain planned until the user resumes them.
+chapter. The user sets the mathematical scope. Chapters 1–6 have completed their source
+reviews and proof audits. Chapters 7–16 remain planned.
 Keep status claims tied to the actual statements and completed verification, rather than
 declaration counts alone.
 

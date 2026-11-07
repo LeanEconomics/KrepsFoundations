@@ -115,3 +115,21 @@ including boundary points. Existing `Analysis/Convex/Deriv.lean` slope results a
 `Analysis/Calculus/LocalExtr/Basic.lean` tangent-cone necessity supply the main
 analysis. Any upstream proposal should first check duplication and harmonize the
 interface with existing convex analysis. No upstream submission has been made.
+
+## Candidates from Chapters 5–6
+
+The mixture-space theorem and its economic preference axioms belong to this project.
+The underlying construction of a convex-space structure on probability measures and
+the weak approximation by finite lotteries may be useful independently. At Mathlib
+revision `5ed2965256430c3649e86755f9576b54eca72435`, the implementation uses
+`StdSimplex`, `ProbabilityMeasure.tendsto_iff_forall_integral_tendsto`, continuous
+Dirac embedding, strong measurability of the identity, and dominated convergence.
+See [measure mixtures](Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MeasureMixtures.lean)
+and [weak approximation](Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/WeakApproximation.lean).
+
+Chapter 6 derives a finite supermartingale coupling from increasing concave order.
+The proof uses compactness of a finite simplex, Mathlib's strict separation theorem, and a
+finite minimum of affine functions already used in Chapter 4. A reuse review should
+compare the probability and convex-order APIs and the existing Hahn–Banach interfaces
+before proposing any generalization. See the [separation theorem](Volume1/UtilityForMoney/UtilityForMoney/CouplingSeparation.lean)
+and [coupling construction](Volume1/UtilityForMoney/UtilityForMoney/SupermartingaleCoupling.lean).

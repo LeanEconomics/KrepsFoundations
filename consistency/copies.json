@@ -321,6 +321,352 @@
           "import PreferenceProperties."
         ]
       ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/Basic.lean",
+      "destination": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/Basic.lean",
+      "replacements": [
+        [
+          "Kreps.ChoiceUnderUncertainty",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import ChoiceUnderUncertainty.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/StrictPreference.lean",
+      "destination": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/StrictPreference.lean",
+      "replacements": [
+        [
+          "Kreps.ChoiceUnderUncertainty",
+          "Kreps.ChoicePreferenceUtility"
+        ],
+        [
+          "import ChoiceUnderUncertainty.",
+          "import ChoicePreferenceUtility."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/Prerequisites.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandPrerequisites.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/BudgetSets.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandBudgetSets.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/ConsumerProblem.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandConsumerProblem.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/CorrespondenceMaximum.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandCorrespondenceMaximum.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/BudgetContinuity.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandBudgetContinuity.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ConsumerDemand/ConsumerDemand/IndirectUtility.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DemandIndirectUtility.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.Demand",
+          "Kreps.ConsumerDemand"
+        ],
+        [
+          "import UtilityForMoney.Demand",
+          "import ConsumerDemand."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/Basic.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryBasic.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/StrictPreference.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryStrictPreference.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MixtureSpace.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryMixtureSpace.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MixtureAlgebra.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryMixtureAlgebra.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/Independence.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryIndependence.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/ProbabilityGrids.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryProbabilityGrids.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/SegmentOrder.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotterySegmentOrder.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/SegmentCalibration.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotterySegmentCalibration.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/BoundedCalibration.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryBoundedCalibration.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/UnboundedCalibration.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryUnboundedCalibration.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/SimpleLottery.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotterySimpleLottery.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/LotteryEvaluation.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryLotteryEvaluation.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MixtureRepresentation.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryMixtureRepresentation.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/RevealedPreference/RevealedPreference/FiniteMinimum.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/DominanceFiniteMinimum.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.DominanceTools",
+          "Kreps.RevealedPreference"
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MeasureMixtures.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryMeasureMixtures.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/WeakApproximation.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryWeakApproximation.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
+    },
+    {
+      "source": "Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/WeakUtilityContinuity.lean",
+      "destination": "Volume1/UtilityForMoney/UtilityForMoney/LotteryWeakUtilityContinuity.lean",
+      "replacements": [
+        [
+          "Kreps.UtilityForMoney.LotteryTheory",
+          "Kreps.ChoiceUnderUncertainty"
+        ],
+        [
+          "import UtilityForMoney.Lottery",
+          "import ChoiceUnderUncertainty."
+        ]
+      ]
     }
   ]
 }

@@ -1,0 +1,6314 @@
+{
+  "checked_at_utc": "2026-11-07T19:51:50.531262+00:00",
+  "theorems": 458,
+  "module_theorems": {
+    "UtilityForMoney/MonetaryLotteries.lean": 11,
+    "UtilityForMoney/ComparativeRisk.lean": 3,
+    "UtilityForMoney/RiskMeasures.lean": 5,
+    "UtilityForMoney/Insurance.lean": 6,
+    "UtilityForMoney/RiskyAssets.lean": 10,
+    "UtilityForMoney/ArrowPrattComparison.lean": 3,
+    "UtilityForMoney/LocalRiskPremium.lean": 5,
+    "UtilityForMoney/ArrowPrattTheorem.lean": 2,
+    "UtilityForMoney/WealthShifts.lean": 6,
+    "UtilityForMoney/WealthRiskClassification.lean": 5,
+    "UtilityForMoney/ConstantAbsoluteRisk.lean": 8,
+    "UtilityForMoney/CARACalibration.lean": 7,
+    "UtilityForMoney/CARACalibrationPreferences.lean": 2,
+    "UtilityForMoney/BehavioralCalibration.lean": 4,
+    "UtilityForMoney/PortfolioCases.lean": 7,
+    "UtilityForMoney/CARAPortfolio.lean": 6,
+    "UtilityForMoney/FiniteCouplings.lean": 5,
+    "UtilityForMoney/CouplingSeparation.lean": 5,
+    "UtilityForMoney/DominanceFiniteMinimum.lean": 6,
+    "UtilityForMoney/StochasticDominance.lean": 4,
+    "UtilityForMoney/SupermartingaleCoupling.lean": 3,
+    "UtilityForMoney/ConditionalRisk.lean": 3,
+    "UtilityForMoney/DemandPrerequisites.lean": 1,
+    "UtilityForMoney/DemandBudgetSets.lean": 13,
+    "UtilityForMoney/DemandCorrespondenceMaximum.lean": 13,
+    "UtilityForMoney/DemandBudgetContinuity.lean": 13,
+    "UtilityForMoney/DemandConsumerProblem.lean": 10,
+    "UtilityForMoney/DemandIndirectUtility.lean": 10,
+    "UtilityForMoney/LotteryBasic.lean": 5,
+    "UtilityForMoney/LotteryStrictPreference.lean": 12,
+    "UtilityForMoney/LotteryMixtureSpace.lean": 4,
+    "UtilityForMoney/LotteryMixtureAlgebra.lean": 1,
+    "UtilityForMoney/LotteryIndependence.lean": 6,
+    "UtilityForMoney/LotteryProbabilityGrids.lean": 7,
+    "UtilityForMoney/LotterySegmentOrder.lean": 11,
+    "UtilityForMoney/LotterySegmentCalibration.lean": 3,
+    "UtilityForMoney/LotteryBoundedCalibration.lean": 6,
+    "UtilityForMoney/LotteryUnboundedCalibration.lean": 4,
+    "UtilityForMoney/LotterySimpleLottery.lean": 5,
+    "UtilityForMoney/LotteryLotteryEvaluation.lean": 1,
+    "UtilityForMoney/LotteryMixtureRepresentation.lean": 4,
+    "UtilityForMoney/IncomeChoice.lean": 7,
+    "UtilityForMoney/DominanceExample.lean": 6,
+    "UtilityForMoney/DominanceInterpolation.lean": 4,
+    "UtilityForMoney/LotteryMeasureMixtures.lean": 5,
+    "UtilityForMoney/LotteryWeakApproximation.lean": 5,
+    "UtilityForMoney/LotteryWeakUtilityContinuity.lean": 5,
+    "UtilityForMoney/LotteryLimits.lean": 7,
+    "UtilityForMoney/DominanceOrders.lean": 6,
+    "UtilityForMoney/EqualProbabilityRisk.lean": 2,
+    "UtilityForMoney/EscapingPrizes.lean": 5,
+    "UtilityForMoney/GeneralQuantile.lean": 3,
+    "UtilityForMoney/ImperfectInsurance.lean": 9,
+    "UtilityForMoney/InsuranceOptimality.lean": 5,
+    "UtilityForMoney/IntegratedDominance.lean": 7,
+    "UtilityForMoney/IntervalArrowPratt.lean": 4,
+    "UtilityForMoney/IntervalWealthShifts.lean": 6,
+    "UtilityForMoney/IntervalCARA.lean": 3,
+    "UtilityForMoney/InverseUtilityDerivatives.lean": 3,
+    "UtilityForMoney/RiskAttitudes.lean": 6,
+    "UtilityForMoney/MonetaryPreference.lean": 6,
+    "UtilityForMoney/MultipleRiskyAssets.lean": 4,
+    "UtilityForMoney/PriceIncomeRisk.lean": 11,
+    "UtilityForMoney/PriceRiskExamples.lean": 11,
+    "UtilityForMoney/PrizeContinuity.lean": 2,
+    "UtilityForMoney/QuantileBins.lean": 9,
+    "UtilityForMoney/QuantileCoupling.lean": 11,
+    "UtilityForMoney/RelativeRisk.lean": 5,
+    "UtilityForMoney/RepeatedGambles.lean": 5,
+    "UtilityForMoney/SmallShares.lean": 7,
+    "UtilityForMoney/StoppedGambles.lean": 10,
+    "UtilityForMoney/StoppedGambleLimits.lean": 3,
+    "UtilityForMoney/StoppedRuinProbability.lean": 6,
+    "UtilityForMoney/StoppedBoundedUtility.lean": 4,
+    "UtilityForMoney/TimingExamples.lean": 8,
+    "UtilityForMoney/TimingValueBounds.lean": 6,
+    "UtilityForMoney/TimingIncomeLotteries.lean": 4,
+    "UtilityForMoney/VaryingSupport.lean": 3
+  },
+  "audited_declarations": 629,
+  "declarations": [
+    {
+      "name": "Kreps.UtilityForMoney.SimpleLottery",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ExpectedUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.BinaryLottery",
+      "kind": "def",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_eq_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_single",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_binary",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_1",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exists_lottery_of_between",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_mem_of_convex",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_jensen",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_3",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.IsCertaintyEquivalent",
+      "kind": "def",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_5_exists",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_5_unique",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RiskPremium",
+      "kind": "def",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.riskPremium_nonneg",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.MoreRiskAverse",
+      "kind": "def",
+      "module": "UtilityForMoney/ComparativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.UtilityTransform",
+      "kind": "def",
+      "module": "UtilityForMoney/ComparativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.utilityTransform_apply",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ComparativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.utilityTransform_strictMonoOn",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ComparativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_7",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ComparativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.AbsoluteRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RelativeRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_nonneg",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PowerUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.powerUtility_hasDerivAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.powerUtility_second_deriv",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_4",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskMeasures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.InsuranceUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insuranceUtility_one",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insuranceUtility_le_mean",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_17a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.deriv_pos_of_concave_strictMono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insuranceUtility_hasDerivAt_one",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_17b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/Insurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_affine_payoff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_const",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PortfolioWealth",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PortfolioValue",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PortfolioOptima",
+      "kind": "def",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expected_portfolioWealth",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.portfolioValue_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.portfolioValue_le_mean",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.portfolioValue_hasDerivAt_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.improves_small_positive",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18c",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.MarginalRatio",
+      "kind": "def",
+      "module": "UtilityForMoney/ArrowPrattComparison.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.antitoneOn_marginalRatio",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ArrowPrattComparison.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.utility_le_marginalRatio_support",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ArrowPrattComparison.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.moreRiskAverse_of_arrowPratt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ArrowPrattComparison.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.local_second_order_remainder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.SymmetricUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.symmetricUtility_remainder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.symmetricUtility_quotient",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.symmetric_premium_of_certainty_equivalent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_9",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LocalRiskPremium.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.arrowPratt_le_of_moreRiskAverse_interior",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ArrowPrattTheorem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_8",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ArrowPrattTheorem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PremiumOrder",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.premiumOrder_iff_moreRiskAverse",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ShiftDomain",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shiftDomain_convex",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ShiftPremiumOrder",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_shift",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shiftPremiumOrder_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shiftPremiumOrder_of_coefficient",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.coefficient_le_of_shiftPremiumOrder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.monotoneOn_interval_of_interior",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_continuousOn",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.NonincreasingRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.NondecreasingRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ConstantRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_nondecreasing",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_nonincreasing",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_constant",
+      "kind": "theorem",
+      "module": "UtilityForMoney/WealthRiskClassification.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ExponentialUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exponentialUtility_hasDerivAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exponentialUtility_strictMono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exponentialUtility_strictConcave",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_exponential",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.eq_on_interval_of_deriv_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.marginal_of_constant_coefficient",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_exponential",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConstantAbsoluteRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.CalibrationGap",
+      "kind": "def",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibrationGap_identity",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibrationGap_monotone",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibration_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibrated_root_exists",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibrated_disutility_rankings",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.CalibratedChoicesRanked",
+      "kind": "def",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exponential_calibration_prizes",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_2",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.CalibrationInterval",
+      "kind": "def",
+      "module": "UtilityForMoney/CARACalibrationPreferences.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_2_behavioral",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibrationPreferences.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_2_compatible_consumer",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARACalibrationPreferences.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.certaintyEquivalent_of_equal_premia",
+      "kind": "theorem",
+      "module": "UtilityForMoney/BehavioralCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibration_shift_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/BehavioralCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.calibrated_grid_ranking",
+      "kind": "theorem",
+      "module": "UtilityForMoney/BehavioralCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_2_of_constant_premia",
+      "kind": "theorem",
+      "module": "UtilityForMoney/BehavioralCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.portfolioValue_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18d",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_lt_of_support",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18e",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_linear_combination",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.portfolioValue_strictConcave",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_18f",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PortfolioCases.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_unit_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_portfolio_factor",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_unit_attains",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_optima_scale",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_11",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_position_antitone",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CARAPortfolio.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.support_mass_sum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.lottery_support_nonempty",
+      "kind": "theorem",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling",
+      "kind": "structure",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.mk",
+      "kind": "constructor",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.mass",
+      "kind": "projection",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.nonneg",
+      "kind": "projection",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.row_sum",
+      "kind": "projection",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.col_sum",
+      "kind": "projection",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.NonpositiveDrift",
+      "kind": "def",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.conditionalDrift",
+      "kind": "def",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.nonpositiveDrift_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.jointLaw",
+      "kind": "def",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.first_marginal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.second_marginal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/FiniteCouplings.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.CouplingMoments",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RowDirection",
+      "kind": "def",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ColumnDirection",
+      "kind": "def",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DriftDirection",
+      "kind": "def",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PairMoments",
+      "kind": "def",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.momentSum_fst",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.momentSum_snd",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.pairMoments_evaluate",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.marginal_functional",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.coupling_or_separation",
+      "kind": "theorem",
+      "module": "UtilityForMoney/CouplingSeparation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.FiniteMinimum",
+      "kind": "def",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.le_finiteMinimum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_attained",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_strictMono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_concaveOn",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceFiniteMinimum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FirstOrderDominates",
+      "kind": "def",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.SecondOrderDominates",
+      "kind": "def",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Cumulative",
+      "kind": "def",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ExpectedShortfall",
+      "kind": "def",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FirstOrderDominates.secondOrder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cumulative_le_of_firstOrder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cappedPrizeUtility_properties",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedShortfall_le_of_secondOrder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StochasticDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.increasing_concave_envelope",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SupermartingaleCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.sum_support_utility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SupermartingaleCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.supermartingaleCoupling_of_dominance",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SupermartingaleCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.row_utility_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConditionalRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.secondOrder_of_supermartingaleCoupling",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConditionalRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_15b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ConditionalRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Complete",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.TransitivePref",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Rational",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.PrefChoice",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.UtilityPref",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Represents",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Strict",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Indifferent",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.utilityPref_rational",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.NonnegativeOrthant",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.LocallyInsatiable",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Mix",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ConvexMenu",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ConvexPreference",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.StrictlyConvexPreference",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ConcaveUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.QuasiConcaveUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.StrictlyQuasiConcaveUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandPrerequisites.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.PositivePrices",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ZeroBundle",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.Expenditure",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.BudgetSet",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_nonneg",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_nonempty",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.commodity_expenditure_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_coordinate_bound",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_isClosed",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_isCompact",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_mix",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_convex",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ScalePrices",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_scalePrices",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_scale",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetSets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.SequentialUpper",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.SequentialLower",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ParametricMaxima",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.parametricMaxima_nonempty",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.parametricMaxima_sequentialUpper",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.sequentialUpper_upperHemicontinuousAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.sequentialLower_of_continuous_selections",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.LocalCompactBound",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ParametricValue",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.parametricValue_eq_of_maximum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.parametricValue_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.LocalCompactBound.mono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.SequentialUpper.isClosed",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.SequentialUpper.isCompact",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.continuous_of_singleton_correspondence",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.SameObjectiveUpperBounds",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.maximum_theorem_auxiliary",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.maximum_theorem",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.sameObjectiveUpperBounds_iff_value_eq",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandCorrespondenceMaximum.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.PriceIncome",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.ScaleBundle",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.scaleBundle_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.scaleBundle_one",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_scaleBundle",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_pos",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_price_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.expenditure_joint_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.BudgetAdjustmentFactor",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.BudgetAdjustment",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetAdjustment_self",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetAdjustment_feasible",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetAdjustment_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_continuous_selection",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_sequentialLower",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_sequentialUpper",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.budgetSet_localCompactBound",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandBudgetContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.MarshallianDemand",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.mem_marshallianDemand_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.mem_marshallianDemand_iff_isMaxOn",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_1a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_1b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.marshallianDemand_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_1c_convex",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.marshallianDemand_subsingleton",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_1c_unique",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.preferenceChoice_exhausts_budget",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_1d",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandConsumerProblem.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.IndirectUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.indirectUtility_eq_of_mem",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.indirectUtility_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_3a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.consumer_maximum_theorem",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_3b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.marshallianDemand_localCompactBound",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.marshallianDemand_isCompact",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.marshallianDemand_upperHemicontinuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_3c",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Demand.proposition_3_3b_unique",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DemandIndirectUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.FullMenus",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.ChoiceRule",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.FeasibleOn",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Feasible",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.FiniteNonempty",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.CoherentOn",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Coherent",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Complete",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.TransitivePref",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Rational",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.PrefChoice",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.UtilityPref",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.UtilityChoice",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Represents",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Revealed",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Strict",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Indifferent",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.NoBetterThan",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.complete_refl",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.prefChoice_feasible",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.feasible_empty",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.represents_choice",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.coherent_iff_on_full",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBasic.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.AsymmetricPref",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.NegativelyTransitive",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.WeakFromStrict",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.IndifferenceFromStrict",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.strict_weak_trans",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.weak_strict_trans",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9c",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9d",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9e",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9f",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9g",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9h",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_1_10",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.problem_1_9",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryStrictPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Weight",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Mix",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.AffineInMix",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.BackgroundIndependent",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.MixtureContinuous",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.MixtureAxioms",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Complement",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_self",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_one",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_swap",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.WeightMean",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMixtureAlgebra.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_mix",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureAlgebra.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.WeakBackgroundIndependent",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_some_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_weak_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_shift",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_step_weak",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_step_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryIndependence.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.GridWeight",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.gridWeight_last",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.gridWeight_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.gridWeight_step",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.grid_chain",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.grid_weak",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.grid_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.exists_gridWeight_between",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_base_weak",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_mono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_base_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_7_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_7_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_6_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_6_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_monotone",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_8",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Between",
+      "kind": "def",
+      "module": "UtilityForMoney/LotterySegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.segment_compare_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_9",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lemma_5_9_unique",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.AnchorWeight",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mix_congr_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.between_mix",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_represents",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.representation_with_best_worst",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryBoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.Calibrates",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryUnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.exists_calibration",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryUnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.exists_preference_enclosure",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryUnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.normalized_interval_utility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryUnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.calibration_eq_local",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryUnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.SimpleLottery",
+      "kind": "abbrev",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.PureLottery",
+      "kind": "def",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.ExpectedUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_eq_affineMap",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_pure",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.lottery_mix_weight",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_affine",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_eq_sum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotterySimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.affineInMix_eq_expectedUtility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLotteryEvaluation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.problem_5_3",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.mixtureAxioms_of_representation",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_5_4",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.proposition_5_3",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_map",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.InducedIncomePreference",
+      "kind": "def",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.incomeLottery_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_16",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_16a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_16b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_16c",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.incomeLottery_risk_averse",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IncomeChoice.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Figure62States",
+      "kind": "def",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Figure62Initial",
+      "kind": "def",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Figure62Supplement",
+      "kind": "def",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Figure62Final",
+      "kind": "def",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_states_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_initial_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_final_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_supplement_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_conditional_means",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure62_secondOrder",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceExample.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_add_scaled",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceInterpolation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.last_secant_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceInterpolation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exists_cap_interpolant",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceInterpolation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.secondOrder_iff_shortfalls",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceInterpolation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.MeasureCombination",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.measureCombination_event",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.probabilityMeasure_ext_real",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.BorelConvexSpace",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.borelMix_event",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.AtomicProbability",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.integral_measureCombination",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.integral_atomicProbability",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryMeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.measureCombination_eq_barycenter",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.affineInMix_barycenter",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.affineInMix_atomicProbability",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.ImageWeights",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.SimpleImageLottery",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.simpleImageLottery_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.exists_simpleLotteries_tendsto",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.OpenStrictSections",
+      "kind": "def",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.affine_attains_between",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.openStrictSections_iff_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.integral_affineInMix",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.weakMix_tendsto",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.LotteryTheory.continuous_affine_bounded",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryWeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_sum_over",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_tendsto_fixed_support",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.lottery_strict_rankings_eventually",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_tendsto_moving_prizes",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.nearby_money_lotteries",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_tendsto_weak",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_tendsto_on_compact",
+      "kind": "theorem",
+      "module": "UtilityForMoney/LotteryLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.capped_values_equal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.finite_prize_gap",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.secondOrder_antisymm",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.firstOrder_antisymm",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.dominance_reflexive",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.dominance_transitive",
+      "kind": "theorem",
+      "module": "UtilityForMoney/DominanceOrders.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.midpoint_gap_nonneg",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EqualProbabilityRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.concavity_of_equal_probability_gambles",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EqualProbabilityRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.binaryLottery_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RareWeight",
+      "kind": "def",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.rareLottery_weak_limit",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.unbounded_prize_reversal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.OpenWealthUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.openWealthUtility_regular",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bounded_prizes_open_endpoint",
+      "kind": "theorem",
+      "module": "UtilityForMoney/EscapingPrizes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.GeneralQuantile",
+      "kind": "def",
+      "module": "UtilityForMoney/GeneralQuantile.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.generalQuantile_le_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/GeneralQuantile.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.generalQuantile_measurable",
+      "kind": "theorem",
+      "module": "UtilityForMoney/GeneralQuantile.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.generalQuantile_uniform_law",
+      "kind": "theorem",
+      "module": "UtilityForMoney/GeneralQuantile.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ImperfectLoss",
+      "kind": "def",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.imperfect_policy_fair",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ImperfectValue",
+      "kind": "def",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.imperfectValue_expectedUtility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.imperfectValue_hasDerivAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.wealth_concave_tangent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.imperfect_full_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.BalancedMarginalUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.balancedMarginal_derivative",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.balancedMarginal_regular",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_9_full",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_9_not_full",
+      "kind": "theorem",
+      "module": "UtilityForMoney/ImperfectInsurance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insuranceUtility_concave",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InsuranceOptimality.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insuranceUtility_hasDerivAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InsuranceOptimality.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.insurance_optimal_iff_marginals",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InsuranceOptimality.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.fair_affine_insurance",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InsuranceOptimality.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expensive_insurance_no_maximum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InsuranceOptimality.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cumulative_zero_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.atom_cdf_integral",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.integrated_cumulative_eq_shortfall",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedShortfall_zero_of_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_14b",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_6a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_6c",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntegratedDominance.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.IntervalRiskAversion",
+      "kind": "def",
+      "module": "UtilityForMoney/IntervalArrowPratt.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.intervalRiskAversion_eq_of_interior",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalArrowPratt.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.intervalRiskAversion_continuousOn",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalArrowPratt.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.interval_marginal_support",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalArrowPratt.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_8_within",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalArrowPratt.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.derivWithin_wealth_shift",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.intervalRiskAversion_shift",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shiftPremiumOrder_iff_within_coefficients",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shiftPremiumOrder_of_within_coefficients",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.zero_mem_interior_shiftDomain",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_12_within",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalWealthShifts.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.eqOn_interval_of_eqOn_interior",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalCARA.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cara_representation_within",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalCARA.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_2_within",
+      "kind": "theorem",
+      "module": "UtilityForMoney/IntervalCARA.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.inverse_utility_regularity",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InverseUtilityDerivatives.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.utilityTransform_hasDerivAt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InverseUtilityDerivatives.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.utilityTransform_second_derivative",
+      "kind": "theorem",
+      "module": "UtilityForMoney/InverseUtilityDerivatives.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.jensen_by_support_induction",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_1b_induction",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.riskSeeking_iff_convex",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.riskNeutral_iff_affine_mixes",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.figure_6_1",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.concaveUtility_continuousOn_interior",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RiskAttitudes.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.monetary_representation_of_axioms",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.strictMono_iff_sure_preference",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.isCertaintyEquivalent_iff_indifferent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.concave_iff_sure_mean_preferred",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.concave_iff_nonnegative_premia",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.riskNeutral_iff_zero_premia",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MonetaryPreference.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RiskyPairMenu",
+      "kind": "def",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.HedgeValue",
+      "kind": "def",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.riskyPairMenu_compact",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.hedgeValue_attains",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_12_hedge",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.DominatedValue",
+      "kind": "def",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_12_dominated",
+      "kind": "theorem",
+      "module": "UtilityForMoney/MultipleRiskyAssets.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.IndependentPriceIncome",
+      "kind": "def",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.PriceAveragedValue",
+      "kind": "def",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.independent_price_income_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.priceAveragedValue_continuous",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.priceAveragedValue_strictMono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.priceAveragedValue_concave",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.fixed_income_price_lottery_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.indirectUtility_continuous_prices",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.indirectUtility_antitone_prices",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.two_price_income_couplings",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.two_price_income_values",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.priceRisk_map_binary",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.two_price_income_marginals",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceIncomeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TwoGoodBudget",
+      "kind": "def",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.sum_bundle_risky_price_optima",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.sum_bundle_mean_price_optimum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_8a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.complementary_bundle_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.KinkedPriceUtility",
+      "kind": "def",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.kinkedPriceUtility_strictMono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.kinkedPriceUtility_concave",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.price_level_quantities_order",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_8b_fixed_dispersion",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_8b_large_dispersion",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.price_risk_expectedUtility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.price_risk_at_zero_income",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PriceRiskExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.StablePrizeComparisons",
+      "kind": "def",
+      "module": "UtilityForMoney/PrizeContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_2",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PrizeContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stablePrizeComparisons_iff_metric",
+      "kind": "theorem",
+      "module": "UtilityForMoney/PrizeContinuity.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Prefix",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Before",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.cumulative_eq_prefix",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.prefix_sub_before",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.prefix_le_before_of_lt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.prefix_probability_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.sum_prefix_increments",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.exists_prefix_bin",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.QuantileBin",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.QuantilePrize",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantilePrize_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantilePrize_mem_bin",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantileBin_unique",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileBins.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantileBin_subset_unit",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantilePrize_uniform_mass",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.Overlap",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.overlap_eq_length",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.overlap_comm",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.sum_overlap_bins",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.QuantileCoupling",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.FiniteCoupling.Ordered",
+      "kind": "def",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantileCoupling_ordered",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.firstOrder_of_ordered_coupling",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_14a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.proposition_6_15a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantile_uniform_joint_mass",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.quantilePrize_ordered",
+      "kind": "theorem",
+      "module": "UtilityForMoney/QuantileCoupling.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.deriv_scaled_wealth",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.absoluteRiskAversion_scaled",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.NonincreasingCertaintyReturn",
+      "kind": "def",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.nonincreasingCertaintyReturn_iff",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.nonincreasingCertaintyReturn_iff_relative",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.relativeRisk_printed_counterexample",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RelativeRisk.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TrialBranch",
+      "kind": "def",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.trialBranch_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.RepeatedLaw",
+      "kind": "def",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.repeatedLaw_mean",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.repeated_exponential_steps",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.repeatedLaw_exponential",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_14_unrestricted",
+      "kind": "theorem",
+      "module": "UtilityForMoney/RepeatedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.ShareValue",
+      "kind": "def",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.shareValue_hasDerivAt_zero",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_13a",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.small_share_independent_wealth",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.SmallShareLaw",
+      "kind": "def",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.smallShareLaw_mean",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.small_share_kink",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.small_share_kink_nondifferentiable",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.small_share_correlated_loss",
+      "kind": "theorem",
+      "module": "UtilityForMoney/SmallShares.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.StoppedLaw",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.StoppedValue",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stoppedValue_initial",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stoppedValue_bankrupt",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stoppedValue_step",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_mono",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.WalkFactor",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.walk_geometric_step",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_power_le",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_power_ge",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.AlivePower",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.alivePower_bound",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bounded_walk_utility",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_14_bounded",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambles.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stoppedValue_affine_two",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambleLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_utility_lower",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambleLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_14_unbounded",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedGambleLimits.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.BankruptcyBase",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bankruptcyBase_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bankruptcyBase_harmonic",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.BankruptcyIndicator",
+      "kind": "def",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bankruptcy_mass",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bankruptcy_probability_identity",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.alivePower_tendsto",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.bankruptcy_probability_limit",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedRuinProbability.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_bounded_upper",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedBoundedUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_bounded_lower",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedBoundedUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_bounded_limit",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedBoundedUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.stopped_bounded_criterion",
+      "kind": "theorem",
+      "module": "UtilityForMoney/StoppedBoundedUtility.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingMenu",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingValue",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingMarginal",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.spending_remainder_optimal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_log_tangent",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_log_tangent_strict",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_unique_of_marginal",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingTwo",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingSure",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingThree",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_two_optimum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_sure_optimum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_three_root",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_three_optimum",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingExamples.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timingValue_eq_log_product",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_log_certificate",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_two_value_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_sure_value_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_three_product_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_three_value_bounds",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingValueBounds.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingIncomeTwo",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingIncomeSure",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingIncomeThree",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.TimingBundleIndex",
+      "kind": "def",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_income_mixture_value",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_values_as_expectations",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.timing_optimized_mixture_worse",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.problem_6_7_no_income_index",
+      "kind": "theorem",
+      "module": "UtilityForMoney/TimingIncomeLotteries.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.eventually_mem_lottery_support",
+      "kind": "theorem",
+      "module": "UtilityForMoney/VaryingSupport.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.outside_prize_bound",
+      "kind": "theorem",
+      "module": "UtilityForMoney/VaryingSupport.lean"
+    },
+    {
+      "name": "Kreps.UtilityForMoney.expectedUtility_tendsto_bounded_extra_prizes",
+      "kind": "theorem",
+      "module": "UtilityForMoney/VaryingSupport.lean"
+    }
+  ],
+  "full_build": "passed",
+  "fresh_source_compilation": "passed",
+  "fresh_source_lint_options": [
+    "-Dlinter.mathlibStandardSet=true",
+    "-Dlinter.style.header=false"
+  ],
+  "axioms": {
+    "Kreps.UtilityForMoney.SimpleLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ExpectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.BinaryLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_eq_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_single": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_binary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exists_lottery_of_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_mem_of_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_jensen": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.IsCertaintyEquivalent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_5_exists": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_5_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RiskPremium": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.riskPremium_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.MoreRiskAverse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.UtilityTransform": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.utilityTransform_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.utilityTransform_strictMonoOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_7": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.AbsoluteRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RelativeRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PowerUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.powerUtility_hasDerivAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.powerUtility_second_deriv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_4": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.InsuranceUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insuranceUtility_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insuranceUtility_le_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_17a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.deriv_pos_of_concave_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insuranceUtility_hasDerivAt_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_17b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_affine_payoff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_const": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PortfolioWealth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PortfolioValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PortfolioOptima": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expected_portfolioWealth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.portfolioValue_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.portfolioValue_le_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.portfolioValue_hasDerivAt_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.improves_small_positive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.MarginalRatio": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.antitoneOn_marginalRatio": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.utility_le_marginalRatio_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.moreRiskAverse_of_arrowPratt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.local_second_order_remainder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.SymmetricUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.symmetricUtility_remainder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.symmetricUtility_quotient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.symmetric_premium_of_certainty_equivalent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.arrowPratt_le_of_moreRiskAverse_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PremiumOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.premiumOrder_iff_moreRiskAverse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ShiftDomain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shiftDomain_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ShiftPremiumOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_shift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shiftPremiumOrder_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shiftPremiumOrder_of_coefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.coefficient_le_of_shiftPremiumOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.monotoneOn_interval_of_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_continuousOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.NonincreasingRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.NondecreasingRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ConstantRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_nondecreasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_nonincreasing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ExponentialUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exponentialUtility_hasDerivAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exponentialUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exponentialUtility_strictConcave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_exponential": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.eq_on_interval_of_deriv_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.marginal_of_constant_coefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_exponential": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.CalibrationGap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibrationGap_identity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibrationGap_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibration_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibrated_root_exists": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibrated_disutility_rankings": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.CalibratedChoicesRanked": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exponential_calibration_prizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_2": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.CalibrationInterval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_2_behavioral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_2_compatible_consumer": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.certaintyEquivalent_of_equal_premia": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibration_shift_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.calibrated_grid_ranking": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_2_of_constant_premia": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.portfolioValue_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_lt_of_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18e": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_linear_combination": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.portfolioValue_strictConcave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_18f": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_unit_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_portfolio_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_unit_attains": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_optima_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_position_antitone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.support_mass_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.lottery_support_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.row_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.col_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.NonpositiveDrift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.conditionalDrift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.nonpositiveDrift_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.jointLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.first_marginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.second_marginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.CouplingMoments": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RowDirection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ColumnDirection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DriftDirection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PairMoments": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.momentSum_fst": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.momentSum_snd": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.pairMoments_evaluate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.marginal_functional": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.coupling_or_separation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.FiniteMinimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.le_finiteMinimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_attained": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominanceTools.finiteMinimum_concaveOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FirstOrderDominates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.SecondOrderDominates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Cumulative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ExpectedShortfall": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FirstOrderDominates.secondOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cumulative_le_of_firstOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cappedPrizeUtility_properties": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedShortfall_le_of_secondOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.increasing_concave_envelope": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.sum_support_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.supermartingaleCoupling_of_dominance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.row_utility_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.secondOrder_of_supermartingaleCoupling": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_15b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.Complete": [],
+    "Kreps.UtilityForMoney.Demand.TransitivePref": [],
+    "Kreps.UtilityForMoney.Demand.Rational": [],
+    "Kreps.UtilityForMoney.Demand.PrefChoice": [],
+    "Kreps.UtilityForMoney.Demand.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.Strict": [],
+    "Kreps.UtilityForMoney.Demand.Indifferent": [],
+    "Kreps.UtilityForMoney.Demand.utilityPref_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.NonnegativeOrthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.LocallyInsatiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.Mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ConvexMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.StrictlyConvexPreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.QuasiConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.StrictlyQuasiConcaveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.PositivePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ZeroBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.Expenditure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.BudgetSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.commodity_expenditure_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_coordinate_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_isClosed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ScalePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_scalePrices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_scale": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.SequentialUpper": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.SequentialLower": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ParametricMaxima": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.parametricMaxima_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.parametricMaxima_sequentialUpper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.sequentialUpper_upperHemicontinuousAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.sequentialLower_of_continuous_selections": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.LocalCompactBound": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ParametricValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.parametricValue_eq_of_maximum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.parametricValue_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.LocalCompactBound.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.SequentialUpper.isClosed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.SequentialUpper.isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.continuous_of_singleton_correspondence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.SameObjectiveUpperBounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.maximum_theorem_auxiliary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.maximum_theorem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.sameObjectiveUpperBounds_iff_value_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.PriceIncome": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.ScaleBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.scaleBundle_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.scaleBundle_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_scaleBundle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_price_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.expenditure_joint_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.BudgetAdjustmentFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.BudgetAdjustment": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetAdjustment_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetAdjustment_feasible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetAdjustment_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_continuous_selection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_sequentialLower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_sequentialUpper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.budgetSet_localCompactBound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.MarshallianDemand": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.mem_marshallianDemand_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.mem_marshallianDemand_iff_isMaxOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_1a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_1b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.marshallianDemand_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_1c_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.marshallianDemand_subsingleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_1c_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.preferenceChoice_exhausts_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_1d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.IndirectUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.indirectUtility_eq_of_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.indirectUtility_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_3a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.consumer_maximum_theorem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_3b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.marshallianDemand_localCompactBound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.marshallianDemand_isCompact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.marshallianDemand_upperHemicontinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_3c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Demand.proposition_3_3b_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.FullMenus": [],
+    "Kreps.UtilityForMoney.LotteryTheory.ChoiceRule": [],
+    "Kreps.UtilityForMoney.LotteryTheory.FeasibleOn": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Feasible": [],
+    "Kreps.UtilityForMoney.LotteryTheory.FiniteNonempty": [],
+    "Kreps.UtilityForMoney.LotteryTheory.CoherentOn": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Coherent": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Complete": [],
+    "Kreps.UtilityForMoney.LotteryTheory.TransitivePref": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Rational": [],
+    "Kreps.UtilityForMoney.LotteryTheory.PrefChoice": [],
+    "Kreps.UtilityForMoney.LotteryTheory.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.UtilityChoice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Revealed": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Strict": [],
+    "Kreps.UtilityForMoney.LotteryTheory.Indifferent": [],
+    "Kreps.UtilityForMoney.LotteryTheory.NoBetterThan": [],
+    "Kreps.UtilityForMoney.LotteryTheory.complete_refl": [],
+    "Kreps.UtilityForMoney.LotteryTheory.prefChoice_feasible": [],
+    "Kreps.UtilityForMoney.LotteryTheory.feasible_empty": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.represents_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.coherent_iff_on_full": [],
+    "Kreps.UtilityForMoney.LotteryTheory.AsymmetricPref": [],
+    "Kreps.UtilityForMoney.LotteryTheory.NegativelyTransitive": [],
+    "Kreps.UtilityForMoney.LotteryTheory.WeakFromStrict": [],
+    "Kreps.UtilityForMoney.LotteryTheory.IndifferenceFromStrict": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9a": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9b": [],
+    "Kreps.UtilityForMoney.LotteryTheory.strict_weak_trans": [],
+    "Kreps.UtilityForMoney.LotteryTheory.weak_strict_trans": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9d": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9e": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9f": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9g": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_9h": [],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_1_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.problem_1_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Weight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.AffineInMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.BackgroundIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.MixtureContinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.MixtureAxioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Complement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_swap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.WeightMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.WeakBackgroundIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_some_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_weak_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_5_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_shift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_step_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_step_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.GridWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.gridWeight_last": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.gridWeight_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.gridWeight_step": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.grid_chain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.grid_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.grid_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.exists_gridWeight_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_base_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_base_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_7_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_7_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_6_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_6_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Between": [],
+    "Kreps.UtilityForMoney.LotteryTheory.segment_compare_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lemma_5_9_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.AnchorWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mix_congr_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.between_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.anchorWeight_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.representation_with_best_worst": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.Calibrates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.exists_calibration": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.exists_preference_enclosure": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.normalized_interval_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.calibration_eq_local": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.SimpleLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.PureLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.ExpectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_eq_affineMap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_pure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.lottery_mix_weight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.expectedUtility_eq_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.affineInMix_eq_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.problem_5_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.mixtureAxioms_of_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_5_4": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.proposition_5_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_map": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.InducedIncomePreference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.incomeLottery_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_16": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_16a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_16b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_16c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.incomeLottery_risk_averse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Figure62States": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Figure62Initial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Figure62Supplement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Figure62Final": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_states_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_initial_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_final_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_supplement_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_conditional_means": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure62_secondOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_add_scaled": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.last_secant_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exists_cap_interpolant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.secondOrder_iff_shortfalls": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.MeasureCombination": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.measureCombination_event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.probabilityMeasure_ext_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.BorelConvexSpace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.borelMix_event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.AtomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.integral_measureCombination": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.integral_atomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.measureCombination_eq_barycenter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.affineInMix_barycenter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.affineInMix_atomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.ImageWeights": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.SimpleImageLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.simpleImageLottery_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.exists_simpleLotteries_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.OpenStrictSections": [],
+    "Kreps.UtilityForMoney.LotteryTheory.affine_attains_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.openStrictSections_iff_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.integral_affineInMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.weakMix_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.LotteryTheory.continuous_affine_bounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_sum_over": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_tendsto_fixed_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.lottery_strict_rankings_eventually": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_tendsto_moving_prizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.nearby_money_lotteries": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_tendsto_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_tendsto_on_compact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.capped_values_equal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.finite_prize_gap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.secondOrder_antisymm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.firstOrder_antisymm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.dominance_reflexive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.dominance_transitive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.midpoint_gap_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.concavity_of_equal_probability_gambles": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.binaryLottery_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RareWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.rareLottery_weak_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.unbounded_prize_reversal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.OpenWealthUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.openWealthUtility_regular": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bounded_prizes_open_endpoint": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.GeneralQuantile": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.generalQuantile_le_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.generalQuantile_measurable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.generalQuantile_uniform_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ImperfectLoss": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.imperfect_policy_fair": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ImperfectValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.imperfectValue_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.imperfectValue_hasDerivAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.wealth_concave_tangent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.imperfect_full_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.BalancedMarginalUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.balancedMarginal_derivative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.balancedMarginal_regular": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_9_full": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_9_not_full": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insuranceUtility_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insuranceUtility_hasDerivAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.insurance_optimal_iff_marginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.fair_affine_insurance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expensive_insurance_no_maximum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cumulative_zero_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.atom_cdf_integral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.integrated_cumulative_eq_shortfall": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedShortfall_zero_of_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_14b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_6a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_6c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.IntervalRiskAversion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.intervalRiskAversion_eq_of_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.intervalRiskAversion_continuousOn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.interval_marginal_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_8_within": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.derivWithin_wealth_shift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.intervalRiskAversion_shift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shiftPremiumOrder_iff_within_coefficients": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shiftPremiumOrder_of_within_coefficients": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.zero_mem_interior_shiftDomain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_12_within": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.eqOn_interval_of_eqOn_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cara_representation_within": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_2_within": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.inverse_utility_regularity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.utilityTransform_hasDerivAt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.utilityTransform_second_derivative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.jensen_by_support_induction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_1b_induction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.riskSeeking_iff_convex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.riskNeutral_iff_affine_mixes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.figure_6_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.concaveUtility_continuousOn_interior": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.monetary_representation_of_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.strictMono_iff_sure_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.isCertaintyEquivalent_iff_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.concave_iff_sure_mean_preferred": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.concave_iff_nonnegative_premia": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.riskNeutral_iff_zero_premia": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RiskyPairMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.HedgeValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.riskyPairMenu_compact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.hedgeValue_attains": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_12_hedge": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.DominatedValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_12_dominated": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.IndependentPriceIncome": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.PriceAveragedValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.independent_price_income_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.priceAveragedValue_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.priceAveragedValue_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.priceAveragedValue_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.fixed_income_price_lottery_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.indirectUtility_continuous_prices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.indirectUtility_antitone_prices": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.two_price_income_couplings": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.two_price_income_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.priceRisk_map_binary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.two_price_income_marginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TwoGoodBudget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.sum_bundle_risky_price_optima": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.sum_bundle_mean_price_optimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_8a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.complementary_bundle_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.KinkedPriceUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.kinkedPriceUtility_strictMono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.kinkedPriceUtility_concave": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.price_level_quantities_order": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_8b_fixed_dispersion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_8b_large_dispersion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.price_risk_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.price_risk_at_zero_income": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.StablePrizeComparisons": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_2": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stablePrizeComparisons_iff_metric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Prefix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Before": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.cumulative_eq_prefix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.prefix_sub_before": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.prefix_le_before_of_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.prefix_probability_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.sum_prefix_increments": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.exists_prefix_bin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.QuantileBin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.QuantilePrize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantilePrize_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantilePrize_mem_bin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantileBin_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantileBin_subset_unit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantilePrize_uniform_mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.Overlap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.overlap_eq_length": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.overlap_comm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.sum_overlap_bins": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.QuantileCoupling": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.FiniteCoupling.Ordered": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantileCoupling_ordered": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.firstOrder_of_ordered_coupling": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_14a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.proposition_6_15a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantile_uniform_joint_mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.quantilePrize_ordered": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.deriv_scaled_wealth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.absoluteRiskAversion_scaled": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.NonincreasingCertaintyReturn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.nonincreasingCertaintyReturn_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.nonincreasingCertaintyReturn_iff_relative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.relativeRisk_printed_counterexample": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TrialBranch": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.trialBranch_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.RepeatedLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.repeatedLaw_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.repeated_exponential_steps": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.repeatedLaw_exponential": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_14_unrestricted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.ShareValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.shareValue_hasDerivAt_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_13a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.small_share_independent_wealth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.SmallShareLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.smallShareLaw_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.small_share_kink": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.small_share_kink_nondifferentiable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.small_share_correlated_loss": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.StoppedLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.StoppedValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stoppedValue_initial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stoppedValue_bankrupt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stoppedValue_step": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.WalkFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.walk_geometric_step": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_power_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_power_ge": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.AlivePower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.alivePower_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bounded_walk_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_14_bounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stoppedValue_affine_two": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_utility_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_14_unbounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.BankruptcyBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bankruptcyBase_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bankruptcyBase_harmonic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.BankruptcyIndicator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bankruptcy_mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bankruptcy_probability_identity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.alivePower_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.bankruptcy_probability_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_bounded_upper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_bounded_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_bounded_limit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.stopped_bounded_criterion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingMenu": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingMarginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.spending_remainder_optimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_log_tangent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_log_tangent_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_unique_of_marginal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingTwo": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingSure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingThree": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_two_optimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_sure_optimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_three_root": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_three_optimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timingValue_eq_log_product": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_log_certificate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_two_value_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_sure_value_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_three_product_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_three_value_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingIncomeTwo": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingIncomeSure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingIncomeThree": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.TimingBundleIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_income_mixture_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_values_as_expectations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.timing_optimized_mixture_worse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.problem_6_7_no_income_index": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.eventually_mem_lottery_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.outside_prize_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.UtilityForMoney.expectedUtility_tendsto_bounded_extra_prizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_sha256": {
+    "UtilityForMoney/MonetaryLotteries.lean": "2431a2782df885f33adf5063ff1f02e6858c479444cdc629437a8248a43f9a76",
+    "UtilityForMoney/ComparativeRisk.lean": "089553a48fa1d994b9345966d90b0c7d7ff0b95d67384a986c420d1aed4f04b1",
+    "UtilityForMoney/RiskMeasures.lean": "7a17c0e4df4fd96869ad7600f14ba198a4767e9440e9148ea433e7b5a7a13123",
+    "UtilityForMoney/Insurance.lean": "6f67b6e2497c9c24e2dd04d7d21075fcab99f0fb6f0dd6c95f39b99ad2598254",
+    "UtilityForMoney/RiskyAssets.lean": "31b19fef3f188cdebe2ba578732aebdc663e0b1bf21d3dbf87f1411fa1a91812",
+    "UtilityForMoney/ArrowPrattComparison.lean": "805d9c2576d6d3ae17bd09a1665d31783e081336e5c197f381e178d6f38472bc",
+    "UtilityForMoney/LocalRiskPremium.lean": "7e8d07bd6458813cca827709e2f5642520be2e1e5c50f9173f23757fdc18884f",
+    "UtilityForMoney/ArrowPrattTheorem.lean": "22e0719f687f276bf94b4f66123257721285bb738da25fedc4cf8c76cd291800",
+    "UtilityForMoney/WealthShifts.lean": "433fe484f5074ea7937a03fb4f5d9985bacc3fc7aed23d3ff011a9087c35f90f",
+    "UtilityForMoney/WealthRiskClassification.lean": "dd640cd27db59d08229258b8010f8bbc4844744ed54b3975b62736e37583305f",
+    "UtilityForMoney/ConstantAbsoluteRisk.lean": "c151d7a2410514baff34ab113d03a6d8fe938c59e90090d0ea3eadb624ec6b6d",
+    "UtilityForMoney/CARACalibration.lean": "feab226d134b49037c6355fb0306b202b8ce2f964403b0951e84e25c21e70df8",
+    "UtilityForMoney/CARACalibrationPreferences.lean": "c32761098e933105d56412acd229ca2bf3662f29b0c6c531e01a55e9626ec4ac",
+    "UtilityForMoney/BehavioralCalibration.lean": "2c0ee7e3e1f89c0444d2307ca8b33da64023034c154d8003ccc00f23462388ef",
+    "UtilityForMoney/PortfolioCases.lean": "15fc882b6f55081043662c5f828d12cd06f67c2c8ff7714e1843355e73cd8b78",
+    "UtilityForMoney/CARAPortfolio.lean": "7551540325c1caabd4f731a18a7b43aa568b72b1b58c865a3bb52449a779eee8",
+    "UtilityForMoney/FiniteCouplings.lean": "f1bf2739f99bf0049e8b564dad36da965a55670840dee620e41a50cc4300a0e7",
+    "UtilityForMoney/CouplingSeparation.lean": "ee0512221d121e8b64c7be06c801e19c8de2c6c46afbf949a6636ed7ad4fbbf1",
+    "UtilityForMoney/DominanceFiniteMinimum.lean": "fc836708565b37a12c90db80527d542f4e963302c84f444a9ed85879a8b1be5e",
+    "UtilityForMoney/StochasticDominance.lean": "c4d86bad599bf5d62522579b1950402c1692a41b9cca0615e0829518d18af831",
+    "UtilityForMoney/SupermartingaleCoupling.lean": "c13880ce173d2632e4452ff7246f48fcf7366c579eb86545ee78f473c9466897",
+    "UtilityForMoney/ConditionalRisk.lean": "ea6d7849d1343379f91db71ffa442db7510060116725491b8378ad902dace29b",
+    "UtilityForMoney/DemandPrerequisites.lean": "2b9a61df10cdc7d22e20d34a0dbf089bd9a1cada97e6f253655eb95cee34d7f3",
+    "UtilityForMoney/DemandBudgetSets.lean": "a881df0181a6b3f2033cc0fb94464c85fb7abe77bd1ed6bf891c246b3536860b",
+    "UtilityForMoney/DemandCorrespondenceMaximum.lean": "4dcd763ad3e9a6d2621acbd4bacdb721c130ecb43b474e683b378951fce4d185",
+    "UtilityForMoney/DemandBudgetContinuity.lean": "21080fa42dadffaa86b30dfc605c3c47f5a05845aa03fd01c6afcaab9cf25cb3",
+    "UtilityForMoney/DemandConsumerProblem.lean": "2b292c24ef3b9fb4ac45d1ecfa823edb874dca368dc6b7c38df4c27a84f05bbd",
+    "UtilityForMoney/DemandIndirectUtility.lean": "e128010135efc013c6052292f1683acb4a5424ccdbefb04ee9d8e8d65ee4844a",
+    "UtilityForMoney/LotteryBasic.lean": "c8276ff333a2c9e019571c4a280c4a1429ceacf2937f45abb58b98733d8bf89c",
+    "UtilityForMoney/LotteryStrictPreference.lean": "1e9eccfa020e807c771a546ee7ff48aa717f81e60058e3290994a56b0ff20d27",
+    "UtilityForMoney/LotteryMixtureSpace.lean": "df6b5bbfd47820b35c37135af3def71e5fa042379ab60afd20ca39a3e055180c",
+    "UtilityForMoney/LotteryMixtureAlgebra.lean": "f7d717d9be16b9b1dc68323db5b54d19fad8cf316150cdb7c0bb2b7500b239c5",
+    "UtilityForMoney/LotteryIndependence.lean": "b6f3fdd90386224bae1968c6e2d247d9bfd689bc9ebd0c272002d04273dd5979",
+    "UtilityForMoney/LotteryProbabilityGrids.lean": "593c235c3be06128edddf4894e55f22fb1b1e0b4412dad2227307f4a46a41040",
+    "UtilityForMoney/LotterySegmentOrder.lean": "25af02432715557e78de6371d39253193a3a51b294746403a2ad5808996dd2f7",
+    "UtilityForMoney/LotterySegmentCalibration.lean": "3128b987b17bfd255ce59050f23bb2a73fd095f67c44a4caa15dd00902eb1ab2",
+    "UtilityForMoney/LotteryBoundedCalibration.lean": "6582491d2578f1f7a906e910e73c0afed3aa05be4e9785da33d14e61da16ffe4",
+    "UtilityForMoney/LotteryUnboundedCalibration.lean": "b6f74501b7aaf5ba13f1dc65df5b8854c3d1d19c882523ed57f59ca696eca151",
+    "UtilityForMoney/LotterySimpleLottery.lean": "88b4e459f9acc12797282664de516d29f5d3c9998ab6932fbb1954f83f2df38e",
+    "UtilityForMoney/LotteryLotteryEvaluation.lean": "ed7340dfcdb27de1ad424d6311f497e942d05b08ca0f059198dd3b28f8143a7f",
+    "UtilityForMoney/LotteryMixtureRepresentation.lean": "c32f53fd45a943a6b26f89b4031dbf138b5787af50d71d9e402b3715a475c6dd",
+    "UtilityForMoney/IncomeChoice.lean": "558a26018aaa96466d8d27e3fbfb80fdf46ba73ac9ff395cafe43431b6d74a61",
+    "UtilityForMoney/DominanceExample.lean": "26282a61866c68dc39ed2c165f1f946ee6f291fb6e7faa58ba7f6e9bfda91838",
+    "UtilityForMoney/DominanceInterpolation.lean": "62914d073511a2243d55e626693a34e04837616c1e4e1f19cbd96f390e502b67",
+    "UtilityForMoney/LotteryMeasureMixtures.lean": "26c0e82c7e256132ecab1b38ae1449c6c81bb797190bb5ece0d4fe4a70f33107",
+    "UtilityForMoney/LotteryWeakApproximation.lean": "7e3e8bb6d7f8195564c4c9ef6129f78bb65e7ee3f03a18c8ab4b250eb08e8974",
+    "UtilityForMoney/LotteryWeakUtilityContinuity.lean": "afa8ce73189ba8963c6b4de99dbcf3dad8bfd924bc8470b8a930b9a0b7106926",
+    "UtilityForMoney/LotteryLimits.lean": "085a9e56434a5fb728b276a4702ebf717e7fe81a4e9d76329bbddd9ec28ac15f",
+    "UtilityForMoney/DominanceOrders.lean": "348dce4a24e3f04d5aa6b4b219da72365ffc9aa533af6bda25674d5845144930",
+    "UtilityForMoney/EqualProbabilityRisk.lean": "872e8330f1f3347a7a3660bf3fb157e344693d582d4f7ffe837abf145f5a5b87",
+    "UtilityForMoney/EscapingPrizes.lean": "a9c7bc8df1248a38b03cc04d5166b1ed51bb2f8c74db9cec1210d805f0d4a0ac",
+    "UtilityForMoney/GeneralQuantile.lean": "f7ccc58410b9ae8c7b7cad07c1d898e51a4576fc2358010ea32142f3c5d165e7",
+    "UtilityForMoney/ImperfectInsurance.lean": "963d6f0d1bf40c4e16dfc15e6f91f508931a24db38b2af9bb20c11689029ec10",
+    "UtilityForMoney/InsuranceOptimality.lean": "88b71c9d1aea77f86918d88bbb3550284a33885aff27166f80682c453d0413b9",
+    "UtilityForMoney/IntegratedDominance.lean": "31a958d5e3fe9b2cccdcceb23012374eebb32cb5117e1963eea82b9608019994",
+    "UtilityForMoney/IntervalArrowPratt.lean": "40a31b4372953fe891cb40c7e6bd76758bd65ff26684c070e6ee48cc632f07c0",
+    "UtilityForMoney/IntervalWealthShifts.lean": "20ba5fb79627ee2f7144eae24ff3e9b1d429c9c7803d63c1355be7d3ef96fc3f",
+    "UtilityForMoney/IntervalCARA.lean": "1e54b3e8aa331243192e2d26532cd9a42e4912b76ab19a808ed9ffdb26193a39",
+    "UtilityForMoney/InverseUtilityDerivatives.lean": "daad91c60dc99641a7a3326419020580269a705847c7aeb210ed967444fe55f3",
+    "UtilityForMoney/RiskAttitudes.lean": "d4ed470aa4251f23c1670bf659b3808cfac7f5777001eba46bfe27f056e746bf",
+    "UtilityForMoney/MonetaryPreference.lean": "1d8d746fcf18404235593131051b38f4c4180994afd73161ed83d18eb0554522",
+    "UtilityForMoney/MultipleRiskyAssets.lean": "0fe51b618bd3ca92f6b256ac5a41f22adb4993d2b71cff5817dd9a7e3f37066e",
+    "UtilityForMoney/PriceIncomeRisk.lean": "88423436340b7cc0312416b6f91d8f266c3b3f085f52599bc04fe21e56e04432",
+    "UtilityForMoney/PriceRiskExamples.lean": "708b917008d9307df40467a90450cb357cc355841a5ba64fc80a3abe90041d30",
+    "UtilityForMoney/PrizeContinuity.lean": "654723da978a9984737c50350e23e5e7397952fde2b8f0ff9989efadfdb9271c",
+    "UtilityForMoney/QuantileBins.lean": "8d2329c46942e8a27f5e54123fd5669ff92e18c1f8a6f609c237aef484698f4b",
+    "UtilityForMoney/QuantileCoupling.lean": "61ecf5ebe5d4683ff0f94f8c6c27c07907a919f21296990a8e03b01cad75bf15",
+    "UtilityForMoney/RelativeRisk.lean": "c97a3c643663cee162c7ef4a1eac891ac7a92a5ddccef66281a09503246df35e",
+    "UtilityForMoney/RepeatedGambles.lean": "640f141773b3bcc4331c4b390155d0ad031557ef8b1e1bc8764274e9b6c234ac",
+    "UtilityForMoney/SmallShares.lean": "b46e62b57056a50c45a96cfc2d97727750c803d260c933003292b89329e8fd37",
+    "UtilityForMoney/StoppedGambles.lean": "891fb8c66a3bc2c95fb1f31bad715d8e58e8e8b40f4304937032b1d7cbb84e8d",
+    "UtilityForMoney/StoppedGambleLimits.lean": "fe0f2c7a9b1302538263de0b05dccfdefc7d6161ad55109dc1fd963f2b9c059e",
+    "UtilityForMoney/StoppedRuinProbability.lean": "c59512ba8562a77cdcb73978e3fea3bc194ec72d60e87dbfec51eace94750d3d",
+    "UtilityForMoney/StoppedBoundedUtility.lean": "012303ecbb8d3a3e658dcac994c165a2b198b756f2a2804c52ae771b29856b26",
+    "UtilityForMoney/TimingExamples.lean": "d9c77a354bb9eaa5dfab544fc76476104b8061b1fbfb4cc05bdfcbdebbb482b2",
+    "UtilityForMoney/TimingValueBounds.lean": "02217029ed0b6de319568eea0f681ffa82b7b3b44b7e3069a1bdd7ee8181e3cf",
+    "UtilityForMoney/TimingIncomeLotteries.lean": "b1c6608e0d8bffebf486517e28e7471a8a9ce735d627ca175d30ed938bc4ba62",
+    "UtilityForMoney/VaryingSupport.lean": "d01396dda42299c6c1cc83bfa0608f30e5ebb8163e746ab61331456f1092fb22",
+    "UtilityForMoney.lean": "13b9ee0300d041b6f62f803c0121b50e4aa41902879a20638694b281eceb1478",
+    "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "lakefile.toml": "6865df15170fbb9b04b018d15f02292be560401b793b477f5581e65d49c8a508",
+    "lake-manifest.json": "63006f7d87f99449a8f981e37d50719b0a51d004d36bc6df052a70ae5539717c",
+    "proof-manifest.json": "d3c26e11ffd72b94390e29e2f5ec3433335423794b9ae502e90396eecf2e0972",
+    "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "fresh_audit_sha256": "ae13a8ddc2e50970bcef210770f3b3e00da2fdf2af13d5adfb050e7776b756a5",
+  "lean_toolchain": "leanprover/lean4:v4.34.0",
+  "scope": "Chapter 6, pp. 123-147. All eighteen numbered definitions and propositions, the fourteen exercises including the stopped-gamble challenge, mathematical examples and both figures. The source map records exact coverage, proof methods, corrections and domain conventions.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 6, pp. 123\u2013147."
+}

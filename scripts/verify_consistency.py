@@ -1,4 +1,4 @@
-"""Check copied foundations and jointly elaborate the four chapters and their bridges.
+"""Check copied foundations and jointly elaborate the chapter projects and their bridges.
 
 Uses the unchanged chapter verifier for source screening, inventory and axiom checks.
 Run from any directory; Lake uses RevealedPreference's pinned external dependencies.
@@ -17,7 +17,8 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 CHAPTERS = (
-    "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference"
+    "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference",
+    "ChoiceUnderUncertainty", "UtilityForMoney"
 )
 BASELINE = ROOT / "Volume1/ChoicePreferenceUtility/scripts/verify.py"
 spec = importlib.util.spec_from_file_location("chapter_verifier", BASELINE)
@@ -159,7 +160,7 @@ def collect_joint_sources(root=ROOT):
             body.append(line)
         else:
             bridge_imports.extend(imported)
-    require(set(bridge_imports) == set(CHAPTERS), "Bridge file must import exactly the four libraries")
+    require(set(bridge_imports) == set(CHAPTERS), "Bridge file must import exactly all chapter libraries")
     require(all(len(line) <= 100 for line in raw.splitlines()), "Long line in ChapterBridges.lean")
     require(b"\r" not in bridge.read_bytes(), "ChapterBridges.lean must use LF")
     bodies.append("\n".join(body))
