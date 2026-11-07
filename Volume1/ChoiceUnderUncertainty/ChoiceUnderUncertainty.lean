@@ -1,0 +1,53 @@
+/-
+Copyright (c) 2026 KrepsFoundations contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: KrepsFoundations contributors
+-/
+import ChoiceUnderUncertainty.ActSeparability
+import ChoiceUnderUncertainty.Basic
+import ChoiceUnderUncertainty.StrictPreference
+import ChoiceUnderUncertainty.MixtureSpace
+import ChoiceUnderUncertainty.SimpleLottery
+import ChoiceUnderUncertainty.AffineUniqueness
+import ChoiceUnderUncertainty.MixtureAlgebra
+import ChoiceUnderUncertainty.Independence
+import ChoiceUnderUncertainty.ProbabilityGrids
+import ChoiceUnderUncertainty.SegmentOrder
+import ChoiceUnderUncertainty.SegmentCalibration
+import ChoiceUnderUncertainty.BoundedCalibration
+import ChoiceUnderUncertainty.UnboundedCalibration
+import ChoiceUnderUncertainty.LotteryEvaluation
+import ChoiceUnderUncertainty.MixtureRepresentation
+import ChoiceUnderUncertainty.AlternativeMixtureAxioms
+import ChoiceUnderUncertainty.AlternativeRepresentation
+import ChoiceUnderUncertainty.StateComparisons
+import ChoiceUnderUncertainty.HorseLotteries
+import ChoiceUnderUncertainty.SubjectiveLotteries
+import ChoiceUnderUncertainty.AnscombeAumann
+import ChoiceUnderUncertainty.MeasureMixtures
+import ChoiceUnderUncertainty.AtomicDensityLaws
+import ChoiceUnderUncertainty.AtomicDensityCounterexample
+import ChoiceUnderUncertainty.AtomicDensityMixtures
+import ChoiceUnderUncertainty.WeakApproximation
+import ChoiceUnderUncertainty.WeakUtilityContinuity
+import ChoiceUnderUncertainty.BorelExpectedUtility
+import ChoiceUnderUncertainty.FiniteLotteryTables
+import ChoiceUnderUncertainty.EmpiricalCritiques
+import ChoiceUnderUncertainty.CompoundExamples
+import ChoiceUnderUncertainty.EventSimpleActs
+import ChoiceUnderUncertainty.EventDecomposition
+import ChoiceUnderUncertainty.EventProbabilities
+import ChoiceUnderUncertainty.EventSubjectiveUtility
+import ChoiceUnderUncertainty.CountablyAdditiveEvents
+import ChoiceUnderUncertainty.SubsetLotteries
+import ChoiceUnderUncertainty.NumericalExercises
+import ChoiceUnderUncertainty.ExerciseDomains
+import ChoiceUnderUncertainty.LotterySupport
+import ChoiceUnderUncertainty.StateExamples
+import ChoiceUnderUncertainty.UnboundedPrizeUtility
+
+/-!
+# Choice under uncertainty
+
+Kreps I, Chapter 5, pp. 79–122. See the source map for theorem interfaces and scope.
+-/

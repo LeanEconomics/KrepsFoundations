@@ -1,0 +1,4105 @@
+{
+  "checked_at_utc": "2026-11-07T19:34:22.057246+00:00",
+  "theorems": 276,
+  "module_theorems": {
+    "ChoiceUnderUncertainty/ActSeparability.lean": 5,
+    "ChoiceUnderUncertainty/Basic.lean": 5,
+    "ChoiceUnderUncertainty/StrictPreference.lean": 12,
+    "ChoiceUnderUncertainty/MixtureSpace.lean": 4,
+    "ChoiceUnderUncertainty/SimpleLottery.lean": 5,
+    "ChoiceUnderUncertainty/AffineUniqueness.lean": 5,
+    "ChoiceUnderUncertainty/MixtureAlgebra.lean": 1,
+    "ChoiceUnderUncertainty/Independence.lean": 6,
+    "ChoiceUnderUncertainty/ProbabilityGrids.lean": 7,
+    "ChoiceUnderUncertainty/SegmentOrder.lean": 11,
+    "ChoiceUnderUncertainty/SegmentCalibration.lean": 3,
+    "ChoiceUnderUncertainty/BoundedCalibration.lean": 6,
+    "ChoiceUnderUncertainty/UnboundedCalibration.lean": 4,
+    "ChoiceUnderUncertainty/LotteryEvaluation.lean": 1,
+    "ChoiceUnderUncertainty/MixtureRepresentation.lean": 4,
+    "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean": 8,
+    "ChoiceUnderUncertainty/AlternativeRepresentation.lean": 4,
+    "ChoiceUnderUncertainty/StateComparisons.lean": 7,
+    "ChoiceUnderUncertainty/HorseLotteries.lean": 6,
+    "ChoiceUnderUncertainty/SubjectiveLotteries.lean": 7,
+    "ChoiceUnderUncertainty/AnscombeAumann.lean": 2,
+    "ChoiceUnderUncertainty/MeasureMixtures.lean": 5,
+    "ChoiceUnderUncertainty/AtomicDensityLaws.lean": 10,
+    "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean": 8,
+    "ChoiceUnderUncertainty/AtomicDensityMixtures.lean": 5,
+    "ChoiceUnderUncertainty/WeakApproximation.lean": 5,
+    "ChoiceUnderUncertainty/WeakUtilityContinuity.lean": 5,
+    "ChoiceUnderUncertainty/BorelExpectedUtility.lean": 4,
+    "ChoiceUnderUncertainty/FiniteLotteryTables.lean": 5,
+    "ChoiceUnderUncertainty/EmpiricalCritiques.lean": 12,
+    "ChoiceUnderUncertainty/CompoundExamples.lean": 8,
+    "ChoiceUnderUncertainty/EventSimpleActs.lean": 8,
+    "ChoiceUnderUncertainty/EventDecomposition.lean": 12,
+    "ChoiceUnderUncertainty/EventProbabilities.lean": 8,
+    "ChoiceUnderUncertainty/EventSubjectiveUtility.lean": 5,
+    "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean": 8,
+    "ChoiceUnderUncertainty/SubsetLotteries.lean": 8,
+    "ChoiceUnderUncertainty/NumericalExercises.lean": 9,
+    "ChoiceUnderUncertainty/ExerciseDomains.lean": 12,
+    "ChoiceUnderUncertainty/LotterySupport.lean": 3,
+    "ChoiceUnderUncertainty/StateExamples.lean": 16,
+    "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean": 7
+  },
+  "audited_declarations": 415,
+  "declarations": [
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.StateAct",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.StateAdditiveValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SubjectiveActValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveActValue_eq_stateAdditiveValue",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SureThing",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.sureThing_of_stateAdditive",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.StateIncrement",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateIncrement_independent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.PartialAct",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.partialAct_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateAct_decomposition",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ActSeparability.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.FullMenus",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ChoiceRule",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.FeasibleOn",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Feasible",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.FiniteNonempty",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.CoherentOn",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Coherent",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Complete",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TransitivePref",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Rational",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.PrefChoice",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.UtilityPref",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.UtilityChoice",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Represents",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Revealed",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Strict",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Indifferent",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.NoBetterThan",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.complete_refl",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.prefChoice_feasible",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.feasible_empty",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.represents_choice",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.coherent_iff_on_full",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Basic.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AsymmetricPref",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.NegativelyTransitive",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.WeakFromStrict",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.IndifferenceFromStrict",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9a",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9b",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.strict_weak_trans",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.weak_strict_trans",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9c",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9d",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9e",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9f",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9g",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_9h",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_1_10",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_1_9",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StrictPreference.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Weight",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Mix",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AffineInMix",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BackgroundIndependent",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.MixtureContinuous",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.MixtureAxioms",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Complement",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_self",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_zero",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_one",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_swap",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureSpace.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SimpleLottery",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.PureLottery",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ExpectedUtility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_eq_affineMap",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_pure",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lottery_mix_weight",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_eq_sum",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SimpleLottery.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affine_segment_identity",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AffineUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affineInMix_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AffineUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_4_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AffineUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.positive_affine_representation",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AffineUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_3_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AffineUniqueness.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.WeightMean",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MixtureAlgebra.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_mix",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureAlgebra.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.WeakBackgroundIndependent",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_5_some_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_5_weak_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_5_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_shift",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_step_weak",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_step_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/Independence.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.GridWeight",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.gridWeight_last",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.gridWeight_zero",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.gridWeight_step",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.grid_chain",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.grid_weak",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.grid_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exists_gridWeight_between",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ProbabilityGrids.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_base_weak",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_mono",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_base_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_7_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_bounds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_7_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_6_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_6_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_monotone",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_strict",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_8",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentOrder.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Between",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.segment_compare_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_9",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lemma_5_9_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SegmentCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AnchorWeight",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.anchorWeight_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_congr_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.between_mix",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.anchorWeight_represents",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.anchorWeight_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.representation_with_best_worst",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BoundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Calibrates",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/UnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exists_calibration",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exists_preference_enclosure",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.normalized_interval_utility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.calibration_eq_local",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedCalibration.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affineInMix_eq_expectedUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/LotteryEvaluation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_3",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mixtureAxioms_of_representation",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_4",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_3",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MixtureRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.StrictIndependence",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ArchimedeanMix",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_complement",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.archimedeanMix_reverse",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_strict_both",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_segment_bounds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_toward_baseline",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_segment_mono",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_near_better",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_mixtureContinuous",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_shared_baseline_comm",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_no_strict_of_indifferent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.alt_mix_strict_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_11",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AlternativeRepresentation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateAdditiveValue_difference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateAdditive_local_comparison",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateUtility_difference_of_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateUtility_shifts_of_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.StateIndependentComparisons",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveActValue_stateIndependent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveActValue_constant",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveProbabilities_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateComparisons.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.HorseLottery",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.mix_act_apply",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.HorseValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.horseValue_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.stateIncrement_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.horseValue_of_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.horseRepresentation_of_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_12_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/HorseLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_affine_transform",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SubjectiveHorseValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveHorseValue_eq_horseValue",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveHorseValue_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.constantActs_represented_in_each_state",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjectiveRepresentation_of_stateIndependent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjective_prize_utility_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subjective_probabilities_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubjectiveLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_12",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AnscombeAumann.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_13",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AnscombeAumann.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.MeasureCombination",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.measureCombination_event",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.probabilityMeasure_ext_real",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BorelConvexSpace",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.borelMix_event",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicProbability",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_measureCombination",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_atomicProbability",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/MeasureMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicFunctional",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicFunctional_singleton",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation",
+      "kind": "structure",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.mk",
+      "kind": "constructor",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.atoms_nonneg",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.continuous",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.compact",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.density_nonneg",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.event",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_singleton",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_unique",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_normalized",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_mix",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityDomain",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityDomain_isConvex",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityConvexSpace",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicDensityIndex",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_eq",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_scaled",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_mixtureAxioms",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityLaws.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicProbability_presentation",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AtomicLaw",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_atomic",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_atomicLaw",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.DensityProbability",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.densityProbability_presentation",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ThreeFourBump",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.threeFour_support",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ThreeFourLaw",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.threeFourLaw_range",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_literal_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensity_no_expectedUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicFunctional_one",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicWeights_normalize",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.compactDensity_normalize",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityPresentation_ext",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.atomicDensityDomain_iff_mixture",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/AtomicDensityMixtures.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.measureCombination_eq_barycenter",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affineInMix_barycenter",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affineInMix_atomicProbability",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ImageWeights",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SimpleImageLottery",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.simpleImageLottery_law",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exists_simpleLotteries_tendsto",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakApproximation.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.OpenStrictSections",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.affine_attains_between",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.openStrictSections_iff_continuous",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_affineInMix",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.weakMix_tendsto",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.continuous_affine_bounded",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/WeakUtilityContinuity.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.borel_index_is_integral",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BorelExpectedUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_10",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BorelExpectedUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_10_euclidean",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BorelExpectedUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.proposition_5_10_orthant",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/BorelExpectedUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable",
+      "kind": "structure",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.mk",
+      "kind": "constructor",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.mass",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.nonnegative",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.normalized",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.distribution",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.lottery",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.value",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BranchTable.lottery_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_branchLottery",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.CertainBranch",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TwoBranches",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.certainBranch_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.twoBranches_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ThreeBranches",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.threeBranches_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/FiniteLotteryTables.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.BinaryCash",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.binaryCash_expectedUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.framing_cash_laws",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.framing_no_strict_reversal",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.AllaisLotteries",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.allais_difference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.allais_no_expectedUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EllsbergBets",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EllsbergUrn",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ellsberg_known_odds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ellsberg_difference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ellsberg_no_subjectiveUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.ellsberg_not_sureThing",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.portfolio_dependence_example",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.delayedCoin_value_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer",
+      "kind": "structure",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.mk",
+      "kind": "constructor",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.draw",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.disclosure",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.payment",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.heads",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.tails",
+      "kind": "projection",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.PrintedCoinOffers",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.printedCoinOffers_compare",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EmpiricalCritiques.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.expectedUtility_indicator",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lottery_eq_of_all_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure55Reduced",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure55_reduction",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure56_deterministic",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure57First",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure57Second",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure57Reduced",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure57_reduction",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.DinnerAct",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.dinner_horses_first",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.MatchingDinnerValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.dinner_roulette_first",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.dinner_not_stateAdditive",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CompoundExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.IsEventSimple",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.isEventSimple_of_partition",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.isEventSimple_const",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.isEventSimple_map\u2082",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.isEventSimple_indicator",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.isEventSimple_paste",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventAct",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventAct_isConvex",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventActConvexSpace",
+      "kind": "abbrev",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventConstant",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventCut",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventCut_apply",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventAct_mix_apply",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSimpleActs.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventMix",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventMix_apply",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventAffine",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6a",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventContribution",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_congr_event",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_empty",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_univ",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_congr_act",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_union",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.partitionUnion_mem",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_partitionUnion",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6b",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventContribution_complement",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6c",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventDecomposition.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventLotteryIndex",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_base",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_affine",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventPrizeUtility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_expectedUtility",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6d",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventRanking",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_represents",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventRanking_mixtureAxioms",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventProbability",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.CalibrationNull",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.FinitelyAdditiveProbability",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventProbability_zero_iff_null",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6e",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventProbabilities.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventRepresentation_normalized",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventIndependentRankings",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_univ",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_factor",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_6f",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.event_sign_counterexample",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/EventSubjectiveUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SigmaEvents",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.sigmaEvents_isSetAlgebra",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.EventWeightContinuous",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.InitialEventUnion",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.initialEventUnion_succ",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.eventWeight_hasSum",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.probabilityMeasure_of_eventContinuity",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.probabilityMeasure_of_calibratedActs",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_partition_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.integral_simpleHorseValue",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.simpleHorseValue_tendsto",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.InclusionProbability",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.InclusionLottery",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.inclusionProbability_lottery",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.inclusionLottery_probability",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.inclusionProbability_mix",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.SubsetVertex",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subsetVertex_probability",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subsetLottery_extension",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subsetMargin_additive",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.wholeSubset_utility_nonadditive",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subsetMargin_cube_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/SubsetLotteries.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Problem51Money",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Problem51MoneyValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1a",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510Act",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510Utility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510Prob",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510CommonUtility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure510CommonUtility_eq_rpow",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510AdditiveValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1b",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure510SubjectiveValue",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure510_subjective_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure510_root_bounds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1c",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure511Left",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure511Right",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure511Value",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1d",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.Figure511WeightedUtility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure511_subjective_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1e",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/NumericalExercises.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure511Value_eq_horseValue",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.figure511Value_eq_subjective",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_4",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_5_whole",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.subsetUtility_unrestricted",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_5_marginals",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.strict_of_exerciseValue",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1a_preference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1b_preference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1c_preference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1d_preference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_1e_preference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/ExerciseDomains.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lottery_mem_support_iff",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/LotterySupport.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lottery_mix_support",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/LotterySupport.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.lottery_endpoint_supports",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/LotterySupport.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.RaceOdds",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.RaceBet",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.race_sure_three",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.race_bet_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.bundle_lottery_values",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.race_sureThing",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.MealContextUtility",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.meal_dessert_reversal",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.advertising_two_states",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.advertising_three_states",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.advertising_threshold",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.umbrella_stateIndependent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.umbrella_stateDependent",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.WorldCupTicket",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.worldCup_ticket_value",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.worldCup_thresholds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.worldCup_indifference",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.weighted_stateUtilities_recover",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.problem_5_2",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.race_odds_not_imposed",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/StateExamples.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.unbounded_prize_sequence",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.HalfGeometric",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.halfGeometric_odds",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.GeometricPrizeLaw",
+      "kind": "def",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.geometricPrizeLaw_mass",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.geometric_expected_loss",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.unbounded_utility_lottery",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exponentialUtility_gaussian",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    },
+    {
+      "name": "Kreps.ChoiceUnderUncertainty.exponentialUtility_gaussianMixture",
+      "kind": "theorem",
+      "module": "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean"
+    }
+  ],
+  "full_build": "passed",
+  "fresh_source_compilation": "passed",
+  "fresh_source_lint_options": [
+    "-Dlinter.mathlibStandardSet=true",
+    "-Dlinter.style.header=false"
+  ],
+  "axioms": {
+    "Kreps.ChoiceUnderUncertainty.StateAct": [],
+    "Kreps.ChoiceUnderUncertainty.StateAdditiveValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SubjectiveActValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveActValue_eq_stateAdditiveValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SureThing": [],
+    "Kreps.ChoiceUnderUncertainty.sureThing_of_stateAdditive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.StateIncrement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateIncrement_independent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.PartialAct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.partialAct_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateAct_decomposition": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.FullMenus": [],
+    "Kreps.ChoiceUnderUncertainty.ChoiceRule": [],
+    "Kreps.ChoiceUnderUncertainty.FeasibleOn": [],
+    "Kreps.ChoiceUnderUncertainty.Feasible": [],
+    "Kreps.ChoiceUnderUncertainty.FiniteNonempty": [],
+    "Kreps.ChoiceUnderUncertainty.CoherentOn": [],
+    "Kreps.ChoiceUnderUncertainty.Coherent": [],
+    "Kreps.ChoiceUnderUncertainty.Complete": [],
+    "Kreps.ChoiceUnderUncertainty.TransitivePref": [],
+    "Kreps.ChoiceUnderUncertainty.Rational": [],
+    "Kreps.ChoiceUnderUncertainty.PrefChoice": [],
+    "Kreps.ChoiceUnderUncertainty.UtilityPref": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.UtilityChoice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Revealed": [],
+    "Kreps.ChoiceUnderUncertainty.Strict": [],
+    "Kreps.ChoiceUnderUncertainty.Indifferent": [],
+    "Kreps.ChoiceUnderUncertainty.NoBetterThan": [],
+    "Kreps.ChoiceUnderUncertainty.complete_refl": [],
+    "Kreps.ChoiceUnderUncertainty.prefChoice_feasible": [],
+    "Kreps.ChoiceUnderUncertainty.feasible_empty": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.represents_choice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.coherent_iff_on_full": [],
+    "Kreps.ChoiceUnderUncertainty.AsymmetricPref": [],
+    "Kreps.ChoiceUnderUncertainty.NegativelyTransitive": [],
+    "Kreps.ChoiceUnderUncertainty.WeakFromStrict": [],
+    "Kreps.ChoiceUnderUncertainty.IndifferenceFromStrict": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9a": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9b": [],
+    "Kreps.ChoiceUnderUncertainty.strict_weak_trans": [],
+    "Kreps.ChoiceUnderUncertainty.weak_strict_trans": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9d": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9e": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9f": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9g": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_9h": [],
+    "Kreps.ChoiceUnderUncertainty.proposition_1_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_1_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Weight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AffineInMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BackgroundIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.MixtureContinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.MixtureAxioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Complement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_swap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SimpleLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.PureLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ExpectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_eq_affineMap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_pure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lottery_mix_weight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_eq_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.affine_segment_identity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.affineInMix_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_4_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.positive_affine_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_3_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.WeightMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.WeakBackgroundIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_5_some_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_5_weak_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_5_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_shift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_step_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_step_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.GridWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.gridWeight_last": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.gridWeight_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.gridWeight_step": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.grid_chain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.grid_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.grid_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exists_gridWeight_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_base_weak": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_base_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_7_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.segment_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_7_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_6_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_6_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_monotone": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_strict": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Between": [],
+    "Kreps.ChoiceUnderUncertainty.segment_compare_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lemma_5_9_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AnchorWeight": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.anchorWeight_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_congr_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.between_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.anchorWeight_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.anchorWeight_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.representation_with_best_worst": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Calibrates": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exists_calibration": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exists_preference_enclosure": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.normalized_interval_utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.calibration_eq_local": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.affineInMix_eq_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mixtureAxioms_of_representation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_4": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.StrictIndependence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ArchimedeanMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_complement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.archimedeanMix_reverse": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_strict_both": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_segment_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_toward_baseline": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_segment_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_near_better": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_mixtureContinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_shared_baseline_comm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_no_strict_of_indifferent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.alt_mix_strict_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateAdditiveValue_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateAdditive_local_comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateUtility_difference_of_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateUtility_shifts_of_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.StateIndependentComparisons": [],
+    "Kreps.ChoiceUnderUncertainty.subjectiveActValue_stateIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveActValue_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveProbabilities_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.HorseLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.mix_act_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.HorseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.horseValue_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.stateIncrement_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.horseValue_of_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.horseRepresentation_of_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_12_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_affine_transform": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SubjectiveHorseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveHorseValue_eq_horseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveHorseValue_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.constantActs_represented_in_each_state": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjectiveRepresentation_of_stateIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjective_prize_utility_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subjective_probabilities_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_12": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_13": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.MeasureCombination": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.measureCombination_event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.probabilityMeasure_ext_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BorelConvexSpace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.borelMix_event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_measureCombination": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_atomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicFunctional": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicFunctional_singleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.atoms_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.compact": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.density_nonneg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityPresentation.event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_singleton": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_unique": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_normalized": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityDomain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityDomain_isConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityConvexSpace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicDensityIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_scaled": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_mixtureAxioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicProbability_presentation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AtomicLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityIndex_atomic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_atomicLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.DensityProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.densityProbability_presentation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ThreeFourBump": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.threeFour_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ThreeFourLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.threeFourLaw_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_literal_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensity_no_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicFunctional_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicWeights_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.compactDensity_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityPresentation_ext": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.atomicDensityDomain_iff_mixture": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.measureCombination_eq_barycenter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.affineInMix_barycenter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.affineInMix_atomicProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ImageWeights": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SimpleImageLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.simpleImageLottery_law": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exists_simpleLotteries_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.OpenStrictSections": [],
+    "Kreps.ChoiceUnderUncertainty.affine_attains_between": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.openStrictSections_iff_continuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_affineInMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.weakMix_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.continuous_affine_bounded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.borel_index_is_integral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_10_euclidean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.proposition_5_10_orthant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.nonnegative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.normalized": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.distribution": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.lottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BranchTable.lottery_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_branchLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.CertainBranch": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TwoBranches": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.certainBranch_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.twoBranches_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ThreeBranches": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.threeBranches_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.BinaryCash": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.binaryCash_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.framing_cash_laws": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.framing_no_strict_reversal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.AllaisLotteries": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.allais_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.allais_no_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EllsbergBets": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EllsbergUrn": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ellsberg_known_odds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ellsberg_difference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ellsberg_no_subjectiveUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.ellsberg_not_sureThing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.portfolio_dependence_example": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.delayedCoin_value_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.draw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.disclosure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.payment": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.heads": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.TimedCoinOffer.tails": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.PrintedCoinOffers": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.printedCoinOffers_compare": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.expectedUtility_indicator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lottery_eq_of_all_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure55Reduced": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure55_reduction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure56_deterministic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure57First": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure57Second": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure57Reduced": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure57_reduction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.DinnerAct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.dinner_horses_first": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.MatchingDinnerValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.dinner_roulette_first": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.dinner_not_stateAdditive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.IsEventSimple": [],
+    "Kreps.ChoiceUnderUncertainty.isEventSimple_of_partition": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.isEventSimple_const": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.isEventSimple_map\u2082": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.isEventSimple_indicator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.isEventSimple_paste": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventAct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventAct_isConvex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventActConvexSpace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventConstant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventCut": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventCut_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventAct_mix_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventMix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventMix_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventAffine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventContribution": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_congr_event": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_empty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_univ": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_congr_act": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_union": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.partitionUnion_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_partitionUnion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventContribution_complement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventLotteryIndex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventPrizeUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_expectedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventRanking": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_represents": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventRanking_mixtureAxioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.CalibrationNull": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.FinitelyAdditiveProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventProbability_zero_iff_null": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6e": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventRepresentation_normalized": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventIndependentRankings": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_univ": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventLotteryIndex_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_6f": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.event_sign_counterexample": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SigmaEvents": [],
+    "Kreps.ChoiceUnderUncertainty.sigmaEvents_isSetAlgebra": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.EventWeightContinuous": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.InitialEventUnion": [],
+    "Kreps.ChoiceUnderUncertainty.initialEventUnion_succ": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.eventWeight_hasSum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.probabilityMeasure_of_eventContinuity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.probabilityMeasure_of_calibratedActs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_partition_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.integral_simpleHorseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.simpleHorseValue_tendsto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.InclusionProbability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.InclusionLottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.inclusionProbability_lottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.inclusionLottery_probability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.inclusionProbability_mix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.SubsetVertex": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subsetVertex_probability": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subsetLottery_extension": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subsetMargin_additive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.wholeSubset_utility_nonadditive": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subsetMargin_cube_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Problem51Money": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Problem51MoneyValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1a": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510Act": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510Utility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510Prob": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510CommonUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure510CommonUtility_eq_rpow": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510AdditiveValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1b": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure510SubjectiveValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure510_subjective_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure510_root_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1c": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure511Left": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure511Right": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure511Value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1d": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.Figure511WeightedUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure511_subjective_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1e": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure511Value_eq_horseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.figure511Value_eq_subjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_4": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_5_whole": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.subsetUtility_unrestricted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_5_marginals": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.strict_of_exerciseValue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1a_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1b_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1c_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1d_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_1e_preference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lottery_mem_support_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lottery_mix_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.lottery_endpoint_supports": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.RaceOdds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.RaceBet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.race_sure_three": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.race_bet_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.bundle_lottery_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.race_sureThing": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.MealContextUtility": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.meal_dessert_reversal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.advertising_two_states": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.advertising_three_states": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.advertising_threshold": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.umbrella_stateIndependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.umbrella_stateDependent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.WorldCupTicket": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.worldCup_ticket_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.worldCup_thresholds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.worldCup_indifference": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.weighted_stateUtilities_recover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.problem_5_2": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.race_odds_not_imposed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.unbounded_prize_sequence": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.HalfGeometric": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.halfGeometric_odds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.GeometricPrizeLaw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.geometricPrizeLaw_mass": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.geometric_expected_loss": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.unbounded_utility_lottery": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exponentialUtility_gaussian": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Kreps.ChoiceUnderUncertainty.exponentialUtility_gaussianMixture": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_sha256": {
+    "ChoiceUnderUncertainty/ActSeparability.lean": "ad54397467c3765925132b44b858bddb4ee0f725fb2ebb615cee15c6d62ec492",
+    "ChoiceUnderUncertainty/Basic.lean": "72dc5cf5086e12c33116e486b55a4745dc09c3aa1e4707cf375d211fa14159e5",
+    "ChoiceUnderUncertainty/StrictPreference.lean": "b5a75bfebb2de88e17da3a6a2b10cadd9d51a84fe57c640e631f5dfdd7939753",
+    "ChoiceUnderUncertainty/MixtureSpace.lean": "19e4664b88e7996edb334bdf55b495faf3c280c0016c1f82a5857050e2412f07",
+    "ChoiceUnderUncertainty/SimpleLottery.lean": "cfc1ffd42fba3e55bc8188c7e43963d252afc277b5ea720bf9f83b85c0de868c",
+    "ChoiceUnderUncertainty/AffineUniqueness.lean": "2e2b9c180765da46d89cbbd62ae5fca17fbbd554133da8247ad6d184f107ccf1",
+    "ChoiceUnderUncertainty/MixtureAlgebra.lean": "8031edac205fa28677d7399d21db002f60daf9730694b17b95b539dec951cc6a",
+    "ChoiceUnderUncertainty/Independence.lean": "3b34bf18d1259da0cef840ae4046aee58a16f83d3ceaeb7d43bb303a7cc7d55c",
+    "ChoiceUnderUncertainty/ProbabilityGrids.lean": "6bd68f5fe60282a738ace16da3bac6e1a188a0497daebbae4f4f23b986d9b3ec",
+    "ChoiceUnderUncertainty/SegmentOrder.lean": "7bf7af67d15428d4175f2b680e6ac0bb35317424b4b40b010579971e47a8878d",
+    "ChoiceUnderUncertainty/SegmentCalibration.lean": "8f206fe4d9882496145c4abda00004194a985b1d029c5bb0e4893bc6552a69bc",
+    "ChoiceUnderUncertainty/BoundedCalibration.lean": "9fe9bbbcacf11c067c588f772a0c4eaa2cb19383de4739a4925512e8e74e6d11",
+    "ChoiceUnderUncertainty/UnboundedCalibration.lean": "331ea6ab38c979e0bc6a8170cb0542e988d8ee4093dd965c6da790af5751ab27",
+    "ChoiceUnderUncertainty/LotteryEvaluation.lean": "5d74d7f44f3a0826a0098576dfbd87762a8a27bc4d1902129f061c56f2fa2e8c",
+    "ChoiceUnderUncertainty/MixtureRepresentation.lean": "6d6a006d01fd392ade43f1002462a7b1ece09ca6e80ceb06f2c4b03cbee695f5",
+    "ChoiceUnderUncertainty/AlternativeMixtureAxioms.lean": "dce7abac7985f85c5a14e401414c683c9fed868d32c817a727fadb0fc6c067f8",
+    "ChoiceUnderUncertainty/AlternativeRepresentation.lean": "684203440b395f869c07c266fc2a0a9407d546867523ab8938a56f4b46f1e743",
+    "ChoiceUnderUncertainty/StateComparisons.lean": "5317183bcc240f3df0120a6419b8fc89b88d1e37bbe7853c32bb4989c91b27a7",
+    "ChoiceUnderUncertainty/HorseLotteries.lean": "04cd496e0b288677a62b95216b12e47702a3e09af933973400f2562aaa9608ee",
+    "ChoiceUnderUncertainty/SubjectiveLotteries.lean": "a121e1652df4ddac129f47ee341b6eac2d64cd052f1d2864c631d33d5cacb719",
+    "ChoiceUnderUncertainty/AnscombeAumann.lean": "f9971ed9c8af3e15631e70d5b142bc37ed2acf9d4246fdfaf153891c5a12da9c",
+    "ChoiceUnderUncertainty/MeasureMixtures.lean": "644b1c23f057934fddc06438fdeb6bca4bce114479b5128d6fc6f54b61a08a59",
+    "ChoiceUnderUncertainty/AtomicDensityLaws.lean": "074b2fc77d02002e0bbf59b731c92bf2614576a3cb86df8af38558a48b6484f3",
+    "ChoiceUnderUncertainty/AtomicDensityCounterexample.lean": "69177a3d2d6ee70b8388255c851052723d326a59fdbb2a921534040ca9248928",
+    "ChoiceUnderUncertainty/AtomicDensityMixtures.lean": "11ae99f854352cbb8f42aa8b549c35bb289b957e396101a919f39f21588e5e9e",
+    "ChoiceUnderUncertainty/WeakApproximation.lean": "77579eb61062f6a8a6ce4f8b14cb3577ad1591711dc938f2984ca44925be184b",
+    "ChoiceUnderUncertainty/WeakUtilityContinuity.lean": "f7ef23f88c25861bea9a0947f9b2a32ecf16d875214911ecfc8faee529f4a699",
+    "ChoiceUnderUncertainty/BorelExpectedUtility.lean": "ef14bfd4fd9431b8a9c6c3351e03ddbc2f4dc678c64ec8fb729f665aef2a8ec3",
+    "ChoiceUnderUncertainty/FiniteLotteryTables.lean": "58a69720b3c39248c8f21c59cbbf79832452bd3b2af99d9c1d83f8f22ecfc1ae",
+    "ChoiceUnderUncertainty/EmpiricalCritiques.lean": "ecb274dedcdc6ea13498e2f729167d16ca55577217b031a63b2d78f2d22e81e7",
+    "ChoiceUnderUncertainty/CompoundExamples.lean": "d752f68620296e4d702c0d88d560e2f9b3ece7cb44a977eb93c071668a52ad9c",
+    "ChoiceUnderUncertainty/EventSimpleActs.lean": "652a01114e605bb64269d23d14ad30c27871a7ee0542a13cb00800449bf05c55",
+    "ChoiceUnderUncertainty/EventDecomposition.lean": "f9bd275f090e9161b00d30b76d12c3daade6cfe9d121efa8887b0d52474f1fea",
+    "ChoiceUnderUncertainty/EventProbabilities.lean": "4c161de0c0b65661fdc42a29578ad9dcd88c6665965f93034b4763911a997875",
+    "ChoiceUnderUncertainty/EventSubjectiveUtility.lean": "4e76f38ec2213f7bac99f56cf5087f286c9930e9fd9743bf437f7efd91ed6e32",
+    "ChoiceUnderUncertainty/CountablyAdditiveEvents.lean": "ef72b962789abd3ecccb11802f332f6824a66a50a993494da35c552ae2108a18",
+    "ChoiceUnderUncertainty/SubsetLotteries.lean": "f2d4ee76a06ccbb8a0a4f1872c48e51a63e53e00adb5dbc332030ef973695085",
+    "ChoiceUnderUncertainty/NumericalExercises.lean": "ac563a67977fbf192cccfaedc7860bf84ce9e721fab4c95aade2f7749cb21c4f",
+    "ChoiceUnderUncertainty/ExerciseDomains.lean": "9d2976900d82c18505347ff5b6f14f273107f454cd0d9a9b84347ed79726044d",
+    "ChoiceUnderUncertainty/LotterySupport.lean": "f50de32474fced722545aeaceead10c1446b1438481f718bece38bca6a050463",
+    "ChoiceUnderUncertainty/StateExamples.lean": "eda1692f1b17b9bf039f21038a614f24919015e3a47508589bdc125124682302",
+    "ChoiceUnderUncertainty/UnboundedPrizeUtility.lean": "b7eb1daed30c9c852ce1263e2f6b21b57e9a44091ed06cf18a68d67583125fbf",
+    "ChoiceUnderUncertainty.lean": "232bfc16dfe1088c2bd383a654e4c168a186f64c7d41bd913f175c5800e9e3f0",
+    "lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "lakefile.toml": "a1679e2f602c69b82ce318a8c4985b3d259bcf166a6e253730924f52b28e78b8",
+    "lake-manifest.json": "1d9af4e86f68f915d12ba4c4e9d3a0bf61a53628f9d57bff81173a1108b74829",
+    "proof-manifest.json": "d87f680be6aa241559f4137a13f6a97a485d0d6daa0d709131f821ca66fb59c6",
+    "scripts/verify.py": "a70b1fa704dd590f937f8b37682afa88a9d85a9150065acb935c7d2c9589da3b",
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "fresh_audit_sha256": "b188581153acfbe3e4584c050a51a4960b6e99a25b162a656a06cd5763386801",
+  "lean_toolchain": "leanprover/lean4:v4.34.0",
+  "scope": "Chapter 5, pp. 79-122: objective and subjective lotteries, primitive mixture-space/expected-utility representation and uniqueness, weak-topology Borel expected utility, finite state-dependent and state-independent representations, examples, and exercises. The source map records exact coverage.",
+  "source": "Kreps, Microeconomic Foundations I, Chapter 5, pp. 79-122."
+}
