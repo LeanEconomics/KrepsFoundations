@@ -42,7 +42,7 @@ only in the results that require it, such as local insatiability.
 ## Reproduce
 
 First fetch the union of the six chapters' external Mathlib imports in the
-`Volume1/RevealedPreference` dependency environment, as the CI workflow does. Then run
+`Volume1/04_RevealedPreference` dependency environment, as the CI workflow does. Then run
 from the repository root:
 
 ```sh

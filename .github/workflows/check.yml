@@ -11,12 +11,12 @@ jobs:
       fail-fast: false
       matrix:
         project:
-          - Volume1/ChoicePreferenceUtility
-          - Volume1/PreferenceProperties
-          - Volume1/ConsumerDemand
-          - Volume1/RevealedPreference
-          - Volume1/ChoiceUnderUncertainty
-          - Volume1/UtilityForMoney
+          - Volume1/01_ChoicePreferenceUtility
+          - Volume1/02_PreferenceProperties
+          - Volume1/03_ConsumerDemand
+          - Volume1/04_RevealedPreference
+          - Volume1/05_ChoiceUnderUncertainty
+          - Volume1/06_UtilityForMoney
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -45,7 +45,7 @@ jobs:
           import json, subprocess, time
           from pathlib import Path
           projects = [Path.cwd()]
-          if Path.cwd().name == 'RevealedPreference':
+          if Path.cwd().name == '04_RevealedPreference':
               projects = sorted(Path.cwd().parent.glob('*/proof-manifest.json'))
               projects = [path.parent for path in projects]
           imports = set()
@@ -69,8 +69,8 @@ jobs:
       - name: Build and audit every proof
         run: python scripts/verify.py
       - name: Test cross-chapter consistency checks
-        if: ${{ matrix.project == 'Volume1/RevealedPreference' }}
+        if: ${{ matrix.project == 'Volume1/04_RevealedPreference' }}
         run: python -m unittest discover -s ../../scripts -p 'test_*.py' -v
       - name: Jointly audit chapters and compatibility bridges
-        if: ${{ matrix.project == 'Volume1/RevealedPreference' }}
+        if: ${{ matrix.project == 'Volume1/04_RevealedPreference' }}
         run: python ../../scripts/verify_consistency.py

@@ -1,6 +1,6 @@
 # Kreps Chapter 4: Revealed Preference and Afriat’s Theorem, in Lean
 
-This is the independent `Volume1/RevealedPreference` proof project in Kreps Foundations.
+This is the independent `Volume1/04_RevealedPreference` proof project in Kreps Foundations.
 It covers Chapter 4, pp. 67-78, including Problems 4.1-4.4.
 [Return to the library index](../../README.md).
 

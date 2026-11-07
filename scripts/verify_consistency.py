@@ -16,11 +16,12 @@ import subprocess
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
-CHAPTERS = (
+LIBRARIES = (
     "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference",
     "ChoiceUnderUncertainty", "UtilityForMoney"
 )
-BASELINE = ROOT / "Volume1/ChoicePreferenceUtility/scripts/verify.py"
+CHAPTER_DIRS = {name: f"{number:02d}_{name}" for number, name in enumerate(LIBRARIES, start=1)}
+BASELINE = ROOT / "Volume1" / CHAPTER_DIRS["ChoicePreferenceUtility"] / "scripts/verify.py"
 spec = importlib.util.spec_from_file_location("chapter_verifier", BASELINE)
 verifier = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verifier)
@@ -95,13 +96,13 @@ def check_copies(root=ROOT):
 
 
 def check_environment(root=ROOT):
-    reference = root / "Volume1" / CHAPTERS[0]
+    reference = root / "Volume1" / CHAPTER_DIRS["ChoicePreferenceUtility"]
     manifest = json.loads((reference / "lake-manifest.json").read_text(encoding="utf-8"))
     manifest.pop("name")
     config = tomllib.loads((reference / "lakefile.toml").read_text(encoding="utf-8"))
     toolchain = (reference / "lean-toolchain").read_text().strip()
-    for chapter in CHAPTERS:
-        folder = root / "Volume1" / chapter
+    for chapter, directory in CHAPTER_DIRS.items():
+        folder = root / "Volume1" / directory
         other = json.loads((folder / "lake-manifest.json").read_text(encoding="utf-8"))
         other.pop("name")
         require(other == manifest, f"Dependency revision drift: {chapter}")
@@ -120,8 +121,8 @@ def check_environment(root=ROOT):
 def collect_joint_sources(root=ROOT):
     imports, bodies, declarations, hashes = [], [], [], {}
     total_theorems = 0
-    for chapter in CHAPTERS:
-        folder = root / "Volume1" / chapter
+    for chapter, directory in CHAPTER_DIRS.items():
+        folder = root / "Volume1" / directory
         config = json.loads((folder / "proof-manifest.json").read_text(encoding="utf-8"))
         _, found, counts, _ = verifier.collect_sources(folder, config)
         declarations.extend(found)
@@ -139,7 +140,7 @@ def collect_joint_sources(root=ROOT):
                     for item in imported:
                         if not verifier.is_library_import(item, config) and item not in imports:
                             require(not any(item == c or item.startswith(c + ".")
-                                            for c in CHAPTERS),
+                                            for c in LIBRARIES),
                                     f"Unexpected cross-chapter package import: {item}")
                             imports.append(item)
             bodies.append("\n".join(body))
@@ -160,7 +161,7 @@ def collect_joint_sources(root=ROOT):
             body.append(line)
         else:
             bridge_imports.extend(imported)
-    require(set(bridge_imports) == set(CHAPTERS), "Bridge file must import exactly all chapter libraries")
+    require(set(bridge_imports) == set(LIBRARIES), "Bridge file must import exactly all chapter libraries")
     require(all(len(line) <= 100 for line in raw.splitlines()), "Long line in ChapterBridges.lean")
     require(b"\r" not in bridge.read_bytes(), "ChapterBridges.lean must use LF")
     bodies.append("\n".join(body))
@@ -192,7 +193,7 @@ def main():
         print(f"Generated joint source: {audit}")
         return
     result = subprocess.run([args.lake, "env", "lean", *verifier.SOURCE_LINT_OPTIONS, str(audit)],
-                            cwd=ROOT / "Volume1/RevealedPreference", capture_output=True,
+                            cwd=ROOT / "Volume1" / CHAPTER_DIRS["RevealedPreference"], capture_output=True,
                             text=True, encoding="utf-8", errors="replace", timeout=1200)
     log = result.stdout + result.stderr
     (output / "audit.txt").write_text(log, encoding="utf-8", newline="\n")

@@ -1,6 +1,6 @@
 # Kreps Chapter 1: Choice, Preference, and Utility, in Lean
 
-This is the `Volume1/ChoicePreferenceUtility` proof project in Kreps Foundations.
+This is the `Volume1/01_ChoicePreferenceUtility` proof project in Kreps Foundations.
 It follows Chapter 1, pp. 1-29, including Problems 1.1-1.17 and the results inside them.
 [Return to the library index](../../README.md).
 
@@ -50,7 +50,7 @@ All Chapter 1 numbered propositions, Problems 1.1-1.17, the mathematical comment
 examples and Appendix 1 are accounted for. Problem 1.17f uses a proved necessary-and-
 sufficient integer-chain condition. Empirical discussion is documented as exposition.
 Appendix 2 is fully formalized in the independent Chapter 2 project; see its
-[complete inventory](../PreferenceProperties/docs/appendix2-source-map.md). This chapter
+[complete inventory](../02_PreferenceProperties/docs/appendix2-source-map.md). This chapter
 uses the pinned Mathlib foundations directly and has no dependency on that project.
 
 The generated [verification record](verification/verification.json) contains source

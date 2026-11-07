@@ -59,30 +59,40 @@ KrepsFoundations/
 ├── .gitignore                    build output, Python caches, local textbook PDF
 ├── .gitattributes                * text=auto eol=lf
 ├── .github/workflows/check.yml   matrix over implemented chapter projects
-├── PROPOSAL-KrepsFoundations.md this proposal
+├── consistency/                  copy inventory, Lean bridges and joint audit record
+├── scripts/                      joint verifier and its regression tests
+├── PROPOSAL-KrepsFoundations.md  this proposal
 └── Volume1/                      sixteen independent chapter projects
-    ├── ChoicePreferenceUtility/
-    ├── PreferenceProperties/
-    ├── ConsumerDemand/
-    ├── RevealedPreference/
-    ├── ChoiceUnderUncertainty/
-    ├── UtilityForMoney/
-    ├── DynamicChoice/
-    ├── SocialChoiceEfficiency/
-    ├── CompetitiveFirms/
-    ├── ExpenditureMinimization/
-    ├── ClassicDemandTheory/
-    ├── ProducerConsumerSurplus/
-    ├── Aggregation/
-    ├── GeneralEquilibrium/
-    ├── EfficiencyAndCore/
-    └── TimeAndUncertainty/
+    ├── 01_ChoicePreferenceUtility/
+    ├── 02_PreferenceProperties/
+    ├── 03_ConsumerDemand/
+    ├── 04_RevealedPreference/
+    ├── 05_ChoiceUnderUncertainty/
+    ├── 06_UtilityForMoney/
+    ├── 07_DynamicChoice/
+    ├── 08_SocialChoiceEfficiency/
+    ├── 09_CompetitiveFirms/
+    ├── 10_ExpenditureMinimization/
+    ├── 11_ClassicDemandTheory/
+    ├── 12_ProducerConsumerSurplus/
+    ├── 13_Aggregation/
+    ├── 14_GeneralEquilibrium/
+    ├── 15_EfficiencyAndCore/
+    └── 16_TimeAndUncertainty/
 ```
+
+Chapter directories follow the pattern `Volume1/NN_Project/`. Use the two-digit book
+chapter number, from `01` through `16`, so the directories sort in reading order.
+Chapters 1–6 exist today. The tree shows the planned directory names for Chapters 7–16.
+
+The Lake package, Lean library and root module all use `Project`. For example,
+run `lake build` from `Volume1/01_ChoicePreferenceUtility/`. In Lean, write
+`import ChoicePreferenceUtility` and use the namespace `Kreps.ChoicePreferenceUtility`.
 
 Each chapter follows the reference package layout:
 
 ```text
-<Project>/
+Volume1/NN_Project/
 ├── README.md                     scope, results, library map, build instructions
 ├── CONTRIBUTING.md
 ├── LICENSE
@@ -237,24 +247,24 @@ to all sections and problems, including material not individually named in this 
 The infrastructure column identifies earlier material to copy and mathematical work to
 assess, not Lake dependencies or already verified library availability.
 
-| Ch. | Project | Chapter and pages | Planned scope | Infrastructure and risks |
+| Ch. | Directory under `Volume1/` | Chapter and pages | Planned scope | Infrastructure and risks |
 | ---: | --- | --- | --- | --- |
-| 1 | `ChoicePreferenceUtility` | Choice, Preference, and Utility, pp. 1-29 | Choice coherence and rationalization; finite utility via no-better-than sets; strict preference and indifference; countable and general utility representation; continuous preferences; infinite-menu choice; ordinal transformations; restricted data and the problems' SGARP result | Sets, relations, finite cardinality, countable sums, topology. Preserve empty choice on infinite menus. Detailed first milestone in section 6. |
-| 2 | `PreferenceProperties` | Structural Properties of Preferences and Utility Functions, pp. 30-49 | Monotonicity; convexity and quasi-concavity; continuity and continuous utility representation; mathematical content of indifference diagrams; weak/additive separability; quasi-linearity; homotheticity | Chapter 1; Appendix 2 topology and Appendix 3 convexity. Distinguish ordinal properties from properties of a particular utility representation. |
-| 3 | `ConsumerDemand` | Basics of Consumer Demand, pp. 50-66 | Budget sets and the consumer's problem; existence and properties of solutions; Marshallian demand and indirect utility; calculus methods, including boundary solutions | Chapters 1-2; Appendices 4-5 for correspondence continuity, Kreps's Berge theorem, and constrained optimization. Separate strict positive prices from weaker price assumptions and handle zero income explicitly. |
-| 4 | `RevealedPreference` | Revealed Preference and Afriat's Theorem, pp. 67-78 | Revealed preference from price/bundle data; GARP; all directions of Afriat's theorem, including the finite inequalities and constructed rationalizing utility; compensated own-price comparisons and Giffen implications | Chapters 1-3; finite relation closures and constructive inequality arguments. Keep weak versus strict affordability and ties exact. |
-| 5 | `ChoiceUnderUncertainty` | Choice under Uncertainty, pp. 79-122 | The two models and three representations; expected utility and the mixture-space theorem; simple and general lotteries where stated; state-dependent and subjective expected utility; uniqueness/normalization; mathematical examples behind the critiques | Chapters 1-2; finite sums, probability measures, integration, and mixtures. Prove the precise representations Kreps states, including degeneracy and null-state issues; distinguish objective probabilities from subjective beliefs. |
-| 6 | `UtilityForMoney` | Utility for Money, pp. 123-147 | Risk aversion and concavity; certainty equivalents and risk premia; comparative risk aversion and its derivative characterizations; induced preferences for income; insurance and risky-asset demand | Chapters 3 and 5; Jensen-type arguments, derivatives, and constrained optimization. Check wealth domains, positive marginal utility, and expectation existence. |
-| 7 | `DynamicChoice` | Dynamic Choice, pp. 148-165 | Strategic plans, histories, contingent choice and dynamic programming; testable restrictions; the three alternative models and their mathematical examples; Appendix 6's full mathematical development | Chapter 5; conditional probabilities/expectations and event trees. Include finite and infinite horizons, conserving/unimprovable strategies, convergence and transience conditions; bounded discounted Bellman theory alone does not cover Appendix 6. |
-| 8 | `SocialChoiceEfficiency` | Social Choice and Efficiency, pp. 166-196 | Arrow's theorem; alternatives to its assumptions and restricted domains; Pareto efficiency and existence; utility possibility sets and weighted/social-welfare maximization; syndicate theory and efficient risk sharing | Chapters 1-2 and 5-6; finite social orders, convexity, separation, and optimization. Formalize the impossibility result and its domain assumptions, and distinguish nonnegative welfare weights from strictly positive weights. |
-| 9 | `CompetitiveFirms` | Competitive and Profit-Maximizing Firms, pp. 197-232 | Production sets and profit maximization; profit/supply properties; Afriat's theorem for firms; recovering technology from profit functions and observational equivalence; support-function duality; differentiability; cost minimization and input requirements | Chapter 3's optimization infrastructure; Appendix 3 separation/support functions. Technologies need not be bounded; preserve free disposal, convexity, and finiteness conditions exactly where used. |
-| 10 | `ExpenditureMinimization` | The Expenditure-Minimization Problem, pp. 233-257 | Expenditure minimization, Hicksian demand and expenditure properties; utility/expenditure duality and recovery; characterization of expenditure functions; the links between consumer and expenditure problems | Chapters 2-3 and 9's duality machinery. Check attainable utility levels, price domains, local nonsatiation and boundary cases before asserting inverse identities. |
-| 11 | `ClassicDemandTheory` | Classic Demand Theory, pp. 258-288 | Roy's identity and the Slutsky equation; differentiability of indirect utility and Marshallian demand; utility/indirect-utility duality; integrability; complements/substitutes; links to revealed preference | Chapters 3-4 and 10; Appendix 7's implicit-function theorem; multivariable calculus. Preserve local versus global results, nonzero income derivatives, and all integrability conditions. |
-| 12 | `ProducerConsumerSurplus` | Producer and Consumer Surplus, pp. 289-305 | Producer-surplus identities; consumer-surplus measures and welfare comparisons; expenditure-based compensation, variation, and the chapter's special cases and limitations | Chapters 9-11; interval integrals and the fundamental theorem of calculus. State the assumptions behind money-metric welfare comparisons and demand-integral formulas. |
-| 13 | `Aggregation` | Aggregating Firms and Consumers, pp. 306-328 | Aggregation of technologies and profit/supply; aggregate demand and endowment income; the chapter's restrictions on consumer aggregation; convexification by aggregation and its quantitative results | Chapters 3 and 9-11; finite sums of sets, convex hulls and finite-dimensional geometry. The convexification estimates require separate infrastructure; never assume a representative consumer without its hypotheses. |
-| 14 | `GeneralEquilibrium` | General Equilibrium, pp. 329-357 | Economies and Walrasian equilibrium; basic properties and Edgeworth-box examples; existence via the chapter's generalized-game argument and subsequent extensions; the set of equilibria and the equilibrium correspondence | Chapters 3, 9 and 13; Appendix 8 fixed points, especially Kakutani; compactness/truncation and boundary arguments. Establish existence from economic primitives, with neither an assumed equilibrium nor an unproved fixed-point principle. |
-| 15 | `EfficiencyAndCore` | General Equilibrium, Efficiency, and the Core, pp. 358-385 | First and second welfare theorems; quasi-equilibrium and its relation to equilibrium; core membership; the large-economy/core-equivalence argument; externalities and Lindahl equilibrium | Chapters 8 and 14; separation, coalition feasibility and replicated economies. Preserve the distinction between support at prices, quasi-equilibrium and equilibrium, and the exact quantifiers in the large-economy result. |
-| 16 | `TimeAndUncertainty` | General Equilibrium, Time, and Uncertainty, pp. 386-436 | Time/event structure; contingent-commodity equilibrium; equilibria of plans, prices, and price expectations; contingent claims, complex securities and complete markets; real dividends; incomplete markets; firms | Chapters 5, 7, 9 and 14-15; finite-dimensional payoff spaces, no-arbitrage separation, rank/spanning and sequential budget identities. Keep viability, market completeness and equilibrium existence as distinct claims; account for the incomplete-market counterexamples and firms' objectives. |
+| 1 | `01_ChoicePreferenceUtility` | Choice, Preference, and Utility, pp. 1-29 | Choice coherence and rationalization; finite utility via no-better-than sets; strict preference and indifference; countable and general utility representation; continuous preferences; infinite-menu choice; ordinal transformations; restricted data and the problems' SGARP result | Sets, relations, finite cardinality, countable sums, topology. Preserve empty choice on infinite menus. Detailed first milestone in section 6. |
+| 2 | `02_PreferenceProperties` | Structural Properties of Preferences and Utility Functions, pp. 30-49 | Monotonicity; convexity and quasi-concavity; continuity and continuous utility representation; mathematical content of indifference diagrams; weak/additive separability; quasi-linearity; homotheticity | Chapter 1; Appendix 2 topology and Appendix 3 convexity. Distinguish ordinal properties from properties of a particular utility representation. |
+| 3 | `03_ConsumerDemand` | Basics of Consumer Demand, pp. 50-66 | Budget sets and the consumer's problem; existence and properties of solutions; Marshallian demand and indirect utility; calculus methods, including boundary solutions | Chapters 1-2; Appendices 4-5 for correspondence continuity, Kreps's Berge theorem, and constrained optimization. Separate strict positive prices from weaker price assumptions and handle zero income explicitly. |
+| 4 | `04_RevealedPreference` | Revealed Preference and Afriat's Theorem, pp. 67-78 | Revealed preference from price/bundle data; GARP; all directions of Afriat's theorem, including the finite inequalities and constructed rationalizing utility; compensated own-price comparisons and Giffen implications | Chapters 1-3; finite relation closures and constructive inequality arguments. Keep weak versus strict affordability and ties exact. |
+| 5 | `05_ChoiceUnderUncertainty` | Choice under Uncertainty, pp. 79-122 | The two models and three representations; expected utility and the mixture-space theorem; simple and general lotteries where stated; state-dependent and subjective expected utility; uniqueness/normalization; mathematical examples behind the critiques | Chapters 1-2; finite sums, probability measures, integration, and mixtures. Prove the precise representations Kreps states, including degeneracy and null-state issues; distinguish objective probabilities from subjective beliefs. |
+| 6 | `06_UtilityForMoney` | Utility for Money, pp. 123-147 | Risk aversion and concavity; certainty equivalents and risk premia; comparative risk aversion and its derivative characterizations; induced preferences for income; insurance and risky-asset demand | Chapters 3 and 5; Jensen-type arguments, derivatives, and constrained optimization. Check wealth domains, positive marginal utility, and expectation existence. |
+| 7 | `07_DynamicChoice` | Dynamic Choice, pp. 148-165 | Strategic plans, histories, contingent choice and dynamic programming; testable restrictions; the three alternative models and their mathematical examples; Appendix 6's full mathematical development | Chapter 5; conditional probabilities/expectations and event trees. Include finite and infinite horizons, conserving/unimprovable strategies, convergence and transience conditions; bounded discounted Bellman theory alone does not cover Appendix 6. |
+| 8 | `08_SocialChoiceEfficiency` | Social Choice and Efficiency, pp. 166-196 | Arrow's theorem; alternatives to its assumptions and restricted domains; Pareto efficiency and existence; utility possibility sets and weighted/social-welfare maximization; syndicate theory and efficient risk sharing | Chapters 1-2 and 5-6; finite social orders, convexity, separation, and optimization. Formalize the impossibility result and its domain assumptions, and distinguish nonnegative welfare weights from strictly positive weights. |
+| 9 | `09_CompetitiveFirms` | Competitive and Profit-Maximizing Firms, pp. 197-232 | Production sets and profit maximization; profit/supply properties; Afriat's theorem for firms; recovering technology from profit functions and observational equivalence; support-function duality; differentiability; cost minimization and input requirements | Chapter 3's optimization infrastructure; Appendix 3 separation/support functions. Technologies need not be bounded; preserve free disposal, convexity, and finiteness conditions exactly where used. |
+| 10 | `10_ExpenditureMinimization` | The Expenditure-Minimization Problem, pp. 233-257 | Expenditure minimization, Hicksian demand and expenditure properties; utility/expenditure duality and recovery; characterization of expenditure functions; the links between consumer and expenditure problems | Chapters 2-3 and 9's duality machinery. Check attainable utility levels, price domains, local nonsatiation and boundary cases before asserting inverse identities. |
+| 11 | `11_ClassicDemandTheory` | Classic Demand Theory, pp. 258-288 | Roy's identity and the Slutsky equation; differentiability of indirect utility and Marshallian demand; utility/indirect-utility duality; integrability; complements/substitutes; links to revealed preference | Chapters 3-4 and 10; Appendix 7's implicit-function theorem; multivariable calculus. Preserve local versus global results, nonzero income derivatives, and all integrability conditions. |
+| 12 | `12_ProducerConsumerSurplus` | Producer and Consumer Surplus, pp. 289-305 | Producer-surplus identities; consumer-surplus measures and welfare comparisons; expenditure-based compensation, variation, and the chapter's special cases and limitations | Chapters 9-11; interval integrals and the fundamental theorem of calculus. State the assumptions behind money-metric welfare comparisons and demand-integral formulas. |
+| 13 | `13_Aggregation` | Aggregating Firms and Consumers, pp. 306-328 | Aggregation of technologies and profit/supply; aggregate demand and endowment income; the chapter's restrictions on consumer aggregation; convexification by aggregation and its quantitative results | Chapters 3 and 9-11; finite sums of sets, convex hulls and finite-dimensional geometry. The convexification estimates require separate infrastructure; never assume a representative consumer without its hypotheses. |
+| 14 | `14_GeneralEquilibrium` | General Equilibrium, pp. 329-357 | Economies and Walrasian equilibrium; basic properties and Edgeworth-box examples; existence via the chapter's generalized-game argument and subsequent extensions; the set of equilibria and the equilibrium correspondence | Chapters 3, 9 and 13; Appendix 8 fixed points, especially Kakutani; compactness/truncation and boundary arguments. Establish existence from economic primitives, with neither an assumed equilibrium nor an unproved fixed-point principle. |
+| 15 | `15_EfficiencyAndCore` | General Equilibrium, Efficiency, and the Core, pp. 358-385 | First and second welfare theorems; quasi-equilibrium and its relation to equilibrium; core membership; the large-economy/core-equivalence argument; externalities and Lindahl equilibrium | Chapters 8 and 14; separation, coalition feasibility and replicated economies. Preserve the distinction between support at prices, quasi-equilibrium and equilibrium, and the exact quantifiers in the large-economy result. |
+| 16 | `16_TimeAndUncertainty` | General Equilibrium, Time, and Uncertainty, pp. 386-436 | Time/event structure; contingent-commodity equilibrium; equilibria of plans, prices, and price expectations; contingent claims, complex securities and complete markets; real dividends; incomplete markets; firms | Chapters 5, 7, 9 and 14-15; finite-dimensional payoff spaces, no-arbitrage separation, rank/spanning and sequential budget identities. Keep viability, market completeness and equilibrium existence as distinct claims; account for the incomplete-market counterexamples and firms' objectives. |
 
 The hardest likely proof work is utility representation beyond finite sets, Afriat,
 mixture-space representation, Arrow, global integrability, convexification, Kakutani and
@@ -338,7 +348,8 @@ chapter-by-chapter implementation goal.
 
 ## 6. First milestone: Chapter 1
 
-**Package.** `Volume1/ChoicePreferenceUtility`.
+**Directory.** `Volume1/01_ChoicePreferenceUtility/`.
+**Lake package and Lean library.** `ChoicePreferenceUtility`.
 **Namespace.** `Kreps.ChoicePreferenceUtility`.
 **Source.** Sections 1.1-1.8 and Problems 1.1-1.17, pp. 1-29.
 
@@ -348,7 +359,7 @@ the chapter. In particular, Definition 1.22 and Proposition 1.23 occur inside Pr
 on p. 28 and belong in the source map.
 
 The following records the initial module design. The implemented split and verified
-counts are in the [Chapter 1 README](Volume1/ChoicePreferenceUtility/README.md); its
+counts are in the [Chapter 1 README](Volume1/01_ChoicePreferenceUtility/README.md); its
 31 modules include the problem solutions, literal examples and Appendix 1.
 
 | Module | Source | Planned result |

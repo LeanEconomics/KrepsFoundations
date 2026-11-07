@@ -82,7 +82,7 @@ Each row records the mathematical conclusion requested in the corresponding prob
 | --- | --- | --- |
 | A1, p. 439 | Natural and positive-integer induction; strong induction; parity example | `appendix_A1_nat_induction`, `appendix_A1_strong_induction`, `appendix_A1_positive_induction`, `appendix_A1_even_or_odd`, `appendix_A1_parity_exclusive` |
 | A1, pp. 439-440 | Integer induction in both directions and the caution about real numbers | `appendix_A1_integer_induction`, `appendix_A1_no_next_real`, `appendix_A1_zero_rational`, `appendix_A1_not_all_nonnegative_rational` |
-| A2, pp. 441-451 | Dependencies used here: metric neighborhoods, sequential closedness, connectedness, countable density and compact finite intersections | Pinned Mathlib supplies these ingredients to `ContinuousPreference`, `OrthantRepresentation` and `CompactChoice`. The independent Chapter 2 project now provides [complete Appendix 2 coverage](../../PreferenceProperties/docs/appendix2-source-map.md). Chapter 1 uses Mathlib directly; it does not depend on the Chapter 2 package. |
+| A2, pp. 441-451 | Dependencies used here: metric neighborhoods, sequential closedness, connectedness, countable density and compact finite intersections | Pinned Mathlib supplies these ingredients to `ContinuousPreference`, `OrthantRepresentation` and `CompactChoice`. The independent Chapter 2 project now provides [complete Appendix 2 coverage](../../02_PreferenceProperties/docs/appendix2-source-map.md). Chapter 1 uses Mathlib directly; it does not depend on the Chapter 2 package. |
 
 ## Scope of the examples
 

@@ -13,8 +13,10 @@ practice. The reference repositories are sources to inspect, not additional depe
 
 ## Project structure and environment
 
-- Each `Volume1/<Chapter>/` directory is an independent Lake project. Run commands from
-  that directory. There is no root Lake package or dependency on another chapter.
+- Each `Volume1/NN_Project/` directory is an independent Lake project. Use the two-digit
+  book chapter number for `NN` and the unprefixed `Project` for the Lake package,
+  Lean library, module imports and `Kreps.Project` namespace. Run Lake from that directory.
+  There is no root Lake package or dependency on another chapter.
 - Keep Lean `leanprover/lean4:v4.34.0`, Mathlib `v4.34.0`, and the committed transitive
   dependency revisions. The resolved Mathlib revision is
   `5ed2965256430c3649e86755f9576b54eca72435`. Do not silently move a chapter to another

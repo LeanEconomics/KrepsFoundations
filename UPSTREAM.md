@@ -10,7 +10,7 @@ an upstream change, since names and coverage can change.
 ## Candidate: compact convex hulls in finite dimension
 
 Local result:
-[proposition_A3_6](Volume1/PreferenceProperties/PreferenceProperties/AppendixConvexHullCompact.lean).
+[proposition_A3_6](Volume1/02_PreferenceProperties/PreferenceProperties/AppendixConvexHullCompact.lean).
 
 For a finite-dimensional real normed vector space and an arbitrary compact set `S`,
 the theorem proves `IsCompact (convexHull ℝ S)`. It includes empty sets.
@@ -57,17 +57,17 @@ local helper, not a listed upstream theorem.
 
 The additive-existence proof also separates several purely mathematical APIs:
 
-- [Interval chart continuation](Volume1/PreferenceProperties/PreferenceProperties/AffineIntervalContinuation.lean)
+- [Interval chart continuation](Volume1/02_PreferenceProperties/PreferenceProperties/AffineIntervalContinuation.lean)
   globalizes a positive affine atlas on a real interval, with a specified seed chart.
   The translation specialization preserves slope one on every chart.
-- [Endpoint extension](Volume1/PreferenceProperties/PreferenceProperties/MonotoneEndpointExtension.lean)
+- [Endpoint extension](Volume1/02_PreferenceProperties/PreferenceProperties/MonotoneEndpointExtension.lean)
   extends a continuous monotone real function from a dense domain whose only missing
   points are extreme elements. Finite one-sided bounds suffice at attained ends;
   strict monotonicity is preserved on densely ordered domains.
-- [Dense comparison transport](Volume1/PreferenceProperties/PreferenceProperties/DenseProductRepresentation.lean)
+- [Dense comparison transport](Volume1/02_PreferenceProperties/PreferenceProperties/DenseProductRepresentation.lean)
   shows that continuous strictly increasing utilities on products of densely ordered
   blocks have identical comparisons everywhere when they agree on a dense subset.
-- [Local comparison transport](Volume1/PreferenceProperties/PreferenceProperties/LocalToGlobalOrder.lean)
+- [Local comparison transport](Volume1/02_PreferenceProperties/PreferenceProperties/LocalToGlobalOrder.lean)
   turns local agreement along monotone paths into global order agreement.
 
 The endpoint search inspected `Topology/DenseEmbedding.lean`,
@@ -124,12 +124,12 @@ the weak approximation by finite lotteries may be useful independently. At Mathl
 revision `5ed2965256430c3649e86755f9576b54eca72435`, the implementation uses
 `StdSimplex`, `ProbabilityMeasure.tendsto_iff_forall_integral_tendsto`, continuous
 Dirac embedding, strong measurability of the identity, and dominated convergence.
-See [measure mixtures](Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/MeasureMixtures.lean)
-and [weak approximation](Volume1/ChoiceUnderUncertainty/ChoiceUnderUncertainty/WeakApproximation.lean).
+See [measure mixtures](Volume1/05_ChoiceUnderUncertainty/ChoiceUnderUncertainty/MeasureMixtures.lean)
+and [weak approximation](Volume1/05_ChoiceUnderUncertainty/ChoiceUnderUncertainty/WeakApproximation.lean).
 
 Chapter 6 derives a finite supermartingale coupling from increasing concave order.
 The proof uses compactness of a finite simplex, Mathlib's strict separation theorem, and a
 finite minimum of affine functions already used in Chapter 4. A reuse review should
 compare the probability and convex-order APIs and the existing Hahn–Banach interfaces
-before proposing any generalization. See the [separation theorem](Volume1/UtilityForMoney/UtilityForMoney/CouplingSeparation.lean)
-and [coupling construction](Volume1/UtilityForMoney/UtilityForMoney/SupermartingaleCoupling.lean).
+before proposing any generalization. See the [separation theorem](Volume1/06_UtilityForMoney/UtilityForMoney/CouplingSeparation.lean)
+and [coupling construction](Volume1/06_UtilityForMoney/UtilityForMoney/SupermartingaleCoupling.lean).

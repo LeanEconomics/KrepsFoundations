@@ -70,7 +70,7 @@ The independent project copies twelve Chapter 1 modules from commit `dfb548d`:
 `InfiniteChoice`, `UtilityEquivalence`, `ContinuousPreference`, `OrthantRepresentation`,
 `CompactChoice`, `UtilityExamples` and `Lexicographic`. Their mathematical declarations
 are unchanged; imports and namespaces are local. They remain covered by the
-[Chapter 1 source map](../../ChoicePreferenceUtility/docs/source-map.md) and are
+[Chapter 1 source map](../../01_ChoicePreferenceUtility/docs/source-map.md) and are
 freshly audited again in this project. Their theorem counts are prerequisite counts,
 not new Chapter 2 results.
 

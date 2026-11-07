@@ -10,10 +10,6 @@ import verify_consistency as consistency
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CHAPTERS = (
-    "ChoicePreferenceUtility", "PreferenceProperties", "ConsumerDemand", "RevealedPreference",
-    "ChoiceUnderUncertainty", "UtilityForMoney"
-)
 
 
 class ConsistencyTests(unittest.TestCase):
@@ -96,16 +92,16 @@ class ConsistencyTests(unittest.TestCase):
     def test_changed_dependency_pin_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
-            for chapter in CHAPTERS:
+            for folder in consistency.CHAPTER_DIRS.values():
                 for name in (
                     "lean-toolchain", "lakefile.toml", "lake-manifest.json",
                     "scripts/verify.py", "scripts/test_verify.py",
                 ):
-                    relative = Path("Volume1") / chapter / name
+                    relative = Path("Volume1") / folder / name
                     (target / relative).parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(ROOT / relative, target / relative)
             consistency.check_environment(target)
-            path = target / "Volume1/ConsumerDemand/lake-manifest.json"
+            path = target / "Volume1/03_ConsumerDemand/lake-manifest.json"
             manifest = json.loads(path.read_text(encoding="utf-8"))
             mathlib = next(package for package in manifest["packages"]
                            if package["name"] == "mathlib")

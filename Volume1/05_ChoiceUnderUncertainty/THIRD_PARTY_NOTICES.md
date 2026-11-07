@@ -9,8 +9,7 @@ commit `d39805f553dfb9619271b32bbf858d3162ca7e4e`,
 dependency pins and verification conventions follow the same repository.
 
 `Basic.lean` and `StrictPreference.lean` are attributed copies of the corresponding
-Chapter 1 modules in `Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility/` at
-`f9c357ada1d9965dabd9eec694720ba585faf575`. Only imports, namespace and attribution
+Chapter 1 modules at [their original revision](https://github.com/LeanEconomics/KrepsFoundations/tree/f9c357ada1d9965dabd9eec694720ba585faf575/Volume1/ChoicePreferenceUtility/ChoicePreferenceUtility). Only imports, namespace and attribution
 were adapted. Each chapter builds as an independent Lake project.
 
 Mathlib's standard simplex and convex-space APIs supply the finite-support lottery

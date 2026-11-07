@@ -1,6 +1,6 @@
 # Kreps Chapter 2: Structural Properties of Preferences and Utility Functions, in Lean
 
-This is the `Volume1/PreferenceProperties` proof project in Kreps Foundations.
+This is the `Volume1/02_PreferenceProperties` proof project in Kreps Foundations.
 It follows Chapter 2, pp. 30-49, including Problems 2.1-2.15.
 [Return to the library index](../../README.md).
 
